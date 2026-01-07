@@ -1,0 +1,28 @@
+server:
+  port: 8083
+  servlet:
+    encoding:
+      # ✅ 운영에서도 인코딩은 고정해두는 게 안전
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  datasource:
+    # ✅ edge에서는 로컬 mysql이 아닐 수 있음 (docker mysql, 원격 mysql 등)
+    # 그래서 무조건 환경변수로 받게 고정해두는 게 이사(둥지옮기기)에 유리함
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # ✅ 운영(edge)에서는 update 금지에 가깝다 (실수로 컬럼 변형 위험)
+      # - validate: 스키마가 엔티티와 맞는지 검사만
+      # - none: 아무것도 안 함
+      ddl-auto: validate
+    show-sql: false
+
+  flyway:
+    enabled: true

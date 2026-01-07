@@ -5,13 +5,19 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.goosage.common.NotFoundException;
 import com.goosage.dto.PostResponse;
 import com.goosage.entity.PostEntity;
 import com.goosage.repository.PostRepository;
 
 /**
  * ✅ 서비스는 "비즈니스 로직 + 변환"의 중심.
- * 컨트롤러는 얇게 두고, 여기서 Entity -> DTO 변환까지 정리해준다.
+ * - 컨트롤러는 얇게 두고,
+ * - 여기서 Entity -> DTO 변환까지 정리한다.
+ *
+ * ✅ GooSage 룰(오늘 고정)
+ * - 없는 리소스는 RuntimeException(500) 말고 NotFoundException(404)로 통일
+ * - 404 응답 JSON은 GlobalExceptionHandler(@RestControllerAdvice)가 ApiResponse.fail(...)로 내려준다
  */
 @Service
 public class PostService {
@@ -31,7 +37,8 @@ public class PostService {
 
     public PostResponse findById(long id) {
         PostEntity e = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("post not found: id=" + id));
+                // ✅ 없으면 404로 떨어지게(서비스 레벨에서 의미를 고정)
+                .orElseThrow(() -> new NotFoundException("post not found: id=" + id));
         return PostResponse.from(e);
     }
 
@@ -46,7 +53,8 @@ public class PostService {
 
     public PostResponse update(long id, String title, String content) {
         PostEntity e = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("post not found: id=" + id));
+                // ✅ update도 똑같이 404로 통일
+                .orElseThrow(() -> new NotFoundException("post not found: id=" + id));
 
         e.setTitle(title);
         e.setContent(content);
@@ -57,7 +65,8 @@ public class PostService {
 
     public void delete(long id) {
         if (!postRepository.existsById(id)) {
-            throw new RuntimeException("post not found: id=" + id);
+            // ✅ delete도 404로 통일
+            throw new NotFoundException("post not found: id=" + id);
         }
         postRepository.deleteById(id);
     }
