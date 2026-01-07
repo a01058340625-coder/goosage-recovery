@@ -1,0 +1,32 @@
+server:
+  port: 8083
+  servlet:
+    encoding:
+      # ✅ HTTP 요청/응답 인코딩 (브라우저/PowerShell)
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  datasource:
+    # ✅ MySQL 연결 인코딩 관련 파라미터들
+    # - useUnicode=true: 유니코드 사용
+    # - characterEncoding=utf8: 드라이버 측 인코딩(내부적으로 utf8mb4와 함께 잘 동작)
+    # - connectionCollation=utf8mb4_0900_ai_ci: 연결 콜레이션 지정
+    # - serverTimezone: 시간대
+    url: jdbc:mysql://localhost:3306/goosage?useSSL=false&serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_0900_ai_ci
+    username: goosage
+    password: goosage1234!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    # ✅ (선택) 커넥션 잡자마자 “utf8mb4로 통일” SQL 한번 날림 (안전장치)
+    hikari:
+      connection-init-sql: "SET NAMES utf8mb4 COLLATE utf8mb4_0900_ai_ci"
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # 개발 중엔 update OK
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
