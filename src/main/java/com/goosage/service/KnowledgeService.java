@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class KnowledgeService {
+	
 
     private final KnowledgeRepository repository;
 
@@ -39,5 +40,9 @@ public class KnowledgeService {
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
     }
+    public KnowledgeDto fromQa(long qaId) {
+        return null; // 일단 컴파일만 통과
+    }
+
 }
 

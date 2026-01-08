@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.goosage.common.NotFoundException;
 import com.goosage.dto.PostResponse;
@@ -26,6 +30,17 @@ public class PostService {
 
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
+    }
+    
+    public Page<PostResponse> findAll(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        Page<PostEntity> pageResult =
+                (keyword == null || keyword.isBlank())
+                        ? postRepository.findAll(pageable)
+                        : postRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+
+        return pageResult.map(PostResponse::from);
     }
 
     public List<PostResponse> findAll() {

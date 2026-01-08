@@ -3,13 +3,23 @@ package com.goosage.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.goosage.common.ApiResponse;
 import com.goosage.dto.PostCreateRequest;
-import com.goosage.dto.PostUpdateRequest;
 import com.goosage.dto.PostResponse;
+import com.goosage.dto.PostUpdateRequest;
 import com.goosage.service.PostService;
+import org.springframework.data.domain.Page;
 
 /**
  * ✅ 컨트롤러는 "HTTP 입출력"만 담당
@@ -39,6 +49,17 @@ public class PostController {
         List<PostResponse> posts = postService.findAll();
         return ApiResponse.ok(posts);
     }
+    
+    @GetMapping("/page")
+    public ApiResponse<Page<PostResponse>> findAllPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String keyword
+    ) {
+        Page<PostResponse> result = postService.findAll(page, size, keyword);
+        return ApiResponse.ok(result);
+    }
+
 
     /**
      * ✅ 단건 조회

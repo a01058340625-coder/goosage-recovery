@@ -2,8 +2,10 @@ package com.goosage;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(classes = GoosageApiApplication.class)
+@ActiveProfiles("test")
+@SpringBootTest
 class GoosageApiApplicationTests {
 
     @Test
