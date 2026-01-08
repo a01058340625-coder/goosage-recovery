@@ -2,6 +2,7 @@ package com.goosage.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
 import com.goosage.dto.PostCreateRequest;
 import com.goosage.dto.PostResponse;
 import com.goosage.dto.PostUpdateRequest;
 import com.goosage.service.PostService;
-import org.springframework.data.domain.Page;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * ✅ 컨트롤러는 "HTTP 입출력"만 담당
@@ -80,8 +83,12 @@ public class PostController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<PostResponse> create(@RequestBody PostCreateRequest req) {
-        PostResponse created = postService.create(req.getTitle(), req.getContent());
+    public ApiResponse<PostResponse> create(@RequestBody PostCreateRequest req, HttpSession session) {
+
+        Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER_ID);
+
+        PostResponse created = postService.create(req, userId);
+
         return ApiResponse.ok("CREATED", created);
     }
 

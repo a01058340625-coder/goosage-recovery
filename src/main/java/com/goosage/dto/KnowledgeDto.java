@@ -13,6 +13,9 @@ public class KnowledgeDto {
     private List<String> tags;  // 태그들
     private String source;      // 출처(책/강의/URL/내노트)
     private LocalDateTime createdAt;
+    private Long sourceId;
+    private String type;
+
 
     public KnowledgeDto() {}
 
@@ -40,4 +43,22 @@ public class KnowledgeDto {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
+    }
+    
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
 }
