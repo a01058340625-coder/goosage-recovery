@@ -1,0 +1,14 @@
+﻿[요약]
+- Flyway migrate에서 권한 오류가 났고, user/privileges/DB 소유권을 확인해서 해결했다
+- Flyway 권한/소유권 문제 해결
+- Flyway 마이그레이션
+
+[핵심 포인트]
+- db
+- flyway
+- springboot
+
+[다음 액션]
+- migration 재실행
+- DB user/privilege 점검
+- flyway_schema_history 상태 확인

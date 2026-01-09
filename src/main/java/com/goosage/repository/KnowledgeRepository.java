@@ -10,6 +10,6 @@ public interface KnowledgeRepository {
 
     KnowledgeDto save(KnowledgeDto knowledge);
 
-    // ✅ 추가 (v0.2 핵심)
+    // ✅ 단건 조회는 이걸로만 제공(너 프로젝트 구조상)
     Optional<KnowledgeDto> findBySourceAndSourceId(String source, long sourceId);
 }

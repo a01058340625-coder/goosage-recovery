@@ -1,7 +1,8 @@
 package com.goosage.service;
 
 import java.util.List;
-
+import java.util.Optional;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 import com.goosage.dto.KnowledgeDto;
@@ -19,6 +20,17 @@ public class KnowledgeService {
     public KnowledgeService(KnowledgeRepository repository, QaRepository qaRepository) {
         this.repository = repository;
         this.qaRepository = qaRepository;
+    }
+    public Optional<KnowledgeDto> findById(Long id) {
+        return repository.findAll().stream()
+                .filter(k -> k.getId() != null && k.getId().equals(id))
+                .findFirst();
+    }
+    public KnowledgeDto mustFindById(Long id) {
+        return findAll().stream()
+                .filter(k -> k.getId() != null && k.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("knowledge not found: " + id));
     }
 
 
