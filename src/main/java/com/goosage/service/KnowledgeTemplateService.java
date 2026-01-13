@@ -1,57 +1,48 @@
 package com.goosage.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.Optional;
-
-import com.goosage.dto.TemplateDto;
-import com.goosage.repository.TemplateRepository;
 
 import org.springframework.stereotype.Service;
 
 import com.goosage.dto.KnowledgeDto;
-import com.goosage.template.SummaryV1Formatter;
 
 @Service
 public class KnowledgeTemplateService {
 
-	private final TemplateRepository templateRepository;
-	private final SummaryV1Formatter formatter = new SummaryV1Formatter();
+    public String toSummaryV1(KnowledgeDto knowledge) {
+        String content = knowledge.getContent();
 
-	public KnowledgeTemplateService(TemplateRepository templateRepository) {
-	    this.templateRepository = templateRepository;
-	}
+        if (content == null || content.isBlank()) {
+            return "[요약]\n(내용 없음)";
+        }
 
-	    
+        if (content.length() <= 500) {
+            return "[요약]\n" + content;
+        }
 
-	public String toSummaryV1(KnowledgeDto k) {
+        return "[요약]\n"
+            + content.substring(0, 300)
+            + "\n...\n"
+            + "핵심 요약 문장 1\n"
+            + "핵심 요약 문장 2";
+    }
 
-	    // 1) DB 캐시 조회
-	    Optional<TemplateDto> cached =
-	            templateRepository.findByKnowledgeIdAndTemplateType(k.getId(), "SUMMARY_V1");
+    public List<String> toQuizV1(KnowledgeDto knowledge) {
+        return List.of(
+            "이 지식의 핵심 개념은 무엇인가?",
+            "왜 이 개념이 중요한가?",
+            "실제 적용 예시는 무엇인가?"
+        );
+    }
+    public String toSummaryV2(KnowledgeDto knowledge) {
+        return "[SUMMARY_V2]\n" + (knowledge.getContent() == null ? "" : knowledge.getContent());
+    }
 
-	    if (cached.isPresent()) {
-	        return cached.get().getResultText();
-	    }
+    public String toQuizV2Text(KnowledgeDto knowledge) {
+        return "[QUIZ_V2]\n"
+            + "1) 핵심 개념은?\n"
+            + "2) 왜 중요한가?\n"
+            + "3) 예시는?\n";
+    }
 
-	    // 2) 없으면 생성 (기존 formatter 그대로 사용)
-	    String resultText = formatter.format(
-	            k.getSubject(),
-	            k.getTitle(),
-	            k.getContent(),
-	            k.getTags()
-	    );
-
-	    // 3) DB 저장
-	    TemplateDto t = new TemplateDto();
-	    t.setKnowledgeId(k.getId());
-	    t.setTemplateType("SUMMARY_V1");
-	    t.setResultText(resultText);
-
-	    templateRepository.save(t);
-
-	    return resultText;
-	}
 }

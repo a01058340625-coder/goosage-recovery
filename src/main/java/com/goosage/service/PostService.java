@@ -11,10 +11,23 @@ import org.springframework.stereotype.Service;
 
 import com.goosage.common.NotFoundException;
 import com.goosage.dto.PostCreateRequest;
-
 import com.goosage.dto.PostResponse;
 import com.goosage.entity.PostEntity;
+import com.goosage.exception.ForbiddenException;
 import com.goosage.repository.PostRepository;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
+import com.goosage.exception.ForbiddenException;
 
 /**
  * ✅ 서비스는 "비즈니스 로직 + 변환"의 중심. - 컨트롤러는 얇게 두고, - 여기서 Entity -> DTO 변환까지 정리한다.
@@ -62,7 +75,7 @@ public class PostService {
 		return PostResponse.from(saved);
 	}
 
-	public PostResponse create(PostCreateRequest req, Long userId) {
+	public PostResponse create(Long userId, PostCreateRequest req) {
 
 		PostEntity e = new PostEntity();
 		e.setTitle(req.getTitle());
@@ -85,11 +98,17 @@ public class PostService {
 		return PostResponse.from(saved);
 	}
 
-	public void delete(long id) {
-		if (!postRepository.existsById(id)) {
-			// ✅ delete도 404로 통일
-			throw new NotFoundException("post not found: id=" + id);
-		}
-		postRepository.deleteById(id);
+	public void delete(Long postId, Long userId) {
+
+	    PostEntity post = postRepository.findById(postId)
+	        .orElseThrow(() -> new NotFoundException("POST_NOT_FOUND"));
+
+	    if (!post.getUserId().equals(userId)) {
+	        throw new ForbiddenException("FORBIDDEN");
+	    }
+
+	    postRepository.deleteById(postId);
 	}
+
+
 }

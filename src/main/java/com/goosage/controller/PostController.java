@@ -87,7 +87,7 @@ public class PostController {
 
         Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER_ID);
 
-        PostResponse created = postService.create(req, userId);
+        PostResponse created = postService.create(userId, req);
 
         return ApiResponse.ok("CREATED", created);
     }
@@ -113,8 +113,10 @@ public class PostController {
      * 👉 지금은 "응답 포맷 통일"이 목표니까 B로 간다.
      */
     @DeleteMapping("/{id}")
-    public ApiResponse<Void> delete(@PathVariable long id) {
-        postService.delete(id);
+    public ApiResponse<Void> delete(@PathVariable Long id, HttpSession session) {
+        Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER_ID);
+        postService.delete(id, userId);
         return ApiResponse.ok("DELETED", null);
     }
+
 }

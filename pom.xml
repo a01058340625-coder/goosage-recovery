@@ -66,6 +66,20 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- BCrypt만 쓰기 위한 최소 보안 모듈 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
+
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+
 		<!-- (선택) Lombok -->
 		<!--
     <dependency>
@@ -83,16 +97,12 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>9.22.3</version>
 				<configuration>
-					<url>${env.DB_URL}</url>
-					<user>${env.DB_USER}</user>
-					<password>${env.DB_PASS}</password>
+					<url>
+						jdbc:mysql://localhost:3306/goosage?serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8</url>
+					<user>goosage</user>
+					<password>1234</password>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-
 		</plugins>
 	</build>
 
