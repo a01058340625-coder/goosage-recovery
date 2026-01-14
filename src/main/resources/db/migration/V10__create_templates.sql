@@ -1,4 +1,4 @@
--- V9__create_templates.sql
+
 
 CREATE TABLE IF NOT EXISTS templates (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,

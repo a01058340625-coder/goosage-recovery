@@ -18,6 +18,12 @@ public class AuthService {
         this.userRepository = userRepository;
         this.encoder = new BCryptPasswordEncoder();
     }
+    public User mustFindById(long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("USER_NOT_FOUND"));
+    }
+
+
 
     // ✅ 회원가입
     public User signup(String email, String password) {
