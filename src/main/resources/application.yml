@@ -1,5 +1,7 @@
 spring:
   profiles:
-    # ✅ 기본 실행 프로필
-    # STS에서 그냥 Run 하면 local로 실행됨
     active: local
+
+logging:
+  level:
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: DEBUG

@@ -59,6 +59,33 @@ public class QuizResultDao {
             knowledgeId
         );
     }
+    
+ // ✅ 추가: 최신 결과 1건 조회 (v0.7)
+    public QuizResultRow findLatestByKnowledgeId(long knowledgeId) {
+        String sql = """
+            SELECT id, total_count, correct_count, score_percent, details_json, created_at
+            FROM quiz_results
+            WHERE knowledge_id = ?
+            ORDER BY id DESC
+            LIMIT 1
+        """;
+
+        List<QuizResultRow> rows = jdbcTemplate.query(sql, (rs, i) ->
+            new QuizResultRow(
+                rs.getLong("id"),
+                rs.getInt("total_count"),
+                rs.getInt("correct_count"),
+                rs.getInt("score_percent"),
+                rs.getString("details_json"),
+                rs.getTimestamp("created_at").toLocalDateTime()
+            ),
+            knowledgeId
+        );
+
+        return rows.isEmpty() ? null : rows.get(0);
+    }
+
+
 
     // ✅ 추가: Row 타입 (파일 안에 같이 둬도 됨)
     public static record QuizResultRow(

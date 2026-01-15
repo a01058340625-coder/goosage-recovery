@@ -53,4 +53,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.fail("Internal Server Error"));
     }
+    
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public org.springframework.http.ResponseEntity<ApiResponse<Void>> handleNotFound(
+            org.springframework.web.servlet.resource.NoResourceFoundException e
+    ) {
+        return org.springframework.http.ResponseEntity
+                .status(org.springframework.http.HttpStatus.NOT_FOUND)
+                .body(ApiResponse.fail("NOT_FOUND"));
+    }
+
 }
