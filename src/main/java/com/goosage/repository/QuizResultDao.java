@@ -1,6 +1,5 @@
 package com.goosage.repository;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,84 +15,96 @@ public class QuizResultDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(long knowledgeId,
-                     int totalCount,
-                     int correctCount,
-                     int scorePercent,
-                     String detailsJson) {
+    // ✅ v0.6 보강: user_id 포함 저장
+    public void save(long userId, long knowledgeId, int totalCount, int correctCount, int scorePercent, String detailsJson) {
 
         String sql = """
             INSERT INTO quiz_results
-            (knowledge_id, total_count, correct_count, score_percent, details_json)
-            VALUES (?, ?, ?, ?, ?)
+            (user_id, knowledge_id, total_count, correct_count, score_percent, details_json)
+            VALUES (?, ?, ?, ?, ?, ?)
         """;
 
-        jdbcTemplate.update(
-            sql,
-            knowledgeId,
-            totalCount,
-            correctCount,
-            scorePercent,
-            detailsJson
-        );
+        jdbcTemplate.update(sql, userId, knowledgeId, totalCount, correctCount, scorePercent, detailsJson);
     }
 
-    // ✅ 추가: 결과 조회
+    // ✅ 결과 조회(지식 기준) - 필요하면 유지
     public List<QuizResultRow> findByKnowledgeId(long knowledgeId) {
         String sql = """
-            SELECT id, total_count, correct_count, score_percent, details_json, created_at
+            SELECT id, user_id, knowledge_id, total_count, correct_count, score_percent, details_json, created_at
             FROM quiz_results
             WHERE knowledge_id = ?
             ORDER BY id DESC
         """;
 
-        return jdbcTemplate.query(sql, (rs, i) ->
-            new QuizResultRow(
+        return jdbcTemplate.query(sql, (rs, i) -> new QuizResultRow(
                 rs.getLong("id"),
+                rs.getLong("user_id"),
+                rs.getLong("knowledge_id"),
                 rs.getInt("total_count"),
                 rs.getInt("correct_count"),
                 rs.getInt("score_percent"),
                 rs.getString("details_json"),
                 rs.getTimestamp("created_at").toLocalDateTime()
-            ),
-            knowledgeId
-        );
+        ), knowledgeId);
     }
-    
- // ✅ 추가: 최신 결과 1건 조회 (v0.7)
+
+    // ✅ 최신 결과 1건(지식 기준) - 필요하면 유지
     public QuizResultRow findLatestByKnowledgeId(long knowledgeId) {
         String sql = """
-            SELECT id, total_count, correct_count, score_percent, details_json, created_at
+            SELECT id, user_id, knowledge_id, total_count, correct_count, score_percent, details_json, created_at
             FROM quiz_results
             WHERE knowledge_id = ?
             ORDER BY id DESC
             LIMIT 1
         """;
 
-        List<QuizResultRow> rows = jdbcTemplate.query(sql, (rs, i) ->
-            new QuizResultRow(
+        List<QuizResultRow> rows = jdbcTemplate.query(sql, (rs, i) -> new QuizResultRow(
                 rs.getLong("id"),
+                rs.getLong("user_id"),
+                rs.getLong("knowledge_id"),
                 rs.getInt("total_count"),
                 rs.getInt("correct_count"),
                 rs.getInt("score_percent"),
                 rs.getString("details_json"),
                 rs.getTimestamp("created_at").toLocalDateTime()
-            ),
-            knowledgeId
-        );
+        ), knowledgeId);
 
         return rows.isEmpty() ? null : rows.get(0);
     }
 
+    // ✅ v0.7 핵심: "유저 + 지식" 기준 최신 결과
+    public QuizResultRow findLatestByUserAndKnowledgeId(long userId, long knowledgeId) {
+        String sql = """
+            SELECT id, user_id, knowledge_id, total_count, correct_count, score_percent, details_json, created_at
+            FROM quiz_results
+            WHERE user_id = ? AND knowledge_id = ?
+            ORDER BY id DESC
+            LIMIT 1
+        """;
 
+        List<QuizResultRow> rows = jdbcTemplate.query(sql, (rs, i) -> new QuizResultRow(
+                rs.getLong("id"),
+                rs.getLong("user_id"),
+                rs.getLong("knowledge_id"),
+                rs.getInt("total_count"),
+                rs.getInt("correct_count"),
+                rs.getInt("score_percent"),
+                rs.getString("details_json"),
+                rs.getTimestamp("created_at").toLocalDateTime()
+        ), userId, knowledgeId);
 
-    // ✅ 추가: Row 타입 (파일 안에 같이 둬도 됨)
+        return rows.isEmpty() ? null : rows.get(0);
+    }
+
+    // ✅ Row 타입 (v0.7부터 userId/knowledgeId 포함)
     public static record QuizResultRow(
-        long id,
-        int totalCount,
-        int correctCount,
-        int scorePercent,
-        String detailsJson,
-        LocalDateTime createdAt
+            long id,
+            long userId,
+            long knowledgeId,
+            int totalCount,
+            int correctCount,
+            int scorePercent,
+            String detailsJson,
+            LocalDateTime createdAt
     ) {}
 }

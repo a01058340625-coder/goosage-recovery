@@ -13,6 +13,8 @@ import com.goosage.dto.KnowledgeDto;
 import com.goosage.dto.QuizAnswer;
 import com.goosage.dto.QuizResultItem;
 import com.goosage.dto.QuizResultResponse;
+import com.goosage.dto.QuizRetryQuestion;
+import com.goosage.dto.QuizRetryResponse;
 import com.goosage.dto.QuizSubmitRequest;
 import com.goosage.dto.QuizSubmitResponse;
 import com.goosage.repository.QuizItemDao;
@@ -34,6 +36,39 @@ public class QuizService {
 		this.objectMapper = objectMapper;
 		this.quizItemDao = quizItemDao;
 	}
+	
+	public QuizRetryResponse retry(long userId, long knowledgeId) {
+
+	    QuizResultDao.QuizResultRow latest =
+	            quizResultDao.findLatestByUserAndKnowledgeId(userId, knowledgeId);
+
+	    if (latest == null) {
+	        return new QuizRetryResponse(knowledgeId, 0L, 0, List.of());
+	    }
+
+	    List<Map<String, Object>> details;
+	    try {
+	        details = objectMapper.readValue(latest.detailsJson(), List.class);
+	    } catch (Exception e) {
+	        throw new RuntimeException("details_json parse failed", e);
+	    }
+
+	    List<QuizRetryQuestion> qs = new ArrayList<>();
+
+	    for (Map<String, Object> d : details) {
+	        Object correctObj = d.get("correct");
+	        boolean correct = (correctObj instanceof Boolean) ? (Boolean) correctObj : false;
+
+	        if (!correct) {
+	            int qid = Integer.parseInt(String.valueOf(d.get("no")));
+	            String qText = String.valueOf(d.get("question"));
+	            qs.add(new QuizRetryQuestion(qid, qText));
+	        }
+	    }
+
+	    return new QuizRetryResponse(knowledgeId, latest.id(), qs.size(), qs);
+	}
+
 
 	public QuizSubmitResponse submit(long userId, long knowledgeId, QuizSubmitRequest request) {
 
@@ -88,7 +123,8 @@ public class QuizService {
 		try {
 			String detailsJson = objectMapper.writeValueAsString(details);
 
-			quizResultDao.save(knowledgeId, total, correctCount, percent, detailsJson);
+			quizResultDao.save(userId, knowledgeId, total, correctCount, percent, detailsJson);
+
 		} catch (Exception e) {
 			throw new RuntimeException("quiz result save failed", e);
 		}

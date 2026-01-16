@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
+import com.goosage.dto.QuizRetryResponse;
 import com.goosage.dto.QuizSubmitRequest;
 import com.goosage.dto.QuizSubmitResponse;
 import com.goosage.repository.QuizResultDao;
@@ -78,4 +79,23 @@ public class QuizController {
 
         return ApiResponse.ok(data);
     }
+    
+    @GetMapping("/knowledge/{id}/quiz/retry")
+    public ApiResponse<QuizRetryResponse> retry(
+            @PathVariable("id") long knowledgeId,
+            HttpSession session
+    ) {
+        Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
+        if (uidObj == null) {
+            return ApiResponse.fail("UNAUTHORIZED");
+        }
+
+        long userId = (uidObj instanceof Long)
+                ? (Long) uidObj
+                : Long.parseLong(String.valueOf(uidObj));
+
+        QuizRetryResponse res = quizService.retry(userId, knowledgeId);
+        return ApiResponse.ok(res);
+    }
+
 }
