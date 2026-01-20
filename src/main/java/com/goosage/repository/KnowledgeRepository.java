@@ -8,6 +8,8 @@ import com.goosage.dto.KnowledgeDto;
 public interface KnowledgeRepository {
 
     List<KnowledgeDto> findAll();
+    Optional<KnowledgeDto> findById(long id);
+
 
     KnowledgeDto save(KnowledgeDto knowledge);
 

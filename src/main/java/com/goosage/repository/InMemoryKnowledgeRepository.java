@@ -8,7 +8,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.goosage.dto.KnowledgeDto;
+import org.springframework.context.annotation.Profile;
 
+@Profile("test")
 @Repository
 public class InMemoryKnowledgeRepository implements KnowledgeRepository {
 
@@ -17,7 +19,7 @@ public class InMemoryKnowledgeRepository implements KnowledgeRepository {
 
     @Override
     public List<KnowledgeDto> findAll() {
-        return store;
+        return List.copyOf(store);
     }
 
     @Override
@@ -39,8 +41,15 @@ public class InMemoryKnowledgeRepository implements KnowledgeRepository {
                         source != null &&
                         source.equals(k.getSource()) &&
                         k.getSourceId() != null &&
-                        k.getSourceId() == sourceId
+                        k.getSourceId().longValue() == sourceId
                 )
+                .findFirst();
+    }
+
+    @Override
+    public Optional<KnowledgeDto> findById(long id) {
+        return store.stream()
+                .filter(k -> k.getId() != null && k.getId().longValue() == id)
                 .findFirst();
     }
 }

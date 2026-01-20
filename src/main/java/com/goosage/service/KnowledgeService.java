@@ -23,17 +23,16 @@ public class KnowledgeService {
     }
 
     public Optional<KnowledgeDto> findById(Long id) {
-        return repository.findAll().stream()
-                .filter(k -> k.getId() != null && k.getId().equals(id))
-                .findFirst();
+        if (id == null) return Optional.empty();
+        return repository.findById(id.longValue());
     }
 
     public KnowledgeDto mustFindById(Long id) {
-        return findAll().stream()
-                .filter(k -> k.getId() != null && k.getId().equals(id))
-                .findFirst()
+        if (id == null) throw new IllegalArgumentException("id is required");
+        return repository.findById(id.longValue())
                 .orElseThrow(() -> new NoSuchElementException("knowledge not found: " + id));
     }
+
 
     public List<KnowledgeDto> findAll() {
         return repository.findAll();
@@ -41,11 +40,37 @@ public class KnowledgeService {
 
     public KnowledgeDto save(KnowledgeDto req) {
         if (req == null) throw new IllegalArgumentException("body가 비었습니다.");
-        if (isBlank(req.getSubject())) throw new IllegalArgumentException("subject는 필수입니다.");
+
+        // ✅ type 기본값 정책 (null/blank면 MANUAL)
+        if (isBlank(req.getType())) req.setType("MANUAL");
+
+        // ✅ source/sourceId가 없으면 MANUAL 입력에서도 의미가 없으니 정책적으로 강제(선택)
+        // if (isBlank(req.getSource())) throw new IllegalArgumentException("source는 필수입니다.");
+        // if (req.getSourceId() == null || req.getSourceId() <= 0) throw new IllegalArgumentException("sourceId는 필수입니다.");
+
+        // ✅ title/content는 DB insert에 직접 들어가므로 필수 유지
         if (isBlank(req.getTitle())) throw new IllegalArgumentException("title은 필수입니다.");
-        if (isBlank(req.getContent())) throw new IllegalArgumentException("content는 필수입니다.");
+        if (req.getContent() == null) req.setContent(""); // content null 방지 (DB/검증 통과)
+
+        // ✅ subject는 현재 DB insert에 안 쓰는 필드라면 "필수"에서 빼는 게 맞음
+        // (subject 컬럼이 실제로 DB에 있다면 Repository INSERT에 포함시키는 쪽이 맞고)
+        // if (isBlank(req.getSubject())) throw new IllegalArgumentException("subject는 필수입니다.");
+
+        // ✅ tags는 List<String>이면 정규화 (trim/빈값 제거/중복 제거)
+        if (req.getTags() != null) {
+            List<String> cleaned = req.getTags().stream()
+                    .filter(s -> s != null && !s.trim().isEmpty())
+                    .map(String::trim)
+                    .distinct()
+                    .toList();
+            req.setTags(cleaned.isEmpty() ? List.of() : cleaned);
+        } else {
+            req.setTags(List.of());
+        }
+
         return repository.save(req);
     }
+
 
     private boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
@@ -60,32 +85,39 @@ public class KnowledgeService {
      */
     public KnowledgeDto convertQaToKnowledge(long qaId) {
 
-        // ✅ 이미 변환된 Knowledge 있으면 그대로 반환
         return repository.findBySourceAndSourceId("qa", qaId)
                 .orElseGet(() -> {
 
-                    // ✅ QA 조회 (QaDto or QaEntity 중 네 레포 반환 타입에 맞추기)
-                	QaEntity qa = qaRepository.findById(qaId)
-                	        .orElseThrow(() -> new IllegalArgumentException("qa not found: " + qaId));
+                    QaEntity qa = qaRepository.findById(qaId)
+                            .orElseThrow(() -> new IllegalArgumentException("qa not found: " + qaId));
 
                     KnowledgeDto created = new KnowledgeDto();
-
-                    // DB 컬럼에 type이 있으면 채우고, 없으면 무시돼도 됨(DTO에 필드가 있으니 OK)
                     created.setType("QA");
-
-                    // ✅ 출처 고정 (주의: 네 기존 코드가 source를 "qa"로 쓰고 있음 -> 그대로 "qa"로 통일)
                     created.setSource("qa");
                     created.setSourceId(qaId);
 
-                    // ✅ Knowledge 필수값 채우기
-                    created.setSubject("QA"); // subject 필수라서 고정값으로라도 넣어야 함
                     created.setTitle(qa.getQuestion());
                     created.setContent(qa.getAnswer() == null ? "" : qa.getAnswer());
 
-                    created.setTags(null);
+                    // subject 쓰는 정책이면 유지, 아니면 제거
+                    created.setSubject("QA");
 
+                    // ✅ QA tags 문자열이 있다면 여기서 변환 (예: "a,b,c")
+                    // QaEntity에 getTags()가 있다고 가정. 없으면 이 블록은 주석처리.
+                    if (qa.getTags() != null && !qa.getTags().trim().isEmpty()) {
+                        List<String> tags = java.util.Arrays.stream(qa.getTags().split(","))
+                                .map(String::trim)
+                                .filter(s -> !s.isBlank())
+                                .distinct()
+                                .toList();
+                        created.setTags(tags);
+                    } else {
+                        created.setTags(List.of());
+                    }
 
-                    return repository.save(created);
+                    // ✅ 여기서 save()를 다시 태워도 됨(정책 1곳)
+                    return save(created);
                 });
     }
+
 }

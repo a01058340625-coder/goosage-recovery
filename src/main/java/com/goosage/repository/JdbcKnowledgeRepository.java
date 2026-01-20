@@ -92,4 +92,17 @@ public class JdbcKnowledgeRepository implements KnowledgeRepository {
         List<KnowledgeDto> list = jdbcTemplate.query(sql, rowMapper, source, sourceId);
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
+    
+    @Override
+    public Optional<KnowledgeDto> findById(long id) {
+        String sql = """
+            SELECT id, type, source, source_id, title, content, tags
+            FROM knowledge
+            WHERE id = ?
+            LIMIT 1
+        """;
+        List<KnowledgeDto> list = jdbcTemplate.query(sql, rowMapper, id);
+        return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+    }
+
 }
