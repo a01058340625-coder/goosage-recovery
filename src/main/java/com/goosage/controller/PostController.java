@@ -1,6 +1,7 @@
 package com.goosage.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -118,5 +119,12 @@ public class PostController {
         postService.delete(id, userId);
         return ApiResponse.ok("DELETED", null);
     }
+    
+    @PostMapping("/{id}/convert")
+    public ApiResponse<Map<String, Object>> convertToKnowledge(@PathVariable long id) {
+        long knowledgeId = postService.convertToKnowledge(id);
+        return ApiResponse.ok(Map.of("postId", id, "knowledgeId", knowledgeId));
+    }
+
 
 }
