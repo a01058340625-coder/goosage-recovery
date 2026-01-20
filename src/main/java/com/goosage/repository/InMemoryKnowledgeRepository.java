@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.goosage.dto.KnowledgeDto;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Profile;
 
 @Profile("test")
 @Repository

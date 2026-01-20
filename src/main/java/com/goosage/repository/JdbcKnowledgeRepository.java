@@ -16,7 +16,6 @@ import com.goosage.common.TagsCsv;
 import com.goosage.dto.KnowledgeDto;
 
 @Repository
-@Primary
 public class JdbcKnowledgeRepository implements KnowledgeRepository {
 
     private final JdbcTemplate jdbcTemplate;

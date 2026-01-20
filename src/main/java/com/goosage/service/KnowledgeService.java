@@ -44,19 +44,9 @@ public class KnowledgeService {
         // ✅ type 기본값 정책 (null/blank면 MANUAL)
         if (isBlank(req.getType())) req.setType("MANUAL");
 
-        // ✅ source/sourceId가 없으면 MANUAL 입력에서도 의미가 없으니 정책적으로 강제(선택)
-        // if (isBlank(req.getSource())) throw new IllegalArgumentException("source는 필수입니다.");
-        // if (req.getSourceId() == null || req.getSourceId() <= 0) throw new IllegalArgumentException("sourceId는 필수입니다.");
+        if (isBlank(req.getType())) req.setType("MANUAL");
+        if (req.getContent() == null) req.setContent("");
 
-        // ✅ title/content는 DB insert에 직접 들어가므로 필수 유지
-        if (isBlank(req.getTitle())) throw new IllegalArgumentException("title은 필수입니다.");
-        if (req.getContent() == null) req.setContent(""); // content null 방지 (DB/검증 통과)
-
-        // ✅ subject는 현재 DB insert에 안 쓰는 필드라면 "필수"에서 빼는 게 맞음
-        // (subject 컬럼이 실제로 DB에 있다면 Repository INSERT에 포함시키는 쪽이 맞고)
-        // if (isBlank(req.getSubject())) throw new IllegalArgumentException("subject는 필수입니다.");
-
-        // ✅ tags는 List<String>이면 정규화 (trim/빈값 제거/중복 제거)
         if (req.getTags() != null) {
             List<String> cleaned = req.getTags().stream()
                     .filter(s -> s != null && !s.trim().isEmpty())
