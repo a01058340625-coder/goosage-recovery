@@ -27,35 +27,40 @@ public class KnowledgeService {
         return repository.findById(id.longValue());
     }
 
-    public KnowledgeDto mustFindById(Long id) {
-        if (id == null) throw new IllegalArgumentException("id is required");
-        return repository.findById(id.longValue())
+    public KnowledgeDto mustFindById(long id) {
+        return repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("knowledge not found: " + id));
     }
+
+    public KnowledgeDto mustFindById(Long id) {
+        if (id == null) throw new IllegalArgumentException("id is required");
+        return mustFindById(id.longValue());
+    }
+
+
 
 
     public List<KnowledgeDto> findAll() {
         return repository.findAll();
     }
 
+
     public KnowledgeDto save(KnowledgeDto req) {
         if (req == null) throw new IllegalArgumentException("body가 비었습니다.");
 
-        // ✅ type 기본값 정책 (null/blank면 MANUAL)
+        // ✅ type 기본값
         if (isBlank(req.getType())) req.setType("MANUAL");
 
-        if (isBlank(req.getType())) req.setType("MANUAL");
+        // ✅ 필수값
+        if (isBlank(req.getTitle())) throw new IllegalArgumentException("title은 필수입니다.");
         if (req.getContent() == null) req.setContent("");
 
-        if (req.getTags() != null) {
-            List<String> cleaned = req.getTags().stream()
-                    .filter(s -> s != null && !s.trim().isEmpty())
-                    .map(String::trim)
-                    .distinct()
-                    .toList();
-            req.setTags(cleaned.isEmpty() ? List.of() : cleaned);
-        } else {
-            req.setTags(List.of());
+        // ✅ source/sourceId가 있으면 중복 생성 방지 (idempotent)
+        if (!isBlank(req.getSource()) && req.getSourceId() != null) {
+            repository.findBySourceAndSourceId(req.getSource(), req.getSourceId())
+                    .ifPresent(existing -> {
+                        throw new IllegalStateException("DUPLICATE_SOURCE_SOURCEID:" + existing.getId());
+                    });
         }
 
         return repository.save(req);

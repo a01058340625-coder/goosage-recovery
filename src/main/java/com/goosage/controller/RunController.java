@@ -33,7 +33,7 @@ public class RunController {
         this.quizService = quizService;
     }
 
-    @PostMapping("/knowledge/{id}/run")
+    @PostMapping("/run/knowledge/{id}")
     public ApiResponse<QuizSubmitResponse> runOneCycle(
             @PathVariable("id") long knowledgeId,
             HttpSession session

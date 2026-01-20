@@ -115,7 +115,7 @@ public class KnowledgeController {
 		return ApiResponse.ok(quizService.findResults(id));
 	}
 	
-	@PostMapping("/knowledge/{id}/run")
+	@PostMapping("/{id}/run")
 	public ApiResponse<QuizSubmitResponse> runOneCycle(
 	        @PathVariable("id") long knowledgeId,
 	        HttpSession session
@@ -123,17 +123,33 @@ public class KnowledgeController {
 	    Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
 	    if (uidObj == null) return ApiResponse.fail("UNAUTHORIZED");
 
-	    long userId = (uidObj instanceof Long) ? (Long) uidObj : Long.parseLong(String.valueOf(uidObj));
+	    long userId = (uidObj instanceof Long)
+	            ? (Long) uidObj
+	            : Long.parseLong(String.valueOf(uidObj));
 
-	    // 1) summary 보장 (이미 있으면 그대로)
-	    knowledgeTemplateService.toSummaryV1(knowledgeService.mustFindById(knowledgeId));
+	    knowledgeTemplateService.toSummaryV1(
+	            knowledgeService.mustFindById(knowledgeId)
+	    );
 
-	    // 2) 퀴즈 자동 제출(빈 답안 or 기본 답안)
-	    QuizSubmitRequest req = new QuizSubmitRequest(); // answers 비어있어도 동작하게 해둔 상태면 OK
+	    QuizSubmitRequest req = new QuizSubmitRequest();
 	    QuizSubmitResponse res = quizService.submit(userId, knowledgeId, req);
 
 	    return ApiResponse.ok(res);
 	}
+
+	@GetMapping("/{id}")
+	public ApiResponse<KnowledgeDto> getOne(
+	        @PathVariable("id") long id,
+	        HttpSession session
+	) {
+	    Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
+	    if (uidObj == null) return ApiResponse.fail("UNAUTHORIZED");
+
+	    KnowledgeDto dto = knowledgeService.mustFindById(id);
+	    return ApiResponse.ok(dto);
+	}
+
+
 
 
 }
