@@ -5,16 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.goosage.dto.KnowledgeDto;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.Profile;
 
 @Profile("test")
 @Repository
 public class InMemoryKnowledgeRepository implements KnowledgeRepository {
-
     private final List<KnowledgeDto> store = new ArrayList<>();
     private long seq = 1L;
 
