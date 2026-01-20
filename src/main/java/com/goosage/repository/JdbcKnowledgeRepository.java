@@ -12,12 +12,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.goosage.common.TagsCsv;
 import com.goosage.dto.KnowledgeDto;
 
 @Repository
 @Primary
-
-
 public class JdbcKnowledgeRepository implements KnowledgeRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -26,44 +25,43 @@ public class JdbcKnowledgeRepository implements KnowledgeRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // ✅ 모든 조회에서 동일한 shape를 보장하는 단일 매퍼
     private final RowMapper<KnowledgeDto> rowMapper = (rs, n) -> {
         KnowledgeDto dto = new KnowledgeDto();
         dto.setId(rs.getLong("id"));
+        dto.setType(rs.getString("type"));
         dto.setSource(rs.getString("source"));
         dto.setSourceId(rs.getLong("source_id"));
         dto.setTitle(rs.getString("title"));
         dto.setContent(rs.getString("content"));
-        // created_at, tags, summary 같은 게 있으면 여기서 추가로 매핑
+        dto.setTags(TagsCsv.split(rs.getString("tags")));
         return dto;
     };
 
     @Override
     public KnowledgeDto save(KnowledgeDto knowledge) {
-        if (knowledge.getId() != null) return knowledge;
+        // 정책을 명확히: 지금은 INSERT-ONLY로 보임
+        if (knowledge.getId() != null) {
+            // update를 지원하지 않을거면 조용히 리턴하지 말고 "명확히" 실패시키는 게 맞다
+            throw new IllegalArgumentException("save() is insert-only. id must be null.");
+        }
 
         String sql = """
             INSERT INTO knowledge (type, source, source_id, title, content, tags)
             VALUES (?, ?, ?, ?, ?, ?)
         """;
 
-        // ✅ 여기서 값을 확정
-        final String tagsCsv =
-                (knowledge.getTags() == null || knowledge.getTags().isEmpty())
-                        ? null
-                        : String.join(",", knowledge.getTags());
+        final String tagsCsv = TagsCsv.join(knowledge.getTags());
 
         KeyHolder kh = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement ps =
-                    con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, knowledge.getType());
             ps.setString(2, knowledge.getSource());
             ps.setLong(3, knowledge.getSourceId());
             ps.setString(4, knowledge.getTitle());
             ps.setString(5, knowledge.getContent());
-            ps.setString(6, tagsCsv);   // ✅ 이제 OK
-
+            ps.setString(6, tagsCsv);
             return ps;
         }, kh);
 
@@ -71,7 +69,7 @@ public class JdbcKnowledgeRepository implements KnowledgeRepository {
         if (key != null) knowledge.setId(key.longValue());
         return knowledge;
     }
-    
+
     @Override
     public List<KnowledgeDto> findAll() {
         String sql = """
@@ -79,39 +77,17 @@ public class JdbcKnowledgeRepository implements KnowledgeRepository {
             FROM knowledge
             ORDER BY id DESC
         """;
-
-        return jdbcTemplate.query(sql, (rs, n) -> {
-            KnowledgeDto dto = new KnowledgeDto();
-            dto.setId(rs.getLong("id"));
-            dto.setType(rs.getString("type"));
-            dto.setSource(rs.getString("source"));
-            dto.setSourceId(rs.getLong("source_id"));
-            dto.setTitle(rs.getString("title"));
-            dto.setContent(rs.getString("content"));
-
-            // tags: varchar에 CSV로 저장 중이면 -> List<String>로 복원
-            String tagsCsv = rs.getString("tags");
-            if (tagsCsv != null && !tagsCsv.isBlank()) {
-                dto.setTags(List.of(tagsCsv.split(",")));
-            } else {
-                dto.setTags(List.of());
-            }
-
-            return dto;
-        });
+        return jdbcTemplate.query(sql, rowMapper);
     }
-
-
-
 
     @Override
     public Optional<KnowledgeDto> findBySourceAndSourceId(String source, long sourceId) {
         String sql = """
-                SELECT id, source, source_id, title, content
-                FROM knowledge
-                WHERE source = ? AND source_id = ?
-                LIMIT 1
-                """;
+            SELECT id, type, source, source_id, title, content, tags
+            FROM knowledge
+            WHERE source = ? AND source_id = ?
+            LIMIT 1
+        """;
 
         List<KnowledgeDto> list = jdbcTemplate.query(sql, rowMapper, source, sourceId);
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
