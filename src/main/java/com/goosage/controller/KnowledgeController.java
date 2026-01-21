@@ -19,12 +19,18 @@ import com.goosage.dto.QuizSubmitRequest;
 import com.goosage.dto.QuizSubmitResponse;
 import com.goosage.dto.TemplateDto;
 import com.goosage.dto.TemplateResponse;
+import com.goosage.dto.knowledge.KnowledgeCreateRequest;
+import com.goosage.dto.knowledge.KnowledgeResponse;
 import com.goosage.service.KnowledgeService;
 import com.goosage.service.KnowledgeTemplateService;
 import com.goosage.service.QuizService;
 import com.goosage.service.TemplateService;
 
 import jakarta.servlet.http.HttpSession;
+import com.goosage.dto.knowledge.KnowledgeMapper;
+import com.goosage.dto.knowledge.KnowledgeCreateRequest;
+import com.goosage.dto.knowledge.KnowledgeResponse;
+
 
 @RestController
 @RequestMapping("/knowledge")
@@ -64,36 +70,36 @@ public class KnowledgeController {
     // CRUD
     // =========================
 
-    /** ✅ 저장 (POST /knowledge) */
     @PostMapping
-    public ApiResponse<KnowledgeDto> create(
-            @RequestBody KnowledgeDto req,
+    public ApiResponse<KnowledgeResponse> create(
+            @RequestBody KnowledgeCreateRequest req,
             HttpSession session
     ) {
-        requireUserId(session); // 로그인 필수
-        return ApiResponse.ok(knowledgeService.save(req));
+        requireUserId(session);
+
+        KnowledgeDto saved = knowledgeService.save(KnowledgeMapper.toDto(req));
+        return ApiResponse.ok(KnowledgeMapper.toResponse(saved));
     }
 
-    /** ✅ 전체 조회 (GET /knowledge) */
     @GetMapping
-    public ApiResponse<List<KnowledgeDto>> list(HttpSession session) {
-        requireUserId(session); // 로그인 필수
-        return ApiResponse.ok(knowledgeService.findAll());
+    public ApiResponse<List<KnowledgeResponse>> list(HttpSession session) {
+        requireUserId(session);
+
+        List<KnowledgeDto> list = knowledgeService.findAll();
+        return ApiResponse.ok(KnowledgeMapper.toResponseList(list));
     }
 
-    /** ✅ 단건 조회 (GET /knowledge/{id}) */
     @GetMapping("/{id}")
-    public ApiResponse<KnowledgeDto> getOne(
+    public ApiResponse<KnowledgeResponse> getOne(
             @PathVariable Long id,
             HttpSession session
     ) {
-        requireUserId(session); // 로그인 필수
-        return ApiResponse.ok(knowledgeService.mustFindById(id));
+        requireUserId(session);
+
+        KnowledgeDto k = knowledgeService.mustFindById(id);
+        return ApiResponse.ok(KnowledgeMapper.toResponse(k));
     }
 
-    // =========================
-    // template v1
-    // =========================
 
     @GetMapping("/{id}/template/summary-v1")
     public ApiResponse<TemplateResponse> summaryV1(
