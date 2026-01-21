@@ -10,13 +10,13 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goosage.dto.KnowledgeDto;
-import com.goosage.dto.QuizAnswer;
-import com.goosage.dto.QuizResultItem;
-import com.goosage.dto.QuizResultResponse;
 import com.goosage.dto.QuizRetryQuestion;
 import com.goosage.dto.QuizRetryResponse;
-import com.goosage.dto.QuizSubmitRequest;
-import com.goosage.dto.QuizSubmitResponse;
+import com.goosage.dto.quiz.QuizAnswer;
+import com.goosage.dto.quiz.QuizResultItem;
+import com.goosage.dto.quiz.QuizResultResponse;
+import com.goosage.dto.quiz.QuizSubmitRequest;
+import com.goosage.dto.quiz.QuizSubmitResponse;
 import com.goosage.repository.QuizItemDao;
 import com.goosage.repository.QuizResultDao;
 import com.goosage.repository.QuizResultDao.QuizResultRow;

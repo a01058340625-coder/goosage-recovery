@@ -1,4 +1,4 @@
-package com.goosage.dto;
+package com.goosage.dto.qa;
 
 public class QaRequest {
     private String question;

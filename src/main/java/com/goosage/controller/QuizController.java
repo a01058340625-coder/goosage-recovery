@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
 import com.goosage.dto.QuizRetryResponse;
-import com.goosage.dto.QuizSubmitRequest;
-import com.goosage.dto.QuizSubmitResponse;
+import com.goosage.dto.quiz.QuizSubmitRequest;
+import com.goosage.dto.quiz.QuizSubmitResponse;
 import com.goosage.repository.QuizResultDao;
 import com.goosage.service.QuizService;
 

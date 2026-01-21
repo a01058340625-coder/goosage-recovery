@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.goosage.common.ApiResponse;
 import com.goosage.dto.KnowledgeDto;
-import com.goosage.dto.QaRequest;
-import com.goosage.dto.QaResponse;
+import com.goosage.dto.qa.QaRequest;
+import com.goosage.dto.qa.QaResponse;
 import com.goosage.service.KnowledgeService;
 import com.goosage.service.QaService;
 

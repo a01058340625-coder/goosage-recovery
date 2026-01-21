@@ -1,4 +1,4 @@
-package com.goosage.dto;
+package com.goosage.dto.post;
 
 /**
  * ✅ [요청 DTO]

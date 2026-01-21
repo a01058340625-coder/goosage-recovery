@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.goosage.dto.TemplateDto;
+import com.goosage.dto.template.TemplateDto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

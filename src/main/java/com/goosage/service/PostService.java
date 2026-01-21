@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.goosage.common.NotFoundException;
 import com.goosage.dto.KnowledgeDto;
-import com.goosage.dto.PostCreateRequest;
-import com.goosage.dto.PostResponse;
+import com.goosage.dto.post.PostCreateRequest;
+import com.goosage.dto.post.PostResponse;
 import com.goosage.entity.PostEntity;
 import com.goosage.exception.ForbiddenException;
 import com.goosage.repository.KnowledgeRepository;

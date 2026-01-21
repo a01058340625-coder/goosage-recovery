@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
-import com.goosage.dto.PostCreateRequest;
-import com.goosage.dto.PostResponse;
-import com.goosage.dto.PostUpdateRequest;
+import com.goosage.dto.post.PostCreateRequest;
+import com.goosage.dto.post.PostResponse;
+import com.goosage.dto.post.PostUpdateRequest;
 import com.goosage.service.PostService;
 
 import jakarta.servlet.http.HttpSession;

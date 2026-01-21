@@ -2,7 +2,7 @@ package com.goosage.repository;
 
 import java.util.Optional;
 
-import com.goosage.dto.TemplateDto;
+import com.goosage.dto.template.TemplateDto;
 
 public interface TemplateRepository {
 

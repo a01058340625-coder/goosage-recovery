@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.goosage.common.NotFoundException;
-import com.goosage.dto.QaRequest;
-import com.goosage.dto.QaResponse;
+import com.goosage.dto.qa.QaRequest;
+import com.goosage.dto.qa.QaResponse;
 import com.goosage.entity.QaEntity;
 import com.goosage.repository.QaRepository;
 

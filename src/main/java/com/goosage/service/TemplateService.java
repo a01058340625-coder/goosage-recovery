@@ -3,7 +3,7 @@ package com.goosage.service;
 import org.springframework.stereotype.Service;
 
 import com.goosage.dto.KnowledgeDto;
-import com.goosage.dto.TemplateDto;
+import com.goosage.dto.template.TemplateDto;
 import com.goosage.repository.TemplateRepository;
 
 @Service

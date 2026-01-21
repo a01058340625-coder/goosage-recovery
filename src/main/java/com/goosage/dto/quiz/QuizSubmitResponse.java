@@ -1,4 +1,4 @@
-package com.goosage.dto;
+package com.goosage.dto.quiz;
 
 import java.util.ArrayList;
 import java.util.List;
