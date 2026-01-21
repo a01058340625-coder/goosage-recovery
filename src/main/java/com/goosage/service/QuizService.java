@@ -10,16 +10,17 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goosage.dto.KnowledgeDto;
-import com.goosage.dto.QuizRetryQuestion;
-import com.goosage.dto.QuizRetryResponse;
 import com.goosage.dto.quiz.QuizAnswer;
 import com.goosage.dto.quiz.QuizResultItem;
 import com.goosage.dto.quiz.QuizResultResponse;
+import com.goosage.dto.quiz.QuizRetryResponse;
 import com.goosage.dto.quiz.QuizSubmitRequest;
 import com.goosage.dto.quiz.QuizSubmitResponse;
 import com.goosage.repository.QuizItemDao;
 import com.goosage.repository.QuizResultDao;
 import com.goosage.repository.QuizResultDao.QuizResultRow;
+import com.goosage.dto.quiz.QuizRetryQuestion;
+
 
 @Service
 public class QuizService {
@@ -43,7 +44,8 @@ public class QuizService {
 	            quizResultDao.findLatestByUserAndKnowledgeId(userId, knowledgeId);
 
 	    if (latest == null) {
-	        return new QuizRetryResponse(knowledgeId, 0L, 0, List.of());
+	    	return new QuizRetryResponse(knowledgeId, 0L, List.of());
+
 	    }
 
 	    List<Map<String, Object>> details;
@@ -66,7 +68,8 @@ public class QuizService {
 	        }
 	    }
 
-	    return new QuizRetryResponse(knowledgeId, latest.id(), qs.size(), qs);
+	    return new QuizRetryResponse(knowledgeId, latest.id(), qs);
+
 	}
 
 

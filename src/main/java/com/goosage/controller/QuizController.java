@@ -1,8 +1,9 @@
 package com.goosage.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import com.goosage.dto.quiz.QuizRetryQuestion;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
-import com.goosage.dto.QuizRetryResponse;
+import com.goosage.common.UnauthorizedException;
+import com.goosage.dto.quiz.QuizMapper;
+import com.goosage.dto.quiz.QuizRetryResponse;
 import com.goosage.dto.quiz.QuizSubmitRequest;
 import com.goosage.dto.quiz.QuizSubmitResponse;
 import com.goosage.repository.QuizResultDao;
@@ -35,67 +38,53 @@ public class QuizController {
             @RequestBody QuizSubmitRequest request,
             HttpSession session
     ) {
-        Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
-        if (uidObj == null) {
-            return ApiResponse.fail("UNAUTHORIZED");
-        }
-
-        long userId = (uidObj instanceof Long)
-                ? (Long) uidObj
-                : Long.parseLong(String.valueOf(uidObj));
-
+        long userId = requireUserId(session);
         QuizSubmitResponse res = quizService.submit(userId, knowledgeId, request);
         return ApiResponse.ok(res);
     }
 
     @GetMapping("/knowledge/{id}/quiz/wrong")
-    public ApiResponse<Map<String, Object>> wrong(
+    public ApiResponse<QuizRetryResponse> wrong(
             @PathVariable("id") long knowledgeId,
             HttpSession session
     ) {
-        Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
-        if (uidObj == null) {
-            return ApiResponse.fail("UNAUTHORIZED");
-        }
+        requireUserId(session);
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("knowledgeId", knowledgeId);
-
-        // ✅ 최신 결과 1건 (없을 수도 있음)
         QuizResultDao.QuizResultRow latest = quizService.findLatestResult(knowledgeId);
 
-        // ✅ 결과가 아직 없으면: 정상 응답(빈 오답)
-        if (latest == null) {
-            data.put("baseResultId", 0);
-            data.put("wrong", List.of());
-            return ApiResponse.ok(data);
+        List<QuizRetryQuestion> wrong = new ArrayList<>();
+        if (latest != null) {
+            List<Map<String, Object>> details = quizService.extractWrongDetails(latest.detailsJson());
+
+            for (Map<String, Object> d : details) {
+                // extractWrongDetails가 어떤 키로 주는지에 맞춰서 맞추면 됨
+                int qid = Integer.parseInt(String.valueOf(d.get("no")));          // 또는 "question_idx"
+                String qText = String.valueOf(d.get("question"));                 // 또는 "qText"
+                wrong.add(new QuizRetryQuestion(qid, qText));
+            }
         }
 
-        // ✅ 결과가 있으면: details_json에서 오답만 필터
-        List<Map<String, Object>> wrong = quizService.extractWrongDetails(latest.detailsJson());
-
-        data.put("baseResultId", latest.id());
-        data.put("wrong", wrong);
-
-        return ApiResponse.ok(data);
+        return ApiResponse.ok(QuizMapper.toWrongResponse(knowledgeId, latest, wrong));
     }
     
+
+
     @GetMapping("/knowledge/{id}/quiz/retry")
     public ApiResponse<QuizRetryResponse> retry(
             @PathVariable("id") long knowledgeId,
             HttpSession session
     ) {
-        Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
-        if (uidObj == null) {
-            return ApiResponse.fail("UNAUTHORIZED");
-        }
-
-        long userId = (uidObj instanceof Long)
-                ? (Long) uidObj
-                : Long.parseLong(String.valueOf(uidObj));
-
+        long userId = requireUserId(session);
         QuizRetryResponse res = quizService.retry(userId, knowledgeId);
         return ApiResponse.ok(res);
     }
 
+    
+    private long requireUserId(HttpSession session) {
+        Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
+        if (uidObj == null) throw new UnauthorizedException("UNAUTHORIZED");
+
+        if (uidObj instanceof Long) return (Long) uidObj;
+        return Long.parseLong(String.valueOf(uidObj));
+    }
 }
