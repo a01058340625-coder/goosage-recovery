@@ -1,3 +1,4 @@
+// src/main/java/com/goosage/dto/StatsOverviewResponse.java
 package com.goosage.dto;
 
 import java.time.LocalDateTime;
@@ -10,13 +11,13 @@ public record StatsOverviewResponse(
         long todayAttempts,
         double todayAvgScorePercent,
         List<RecentAttempt> recentAttempts,
-        List<WrongTopDetail> wrongTopKnowledge   // ✅ 여기 타입 변경
+        List<WrongTopDetail> wrongTopKnowledge
 ) {
     public record RecentAttempt(long resultId, long knowledgeId, int scorePercent, LocalDateTime createdAt) {}
 
-    // ✅ DAO가 쓰는 “원본 집계”
+    // ✅ DAO가 쓰는 “원본 집계”(필요하면 유지)
     public record WrongTop(long knowledgeId, long wrongCount) {}
 
-    // ✅ v0.8.2 응답용(제목 포함)
+    // ✅ v0.8.3 응답용(제목 포함)
     public record WrongTopDetail(long knowledgeId, String title, long wrongCount) {}
 }

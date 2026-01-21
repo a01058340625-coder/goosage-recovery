@@ -1,4 +1,4 @@
-package com.goosage.repository;
+package com.goosage.dao;
 
 import java.util.List;
 

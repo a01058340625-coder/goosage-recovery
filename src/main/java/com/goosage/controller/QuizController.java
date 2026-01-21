@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
 import com.goosage.common.UnauthorizedException;
+import com.goosage.dao.QuizResultDao;
 import com.goosage.dto.quiz.QuizMapper;
 import com.goosage.dto.quiz.QuizRetryResponse;
 import com.goosage.dto.quiz.QuizSubmitRequest;
 import com.goosage.dto.quiz.QuizSubmitResponse;
-import com.goosage.repository.QuizResultDao;
 import com.goosage.service.QuizService;
 
 import jakarta.servlet.http.HttpSession;

@@ -15,27 +15,27 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class AuthSessionFilter extends OncePerRequestFilter {
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        // ✅ 컨텍스트 패스 제거한 "순수 경로"로 판정 (중요)
-        String uri = request.getRequestURI();         // 예: /goosage-api/auth/login 또는 /auth/login
-        String ctx = request.getContextPath();        // 예: /goosage-api (없으면 "")
-        String path = uri.substring(ctx.length());    // 예: /auth/login
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+	    String uri = request.getRequestURI();
+	    String ctx = request.getContextPath();
+	    String path = uri.substring(ctx.length()); // e.g. /api/auth/login
 
-        String method = request.getMethod();
+	    // ✅ 무조건 공개(헬스체크/기본)
+	    if (path.equals("/") || path.startsWith("/health") || path.startsWith("/hello")) return true;
 
-        // 0) health는 무조건 통과(서버 상태 확인용)
-        if (path.startsWith("/health")) return true;
+	    // ✅ 로그인/회원가입은 반드시 공개
+	    if (path.startsWith("/auth") || path.startsWith("/api/auth")) return true;
 
-        // 1) auth는 항상 통과 (/auth, /auth/login 다 포함)
-        if (path.startsWith("/auth")) return true;
+	    // ✅ OPTIONS(프리플라이트)도 통과 (React 붙일 때 중요)
+	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) return true;
 
-        // 2) GET은 전부 공개
-        if ("GET".equalsIgnoreCase(method)) return true;
+	    // ✅ (원하면 유지) GET은 전부 공개
+	    if ("GET".equalsIgnoreCase(request.getMethod())) return true;
 
-        // 3) 그 외(POST/PUT/PATCH/DELETE)는 보호
-        return false;
-    }
+	    return false; // 나머지는 보호
+	}
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)

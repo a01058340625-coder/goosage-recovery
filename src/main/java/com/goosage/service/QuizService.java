@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.goosage.dao.QuizItemDao;
+import com.goosage.dao.QuizResultDao;
+import com.goosage.dao.QuizResultDao.QuizResultRow;
 import com.goosage.dto.KnowledgeDto;
 import com.goosage.dto.quiz.QuizAnswer;
 import com.goosage.dto.quiz.QuizResultItem;
@@ -16,9 +19,6 @@ import com.goosage.dto.quiz.QuizResultResponse;
 import com.goosage.dto.quiz.QuizRetryResponse;
 import com.goosage.dto.quiz.QuizSubmitRequest;
 import com.goosage.dto.quiz.QuizSubmitResponse;
-import com.goosage.repository.QuizItemDao;
-import com.goosage.repository.QuizResultDao;
-import com.goosage.repository.QuizResultDao.QuizResultRow;
 import com.goosage.dto.quiz.QuizRetryQuestion;
 
 

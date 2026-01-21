@@ -1,0 +1,3 @@
+-- V18__daily_learning_upsert_rule.sql
+-- (테이블 변경 없음) v0.9 daily_learning 집계는 DAO에서 아래 upsert 쿼리로 처리한다.
+-- INSERT ... ON DUPLICATE KEY UPDATE

@@ -1,4 +1,4 @@
-package com.goosage.repository;
+package com.goosage.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.goosage.dto.template.TemplateDto;
+import com.goosage.repository.TemplateRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
