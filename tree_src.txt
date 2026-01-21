@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 0000005C B8B2:0FAA입니다.
+볼륨 일련 번호가 00000043 B8B2:0FAA입니다.
 C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -60,9 +60,15 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       QuizController.java
 |   |           |       RunController.java
 |   |           |       StatsController.java
+|   |           |       StudyDebugController.java
 |   |           |       
 |   |           +---dao
 |   |           |       KnowledgeDao.java
+|   |           |       QuizItemDao.java
+|   |           |       QuizResultDao.java
+|   |           |       StatsDao.java
+|   |           |       StudyEventDao.java
+|   |           |       TemplateDao.java
 |   |           |       
 |   |           +---dto
 |   |           |   |   KnowledgeDto.java
@@ -114,10 +120,6 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       KnowledgeRepository.java
 |   |           |       PostRepository.java
 |   |           |       QaRepository.java
-|   |           |       QuizItemDao.java
-|   |           |       QuizResultDao.java
-|   |           |       StatsDao.java
-|   |           |       TemplateDao.java
 |   |           |       TemplateRepository.java
 |   |           |       UserRepository.java
 |   |           |       
@@ -151,6 +153,10 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |       |           V12__create_quiz_results.sql
 |       |           V13__create_quiz_items.sql
 |       |           V14__academy_init.sql
+|       |           V15__create_study_sessions.sql
+|       |           V16__create_study_events.sql
+|       |           V17__create_daily_learning.sql
+|       |           V18__daily_learning_upsert_rule.sql
 |       |           V1__create_posts.sql
 |       |           V2__add_index_posts_created_at.sql
 |       |           V3__create_knowledge.sql

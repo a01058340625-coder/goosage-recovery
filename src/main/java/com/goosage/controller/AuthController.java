@@ -1,7 +1,7 @@
 package com.goosage.controller;
 
 import java.util.Map;
-
+import com.goosage.auth.SessionUtil;
 import org.springframework.web.bind.annotation.*;
 
 import com.goosage.auth.SessionConst;
@@ -10,6 +10,7 @@ import com.goosage.entity.User;
 import com.goosage.service.AuthService;
 
 import jakarta.servlet.http.HttpSession;
+import com.goosage.auth.SessionUtil;
 
 @RestController
 @RequestMapping("/auth")
@@ -62,19 +63,19 @@ public class AuthController {
     /**
      * ✅ 현재 로그인 사용자 조회 (/auth/me)
      */
+    private long requireUserId(HttpSession session) {
+        Object v = session.getAttribute(SessionConst.LOGIN_USER_ID);
+        if (v == null) throw new IllegalArgumentException("UNAUTHORIZED");
+        if (v instanceof Long l) return l;
+        if (v instanceof Integer i) return i.longValue();
+        throw new IllegalArgumentException("UNAUTHORIZED");
+    }
+
     @GetMapping("/me")
     public ApiResponse<Map<String, Object>> me(HttpSession session) {
-        Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER_ID);
-
-        if (userId == null) {
-            throw new IllegalArgumentException("UNAUTHORIZED");
-        }
-
+        long userId = requireUserId(session);
         User user = authService.mustFindById(userId);
-
-        return ApiResponse.ok(Map.of(
-                "id", user.getId(),
-                "email", user.getEmail()
-        ));
+        return ApiResponse.ok(Map.of("id", user.getId(), "email", user.getEmail()));
     }
+
 }

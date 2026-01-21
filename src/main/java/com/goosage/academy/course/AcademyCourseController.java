@@ -1,6 +1,7 @@
 package com.goosage.academy.course;
 
 import com.goosage.auth.SessionConst;
+import com.goosage.auth.SessionUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class AcademyCourseController {
 
     @PostMapping
     public Map<String, Object> create(@RequestBody CourseCreateRequest req, HttpSession session) {
-        long userId = requireUserId(session);
+        long userId = SessionUtil.requireUserId(session);
         var r = service.createCourse(userId, req);
         return Map.of("success", true, "message", "CREATED", "data", r);
     }
