@@ -2,6 +2,7 @@ package com.goosage.academy.progress;
 
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,36 +15,27 @@ public class AcademyProgressService {
         this.dao = dao;
     }
 
-    @Service
-    public class AcademyProgressService {
+    // ✅ 8번: 진도 조회 (완료/미완료 + 퍼센트)
+    @Transactional(readOnly = true)
+    public ProgressSummary getProgress(long userId, long courseId) {
 
-        private final AcademyProgressDao dao;
+        List<AcademyProgressDao.ProgressItemRow> rows =
+            dao.findProgressItems(userId, courseId);
 
-        public AcademyProgressService(AcademyProgressDao dao) {
-            this.dao = dao;
-        }
+        int total = rows.size();
+        int done = (int) rows.stream()
+                .filter(AcademyProgressDao.ProgressItemRow::done)
+                .count();
+        int percent = (total == 0) ? 0 : (done * 100 / total);
 
-        // 🔹 7번용 (오늘은 안 씀 → 잠시 주석)
-        /*
-        @Transactional
-        public void completeItem(long userId, long courseId, long itemId) {
-            // TODO: 나중에
-        }
-        */
+        List<ProgressSummary.ProgressItem> items = rows.stream()
+            .map(r -> new ProgressSummary.ProgressItem(r.itemId(), r.knowledgeId(), r.done()))
+            .toList();
 
-        // 🔹 8번: 진도 조회
-        public ProgressSummary getProgress(long userId, long courseId) {
-            var items = dao.findProgressItems(userId, courseId);
-
-            int total = items.size();
-            long done = items.stream().filter(AcademyProgressDao.ProgressItemRow::done).count();
-            int percent = total == 0 ? 0 : (int) (done * 100 / total);
-
-            return new ProgressSummary(courseId, total, (int) done, percent, items);
-        }
+        return new ProgressSummary(courseId, total, done, percent, items);
     }
 
-
+    // ✅ 7번: 아이템 완료 처리 (진도 발생)
     @Transactional
     public void completeItem(long userId, long courseId, long itemId) {
         long workspaceId = requireWorkspaceId(courseId);
@@ -52,25 +44,17 @@ public class AcademyProgressService {
         dao.ensureEnrollment(userId, courseId);
 
         if (!dao.existsProgress(userId, courseId, itemId)) {
-            try { dao.insertProgress(userId, courseId, itemId); }
-            catch (org.springframework.dao.DuplicateKeyException ignore) {}
+            try {
+                dao.insertProgress(userId, courseId, itemId);
+            } catch (DuplicateKeyException ignore) {
+                // 동시성/중복 호출 대비
+            }
         }
 
         dao.markDone(userId, courseId, itemId);
     }
 
-
-
-    public ProgressSummary getProgress(long userId, long courseId) {
-        long workspaceId = requireWorkspaceId(courseId);
-        requireMember(userId, workspaceId);
-
-        int total = dao.countTotalItems(courseId);
-        int done = dao.countDoneItems(userId, courseId);
-        double percent = (total == 0) ? 0.0 : (done * 100.0 / total);
-
-        return new ProgressSummary(courseId, total, done, percent);
-    }
+    // -------- 권한/소속 체크 --------
 
     private long requireWorkspaceId(long courseId) {
         Long ws = dao.findWorkspaceIdByCourseId(courseId);
@@ -82,5 +66,14 @@ public class AcademyProgressService {
         if (!dao.isMemberOfWorkspace(userId, workspaceId)) throw new RuntimeException("FORBIDDEN");
     }
 
-    public record ProgressSummary(long courseId, int totalItems, int doneItems, double percent) {}
+    // ✅ DTO (한 파일 안에서 끝내기 버전)
+    public record ProgressSummary(
+            long courseId,
+            int totalItems,
+            int doneItems,
+            int percent,
+            List<ProgressItem> items
+    ) {
+        public record ProgressItem(long itemId, long knowledgeId, boolean done) {}
+    }
 }

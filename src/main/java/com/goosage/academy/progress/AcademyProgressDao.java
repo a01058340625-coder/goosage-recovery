@@ -13,6 +13,23 @@ public class AcademyProgressDao {
     public AcademyProgressDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+    
+    public int ensureEnrollment(long userId, long courseId) {
+        // 이미 수강중이면 0 또는 예외(유니크키) 날 수 있음 -> Service에서 idempotent하게 쓰면 됨
+        // 권장: academy_enrollment에 (user_id, course_id) 유니크키
+        return jdbcTemplate.update(
+            "INSERT INTO academy_enrollment (user_id, course_id, enrolled_at) VALUES (?, ?, NOW())",
+            userId, courseId
+        );
+    }
+
+    public int markDone(long userId, long courseId, long itemId) {
+        return jdbcTemplate.update(
+            "UPDATE academy_progress SET status='DONE', completed_at=NOW() WHERE user_id=? AND course_id=? AND item_id=?",
+            userId, courseId, itemId
+        );
+    }
+
 
     public List<ProgressItemRow> findProgressItems(long userId, long courseId) {
         String sql = """

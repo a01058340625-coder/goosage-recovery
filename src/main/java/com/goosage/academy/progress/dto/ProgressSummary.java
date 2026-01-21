@@ -1,7 +1,6 @@
 package com.goosage.academy.progress.dto;
 
 import java.util.List;
-import com.goosage.academy.progress.dto.ProgressSummary;
 
 
 public record ProgressSummary(
