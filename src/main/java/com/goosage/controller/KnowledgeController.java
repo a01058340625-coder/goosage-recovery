@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
+import com.goosage.common.UnauthorizedException;
 import com.goosage.dto.KnowledgeDto;
 import com.goosage.dto.QuizResponse;
 import com.goosage.dto.QuizResultResponse;
@@ -29,127 +30,192 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/knowledge")
 public class KnowledgeController {
 
-	private final KnowledgeService knowledgeService;
-	private final KnowledgeTemplateService knowledgeTemplateService;
-	private final TemplateService templateService;
-	private final QuizService quizService;
+    private final KnowledgeService knowledgeService;
+    private final KnowledgeTemplateService knowledgeTemplateService;
+    private final TemplateService templateService;
+    private final QuizService quizService;
 
-	public KnowledgeController(KnowledgeService knowledgeService, KnowledgeTemplateService knowledgeTemplateService,
-			TemplateService templateService, QuizService quizService) {
-		this.knowledgeService = knowledgeService;
-		this.knowledgeTemplateService = knowledgeTemplateService;
-		this.templateService = templateService;
-		this.quizService = quizService;
-	}
+    public KnowledgeController(
+            KnowledgeService knowledgeService,
+            KnowledgeTemplateService knowledgeTemplateService,
+            TemplateService templateService,
+            QuizService quizService
+    ) {
+        this.knowledgeService = knowledgeService;
+        this.knowledgeTemplateService = knowledgeTemplateService;
+        this.templateService = templateService;
+        this.quizService = quizService;
+    }
 
-	/** ✅ 전체 조회 */
-	@GetMapping
-	public ApiResponse<List<KnowledgeDto>> list() {
-		return ApiResponse.ok(knowledgeService.findAll());
-	}
+    // =========================
+    // auth helper
+    // =========================
+    private long requireUserId(HttpSession session) {
+        Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
+        if (uidObj == null) throw new UnauthorizedException("UNAUTHORIZED");
 
-	/** ✅ 저장 */
-	@PostMapping
-	public ApiResponse<KnowledgeDto> save(@RequestBody KnowledgeDto req) {
-		return ApiResponse.ok("저장 완료", knowledgeService.save(req));
-	}
+        if (uidObj instanceof Long) return (Long) uidObj;
 
-	@GetMapping("/{id}/template/summary-v1")
-	public ApiResponse<TemplateResponse> summaryV1(@PathVariable Long id) {
-		KnowledgeDto knowledge = knowledgeService.mustFindById(id);
+        // 세션에 String/Integer로 들어갈 수도 있어서 방어
+        return Long.parseLong(String.valueOf(uidObj));
+    }
 
-		String resultText = knowledgeTemplateService.toSummaryV1(knowledge);
+    // =========================
+    // CRUD
+    // =========================
 
-		TemplateResponse response = new TemplateResponse(knowledge.getId(), "SUMMARY_V1", resultText);
+    /** ✅ 저장 (POST /knowledge) */
+    @PostMapping
+    public ApiResponse<KnowledgeDto> create(
+            @RequestBody KnowledgeDto req,
+            HttpSession session
+    ) {
+        requireUserId(session); // 로그인 필수
+        return ApiResponse.ok(knowledgeService.save(req));
+    }
 
-		return ApiResponse.ok(response);
-	}
+    /** ✅ 전체 조회 (GET /knowledge) */
+    @GetMapping
+    public ApiResponse<List<KnowledgeDto>> list(HttpSession session) {
+        requireUserId(session); // 로그인 필수
+        return ApiResponse.ok(knowledgeService.findAll());
+    }
 
-	@GetMapping("/{id}/template/quiz-v1")
-	public ApiResponse<QuizResponse> quizV1(@PathVariable Long id) {
-		KnowledgeDto knowledge = knowledgeService.mustFindById(id);
+    /** ✅ 단건 조회 (GET /knowledge/{id}) */
+    @GetMapping("/{id}")
+    public ApiResponse<KnowledgeDto> getOne(
+            @PathVariable Long id,
+            HttpSession session
+    ) {
+        requireUserId(session); // 로그인 필수
+        return ApiResponse.ok(knowledgeService.mustFindById(id));
+    }
 
-		QuizResponse response = new QuizResponse(knowledge.getId(), "QUIZ_V1",
-				knowledgeTemplateService.toQuizV1(knowledge));
+    // =========================
+    // template v1
+    // =========================
 
-		return ApiResponse.ok(response);
-	}
+    @GetMapping("/{id}/template/summary-v1")
+    public ApiResponse<TemplateResponse> summaryV1(
+            @PathVariable Long id,
+            HttpSession session
+    ) {
+        requireUserId(session);
 
-	// ===== v2 (캐싱/저장 기반) =====
+        KnowledgeDto knowledge = knowledgeService.mustFindById(id);
+        String resultText = knowledgeTemplateService.toSummaryV1(knowledge);
 
-	@GetMapping("/{id}/template/summary-v2")
-	public ApiResponse<TemplateResponse> summaryV2(@PathVariable Long id) {
+        TemplateResponse response = new TemplateResponse(
+                knowledge.getId(),
+                "SUMMARY_V1",
+                resultText
+        );
 
-		KnowledgeDto knowledge = knowledgeService.mustFindById(id);
+        return ApiResponse.ok(response);
+    }
 
-		TemplateDto saved = templateService.getOrCreateSummaryV2(knowledge);
+    @GetMapping("/{id}/template/quiz-v1")
+    public ApiResponse<QuizResponse> quizV1(
+            @PathVariable Long id,
+            HttpSession session
+    ) {
+        requireUserId(session);
 
-		TemplateResponse response = new TemplateResponse(knowledge.getId(), saved.getTemplateType(),
-				saved.getResultText());
+        KnowledgeDto knowledge = knowledgeService.mustFindById(id);
 
-		return ApiResponse.ok(response);
-	}
+        QuizResponse response = new QuizResponse(
+                knowledge.getId(),
+                "QUIZ_V1",
+                knowledgeTemplateService.toQuizV1(knowledge)
+        );
 
-	@GetMapping("/{id}/template/quiz-v2")
-	public ApiResponse<QuizResponse> quizV2(@PathVariable Long id) {
+        return ApiResponse.ok(response);
+    }
 
-		KnowledgeDto knowledge = knowledgeService.mustFindById(id);
+    // =========================
+    // template v2 (캐싱/저장 기반)
+    // =========================
 
-		TemplateDto saved = templateService.getOrCreateQuizV2(knowledge);
+    @GetMapping("/{id}/template/summary-v2")
+    public ApiResponse<TemplateResponse> summaryV2(
+            @PathVariable Long id,
+            HttpSession session
+    ) {
+        requireUserId(session);
 
-		String[] lines = saved.getResultText().split("\\R");
-		java.util.List<String> qs = new java.util.ArrayList<>();
-		for (String line : lines) {
-			if (line.startsWith("1) ") || line.startsWith("2) ") || line.startsWith("3) ")) {
-				qs.add(line);
-			}
-		}
+        KnowledgeDto knowledge = knowledgeService.mustFindById(id);
+        TemplateDto saved = templateService.getOrCreateSummaryV2(knowledge);
 
-		QuizResponse response = new QuizResponse(knowledge.getId(), saved.getTemplateType(), qs);
+        TemplateResponse response = new TemplateResponse(
+                knowledge.getId(),
+                saved.getTemplateType(),
+                saved.getResultText()
+        );
 
-		return ApiResponse.ok(response);
-	}
+        return ApiResponse.ok(response);
+    }
 
-	@GetMapping("/{id}/quiz/results")
-	public ApiResponse<List<QuizResultResponse>> quizResults(@PathVariable Long id) {
-		return ApiResponse.ok(quizService.findResults(id));
-	}
-	
-	@PostMapping("/{id}/run")
-	public ApiResponse<QuizSubmitResponse> runOneCycle(
-	        @PathVariable("id") long knowledgeId,
-	        HttpSession session
-	) {
-	    Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
-	    if (uidObj == null) return ApiResponse.fail("UNAUTHORIZED");
+    @GetMapping("/{id}/template/quiz-v2")
+    public ApiResponse<QuizResponse> quizV2(
+            @PathVariable Long id,
+            HttpSession session
+    ) {
+        requireUserId(session);
 
-	    long userId = (uidObj instanceof Long)
-	            ? (Long) uidObj
-	            : Long.parseLong(String.valueOf(uidObj));
+        KnowledgeDto knowledge = knowledgeService.mustFindById(id);
+        TemplateDto saved = templateService.getOrCreateQuizV2(knowledge);
 
-	    knowledgeTemplateService.toSummaryV1(
-	            knowledgeService.mustFindById(knowledgeId)
-	    );
+        // v2 결과에서 "1) ..." "2) ..." 같은 라인만 추출
+        String[] lines = saved.getResultText().split("\\R");
+        java.util.List<String> qs = new java.util.ArrayList<>();
+        for (String line : lines) {
+            if (line.startsWith("1) ") || line.startsWith("2) ") || line.startsWith("3) ")) {
+                qs.add(line);
+            }
+        }
 
-	    QuizSubmitRequest req = new QuizSubmitRequest();
-	    QuizSubmitResponse res = quizService.submit(userId, knowledgeId, req);
+        QuizResponse response = new QuizResponse(
+                knowledge.getId(),
+                saved.getTemplateType(),
+                qs
+        );
 
-	    return ApiResponse.ok(res);
-	}
+        return ApiResponse.ok(response);
+    }
 
-	@GetMapping("/{id}")
-	public ApiResponse<KnowledgeDto> getOne(
-	        @PathVariable("id") long id,
-	        HttpSession session
-	) {
-	    Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
-	    if (uidObj == null) return ApiResponse.fail("UNAUTHORIZED");
+    // =========================
+    // quiz results
+    // =========================
 
-	    KnowledgeDto dto = knowledgeService.mustFindById(id);
-	    return ApiResponse.ok(dto);
-	}
+    @GetMapping("/{id}/quiz/results")
+    public ApiResponse<List<QuizResultResponse>> quizResults(
+            @PathVariable Long id,
+            HttpSession session
+    ) {
+        requireUserId(session);
+        return ApiResponse.ok(quizService.findResults(id));
+    }
 
+    // =========================
+    // run (one cycle)
+    // =========================
 
+    @PostMapping("/{id}/run")
+    public ApiResponse<QuizSubmitResponse> runOneCycle(
+            @PathVariable("id") long knowledgeId,
+            HttpSession session
+    ) {
+        long userId = requireUserId(session);
 
+        // (선택) 미리 summary 생성 - 기존 로직 유지
+        knowledgeTemplateService.toSummaryV1(
+                knowledgeService.mustFindById(knowledgeId)
+        );
 
+        // 제출 요청 (현재는 빈 요청으로 1바퀴 돌림)
+        QuizSubmitRequest req = new QuizSubmitRequest();
+        QuizSubmitResponse res = quizService.submit(userId, knowledgeId, req);
+
+        return ApiResponse.ok(res);
+    }
 }

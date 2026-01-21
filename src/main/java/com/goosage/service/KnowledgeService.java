@@ -10,6 +10,7 @@ import com.goosage.dto.KnowledgeDto;
 import com.goosage.entity.QaEntity;
 import com.goosage.repository.KnowledgeRepository;
 import com.goosage.repository.QaRepository;
+import com.goosage.common.ConflictException;
 
 @Service
 public class KnowledgeService {
@@ -59,7 +60,7 @@ public class KnowledgeService {
         if (!isBlank(req.getSource()) && req.getSourceId() != null) {
             repository.findBySourceAndSourceId(req.getSource(), req.getSourceId())
                     .ifPresent(existing -> {
-                        throw new IllegalStateException("DUPLICATE_SOURCE_SOURCEID:" + existing.getId());
+                        throw new ConflictException("DUPLICATE_SOURCE_SOURCEID:" + existing.getId());
                     });
         }
 
