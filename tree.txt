@@ -1,0 +1,405 @@
+﻿폴더 PATH의 목록입니다.
+볼륨 일련 번호는 B8B2-0FAA입니다.
+C:.
+|   .classpath
+|   .factorypath
+|   .gitattributes
+|   .gitignore
+|   .project
+|   cd
+|   docker-compose.yml
+|   Dockerfile
+|   HELP.md
+|   mvnw
+|   mvnw.cmd
+|   pom.xml
+|   resultText.txt
+|   tree.txt
+|   
++---.mvn
+|   \---wrapper
+|           maven-wrapper.properties
+|           
++---.settings
+|       org.eclipse.core.resources.prefs
+|       org.eclipse.jdt.apt.core.prefs
+|       org.eclipse.jdt.core.prefs
+|       org.eclipse.m2e.core.prefs
+|       org.springframework.ide.eclipse.prefs
+|       
++---src
+|   +---main
+|   |   +---java
+|   |   |   \---com
+|   |   |       \---goosage
+|   |   |           |   GoosageApiApplication.java
+|   |   |           |   StartupCheck.java
+|   |   |           |   
+|   |   |           +---academy
+|   |   |           |   |   AcademyHealthController.java
+|   |   |           |   |   
+|   |   |           |   +---course
+|   |   |           |   |       AcademyCourseController.java
+|   |   |           |   |       AcademyCourseDao.java
+|   |   |           |   |       AcademyCourseService.java
+|   |   |           |   |       CourseCreateRequest.java
+|   |   |           |   |       CourseItemAddRequest.java
+|   |   |           |   |       CourseItemResponse.java
+|   |   |           |   |       CourseResponse.java
+|   |   |           |   |       
+|   |   |           |   +---debug
+|   |   |           |   |       AcademySessionDebugController.java
+|   |   |           |   |       
+|   |   |           |   \---workspace
+|   |   |           |           AcademyWorkspaceController.java
+|   |   |           |           AcademyWorkspaceDao.java
+|   |   |           |           AcademyWorkspaceService.java
+|   |   |           |           WorkspaceCreateRequest.java
+|   |   |           |           WorkspaceResponse.java
+|   |   |           |           
+|   |   |           +---api
+|   |   |           |       HealthController.java
+|   |   |           |       HelloController.java
+|   |   |           |       
+|   |   |           +---auth
+|   |   |           |       AuthResponse.java
+|   |   |           |       AuthSessionFilter.java
+|   |   |           |       LoginRequest.java
+|   |   |           |       SessionConst.java
+|   |   |           |       
+|   |   |           +---common
+|   |   |           |       ApiResponse.java
+|   |   |           |       ConflictException.java
+|   |   |           |       GlobalExceptionHandler.java
+|   |   |           |       NotFoundException.java
+|   |   |           |       TagsCsv.java
+|   |   |           |       UnauthorizedException.java
+|   |   |           |       
+|   |   |           +---config
+|   |   |           |       SecurityConfig.java
+|   |   |           |       WebConfig.java
+|   |   |           |       
+|   |   |           +---controller
+|   |   |           |       AuthController.java
+|   |   |           |       KnowledgeController.java
+|   |   |           |       PostController.java
+|   |   |           |       QaController.java
+|   |   |           |       QuizController.java
+|   |   |           |       RunController.java
+|   |   |           |       StatsController.java
+|   |   |           |       
+|   |   |           +---dao
+|   |   |           |       KnowledgeDao.java
+|   |   |           |       
+|   |   |           +---dto
+|   |   |           |   |   KnowledgeDto.java
+|   |   |           |   |   QuizItemDto.java
+|   |   |           |   |   StatsOverviewResponse.java
+|   |   |           |   |   
+|   |   |           |   +---com.goosage.dto.knowledge
+|   |   |           |   +---knowledge
+|   |   |           |   |       KnowledgeCreateRequest.java
+|   |   |           |   |       KnowledgeMapper.java
+|   |   |           |   |       KnowledgeResponse.java
+|   |   |           |   |       
+|   |   |           |   +---post
+|   |   |           |   |       PostCreateRequest.java
+|   |   |           |   |       PostDto.java
+|   |   |           |   |       PostResponse.java
+|   |   |           |   |       PostUpdateRequest.java
+|   |   |           |   |       
+|   |   |           |   +---qa
+|   |   |           |   |       QaRequest.java
+|   |   |           |   |       QaResponse.java
+|   |   |           |   |       
+|   |   |           |   +---quiz
+|   |   |           |   |       QuizAnswer.java
+|   |   |           |   |       QuizMapper.java
+|   |   |           |   |       QuizResponse.java
+|   |   |           |   |       QuizResultItem.java
+|   |   |           |   |       QuizResultResponse.java
+|   |   |           |   |       QuizRetryQuestion.java
+|   |   |           |   |       QuizRetryResponse.java
+|   |   |           |   |       QuizSubmitRequest.java
+|   |   |           |   |       QuizSubmitResponse.java
+|   |   |           |   |       
+|   |   |           |   \---template
+|   |   |           |           TemplateDto.java
+|   |   |           |           TemplateResponse.java
+|   |   |           |           
+|   |   |           +---entity
+|   |   |           |       PostEntity.java
+|   |   |           |       QaEntity.java
+|   |   |           |       User.java
+|   |   |           |       
+|   |   |           +---exception
+|   |   |           |       ForbiddenException.java
+|   |   |           |       
+|   |   |           +---repository
+|   |   |           |       InMemoryKnowledgeRepository.java
+|   |   |           |       JdbcKnowledgeRepository.java
+|   |   |           |       KnowledgeRepository.java
+|   |   |           |       PostRepository.java
+|   |   |           |       QaRepository.java
+|   |   |           |       QuizItemDao.java
+|   |   |           |       QuizResultDao.java
+|   |   |           |       StatsDao.java
+|   |   |           |       TemplateDao.java
+|   |   |           |       TemplateRepository.java
+|   |   |           |       UserRepository.java
+|   |   |           |       
+|   |   |           +---service
+|   |   |           |       AuthService.java
+|   |   |           |       KnowledgeService.java
+|   |   |           |       KnowledgeTemplateService.java
+|   |   |           |       PostService.java
+|   |   |           |       QaService.java
+|   |   |           |       QuizService.java
+|   |   |           |       TemplateService.java
+|   |   |           |       
+|   |   |           +---template
+|   |   |           |       ActionRuleEngine.java
+|   |   |           |       SummaryV1Formatter.java
+|   |   |           |       
+|   |   |           \---util
+|   |   |                   TagUtils.java
+|   |   |                   
+|   |   \---resources
+|   |       |   application-edge.yml
+|   |       |   application-local.yml
+|   |       |   application-test.yml
+|   |       |   application.properties
+|   |       |   application.yml
+|   |       |   
+|   |       +---db
+|   |       |   \---migration
+|   |       |           V10__create_templates.sql
+|   |       |           V11__create_quiz_result.sql
+|   |       |           V12__create_quiz_results.sql
+|   |       |           V13__create_quiz_items.sql
+|   |       |           V14__academy_init.sql
+|   |       |           V1__create_posts.sql
+|   |       |           V2__add_index_posts_created_at.sql
+|   |       |           V3__create_knowledge.sql
+|   |       |           V4__posts_created_at_default.sql
+|   |       |           V5__create_qa.sql
+|   |       |           V6__create_users.sql
+|   |       |           V7__add_posts_user_id.sql
+|   |       |           V8__posts_user_fk.sql
+|   |       |           V9__create_quiz_result.sql
+|   |       |           
+|   |       +---static
+|   |       \---templates
+|   \---test
+|       \---java
+|           \---com
+|               +---example
+|               |   \---demo
+|               \---goosage
+|                       GoosageApiApplicationTests.java
+|                       PostRegressionTest.java
+|                       
+\---target
+    +---classes
+    |   |   application-edge.yml
+    |   |   application-local.yml
+    |   |   application-test.yml
+    |   |   application.properties
+    |   |   application.yml
+    |   |   
+    |   +---com
+    |   |   \---goosage
+    |   |       |   GoosageApiApplication.class
+    |   |       |   StartupCheck.class
+    |   |       |   
+    |   |       +---academy
+    |   |       |   |   AcademyHealthController.class
+    |   |       |   |   
+    |   |       |   +---course
+    |   |       |   |       AcademyCourseController.class
+    |   |       |   |       AcademyCourseDao$CourseRow.class
+    |   |       |   |       AcademyCourseDao.class
+    |   |       |   |       AcademyCourseService.class
+    |   |       |   |       CourseCreateRequest.class
+    |   |       |   |       CourseItemAddRequest.class
+    |   |       |   |       CourseItemResponse.class
+    |   |       |   |       CourseResponse.class
+    |   |       |   |       
+    |   |       |   +---debug
+    |   |       |   |       AcademySessionDebugController.class
+    |   |       |   |       
+    |   |       |   \---workspace
+    |   |       |           AcademyWorkspaceController.class
+    |   |       |           AcademyWorkspaceDao.class
+    |   |       |           AcademyWorkspaceService.class
+    |   |       |           WorkspaceCreateRequest.class
+    |   |       |           WorkspaceResponse.class
+    |   |       |           
+    |   |       +---api
+    |   |       |       HealthController.class
+    |   |       |       HelloController.class
+    |   |       |       
+    |   |       +---auth
+    |   |       |       AuthResponse.class
+    |   |       |       AuthSessionFilter.class
+    |   |       |       LoginRequest.class
+    |   |       |       SessionConst.class
+    |   |       |       
+    |   |       +---common
+    |   |       |       ApiResponse.class
+    |   |       |       ConflictException.class
+    |   |       |       GlobalExceptionHandler.class
+    |   |       |       NotFoundException.class
+    |   |       |       TagsCsv.class
+    |   |       |       UnauthorizedException.class
+    |   |       |       
+    |   |       +---config
+    |   |       |       SecurityConfig.class
+    |   |       |       WebConfig.class
+    |   |       |       
+    |   |       +---controller
+    |   |       |       AuthController.class
+    |   |       |       KnowledgeController.class
+    |   |       |       PostController.class
+    |   |       |       QaController.class
+    |   |       |       QuizController.class
+    |   |       |       RunController.class
+    |   |       |       StatsController.class
+    |   |       |       
+    |   |       +---dao
+    |   |       |       KnowledgeDao.class
+    |   |       |       
+    |   |       +---dto
+    |   |       |   |   KnowledgeDto.class
+    |   |       |   |   QuizItemDto.class
+    |   |       |   |   StatsOverviewResponse$RecentAttempt.class
+    |   |       |   |   StatsOverviewResponse$WrongTop.class
+    |   |       |   |   StatsOverviewResponse$WrongTopDetail.class
+    |   |       |   |   StatsOverviewResponse.class
+    |   |       |   |   
+    |   |       |   +---com.goosage.dto.knowledge
+    |   |       |   +---knowledge
+    |   |       |   |       KnowledgeCreateRequest.class
+    |   |       |   |       KnowledgeMapper.class
+    |   |       |   |       KnowledgeResponse.class
+    |   |       |   |       
+    |   |       |   +---post
+    |   |       |   |       PostCreateRequest.class
+    |   |       |   |       PostDto.class
+    |   |       |   |       PostResponse.class
+    |   |       |   |       PostUpdateRequest.class
+    |   |       |   |       
+    |   |       |   +---qa
+    |   |       |   |       QaRequest.class
+    |   |       |   |       QaResponse.class
+    |   |       |   |       
+    |   |       |   +---quiz
+    |   |       |   |       QuizAnswer.class
+    |   |       |   |       QuizMapper.class
+    |   |       |   |       QuizResponse.class
+    |   |       |   |       QuizResultItem.class
+    |   |       |   |       QuizResultResponse.class
+    |   |       |   |       QuizRetryQuestion.class
+    |   |       |   |       QuizRetryResponse.class
+    |   |       |   |       QuizSubmitRequest.class
+    |   |       |   |       QuizSubmitResponse.class
+    |   |       |   |       
+    |   |       |   \---template
+    |   |       |           TemplateDto.class
+    |   |       |           TemplateResponse.class
+    |   |       |           
+    |   |       +---entity
+    |   |       |       PostEntity.class
+    |   |       |       QaEntity.class
+    |   |       |       User.class
+    |   |       |       
+    |   |       +---exception
+    |   |       |       ForbiddenException.class
+    |   |       |       
+    |   |       +---repository
+    |   |       |       InMemoryKnowledgeRepository.class
+    |   |       |       JdbcKnowledgeRepository.class
+    |   |       |       KnowledgeRepository.class
+    |   |       |       PostRepository.class
+    |   |       |       QaRepository.class
+    |   |       |       QuizItemDao.class
+    |   |       |       QuizResultDao$QuizResultRow.class
+    |   |       |       QuizResultDao.class
+    |   |       |       StatsDao.class
+    |   |       |       TemplateDao.class
+    |   |       |       TemplateRepository.class
+    |   |       |       UserRepository.class
+    |   |       |       
+    |   |       +---service
+    |   |       |       AuthService.class
+    |   |       |       KnowledgeService.class
+    |   |       |       KnowledgeTemplateService.class
+    |   |       |       PostService.class
+    |   |       |       QaService.class
+    |   |       |       QuizService.class
+    |   |       |       TemplateService.class
+    |   |       |       
+    |   |       +---template
+    |   |       |       ActionRuleEngine$ActionRule.class
+    |   |       |       ActionRuleEngine.class
+    |   |       |       SummaryV1Formatter.class
+    |   |       |       
+    |   |       \---util
+    |   |               TagUtils.class
+    |   |               
+    |   +---db
+    |   |   \---migration
+    |   |           V10__create_templates.sql
+    |   |           V11__create_quiz_result.sql
+    |   |           V12__create_quiz_results.sql
+    |   |           V13__create_quiz_items.sql
+    |   |           V14__academy_init.sql
+    |   |           V1__create_posts.sql
+    |   |           V2__add_index_posts_created_at.sql
+    |   |           V3__create_knowledge.sql
+    |   |           V4__posts_created_at_default.sql
+    |   |           V5__create_qa.sql
+    |   |           V6__create_users.sql
+    |   |           V7__add_posts_user_id.sql
+    |   |           V8__posts_user_fk.sql
+    |   |           V9__create_quiz_result.sql
+    |   |           
+    |   \---META-INF
+    |       |   MANIFEST.MF
+    |       |   
+    |       \---maven
+    |           \---com.goosage
+    |               \---goosage-api
+    |                       pom.properties
+    |                       pom.xml
+    |                       
+    +---generated-sources
+    |   \---annotations
+    +---generated-test-sources
+    |   \---test-annotations
+    +---maven-status
+    |   \---maven-compiler-plugin
+    |       +---compile
+    |       |   \---default-compile
+    |       |           createdFiles.lst
+    |       |           inputFiles.lst
+    |       |           
+    |       \---testCompile
+    |           \---default-testCompile
+    |                   createdFiles.lst
+    |                   inputFiles.lst
+    |                   
+    +---surefire-reports
+    |       com.goosage.GoosageApiApplicationTests.txt
+    |       com.goosage.PostRegressionTest.txt
+    |       TEST-com.goosage.GoosageApiApplicationTests.xml
+    |       TEST-com.goosage.PostRegressionTest.xml
+    |       
+    \---test-classes
+        \---com
+            +---example
+            |   \---demo
+            \---goosage
+                    GoosageApiApplicationTests.class
+                    PostRegressionTest.class
+                    
