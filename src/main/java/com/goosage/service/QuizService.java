@@ -16,10 +16,11 @@ import com.goosage.dto.KnowledgeDto;
 import com.goosage.dto.quiz.QuizAnswer;
 import com.goosage.dto.quiz.QuizResultItem;
 import com.goosage.dto.quiz.QuizResultResponse;
+import com.goosage.dto.quiz.QuizRetryQuestion;
 import com.goosage.dto.quiz.QuizRetryResponse;
 import com.goosage.dto.quiz.QuizSubmitRequest;
 import com.goosage.dto.quiz.QuizSubmitResponse;
-import com.goosage.dto.quiz.QuizRetryQuestion;
+import com.goosage.dao.StudyEventDao;
 
 
 @Service
@@ -29,49 +30,50 @@ public class QuizService {
 	private final QuizResultDao quizResultDao;
 	private final ObjectMapper objectMapper;
 	private final QuizItemDao quizItemDao;
+	private final StudyEventDao studyEventDao;
 
-	public QuizService(KnowledgeService knowledgeService, QuizResultDao quizResultDao, ObjectMapper objectMapper,
-			QuizItemDao quizItemDao) {
-		this.knowledgeService = knowledgeService;
+	public QuizService(QuizResultDao quizResultDao, KnowledgeService knowledgeService, QuizItemDao quizItemDao,
+			StudyEventDao studyEventDao, ObjectMapper objectMapper) {
+
 		this.quizResultDao = quizResultDao;
-		this.objectMapper = objectMapper;
+		this.knowledgeService = knowledgeService;
 		this.quizItemDao = quizItemDao;
+		this.studyEventDao = studyEventDao;
+		this.objectMapper = objectMapper;
 	}
-	
+
 	public QuizRetryResponse retry(long userId, long knowledgeId) {
 
-	    QuizResultDao.QuizResultRow latest =
-	            quizResultDao.findLatestByUserAndKnowledgeId(userId, knowledgeId);
+		QuizResultDao.QuizResultRow latest = quizResultDao.findLatestByUserAndKnowledgeId(userId, knowledgeId);
 
-	    if (latest == null) {
-	    	return new QuizRetryResponse(knowledgeId, 0L, List.of());
+		if (latest == null) {
+			return new QuizRetryResponse(knowledgeId, 0L, List.of());
 
-	    }
+		}
 
-	    List<Map<String, Object>> details;
-	    try {
-	        details = objectMapper.readValue(latest.detailsJson(), List.class);
-	    } catch (Exception e) {
-	        throw new RuntimeException("details_json parse failed", e);
-	    }
+		List<Map<String, Object>> details;
+		try {
+			details = objectMapper.readValue(latest.detailsJson(), List.class);
+		} catch (Exception e) {
+			throw new RuntimeException("details_json parse failed", e);
+		}
 
-	    List<QuizRetryQuestion> qs = new ArrayList<>();
+		List<QuizRetryQuestion> qs = new ArrayList<>();
 
-	    for (Map<String, Object> d : details) {
-	        Object correctObj = d.get("correct");
-	        boolean correct = (correctObj instanceof Boolean) ? (Boolean) correctObj : false;
+		for (Map<String, Object> d : details) {
+			Object correctObj = d.get("correct");
+			boolean correct = (correctObj instanceof Boolean) ? (Boolean) correctObj : false;
 
-	        if (!correct) {
-	            int qid = Integer.parseInt(String.valueOf(d.get("no")));
-	            String qText = String.valueOf(d.get("question"));
-	            qs.add(new QuizRetryQuestion(qid, qText));
-	        }
-	    }
+			if (!correct) {
+				int qid = Integer.parseInt(String.valueOf(d.get("no")));
+				String qText = String.valueOf(d.get("question"));
+				qs.add(new QuizRetryQuestion(qid, qText));
+			}
+		}
 
-	    return new QuizRetryResponse(knowledgeId, latest.id(), qs);
+		return new QuizRetryResponse(knowledgeId, latest.id(), qs);
 
 	}
-
 
 	public QuizSubmitResponse submit(long userId, long knowledgeId, QuizSubmitRequest request) {
 
@@ -124,12 +126,15 @@ public class QuizService {
 		int percent = correctCount * 100 / total;
 
 		try {
-			String detailsJson = objectMapper.writeValueAsString(details);
+		    String detailsJson = objectMapper.writeValueAsString(details);
 
-			quizResultDao.save(userId, knowledgeId, total, correctCount, percent, detailsJson);
+		    quizResultDao.save(userId, knowledgeId, total, correctCount, percent, detailsJson);
+
+		    // ✅ v0.9: 행동 기록(죽죽 1줄)
+		    studyEventDao.recordEvent(userId, "QUIZ_SUBMIT", "KNOWLEDGE", knowledgeId, detailsJson);
 
 		} catch (Exception e) {
-			throw new RuntimeException("quiz result save failed", e);
+		    throw new RuntimeException("quiz result save failed", e);
 		}
 
 		return new QuizSubmitResponse(knowledgeId, total, correctCount, results);
@@ -179,13 +184,10 @@ public class QuizService {
 			}
 		}).toList();
 	}
-	
+
 	public QuizResultDao.QuizResultRow findLatestResult(long knowledgeId) {
-	    return quizResultDao.findLatestByKnowledgeId(knowledgeId); // DAO가 없으면 null 반환하도록
+		return quizResultDao.findLatestByKnowledgeId(knowledgeId); // DAO가 없으면 null 반환하도록
 	}
-
-
-
 
 	private void ensureQuizItems(long knowledgeId, String contentHint) {
 		if (quizItemDao.exists(knowledgeId))
@@ -201,23 +203,20 @@ public class QuizService {
 		quizItemDao.insert(knowledgeId, 3, "이 지식을 실제로 어디에 쓰는지 예시 1개를 들어라. (힌트: " + contentHint + ")",
 				"사용 예시 1개. 예: 복습 자동화, 오답노트 기반 반복학습, API 테스트 루틴 고정 등");
 	}
-	
+
 	public List<Map<String, Object>> extractWrongDetails(String detailsJson) {
-	    try {
-	        @SuppressWarnings("unchecked")
-	        List<Map<String, Object>> details = objectMapper.readValue(detailsJson, List.class);
+		try {
+			@SuppressWarnings("unchecked")
+			List<Map<String, Object>> details = objectMapper.readValue(detailsJson, List.class);
 
-	        return details.stream()
-	                .filter(d -> {
-	                    Object c = d.get("correct");
-	                    return (c instanceof Boolean) && !((Boolean) c);
-	                })
-	                .toList();
+			return details.stream().filter(d -> {
+				Object c = d.get("correct");
+				return (c instanceof Boolean) && !((Boolean) c);
+			}).toList();
 
-	    } catch (Exception e) {
-	        throw new RuntimeException("quiz wrong parse failed", e);
-	    }
+		} catch (Exception e) {
+			throw new RuntimeException("quiz wrong parse failed", e);
+		}
 	}
-
 
 }

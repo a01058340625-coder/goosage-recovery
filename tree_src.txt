@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 00000043 B8B2:0FAA입니다.
+볼륨 일련 번호가 000000BB B8B2:0FAA입니다.
 C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -23,6 +23,14 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |   +---debug
 |   |           |   |       AcademySessionDebugController.java
 |   |           |   |       
+|   |           |   +---progress
+|   |           |   |   |   AcademyProgressController.java
+|   |           |   |   |   AcademyProgressDao.java
+|   |           |   |   |   AcademyProgressService.java
+|   |           |   |   |   
+|   |           |   |   \---dto
+|   |           |   |           ProgressSummary.java
+|   |           |   |           
 |   |           |   \---workspace
 |   |           |           AcademyWorkspaceController.java
 |   |           |           AcademyWorkspaceDao.java
@@ -39,6 +47,7 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       AuthSessionFilter.java
 |   |           |       LoginRequest.java
 |   |           |       SessionConst.java
+|   |           |       SessionUtil.java
 |   |           |       
 |   |           +---common
 |   |           |       ApiResponse.java
@@ -157,7 +166,10 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |       |           V16__create_study_events.sql
 |       |           V17__create_daily_learning.sql
 |       |           V18__daily_learning_upsert_rule.sql
+|       |           V19__create_academy_progress.sql
 |       |           V1__create_posts.sql
+|       |           V20__add_unique_academy_progress.sql
+|       |           V21__add_updated_at_to_academy_progress.sql
 |       |           V2__add_index_posts_created_at.sql
 |       |           V3__create_knowledge.sql
 |       |           V4__posts_created_at_default.sql

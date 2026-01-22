@@ -15,20 +15,7 @@ public class StudyEventDao {
     public StudyEventDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-    /**
-     * ✅ v0.9 핵심: 학습 이벤트 1개 기록
-     * - study_sessions 없으면 새로 만들고
-     * - study_events insert
-     * - study_sessions 집계 업데이트(total_events, last_event_at)
-     * - daily_learning upsert(일자 단위 습관 데이터)
-     *
-     * @param userId 로그인 사용자
-     * @param eventType 예: QUIZ_SUBMIT / WRONG_REVIEW / KNOWLEDGE_CREATE
-     * @param refType 예: KNOWLEDGE / QUIZ_RESULT / QA (없으면 null)
-     * @param refId   예: knowledgeId, quizResultId (없으면 null)
-     * @param payloadJson JSON 문자열(없으면 null)
-     */
+   
     public void recordEvent(long userId, String eventType, String refType, Long refId, String payloadJson) {
         // 1) 활성 세션 찾기(ended_at is null) - 가장 최근 1개
         Long sessionId = findActiveSessionId(userId);
