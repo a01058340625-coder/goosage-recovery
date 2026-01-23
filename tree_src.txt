@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 000000BB B8B2:0FAA입니다.
+볼륨 일련 번호가 000000F5 B8B2:0FAA입니다.
 C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -69,16 +69,24 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       QuizController.java
 |   |           |       RunController.java
 |   |           |       StatsController.java
+|   |           |       StudyCoachController.java
+|   |           |       StudyController.java
 |   |           |       StudyDebugController.java
+|   |           |       StudyStreakController.java
 |   |           |       
 |   |           +---dao
-|   |           |       KnowledgeDao.java
-|   |           |       QuizItemDao.java
-|   |           |       QuizResultDao.java
-|   |           |       StatsDao.java
-|   |           |       StudyEventDao.java
-|   |           |       TemplateDao.java
-|   |           |       
+|   |           |   |   KnowledgeDao.java
+|   |           |   |   QuizItemDao.java
+|   |           |   |   QuizResultDao.java
+|   |           |   |   StatsDao.java
+|   |           |   |   StudyEventDao.java
+|   |           |   |   TemplateDao.java
+|   |           |   |   
+|   |           |   \---study
+|   |           |           StudyReadDao.java
+|   |           |           StudyStreakDao.java
+|   |           |           TodayRow.java
+|   |           |           
 |   |           +---dto
 |   |           |   |   KnowledgeDto.java
 |   |           |   |   QuizItemDto.java
@@ -133,14 +141,33 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       UserRepository.java
 |   |           |       
 |   |           +---service
-|   |           |       AuthService.java
-|   |           |       KnowledgeService.java
-|   |           |       KnowledgeTemplateService.java
-|   |           |       PostService.java
-|   |           |       QaService.java
-|   |           |       QuizService.java
-|   |           |       TemplateService.java
-|   |           |       
+|   |           |   |   AuthService.java
+|   |           |   |   KnowledgeService.java
+|   |           |   |   KnowledgeTemplateService.java
+|   |           |   |   PostService.java
+|   |           |   |   QaService.java
+|   |           |   |   QuizService.java
+|   |           |   |   StudyStreakService.java
+|   |           |   |   StudyTodayResult.java
+|   |           |   |   StudyTodayService.java
+|   |           |   |   TemplateService.java
+|   |           |   |   
+|   |           |   \---study
+|   |           |       |   StudyCoachService.java
+|   |           |       |   StudyStateService.java
+|   |           |       |   
+|   |           |       +---action
+|   |           |       |       NextActionDto.java
+|   |           |       |       NextActionService.java
+|   |           |       |       NextActionType.java
+|   |           |       |       
+|   |           |       +---dto
+|   |           |       |       StudyCoachResponse.java
+|   |           |       |       StudyStateDto.java
+|   |           |       |       
+|   |           |       \---interpret
+|   |           |               StudyInterpretationService.java
+|   |           |               
 |   |           +---template
 |   |           |       ActionRuleEngine.java
 |   |           |       SummaryV1Formatter.java

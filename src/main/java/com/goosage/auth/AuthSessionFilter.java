@@ -24,7 +24,6 @@ public class AuthSessionFilter extends OncePerRequestFilter {
 	    // ✅ 무조건 공개(헬스체크/기본)
 	    if (path.equals("/") || path.startsWith("/health") || path.startsWith("/hello")) return true;
 
-	    // ✅ 로그인/회원가입은 반드시 공개
 	    if (path.startsWith("/auth") || path.startsWith("/api/auth")) return true;
 
 	    // ✅ OPTIONS(프리플라이트)도 통과 (React 붙일 때 중요)
@@ -46,7 +45,7 @@ public class AuthSessionFilter extends OncePerRequestFilter {
 
         if (userId == null) {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
-            res.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            res.setContentType("application/json;charset=UTF-8");
             res.getWriter().write("{\"success\":false,\"message\":\"UNAUTHORIZED\",\"data\":null}");
             return;
         }

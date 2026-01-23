@@ -48,9 +48,8 @@ public class QuizController {
             @PathVariable("id") long knowledgeId,
             HttpSession session
     ) {
-        requireUserId(session);
-
-        QuizResultDao.QuizResultRow latest = quizService.findLatestResult(knowledgeId);
+    	long userId = requireUserId(session);
+    	QuizResultDao.QuizResultRow latest = quizService.findLatestByUserAndKnowledgeId(userId, knowledgeId);
 
         List<QuizRetryQuestion> wrong = new ArrayList<>();
         if (latest != null) {

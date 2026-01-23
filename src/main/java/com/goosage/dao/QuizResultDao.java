@@ -107,4 +107,21 @@ public class QuizResultDao {
             String detailsJson,
             LocalDateTime createdAt
     ) {}
+    public Long findLatestKnowledgeIdByUser(long userId) {
+        String sql = """
+            SELECT knowledge_id
+            FROM quiz_results
+            WHERE user_id = ?
+            ORDER BY id DESC
+            LIMIT 1
+        """;
+
+        List<Long> rows = jdbcTemplate.query(sql, (rs, i) -> {
+            long v = rs.getLong(1);
+            return rs.wasNull() ? null : v;
+        }, userId);
+
+        return rows.isEmpty() ? null : rows.get(0);
+    }
+
 }

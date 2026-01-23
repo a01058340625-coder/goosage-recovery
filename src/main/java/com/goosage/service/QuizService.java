@@ -188,6 +188,11 @@ public class QuizService {
 	public QuizResultDao.QuizResultRow findLatestResult(long knowledgeId) {
 		return quizResultDao.findLatestByKnowledgeId(knowledgeId); // DAO가 없으면 null 반환하도록
 	}
+	
+	public QuizResultDao.QuizResultRow findLatestByUserAndKnowledgeId(long userId, long knowledgeId) {
+	    return quizResultDao.findLatestByUserAndKnowledgeId(userId, knowledgeId);
+	}
+
 
 	private void ensureQuizItems(long knowledgeId, String contentHint) {
 		if (quizItemDao.exists(knowledgeId))
