@@ -1,25 +1,29 @@
 package com.goosage.service.study.interpret;
 
-import com.goosage.service.study.dto.StudyStateDto;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.goosage.service.study.action.NextActionDto;
+import com.goosage.service.study.dto.StudyStateDto;
 
 @Service
 public class StudyInterpretationService {
 
-    public String interpret(StudyStateDto s) {
+    // v1.1은 나중에. 지금은 컴파일 안전/서버 안정화가 우선.
+    public String buildInterpretation(StudyStateDto state, NextActionDto nextAction) {
+        return "OK";
+    }
 
-        if (!s.studiedToday()) {
-            if (s.streakDays() > 0) {
-                return "오늘은 아직 시작하지 않았다. " + s.streakDays() + "일 연속 흐름이 유지 중이다.";
-            }
-            return "오늘은 아직 시작하지 않았다.";
-        }
+    public String buildSuggestion(StudyStateDto state, NextActionDto nextAction) {
+        return "지금 다음 행동을 실행해.";
+    }
 
-        if (s.quizSubmits() > 0 || s.wrongReviews() > 0) {
-            return "오늘 학습이 기록되었다. "
-                    + "퀴즈 제출 " + s.quizSubmits() + "회, 오답 복습 " + s.wrongReviews() + "회.";
-        }
-
-        return "오늘 학습이 기록되었다.";
+    public List<String> buildReason(StudyStateDto state, NextActionDto nextAction) {
+        return List.of(
+                "상태: 코치 상태를 확인했다",
+                "왜: 다음 행동을 수행하면 루프가 진행된다",
+                "효과: today/streak 집계가 즉시 반영된다"
+        );
     }
 }

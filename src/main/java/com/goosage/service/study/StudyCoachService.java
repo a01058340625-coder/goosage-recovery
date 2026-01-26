@@ -1,5 +1,6 @@
 package com.goosage.service.study;
 
+import java.util.List;
 import com.goosage.service.study.action.NextActionDto;
 import com.goosage.service.study.action.NextActionService;
 import com.goosage.service.study.dto.StudyCoachResponse;
@@ -26,9 +27,31 @@ public class StudyCoachService {
 
     public StudyCoachResponse coach(long userId) {
         StudyStateDto state = studyStateService.getState(userId);
-        String interpretation = interpretationService.interpret(state);
         NextActionDto nextAction = nextActionService.decide(state);
 
-        return new StudyCoachResponse(state, interpretation, nextAction);
+        String interpretation = interpretationService.buildInterpretation(state, nextAction);
+
+        // (1) 기본값
+        String suggestion = "지금 다음 행동을 실행해.";
+        List<String> reason = List.of(
+                "상태: 코치 상태를 확인했다",
+                "왜: 다음 행동을 수행하면 루프가 진행된다",
+                "효과: today/streak 집계가 즉시 반영된다"
+        );
+
+        if (nextAction != null
+                && nextAction.type() == com.goosage.service.study.action.NextActionType.JUST_OPEN) {
+
+            suggestion = "오늘은 오답 이벤트 1개만 찍고 시작하자. (start 신호)";
+            reason = List.of(
+                    "상태: 아직 오늘 학습 기록이 없다",
+                    "왜: 첫 행동 1개가 있어야 코치가 다음 행동을 더 정확히 추천한다",
+                    "효과: today/streak 집계가 움직이고 루프가 열린다"
+            );
+        }
+
+
+        // (3) return은 맨 마지막 1번만
+        return new StudyCoachResponse(state, interpretation, nextAction, suggestion, reason);
     }
 }
