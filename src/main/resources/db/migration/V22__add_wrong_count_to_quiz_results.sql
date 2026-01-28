@@ -1,0 +1,2 @@
+ALTER TABLE quiz_results
+ADD COLUMN wrong_count INT NOT NULL DEFAULT 0;

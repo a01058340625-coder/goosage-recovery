@@ -19,21 +19,27 @@ public class AuthSessionFilter extends OncePerRequestFilter {
 	protected boolean shouldNotFilter(HttpServletRequest request) {
 	    String uri = request.getRequestURI();
 	    String ctx = request.getContextPath();
-	    String path = uri.substring(ctx.length()); // e.g. /api/auth/login
+	    String path = uri.substring(ctx.length());
 
-	    // ✅ 무조건 공개(헬스체크/기본)
+	    // 공개 엔드포인트
 	    if (path.equals("/") || path.startsWith("/health") || path.startsWith("/hello")) return true;
 
+	    // 로그인(너 실제 매핑)
+	    if (path.equals("/login")) return true;
+
+	    // (선택) auth 계열
 	    if (path.startsWith("/auth") || path.startsWith("/api/auth")) return true;
 
-	    // ✅ OPTIONS(프리플라이트)도 통과 (React 붙일 때 중요)
+	    // academy health/debug (개발 중)
+	    if (path.equals("/academy/health")) return true;
+	    if (path.startsWith("/academy/debug")) return true;
+
+	    // preflight
 	    if ("OPTIONS".equalsIgnoreCase(request.getMethod())) return true;
 
-	    // ✅ (원하면 유지) GET은 전부 공개
-	    if ("GET".equalsIgnoreCase(request.getMethod())) return true;
-
-	    return false; // 나머지는 보호
+	    return false;
 	}
+
 
 
     @Override

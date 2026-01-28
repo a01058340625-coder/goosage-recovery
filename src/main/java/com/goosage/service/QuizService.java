@@ -123,12 +123,16 @@ public class QuizService {
 
 		// submit 1회 = DB insert 1회
 		int total = 3;
+		int wrongCount = total - correctCount;   // ✅ 추가
 		int percent = correctCount * 100 / total;
+
 
 		try {
 		    String detailsJson = objectMapper.writeValueAsString(details);
 
-		    quizResultDao.save(userId, knowledgeId, total, correctCount, percent, detailsJson);
+		    quizResultDao.save(userId, knowledgeId, total, correctCount, wrongCount, percent, detailsJson);
+
+
 
 		    // ✅ v0.9: 행동 기록(죽죽 1줄)
 		    studyEventDao.recordEvent(userId, "QUIZ_SUBMIT", "KNOWLEDGE", knowledgeId, detailsJson);

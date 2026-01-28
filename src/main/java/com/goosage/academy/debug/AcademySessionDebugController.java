@@ -1,23 +1,31 @@
 package com.goosage.academy.debug;
 
-import jakarta.servlet.http.HttpSession;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
+@RequestMapping("/academy/debug")
 public class AcademySessionDebugController {
 
-    @GetMapping("/academy/session-debug")
-    public Map<String, Object> debug(HttpSession session) {
-        Map<String, Object> out = new LinkedHashMap<>();
+    @GetMapping("/session")
+    public Map<String, Object> sessionDump(HttpSession session) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("sessionId", session.getId());
+
+        Map<String, Object> attrs = new HashMap<>();
         Enumeration<String> names = session.getAttributeNames();
         while (names.hasMoreElements()) {
             String k = names.nextElement();
-            Object v = session.getAttribute(k);
-            out.put(k, v == null ? null : (v.getClass().getName() + " :: " + v.toString()));
+            attrs.put(k, session.getAttribute(k));
         }
-        return Map.of("success", true, "message", "OK", "data", out);
+        m.put("attrs", attrs);
+        return m;
     }
 }

@@ -16,15 +16,17 @@ public class QuizResultDao {
     }
 
     // ✅ v0.6 보강: user_id 포함 저장
-    public void save(long userId, long knowledgeId, int totalCount, int correctCount, int scorePercent, String detailsJson) {
+    public void save(long userId, long knowledgeId,
+            int totalCount, int correctCount, int wrongCount,
+            int scorePercent, String detailsJson) {
 
-        String sql = """
-            INSERT INTO quiz_results
-            (user_id, knowledge_id, total_count, correct_count, score_percent, details_json)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """;
+    	String sql = """
+    		    INSERT INTO quiz_results
+    		    (user_id, knowledge_id, total_count, correct_count, wrong_count, score_percent, details_json)
+    		    VALUES (?, ?, ?, ?, ?, ?, ?)
+    		""";
 
-        jdbcTemplate.update(sql, userId, knowledgeId, totalCount, correctCount, scorePercent, detailsJson);
+    		jdbcTemplate.update(sql, userId, knowledgeId, totalCount, correctCount, wrongCount, scorePercent, detailsJson);
     }
 
     // ✅ 결과 조회(지식 기준) - 필요하면 유지

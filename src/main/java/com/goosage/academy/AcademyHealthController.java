@@ -1,19 +1,17 @@
 package com.goosage.academy;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import com.goosage.common.ApiResponse;
 
 @RestController
+@RequestMapping("/academy")
 public class AcademyHealthController {
 
-    @GetMapping("/academy/health")
-    public Map<String, Object> health() {
-        return Map.of(
-                "success", true,
-                "message", "ACADEMY UP",
-                "data", Map.of("module", "academy", "status", "UP")
-        );
+    @GetMapping("/health")
+    public ApiResponse<String> health() {
+        return ApiResponse.ok("OK", "academy");
     }
 }
