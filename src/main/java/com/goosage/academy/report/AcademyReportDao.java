@@ -142,5 +142,64 @@ public class AcademyReportDao {
             courseId, limit
         );
     }
+    
+    public List<CourseUserReportResponse> findUserReports(long courseId) {
+        return jdbcTemplate.query(
+            """
+            SELECT
+              e.user_id AS user_id,
 
+              -- total (course 전체 아이템 수)
+              (SELECT COUNT(*) FROM academy_course_item WHERE course_id = e.course_id) AS total,
+
+              -- done (DONE 처리한 아이템 수)
+              (
+                SELECT COUNT(*)
+                FROM academy_progress p
+                WHERE p.user_id = e.user_id
+                  AND p.course_id = e.course_id
+                  AND p.status = 'DONE'
+              ) AS done,
+
+              -- lastActivityAt (QUIZ_SUBMIT 기준)
+              (
+                SELECT MAX(se.created_at)
+                FROM study_events se
+                WHERE se.user_id = e.user_id
+                  AND se.event_type = 'QUIZ_SUBMIT'
+                  AND se.ref_type = 'KNOWLEDGE'
+                  AND se.ref_id IN (
+                    SELECT knowledge_id
+                    FROM academy_course_item
+                    WHERE course_id = e.course_id
+                  )
+              ) AS lastActivityAt,
+
+              -- wrongSum (해당 코스 지식들에 대한 quiz_results wrong_count 합)
+              (
+                SELECT COALESCE(SUM(qr.wrong_count), 0)
+                FROM quiz_results qr
+                WHERE qr.user_id = e.user_id
+                  AND qr.knowledge_id IN (
+                    SELECT knowledge_id
+                    FROM academy_course_item
+                    WHERE course_id = e.course_id
+                  )
+              ) AS wrongSum
+
+            FROM academy_enrollment e
+            WHERE e.course_id = ?
+            ORDER BY e.user_id ASC
+            """,
+            (rs, rowNum) -> new CourseUserReportResponse(
+                rs.getLong("user_id"),
+                rs.getInt("done"),
+                rs.getInt("total"),
+                (rs.getInt("total") == 0) ? 0 : (rs.getInt("done") * 100 / rs.getInt("total")),
+                rs.getTimestamp("lastActivityAt") == null ? null : rs.getTimestamp("lastActivityAt").toLocalDateTime(),
+                rs.getInt("wrongSum")
+            ),
+            courseId
+        );
+    }
 }

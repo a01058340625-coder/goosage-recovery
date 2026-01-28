@@ -1,11 +1,11 @@
 package com.goosage.academy.report;
 
+import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpSession;
-
-import static com.goosage.auth.SessionConst.LOGIN_USER_ID; // 너 상수에 맞게 수정
+import java.util.List;
 
 @RestController
 @RequestMapping("/academy/courses")
@@ -17,11 +17,14 @@ public class AcademyReportController {
         this.service = service;
     }
 
-    @GetMapping("/{courseId}/report")
-    public ApiResponse<CourseReportResponse> report(@PathVariable long courseId, HttpSession session) {
-        Long userId = (Long) session.getAttribute(LOGIN_USER_ID);
+    @GetMapping("/{courseId}/report/users")
+    public ApiResponse<List<CourseUserReportResponse>> reportUsers(
+            @PathVariable long courseId,
+            HttpSession session
+    ) {
+        Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER_ID);
         if (userId == null) throw new RuntimeException("UNAUTHORIZED");
-
-        return ApiResponse.ok(service.getCourseReport(userId, courseId));
+        return ApiResponse.ok(service.getCourseUserReports(userId, courseId));
     }
+
 }

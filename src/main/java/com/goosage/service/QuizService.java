@@ -121,20 +121,18 @@ public class QuizService {
 			details.add(d);
 		}
 
-		// submit 1회 = DB insert 1회
 		int total = 3;
-		int wrongCount = total - correctCount;   // ✅ 추가
 		int percent = correctCount * 100 / total;
 
+		// ✅ 여기서 계산 (서비스 계층)
+		int wrongCount = total - correctCount;
 
 		try {
 		    String detailsJson = objectMapper.writeValueAsString(details);
 
-		    quizResultDao.save(userId, knowledgeId, total, correctCount, wrongCount, percent, detailsJson);
+		    // ✅ wrongCount 포함해서 저장
+		    quizResultDao.save(userId, knowledgeId, total, correctCount, percent, wrongCount, detailsJson);
 
-
-
-		    // ✅ v0.9: 행동 기록(죽죽 1줄)
 		    studyEventDao.recordEvent(userId, "QUIZ_SUBMIT", "KNOWLEDGE", knowledgeId, detailsJson);
 
 		} catch (Exception e) {
@@ -145,14 +143,11 @@ public class QuizService {
 	}
 
 	private boolean isCorrect(String userAnswer, String expected) {
-		// v0.6 UX 전략:
-		// expected 비어있으면 "입력만 하면 정답"
-		if (!StringUtils.hasText(expected)) {
-			return StringUtils.hasText(userAnswer);
-		}
-		if (userAnswer == null)
-			return false;
-		return userAnswer.trim().equalsIgnoreCase(expected.trim());
+	    if (!StringUtils.hasText(expected)) {
+	        return false; // ✅ 빈 expected는 자동정답 금지
+	    }
+	    if (userAnswer == null) return false;
+	    return userAnswer.trim().equalsIgnoreCase(expected.trim());
 	}
 
 	private Map<Integer, String> buildQuizV1Questions(KnowledgeDto k) {

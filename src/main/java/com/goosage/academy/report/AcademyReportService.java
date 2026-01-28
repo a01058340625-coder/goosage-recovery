@@ -6,6 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.goosage.academy.course.AcademyCourseDao;
 import com.goosage.academy.progress.AcademyProgressDao;
 
+import java.util.List;
+import java.util.Optional;
+
+
 @Service
 public class AcademyReportService {
 
@@ -60,4 +64,18 @@ public class AcademyReportService {
     private void requireMember(long userId, long workspaceId) {
         if (!progressDao.isMemberOfWorkspace(userId, workspaceId)) throw new RuntimeException("FORBIDDEN");
     }
+    
+    @Transactional(readOnly = true)
+    public List<CourseUserReportResponse> getCourseUserReports(long userId, long courseId) {
+        // 코스 존재 확인(선택)
+        courseDao.findCourse(courseId).orElseThrow(() -> new RuntimeException("NOT_FOUND"));
+
+        // 권한 체크 (workspace 멤버면 OK)
+        long workspaceId = requireWorkspaceId(courseId);
+        requireMember(userId, workspaceId);
+
+        // 유저별 리스트
+        return reportDao.findUserReports(courseId);
+    }
+
 }

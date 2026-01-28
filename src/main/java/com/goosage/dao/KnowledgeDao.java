@@ -1,9 +1,10 @@
 package com.goosage.dao;
 
 import java.sql.*;
-
 import javax.sql.DataSource;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class KnowledgeDao {
 
     private final DataSource dataSource;
@@ -12,13 +13,8 @@ public class KnowledgeDao {
         this.dataSource = dataSource;
     }
 
-    /**
-     * @return
-     *  - 1  : 변환 성공
-     *  - 0  : 이미 변환됨
-     *  - -1 : QA 없음
-     *  - -2 : answer 없음
-     */
+    // ... 기존 코드 그대로
+
     public int insertFromQa(long qaId) {
         try (Connection conn = dataSource.getConnection()) {
 
@@ -79,4 +75,27 @@ public class KnowledgeDao {
             throw new RuntimeException(e);
         }
     }
+    
+    public String findContentById(long knowledgeId) {
+        try (Connection conn = dataSource.getConnection()) {
+
+            String sql = "SELECT content FROM knowledge WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setLong(1, knowledgeId);
+
+                ResultSet rs = ps.executeQuery();
+                if (!rs.next()) {
+                    return null;
+                }
+
+                return rs.getString("content");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
