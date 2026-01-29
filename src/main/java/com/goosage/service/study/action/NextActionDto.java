@@ -4,5 +4,6 @@ public record NextActionDto(
         NextActionType type,
         String label,
         Long knowledgeId,
-        boolean requiresForge
+		boolean requiresForge,
+        String reason
 ) {}

@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 000000F5 B8B2:0FAA입니다.
+볼륨 일련 번호가 0000007C B8B2:0FAA입니다.
 C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -31,6 +31,13 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |   |   \---dto
 |   |           |   |           ProgressSummary.java
 |   |           |   |           
+|   |           |   +---report
+|   |           |   |       AcademyReportController.java
+|   |           |   |       AcademyReportDao.java
+|   |           |   |       AcademyReportService.java
+|   |           |   |       CourseReportResponse.java
+|   |           |   |       CourseUserReportResponse.java
+|   |           |   |       
 |   |           |   \---workspace
 |   |           |           AcademyWorkspaceController.java
 |   |           |           AcademyWorkspaceDao.java
@@ -38,6 +45,11 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |           WorkspaceCreateRequest.java
 |   |           |           WorkspaceResponse.java
 |   |           |           
+|   |           +---ai
+|   |           |       AiClient.java
+|   |           |       AiPromptFactory.java
+|   |           |       AiTemplateService.java
+|   |           |       
 |   |           +---api
 |   |           |       HealthController.java
 |   |           |       HelloController.java
@@ -62,6 +74,7 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       WebConfig.java
 |   |           |       
 |   |           +---controller
+|   |           |       AiTestController.java
 |   |           |       AuthController.java
 |   |           |       KnowledgeController.java
 |   |           |       PostController.java
@@ -72,6 +85,7 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       StudyCoachController.java
 |   |           |       StudyController.java
 |   |           |       StudyDebugController.java
+|   |           |       StudyEventController.java
 |   |           |       StudyStreakController.java
 |   |           |       
 |   |           +---dao
@@ -119,6 +133,9 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |   |       QuizSubmitRequest.java
 |   |           |   |       QuizSubmitResponse.java
 |   |           |   |       
+|   |           |   +---study
+|   |           |   |       StudyEventRequest.java
+|   |           |   |       
 |   |           |   \---template
 |   |           |           TemplateDto.java
 |   |           |           TemplateResponse.java
@@ -147,6 +164,7 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |   |   PostService.java
 |   |           |   |   QaService.java
 |   |           |   |   QuizService.java
+|   |           |   |   StudyEventService.java
 |   |           |   |   StudyStreakService.java
 |   |           |   |   StudyTodayResult.java
 |   |           |   |   StudyTodayService.java
@@ -197,6 +215,7 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |       |           V1__create_posts.sql
 |       |           V20__add_unique_academy_progress.sql
 |       |           V21__add_updated_at_to_academy_progress.sql
+|       |           V22__add_wrong_count_to_quiz_results.sql
 |       |           V2__add_index_posts_created_at.sql
 |       |           V3__create_knowledge.sql
 |       |           V4__posts_created_at_default.sql

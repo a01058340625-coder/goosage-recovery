@@ -34,12 +34,14 @@ public class StudyCoachService {
 
         // ✅ v1.2-A: TODAY_DONE (nextAction 정합성 고정)
         if (state != null && state.quizSubmits() >= 1 && state.wrongReviews() == 0) {
-            nextAction = new NextActionDto(
-                    NextActionType.TODAY_DONE,
-                    "TODAY_DONE",
-                    null,
-                    false
-            );
+        	nextAction = new NextActionDto(
+        	        NextActionType.TODAY_DONE,
+        	        "TODAY_DONE",
+        	        null,
+        	        false,
+        	        "오늘 학습은 이미 시작됐어. 이제는 가볍게 유지하는 게 핵심이야."
+        	);
+
         }
 
         String interpretation = interpretationService.buildInterpretation(state, nextAction);
@@ -50,9 +52,9 @@ public class StudyCoachService {
                 interpretation,
                 nextAction,
                 copy.suggestion(),
-                copy.reason(),
-                copy.nextActionReason()
+                copy.reason()
         );
+
     }
 
     private Copy applyV11CopyRules(StudyStateDto state, NextActionDto nextAction) {
