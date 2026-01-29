@@ -96,6 +96,8 @@ public class KnowledgeDao {
             throw new RuntimeException(e);
         }
     }
+    
+    
 
 
 }

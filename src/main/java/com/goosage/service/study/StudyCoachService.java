@@ -9,6 +9,8 @@ import com.goosage.service.study.action.NextActionService;
 import com.goosage.service.study.action.NextActionType;
 import com.goosage.service.study.dto.StudyCoachResponse;
 import com.goosage.service.study.dto.StudyStateDto;
+import com.goosage.service.study.forge.ForgeTriggerService;
+import com.goosage.service.study.forge.ForgeTriggerService.ForgePrepareResult;
 import com.goosage.service.study.interpret.StudyInterpretationService;
 
 @Service
@@ -17,36 +19,66 @@ public class StudyCoachService {
     private final StudyStateService studyStateService;
     private final StudyInterpretationService interpretationService;
     private final NextActionService nextActionService;
+    private final ForgeTriggerService forgeTriggerService;
 
     public StudyCoachService(
             StudyStateService studyStateService,
             StudyInterpretationService interpretationService,
-            NextActionService nextActionService
+            NextActionService nextActionService,
+            ForgeTriggerService forgeTriggerService
     ) {
         this.studyStateService = studyStateService;
         this.interpretationService = interpretationService;
         this.nextActionService = nextActionService;
+        this.forgeTriggerService = forgeTriggerService;
     }
 
     public StudyCoachResponse coach(long userId) {
         StudyStateDto state = studyStateService.getState(userId);
+
+        // 1) 기본 행동 결정
         NextActionDto nextAction = nextActionService.decide(state);
 
-        // ✅ v1.2-A: TODAY_DONE (nextAction 정합성 고정)
+        // 2) TODAY_DONE 정합성 고정(최우선)
         if (state != null && state.quizSubmits() >= 1 && state.wrongReviews() == 0) {
-        	nextAction = new NextActionDto(
-        	        NextActionType.TODAY_DONE,
-        	        "TODAY_DONE",
-        	        null,
-        	        false,
-        	        "오늘 학습은 이미 시작됐어. 이제는 가볍게 유지하는 게 핵심이야."
-        	);
-
+            nextAction = new NextActionDto(
+                    NextActionType.TODAY_DONE,
+                    "TODAY_DONE",
+                    null,
+                    false,
+                    "오늘 학습은 이미 시작됐어. 이제는 가볍게 유지하는 게 핵심이야."
+            );
         }
 
+        // 3) v1.2: requiresForge=true면 템플릿 자동 준비 + 실패 시 fallback
+        // (단, TODAY_DONE이면 forge 준비할 필요가 없으니 스킵)
+     // 3) v1.2: requiresForge=true면 템플릿 자동 준비 + 실패 시 fallback
+     // (단, TODAY_DONE이면 forge 준비할 필요가 없으니 스킵)
+     if (nextAction != null
+             && nextAction.type() != NextActionType.TODAY_DONE
+             && nextAction.requiresForge()
+             && nextAction.knowledgeId() != null) {
+
+         ForgeTriggerService.ForgePrepareResult prep =
+                 forgeTriggerService.prepare(nextAction.knowledgeId(), "summary-v1");
+
+         if (!prep.success()) {
+             nextAction = new NextActionDto(
+                     NextActionType.JUST_OPEN,
+                     "Forge 준비 실패: 오늘은 가볍게 시작하자",
+                     null,
+                     false,
+                     "Forge 준비에 실패해도 루프는 끊기지 않는다. 오늘은 1개만 열자."
+             );
+         }
+     }
+
+
+        // 4) 해석/문구 생성
         String interpretation = interpretationService.buildInterpretation(state, nextAction);
         Copy copy = applyV11CopyRules(state, nextAction);
 
+        // 5) 응답 (return 1번만)
         return new StudyCoachResponse(
                 state,
                 interpretation,
@@ -54,7 +86,6 @@ public class StudyCoachService {
                 copy.suggestion(),
                 copy.reason()
         );
-
     }
 
     private Copy applyV11CopyRules(StudyStateDto state, NextActionDto nextAction) {
@@ -65,9 +96,9 @@ public class StudyCoachService {
                 "왜: 다음 행동을 수행하면 루프가 진행된다",
                 "효과: today/streak 집계가 즉시 반영된다"
         );
-        String nextActionReason = "다음 행동 1개를 하면 루프가 열린다"; // ✅ v1.2-1
+        String nextActionReason = "다음 행동 1개를 하면 루프가 열린다";
 
-        // ✅ TODAY_DONE: nextAction 기준으로만 처리(중복 제거)
+        // TODAY_DONE
         if (nextAction != null && nextAction.type() == NextActionType.TODAY_DONE) {
             suggestion = "오늘은 이미 했어. 요약 1개만 보고 마무리하자.";
             reason = List.of(
@@ -79,32 +110,7 @@ public class StudyCoachService {
             return new Copy(suggestion, reason, nextActionReason);
         }
 
-        // ✅ (오늘 목표 준수하려면 아래 2개는 주석 처리 권장)
-        // STREAK_RISK
-        if (state != null && !state.studiedToday() && state.streakDays() >= 3) {
-            suggestion = "오늘 끊기기 직전이야. 최소 행동 1개만 하자.";
-            reason = List.of(
-                    "상태: 오늘 기록이 아직 없다",
-                    "왜: 최소 행동 1개만 해도 streak를 지킬 수 있다",
-                    "효과: 내일 코치 추천 정확도가 올라간다"
-            );
-            nextActionReason = "지금 최소 행동 1개가 streak를 살린다";
-            return new Copy(suggestion, reason, nextActionReason);
-        }
-
-        // MANY_WRONGS
-        if (state != null && state.wrongReviews() >= 3) {
-            suggestion = "오답이 쌓였어. 오늘은 1개만 정리하자.";
-            reason = List.of(
-                    "상태: 약점(오답)이 누적됐다",
-                    "왜: 오답은 빨리 처리할수록 고착을 막는다",
-                    "효과: 다음 퀴즈 점수가 바로 오른다"
-            );
-            nextActionReason = "오답 1개만 처리해도 약점 누적이 멈춘다";
-            return new Copy(suggestion, reason, nextActionReason);
-        }
-
-        // ===== 기존 규칙 =====
+        // REVIEW_WRONG_ONE
         if (nextAction != null && nextAction.type() == NextActionType.REVIEW_WRONG_ONE) {
             boolean forge = nextAction.requiresForge();
 
@@ -126,6 +132,7 @@ public class StudyCoachService {
             return new Copy(suggestion, reason, nextActionReason);
         }
 
+        // JUST_OPEN
         if (nextAction != null && nextAction.type() == NextActionType.JUST_OPEN) {
             suggestion = "오늘은 오답 이벤트 1개만 찍고 시작하자. (start 신호)";
             reason = List.of(
@@ -134,7 +141,6 @@ public class StudyCoachService {
                     "효과: today/streak 집계가 움직이고 루프가 열린다"
             );
             nextActionReason = "첫 행동 1개가 있어야 코치 추천 루프가 열린다";
-
             return new Copy(suggestion, reason, nextActionReason);
         }
 

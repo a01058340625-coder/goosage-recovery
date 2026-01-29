@@ -19,7 +19,6 @@ public class TemplateDao implements TemplateRepository {
     private static final Logger log =
         LoggerFactory.getLogger(TemplateDao.class);
 
-
     private final JdbcTemplate jdbcTemplate;
     private TemplateDto mapRow(ResultSet rs) throws SQLException {
         TemplateDto t = new TemplateDto();
@@ -74,6 +73,22 @@ public class TemplateDao implements TemplateRepository {
         log.info("TEMPLATE INSERT updated={}", updated); // 보통 1
 
         return template;
+    }
+    
+    public boolean existsByKnowledgeIdAndType(long knowledgeId, String templateType) {
+        Integer exists = jdbcTemplate.queryForObject(
+            "SELECT EXISTS(SELECT 1 FROM templates WHERE knowledge_id=? AND template_type=?)",
+            Integer.class,
+            knowledgeId, templateType
+        );
+        return exists != null && exists == 1;
+    }
+  
+    public void insertTemplate(long knowledgeId, String templateType, String resultText) {
+        jdbcTemplate.update(
+                "INSERT INTO templates (knowledge_id, template_type, result_text) VALUES (?,?,?)",
+                knowledgeId, templateType, resultText
+        );
     }
 
 
