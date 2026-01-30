@@ -12,48 +12,87 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class StudyReadDao {
 
-    private final JdbcTemplate jdbcTemplate;
+	private final JdbcTemplate jdbcTemplate;
 
-    public StudyReadDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+	public StudyReadDao(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
-    public Optional<TodayRow> findToday(long userId) {
+	public Optional<TodayRow> findToday(long userId)
+ {
+	    // ✅ B안: study_events에서 오늘 집계로 계산
+	    return findTodayFromStudyEvents(userId);
 
-        // ✅ 핵심: ymd 컬럼이 없으니 DATE(created_at)로 오늘을 잡는다
-        // ✅ 핵심: type이 아니라 event_type 사용
-        String sql = """
-            SELECT
-                DATE(MAX(created_at)) AS ymd,
-                COUNT(*) AS events_count,
-                SUM(CASE WHEN event_type = 'QUIZ_SUBMIT' THEN 1 ELSE 0 END) AS quiz_submits,
-                SUM(CASE WHEN event_type = 'WRONG_REVIEW_DONE' THEN 1 ELSE 0 END) AS wrong_reviews,
-                MAX(created_at) AS last_event_at
-            FROM study_events
-            WHERE user_id = ?
-              AND DATE(created_at) = CURDATE()
-        """;
+	    // 필요하면 A안으로 되돌릴 때:
+	    // return findTodayFromDailyLearning(userId);
+	}
 
-        try {
-            TodayRow row = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-                LocalDate ymd = rs.getDate("ymd") != null ? rs.getDate("ymd").toLocalDate() : LocalDate.now();
-                int eventsCount = rs.getInt("events_count");
-                int quizSubmits = rs.getInt("quiz_submits");
-                int wrongReviews = rs.getInt("wrong_reviews");
+	private Optional<TodayRow> findTodayFromStudyEvents(long userId) {
 
-                Timestamp ts = rs.getTimestamp("last_event_at");
-                LocalDateTime lastEventAt = (ts != null) ? ts.toLocalDateTime() : null;
+	    String sql =
+	        "SELECT " +
+	        "  DATE(MAX(created_at)) AS ymd, " +
+	        "  COUNT(*) AS events_count, " +
+	        "  SUM(CASE WHEN event_type = 'QUIZ_SUBMIT' THEN 1 ELSE 0 END) AS quiz_submits, " +
+	        "  SUM(CASE WHEN event_type = 'WRONG_REVIEW_DONE' THEN 1 ELSE 0 END) AS wrong_reviews, " +
+	        "  MAX(created_at) AS last_event_at " +
+	        "FROM study_events " +
+	        "WHERE user_id = ? " +
+	        "  AND DATE(created_at) = CURDATE()";
 
-                // 오늘 아무 이벤트도 없으면 COUNT(*) = 0 이고, 그때는 "없다"로 처리하는 게 깔끔
-                if (eventsCount <= 0) return null;
+	    try {
+	        TodayRow row = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
 
-                return new TodayRow(ymd, eventsCount, quizSubmits, wrongReviews, lastEventAt);
-            }, userId);
+	            // ymd는 MAX(created_at)이 null이면 null일 수 있으니 방어
+	            LocalDate ymd = (rs.getDate("ymd") != null)
+	                    ? rs.getDate("ymd").toLocalDate()
+	                    : LocalDate.now();
 
-            return Optional.ofNullable(row);
+	            int eventsCount = rs.getInt("events_count");
+	            int quizSubmits = rs.getInt("quiz_submits");
+	            int wrongReviews = rs.getInt("wrong_reviews");
 
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
-    }
+	            Timestamp ts = rs.getTimestamp("last_event_at");
+	            LocalDateTime lastEventAt = (ts != null) ? ts.toLocalDateTime() : null;
+
+	            // 오늘 이벤트가 0이면 "없다"
+	            if (eventsCount <= 0) return null;
+
+	            return new TodayRow(ymd, eventsCount, quizSubmits, wrongReviews, lastEventAt);
+	        }, userId);
+
+	        return Optional.ofNullable(row);
+
+	    } catch (EmptyResultDataAccessException e) {
+	        return Optional.empty();
+	    }
+	}
+
+	private Optional<TodayRow> findTodayFromDailyLearning(long userId) {
+
+	    String sql =
+	        "SELECT ymd, events_count, quiz_submits, wrong_reviews, last_event_at " +
+	        "FROM daily_learning " +
+	        "WHERE user_id = ? AND ymd = CURDATE()";
+
+	    try {
+	        TodayRow row = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+
+	            LocalDate ymd = rs.getDate("ymd").toLocalDate();
+	            int eventsCount = rs.getInt("events_count");
+	            int quizSubmits = rs.getInt("quiz_submits");
+	            int wrongReviews = rs.getInt("wrong_reviews");
+
+	            Timestamp ts = rs.getTimestamp("last_event_at");
+	            LocalDateTime lastEventAt = (ts != null) ? ts.toLocalDateTime() : null;
+
+	            return new TodayRow(ymd, eventsCount, quizSubmits, wrongReviews, lastEventAt);
+	        }, userId);
+
+	        return Optional.ofNullable(row);
+
+	    } catch (EmptyResultDataAccessException e) {
+	        return Optional.empty();
+	    }
+	}
 }

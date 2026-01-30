@@ -34,13 +34,17 @@ public class StudyCoachService {
     }
 
     public StudyCoachResponse coach(long userId) {
+    	
+    	String forgeMode = null;
+    	String forgeError = null;
+
         StudyStateDto state = studyStateService.getState(userId);
 
         // 1) 기본 행동 결정
         NextActionDto nextAction = nextActionService.decide(state);
 
         // 2) TODAY_DONE 정합성 고정(최우선)
-        if (state != null && state.quizSubmits() >= 1 && state.wrongReviews() == 0) {
+        if (state != null && state.eventsCount() >= 1 && state.quizSubmits() >= 1) {
             nextAction = new NextActionDto(
                     NextActionType.TODAY_DONE,
                     "TODAY_DONE",
@@ -50,28 +54,34 @@ public class StudyCoachService {
             );
         }
 
-        // 3) v1.2: requiresForge=true면 템플릿 자동 준비 + 실패 시 fallback
-        // (단, TODAY_DONE이면 forge 준비할 필요가 없으니 스킵)
      // 3) v1.2: requiresForge=true면 템플릿 자동 준비 + 실패 시 fallback
      // (단, TODAY_DONE이면 forge 준비할 필요가 없으니 스킵)
-     if (nextAction != null
-             && nextAction.type() != NextActionType.TODAY_DONE
-             && nextAction.requiresForge()
-             && nextAction.knowledgeId() != null) {
+        if (nextAction != null
+                && nextAction.type() != NextActionType.TODAY_DONE
+                && nextAction.requiresForge()
+                && nextAction.knowledgeId() != null) {
 
-         ForgeTriggerService.ForgePrepareResult prep =
-                 forgeTriggerService.prepare(nextAction.knowledgeId(), "summary-v1");
+            ForgeTriggerService.ForgePrepareResult prep =
+                    forgeTriggerService.prepare(nextAction.knowledgeId(), "summary-v1");
 
-         if (!prep.success()) {
-             nextAction = new NextActionDto(
-                     NextActionType.JUST_OPEN,
-                     "Forge 준비 실패: 오늘은 가볍게 시작하자",
-                     null,
-                     false,
-                     "Forge 준비에 실패해도 루프는 끊기지 않는다. 오늘은 1개만 열자."
-             );
-         }
-     }
+            // ✅ 추가: 응답에 실을 값 저장
+            forgeMode = prep.mode();      // "REUSE" / "CREATED" / "FAILED"
+            forgeError = prep.error();    // 실패 메시지(없으면 null)
+
+            if (!prep.success()) {
+                // 실패를 명확히 표시하고 싶으면 mode를 FAILED로 강제도 가능
+                // forgeMode = "FAILED";
+
+                nextAction = new NextActionDto(
+                        NextActionType.JUST_OPEN,
+                        "Forge 준비 실패: 오늘은 가볍게 시작하자",
+                        null,
+                        false,
+                        "Forge 준비에 실패해도 루프는 끊기지 않는다. 오늘은 1개만 열자."
+                );
+            }
+        }
+
 
 
         // 4) 해석/문구 생성
@@ -83,9 +93,13 @@ public class StudyCoachService {
                 state,
                 interpretation,
                 nextAction,
+                forgeMode,
+                forgeError,
                 copy.suggestion(),
                 copy.reason()
         );
+
+
     }
 
     private Copy applyV11CopyRules(StudyStateDto state, NextActionDto nextAction) {
