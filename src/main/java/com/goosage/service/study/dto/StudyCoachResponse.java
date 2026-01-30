@@ -4,16 +4,14 @@ import java.util.List;
 import com.goosage.service.study.action.NextActionDto;
 
 public record StudyCoachResponse(
-        StudyStateDto state,
+		StudyStateDto state,
         String interpretation,
         NextActionDto nextAction,
-
-        // ✅ v1.2: forge 결과
-        String forgeMode,   // "CREATED" | "REUSE" | "FAILED" | null
-        String forgeError,  // 실패 메시지(선택)
-
+        String forgeMode,
+        String forgeError,
         String suggestion,
-        List<String> reason
+        List<String> reason,
+        RiskLevel riskLevel
 ) {
     public StudyCoachResponse {
         if (interpretation == null || interpretation.isBlank()) {
