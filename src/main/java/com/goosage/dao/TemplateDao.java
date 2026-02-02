@@ -72,8 +72,15 @@ public class TemplateDao implements TemplateRepository {
 
         log.info("TEMPLATE INSERT updated={}", updated); // 보통 1
 
+        // ✅ 핵심: 생성된 PK 회수
+        Long id = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
+        template.setId(id != null ? id : 0L);
+
+        log.info("TEMPLATE CREATED id={}", template.getId());
+
         return template;
     }
+
     
     public boolean existsByKnowledgeIdAndType(long knowledgeId, String templateType) {
         Integer exists = jdbcTemplate.queryForObject(

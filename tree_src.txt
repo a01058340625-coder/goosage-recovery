@@ -1,6 +1,6 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 0000007C B8B2:0FAA입니다.
-C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE-API\SRC
+볼륨 일련 번호가 000000A0 B8B2:0FAA입니다.
+C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
 +---main
 |   +---java
 |   |   \---com
@@ -97,6 +97,7 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |   |   TemplateDao.java
 |   |           |   |   
 |   |           |   \---study
+|   |           |           DailyLearningDao.java
 |   |           |           StudyReadDao.java
 |   |           |           StudyStreakDao.java
 |   |           |           TodayRow.java
@@ -148,6 +149,11 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           +---exception
 |   |           |       ForbiddenException.java
 |   |           |       
+|   |           +---forge
+|   |           |       ForgePrepareResult.java
+|   |           |       ForgeStatus.java
+|   |           |       ForgeTriggerService.java
+|   |           |       
 |   |           +---repository
 |   |           |       InMemoryKnowledgeRepository.java
 |   |           |       JdbcKnowledgeRepository.java
@@ -180,6 +186,7 @@ C:\USERS\HKIT\DOCUMENTS\WORKSPACE-SPRING-TOOLS-FOR-ECLIPSE-5.0.1.RELEASE\GOOSAGE
 |   |           |       |       NextActionType.java
 |   |           |       |       
 |   |           |       +---dto
+|   |           |       |       RiskLevel.java
 |   |           |       |       StudyCoachResponse.java
 |   |           |       |       StudyStateDto.java
 |   |           |       |       
