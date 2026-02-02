@@ -1,14 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: edge
+
+  datasource:
+    url: jdbc:mysql://<EDGE_HOST>:3306/goosage_edge?serverTimezone=Asia/Seoul
+    username: edge_user
+    password: edge_pw
+
 server:
   port: 8083
 
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-
-  flyway:
-    enabled: true
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
