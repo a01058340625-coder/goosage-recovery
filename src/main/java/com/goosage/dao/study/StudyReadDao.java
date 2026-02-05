@@ -1,6 +1,7 @@
 package com.goosage.dao.study;
 
 import java.sql.Timestamp;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -94,5 +95,76 @@ public class StudyReadDao {
 	    } catch (EmptyResultDataAccessException e) {
 	        return Optional.empty();
 	    }
+	}
+	
+	public int countEventsToday(long userId, LocalDate ymd) {
+	    // [정공법] 날짜 = range 쿼리 (인덱스 타기 쉬움)
+	    LocalDateTime start = ymd.atStartOfDay();
+	    LocalDateTime end = ymd.plusDays(1).atStartOfDay();
+
+	    String sql = """
+	        SELECT COUNT(*)
+	        FROM study_events
+	        WHERE user_id = ?
+	          AND created_at >= ?
+	          AND created_at < ?
+	    """;
+	    Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class,
+	            userId,
+	            Timestamp.valueOf(start),
+	            Timestamp.valueOf(end)
+	    );
+	    return (cnt == null) ? 0 : cnt;
+	}
+
+	public Timestamp lastEventAtToday(long userId, LocalDate ymd) {
+	    LocalDateTime start = ymd.atStartOfDay();
+	    LocalDateTime end = ymd.plusDays(1).atStartOfDay();
+
+	    String sql = """
+	        SELECT MAX(created_at)
+	        FROM study_events
+	        WHERE user_id = ?
+	          AND created_at >= ?
+	          AND created_at < ?
+	    """;
+	    return jdbcTemplate.queryForObject(sql, Timestamp.class,
+	            userId,
+	            Timestamp.valueOf(start),
+	            Timestamp.valueOf(end)
+	    );
+	}
+	
+	public int calcStreakDays(long userId, LocalDate today) {
+	    int streak = 0;
+	    LocalDate cursor = today;
+
+	    String sql = """
+	        SELECT events_count
+	        FROM daily_learning
+	        WHERE user_id = ?
+	          AND ymd = ?
+	    """;
+
+	    while (true) {
+	        Integer cnt;
+	        try {
+	            cnt = jdbcTemplate.queryForObject(
+	                sql,
+	                Integer.class,
+	                userId,
+	                java.sql.Date.valueOf(cursor)
+	            );
+	        } catch (EmptyResultDataAccessException e) {
+	            cnt = null;
+	        }
+
+	        if (cnt == null || cnt <= 0) break;
+
+	        streak++;
+	        cursor = cursor.minusDays(1);
+	    }
+
+	    return streak;
 	}
 }

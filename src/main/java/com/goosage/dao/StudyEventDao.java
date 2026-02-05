@@ -7,8 +7,14 @@ import java.time.LocalDateTime;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Repository
 public class StudyEventDao {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(StudyEventDao.class);
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -60,18 +66,23 @@ public class StudyEventDao {
 
     private void insertEvent(long sessionId, long userId, String eventType, String refType, Long refId, String payloadJson) {
         String sql = """
-            INSERT INTO study_events (session_id, user_id, event_type, ref_type, ref_id, payload_json, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())
+            INSERT INTO study_events (session_id, user_id, type, event_type, ref_type, ref_id, payload_json, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
         """;
         jdbcTemplate.update(sql,
                 sessionId,
                 userId,
-                eventType,
+                eventType,   // ✅ type에 같은 값
+                eventType,   // ✅ event_type에도 같은 값
                 refType,
                 refId,
                 payloadJson
         );
+        
+        log.info("[STUDY_EVENT][INSERT] sessionId={}, userId={}, eventType={}", sessionId, userId, eventType);
+
     }
+
 
     private void touchSession(long sessionId) {
         String sql = """
