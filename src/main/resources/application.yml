@@ -1,13 +1,15 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    active: local
 
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: false
 
   flyway:
     enabled: true
     locations: classpath:db/migration
-    baseline-on-migrate: true
+
+logging:
+  level:
+    root: INFO

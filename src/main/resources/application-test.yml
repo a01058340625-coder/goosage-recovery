@@ -4,14 +4,13 @@ spring:
       on-profile: test
 
   datasource:
-    url: jdbc:h2:mem:goosage_test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/goosage_test
+    username: test_user
+    password: test_pw
 
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
+server:
+  port: 8085
 
-  flyway:
-    enabled: false
+logging:
+  file:
+    name: logs/test.log

@@ -32,3 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 src/main/resources/application-local.yml
+
+# run-all regression artifacts
+goosage-scripts/artifacts/
+goosage-scripts/**/*.log
+

@@ -1,0 +1,184 @@
+2026-02-05T10:04:39.306+09:00  INFO 13712 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : Starting GoosageApiApplication using Java 17.0.12 with PID 13712 (C:\dev\loosegoose\goosage-api\target\classes started by HKIT in C:\dev\loosegoose\goosage-api)
+2026-02-05T10:04:39.308+09:00  INFO 13712 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : The following 1 profile is active: "local"
+2026-02-05T10:04:40.128+09:00  INFO 13712 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-05T10:04:40.199+09:00  INFO 13712 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 63 ms. Found 3 JPA repository interfaces.
+2026-02-05T10:04:40.792+09:00  INFO 13712 --- [goosage-api] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8084 (http)
+2026-02-05T10:04:40.804+09:00  INFO 13712 --- [goosage-api] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-05T10:04:40.805+09:00  INFO 13712 --- [goosage-api] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-02-05T10:04:40.866+09:00  INFO 13712 --- [goosage-api] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-02-05T10:04:40.867+09:00  INFO 13712 --- [goosage-api] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1520 ms
+2026-02-05T10:04:41.141+09:00  INFO 13712 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-05T10:04:41.389+09:00  INFO 13712 --- [goosage-api] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@40a8a26f
+2026-02-05T10:04:41.391+09:00  INFO 13712 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-05T10:04:41.480+09:00  INFO 13712 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.22.3 by Redgate
+2026-02-05T10:04:41.481+09:00  INFO 13712 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-02-05T10:04:41.481+09:00  INFO 13712 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : 
+2026-02-05T10:04:41.503+09:00  INFO 13712 --- [goosage-api] [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/goosage_local (MySQL 8.0)
+2026-02-05T10:04:41.641+09:00  INFO 13712 --- [goosage-api] [main] o.f.core.internal.command.DbValidate     : Successfully validated 27 migrations (execution time 00:00.118s)
+2026-02-05T10:04:41.655+09:00  INFO 13712 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Current version of schema `goosage_local`: 27
+2026-02-05T10:04:41.655+09:00  WARN 13712 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` has a version (27) that is newer than the latest available migration (23) !
+2026-02-05T10:04:41.658+09:00  INFO 13712 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` is up to date. No migration necessary.
+2026-02-05T10:04:41.761+09:00  INFO 13712 --- [goosage-api] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-05T10:04:41.838+09:00  INFO 13712 --- [goosage-api] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-02-05T10:04:41.871+09:00  INFO 13712 --- [goosage-api] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-02-05T10:04:42.093+09:00  INFO 13712 --- [goosage-api] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-05T10:04:42.885+09:00  INFO 13712 --- [goosage-api] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-05T10:04:42.918+09:00  INFO 13712 --- [goosage-api] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:04:43.471+09:00  WARN 13712 --- [goosage-api] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05T10:04:44.049+09:00  INFO 13712 --- [goosage-api] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2026-02-05T10:04:44.119+09:00  INFO 13712 --- [goosage-api] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8084 (http) with context path ''
+2026-02-05T10:04:44.132+09:00  INFO 13712 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : Started GoosageApiApplication in 5.228 seconds (process running for 5.709)
+2026-02-05T10:04:44.834+09:00  INFO 13712 --- [goosage-api] [RMI TCP Connection(10)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-05T10:04:44.835+09:00  INFO 13712 --- [goosage-api] [RMI TCP Connection(10)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-02-05T10:04:44.837+09:00  INFO 13712 --- [goosage-api] [RMI TCP Connection(10)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-02-05T10:08:03.036+09:00  INFO 3552 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : Starting GoosageApiApplication using Java 17.0.17 with PID 3552 (C:\dev\loosegoose\goosage-api\target\classes started by HKIT in C:\dev\loosegoose\goosage-api)
+2026-02-05T10:08:03.039+09:00  INFO 3552 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : The following 1 profile is active: "local"
+2026-02-05T10:08:03.834+09:00  INFO 3552 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-05T10:08:03.896+09:00  INFO 3552 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55 ms. Found 3 JPA repository interfaces.
+2026-02-05T10:08:04.544+09:00  INFO 3552 --- [goosage-api] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8084 (http)
+2026-02-05T10:08:04.556+09:00  INFO 3552 --- [goosage-api] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-05T10:08:04.557+09:00  INFO 3552 --- [goosage-api] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-02-05T10:08:04.614+09:00  INFO 3552 --- [goosage-api] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-02-05T10:08:04.615+09:00  INFO 3552 --- [goosage-api] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1537 ms
+2026-02-05T10:08:04.812+09:00  INFO 3552 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-05T10:08:05.073+09:00  INFO 3552 --- [goosage-api] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6c6379c
+2026-02-05T10:08:05.075+09:00  INFO 3552 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-05T10:08:05.157+09:00  INFO 3552 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.22.3 by Redgate
+2026-02-05T10:08:05.157+09:00  INFO 3552 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-02-05T10:08:05.158+09:00  INFO 3552 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : 
+2026-02-05T10:08:05.176+09:00  INFO 3552 --- [goosage-api] [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/goosage_local (MySQL 8.0)
+2026-02-05T10:08:05.281+09:00  INFO 3552 --- [goosage-api] [main] o.f.core.internal.command.DbValidate     : Successfully validated 27 migrations (execution time 00:00.086s)
+2026-02-05T10:08:05.294+09:00  INFO 3552 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Current version of schema `goosage_local`: 27
+2026-02-05T10:08:05.295+09:00  WARN 3552 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` has a version (27) that is newer than the latest available migration (23) !
+2026-02-05T10:08:05.297+09:00  INFO 3552 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` is up to date. No migration necessary.
+2026-02-05T10:08:05.377+09:00  INFO 3552 --- [goosage-api] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-05T10:08:05.434+09:00  INFO 3552 --- [goosage-api] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-02-05T10:08:05.469+09:00  INFO 3552 --- [goosage-api] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-02-05T10:08:05.687+09:00  INFO 3552 --- [goosage-api] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-05T10:08:06.470+09:00  INFO 3552 --- [goosage-api] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-05T10:08:06.502+09:00  INFO 3552 --- [goosage-api] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:08:07.061+09:00  WARN 3552 --- [goosage-api] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05T10:08:07.505+09:00  INFO 3552 --- [goosage-api] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2026-02-05T10:08:07.561+09:00  WARN 3552 --- [goosage-api] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-05T10:08:07.563+09:00  INFO 3552 --- [goosage-api] [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:08:07.566+09:00  INFO 3552 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-02-05T10:08:07.571+09:00  INFO 3552 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-02-05T10:08:07.587+09:00  INFO 3552 --- [goosage-api] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-05T10:08:07.602+09:00 ERROR 3552 --- [goosage-api] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8084 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8084 or configure this application to listen on another port.
+
+2026-02-05T10:08:48.849+09:00  INFO 20536 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : Starting GoosageApiApplication using Java 17.0.17 with PID 20536 (C:\dev\loosegoose\goosage-api\target\classes started by HKIT in C:\dev\loosegoose\goosage-api)
+2026-02-05T10:08:48.852+09:00  INFO 20536 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : The following 1 profile is active: "local"
+2026-02-05T10:08:49.675+09:00  INFO 20536 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-05T10:08:49.740+09:00  INFO 20536 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 3 JPA repository interfaces.
+2026-02-05T10:08:50.421+09:00  INFO 20536 --- [goosage-api] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8084 (http)
+2026-02-05T10:08:50.432+09:00  INFO 20536 --- [goosage-api] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-05T10:08:50.433+09:00  INFO 20536 --- [goosage-api] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-02-05T10:08:50.490+09:00  INFO 20536 --- [goosage-api] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-02-05T10:08:50.491+09:00  INFO 20536 --- [goosage-api] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1600 ms
+2026-02-05T10:08:50.688+09:00  INFO 20536 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-05T10:08:50.947+09:00  INFO 20536 --- [goosage-api] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7eae55
+2026-02-05T10:08:50.949+09:00  INFO 20536 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-05T10:08:51.032+09:00  INFO 20536 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.22.3 by Redgate
+2026-02-05T10:08:51.032+09:00  INFO 20536 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-02-05T10:08:51.033+09:00  INFO 20536 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : 
+2026-02-05T10:08:51.054+09:00  INFO 20536 --- [goosage-api] [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/goosage_local (MySQL 8.0)
+2026-02-05T10:08:51.103+09:00  INFO 20536 --- [goosage-api] [main] o.f.core.internal.command.DbValidate     : Successfully validated 27 migrations (execution time 00:00.032s)
+2026-02-05T10:08:51.116+09:00  INFO 20536 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Current version of schema `goosage_local`: 27
+2026-02-05T10:08:51.117+09:00  WARN 20536 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` has a version (27) that is newer than the latest available migration (23) !
+2026-02-05T10:08:51.120+09:00  INFO 20536 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` is up to date. No migration necessary.
+2026-02-05T10:08:51.203+09:00  INFO 20536 --- [goosage-api] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-05T10:08:51.262+09:00  INFO 20536 --- [goosage-api] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-02-05T10:08:51.298+09:00  INFO 20536 --- [goosage-api] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-02-05T10:08:51.529+09:00  INFO 20536 --- [goosage-api] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-05T10:08:52.345+09:00  INFO 20536 --- [goosage-api] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-05T10:08:52.377+09:00  INFO 20536 --- [goosage-api] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:08:52.936+09:00  WARN 20536 --- [goosage-api] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05T10:08:53.386+09:00  INFO 20536 --- [goosage-api] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2026-02-05T10:08:53.442+09:00  WARN 20536 --- [goosage-api] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-05T10:08:53.444+09:00  INFO 20536 --- [goosage-api] [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:08:53.446+09:00  INFO 20536 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-02-05T10:08:53.452+09:00  INFO 20536 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-02-05T10:08:53.467+09:00  INFO 20536 --- [goosage-api] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-05T10:08:53.483+09:00 ERROR 20536 --- [goosage-api] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8084 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8084 or configure this application to listen on another port.
+
+2026-02-05T10:09:49.998+09:00  INFO 12196 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : Starting GoosageApiApplication using Java 17.0.17 with PID 12196 (C:\dev\loosegoose\goosage-api\target\classes started by HKIT in C:\dev\loosegoose\goosage-api)
+2026-02-05T10:09:50.000+09:00  INFO 12196 --- [goosage-api] [main] com.goosage.GoosageApiApplication        : The following 1 profile is active: "local"
+2026-02-05T10:09:50.807+09:00  INFO 12196 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-05T10:09:50.870+09:00  INFO 12196 --- [goosage-api] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55 ms. Found 3 JPA repository interfaces.
+2026-02-05T10:09:51.495+09:00  INFO 12196 --- [goosage-api] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8084 (http)
+2026-02-05T10:09:51.506+09:00  INFO 12196 --- [goosage-api] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-05T10:09:51.507+09:00  INFO 12196 --- [goosage-api] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-02-05T10:09:51.565+09:00  INFO 12196 --- [goosage-api] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-02-05T10:09:51.566+09:00  INFO 12196 --- [goosage-api] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1524 ms
+2026-02-05T10:09:51.761+09:00  INFO 12196 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-05T10:09:52.015+09:00  INFO 12196 --- [goosage-api] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@40fe8fd5
+2026-02-05T10:09:52.017+09:00  INFO 12196 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-05T10:09:52.099+09:00  INFO 12196 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.22.3 by Redgate
+2026-02-05T10:09:52.100+09:00  INFO 12196 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-02-05T10:09:52.101+09:00  INFO 12196 --- [goosage-api] [main] o.f.c.internal.license.VersionPrinter    : 
+2026-02-05T10:09:52.121+09:00  INFO 12196 --- [goosage-api] [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/goosage_local (MySQL 8.0)
+2026-02-05T10:09:52.173+09:00  INFO 12196 --- [goosage-api] [main] o.f.core.internal.command.DbValidate     : Successfully validated 27 migrations (execution time 00:00.035s)
+2026-02-05T10:09:52.186+09:00  INFO 12196 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Current version of schema `goosage_local`: 27
+2026-02-05T10:09:52.186+09:00  WARN 12196 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` has a version (27) that is newer than the latest available migration (23) !
+2026-02-05T10:09:52.189+09:00  INFO 12196 --- [goosage-api] [main] o.f.core.internal.command.DbMigrate      : Schema `goosage_local` is up to date. No migration necessary.
+2026-02-05T10:09:52.274+09:00  INFO 12196 --- [goosage-api] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-05T10:09:52.333+09:00  INFO 12196 --- [goosage-api] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-02-05T10:09:52.368+09:00  INFO 12196 --- [goosage-api] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-02-05T10:09:52.588+09:00  INFO 12196 --- [goosage-api] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-05T10:09:53.374+09:00  INFO 12196 --- [goosage-api] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-05T10:09:53.406+09:00  INFO 12196 --- [goosage-api] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:09:53.959+09:00  WARN 12196 --- [goosage-api] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-05T10:09:54.405+09:00  INFO 12196 --- [goosage-api] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2026-02-05T10:09:54.461+09:00  WARN 12196 --- [goosage-api] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-05T10:09:54.462+09:00  INFO 12196 --- [goosage-api] [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:09:54.465+09:00  INFO 12196 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-02-05T10:09:54.470+09:00  INFO 12196 --- [goosage-api] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-02-05T10:09:54.486+09:00  INFO 12196 --- [goosage-api] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-05T10:09:54.502+09:00 ERROR 12196 --- [goosage-api] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8084 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8084 or configure this application to listen on another port.
+
+2026-02-05T10:12:25.926+09:00  INFO 13712 --- [goosage-api] [RMI TCP Connection(20)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2026-02-05T10:12:25.942+09:00  INFO 13712 --- [goosage-api] [RMI TCP Connection(20)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05T10:12:25.945+09:00  INFO 13712 --- [goosage-api] [RMI TCP Connection(20)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-02-05T10:12:25.951+09:00  INFO 13712 --- [goosage-api] [RMI TCP Connection(20)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

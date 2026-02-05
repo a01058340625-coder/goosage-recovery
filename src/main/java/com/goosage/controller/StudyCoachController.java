@@ -1,15 +1,15 @@
 package com.goosage.controller;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
 import com.goosage.common.UnauthorizedException;
+import com.goosage.dto.study.StudyCoachResponse;
 import com.goosage.service.study.StudyCoachService;
-import com.goosage.service.study.dto.StudyCoachResponse;
-
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class StudyCoachController {
@@ -31,3 +31,4 @@ public class StudyCoachController {
         return ApiResponse.ok(studyCoachService.coach(userId));
     }
 }
+

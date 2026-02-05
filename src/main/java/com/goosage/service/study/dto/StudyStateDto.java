@@ -3,7 +3,8 @@ package com.goosage.service.study.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record StudyStateDto(
+public record StudyStateDto
+(
         java.time.LocalDate ymd,
         boolean studiedToday,
         int streakDays,

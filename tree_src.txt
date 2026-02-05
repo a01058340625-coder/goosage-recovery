@@ -1,6 +1,6 @@
-﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 000000A0 B8B2:0FAA입니다.
-C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
+﻿Folder PATH listing
+Volume serial number is 000000ED B8B2:0FAA
+C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
 |   |   \---com
@@ -107,7 +107,6 @@ C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
 |   |           |   |   QuizItemDto.java
 |   |           |   |   StatsOverviewResponse.java
 |   |           |   |   
-|   |           |   +---com.goosage.dto.knowledge
 |   |           |   +---knowledge
 |   |           |   |       KnowledgeCreateRequest.java
 |   |           |   |       KnowledgeMapper.java
@@ -135,6 +134,8 @@ C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
 |   |           |   |       QuizSubmitResponse.java
 |   |           |   |       
 |   |           |   +---study
+|   |           |   |       PredictionDto.java
+|   |           |   |       StudyCoachResponse.java
 |   |           |   |       StudyEventRequest.java
 |   |           |   |       
 |   |           |   \---template
@@ -144,6 +145,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
 |   |           +---entity
 |   |           |       PostEntity.java
 |   |           |       QaEntity.java
+|   |           |       Template.java
 |   |           |       User.java
 |   |           |       
 |   |           +---exception
@@ -178,7 +180,6 @@ C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
 |   |           |   |   
 |   |           |   \---study
 |   |           |       |   StudyCoachService.java
-|   |           |       |   StudyStateService.java
 |   |           |       |   
 |   |           |       +---action
 |   |           |       |       NextActionDto.java
@@ -187,11 +188,13 @@ C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
 |   |           |       |       
 |   |           |       +---dto
 |   |           |       |       RiskLevel.java
-|   |           |       |       StudyCoachResponse.java
 |   |           |       |       StudyStateDto.java
 |   |           |       |       
-|   |           |       \---interpret
-|   |           |               StudyInterpretationService.java
+|   |           |       +---interpret
+|   |           |       |       StudyInterpretationService.java
+|   |           |       |       
+|   |           |       \---model
+|   |           |               StudyState.java
 |   |           |               
 |   |           +---template
 |   |           |       ActionRuleEngine.java
@@ -207,38 +210,35 @@ C:\DEV\LOOSEGOOSE\GOOSAGE\GOOSAGE-API\SRC
 |       |   application.properties
 |       |   application.yml
 |       |   
-|       +---db
-|       |   \---migration
-|       |           V10__create_templates.sql
-|       |           V11__create_quiz_result.sql
-|       |           V12__create_quiz_results.sql
-|       |           V13__create_quiz_items.sql
-|       |           V14__academy_init.sql
-|       |           V15__create_study_sessions.sql
-|       |           V16__create_study_events.sql
-|       |           V17__create_daily_learning.sql
-|       |           V18__daily_learning_upsert_rule.sql
-|       |           V19__create_academy_progress.sql
-|       |           V1__create_posts.sql
-|       |           V20__add_unique_academy_progress.sql
-|       |           V21__add_updated_at_to_academy_progress.sql
-|       |           V22__add_wrong_count_to_quiz_results.sql
-|       |           V2__add_index_posts_created_at.sql
-|       |           V3__create_knowledge.sql
-|       |           V4__posts_created_at_default.sql
-|       |           V5__create_qa.sql
-|       |           V6__create_users.sql
-|       |           V7__add_posts_user_id.sql
-|       |           V8__posts_user_fk.sql
-|       |           V9__create_quiz_result.sql
-|       |           
-|       +---static
-|       \---templates
+|       \---db
+|           \---migration
+|                   V10__create_templates.sql
+|                   V11__create_quiz_result.sql
+|                   V12__create_quiz_results.sql
+|                   V13__create_quiz_items.sql
+|                   V14__academy_init.sql
+|                   V15__create_study_sessions.sql
+|                   V16__create_study_events.sql
+|                   V17__create_daily_learning.sql
+|                   V18__daily_learning_upsert_rule.sql
+|                   V19__create_academy_progress.sql
+|                   V1__create_posts.sql
+|                   V20__add_unique_academy_progress.sql
+|                   V21__add_updated_at_to_academy_progress.sql
+|                   V22__add_wrong_count_to_quiz_results.sql
+|                   V23__add_user_id_to_posts.sql
+|                   V2__add_index_posts_created_at.sql
+|                   V3__create_knowledge.sql
+|                   V4__posts_created_at_default.sql
+|                   V5__create_qa.sql
+|                   V6__create_users.sql
+|                   V7__add_posts_user_id.sql
+|                   V8__posts_user_fk.sql
+|                   V9__create_quiz_result.sql
+|                   
 \---test
     \---java
         \---com
-            +---example
-            |   \---demo
             \---goosage
                     GoosageApiApplicationTests.java
                     PostRegressionTest.java

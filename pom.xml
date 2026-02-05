@@ -97,18 +97,22 @@
 
 	<build>
 		<plugins>
+
+			<!-- Spring Boot 실행용 -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- Flyway (지금은 있어도 되고, 나중에 정리) -->
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>9.22.3</version>
-				<configuration>
-					<url>
-						jdbc:mysql://localhost:3306/goosage?serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8</url>
-					<user>goosage</user>
-					<password>1234</password>
-				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
+
 
 </project>

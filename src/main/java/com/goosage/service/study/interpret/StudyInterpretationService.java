@@ -26,4 +26,19 @@ public class StudyInterpretationService {
                 "효과: today/streak 집계가 즉시 반영된다"
         );
     }
+    
+    public StudyStateDto getState(Long userId) {
+        // 임시: 컴파일/부팅 안정화용
+        return new StudyStateDto(
+                java.time.LocalDate.now(),
+                false,
+                0,
+                0,
+                0,
+                0,
+                null,
+                null
+        );
+    }
+
 }

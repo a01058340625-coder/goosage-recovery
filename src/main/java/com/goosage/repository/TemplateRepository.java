@@ -2,11 +2,11 @@ package com.goosage.repository;
 
 import java.util.Optional;
 
-import com.goosage.dto.template.TemplateDto;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TemplateRepository {
+import com.goosage.entity.Template;
 
-    Optional<TemplateDto> findByKnowledgeIdAndTemplateType(long knowledgeId, String templateType);
+public interface TemplateRepository extends JpaRepository<Template, Long> {
 
-    TemplateDto save(TemplateDto template);
+	Optional<Template> findByKnowledgeIdAndTemplateType(Long knowledgeId, String templateType);
 }

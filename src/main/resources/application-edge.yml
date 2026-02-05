@@ -4,7 +4,7 @@ spring:
       on-profile: edge
 
   datasource:
-    url: jdbc:mysql://<EDGE_HOST>:3306/goosage_edge?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://EDGE_HOST:3306/goosage_edge
     username: edge_user
     password: edge_pw
 
@@ -12,6 +12,5 @@ server:
   port: 8083
 
 logging:
-  level:
-    root: INFO
-    org.springframework.web: INFO
+  file:
+    name: logs/edge.log
