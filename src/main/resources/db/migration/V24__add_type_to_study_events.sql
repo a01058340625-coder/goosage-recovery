@@ -1,0 +1,2 @@
+ALTER TABLE study_events
+ADD COLUMN type VARCHAR(32) NOT NULL AFTER user_id;

@@ -1,4 +1,5 @@
 # GooSage Operations (v8 Lock)
+
 > Non-negotiable operational rules.  
 > If these rules are broken, the system must fail fast.
 
@@ -6,10 +7,10 @@
 
 ## 0. Purpose
 GooSage is not “code that runs.”  
-GooSage is a system that can be rolled back, reproduced, and proven.
+GooSage is a system that can be **rolled back, reproduced, and proven**.
 
 Core question:
-> “Does it run?” → “Can we revert it?”
+> “Does it run?” → “Can we revert it and prove it?”
 
 ---
 
@@ -20,6 +21,7 @@ Rules:
 - Each profile uses different ports
 - Each profile uses different databases
 - Config files must not leak values across profiles
+- Profile mixing is an operational violation
 
 ---
 
@@ -30,12 +32,14 @@ Rules:
 
 No exceptions:
 - No manual DB edits in runtime systems
-- Migrations are additive only (no rewrite of old migrations)
+- Migrations are additive only  
+  (No rewrite, no delete, no reorder of applied migrations)
 
 ---
 
 ## 3. Regression Lock (Run-All is the contract)
-Any change to DAO / SQL / Flyway / DTO / request schema MUST pass regression.
+Any change to DAO / SQL / Flyway / DTO / request schema  
+**MUST pass regression**.
 
 The only acceptable evidence of success:
 - `run-all.ps1` completes successfully
@@ -48,28 +52,31 @@ Health → Login → Coach → Create → Quiz → Event → Coach
 
 ---
 
-## 4. Samples are contracts (8-6 pending)
-Request/response samples are not examples.
+## 4. Request/Response Samples are Contracts
+Request/response samples are not examples.  
 They are **operational contracts**.
 
 Rules:
-- UTF-8 enforced (no Korean broken text)
-- Samples must match DTO fields/types exactly
-- Any breaking change requires updating samples and rerunning regression
+- UTF-8 enforced
+- Samples must match DTO fields and types exactly
+- Any breaking change requires:
+  1. Sample update
+  2. Regression re-run
+  3. Log proof
 
 Status:
-- 8-6 (samples folder standardization): TODO
+- 8-6 Sample standardization: **DONE**
 
 ---
 
 ## 5. Logging Standard (rid/uid/ep/st/ms)
-Logs must support “failure classification” without guessing.
+Logs must support failure classification without guessing.
 
 Required fields:
 - rid, uid, ep, st, ms
 
 Rule:
-- Any log format change requires `run-all` verification.
+- Any log format change requires regression verification
 
 ---
 
@@ -79,12 +86,12 @@ GooSage failed repeatedly not because of features, but because of trust.
 Recurring failures:
 - Column exists in code but not in DB
 - Column exists in DB but not in samples
-- Samples are correct but scripts/order differ
-- Success is judged by “feeling,” not proof
+- Samples are correct but execution order differs
+- Success judged by “feeling,” not proof
 
 Solution:
-- Fix the evaluation 기준 to **one**
-- Human memory is unreliable → scripts/logs become memory
+- Reduce evaluation criteria to **one**
+- Human memory is unreliable → scripts and logs replace memory
 - Convenience is sacrificed for safety
 
 ---
@@ -94,10 +101,13 @@ Solution:
 
 ---
 
-## 8. Signature (Lock Declaration)
-From this point:
+## 8. Signature (Operations Lock Declaration)
+
+From this point forward:
 - We do not “try and see.”
 - We change only what we can revert and prove.
+- Violations are operational failures, not bugs.
 
-Signed: ____________________  
-Date: ______________________
+Signed: GooSage Maintainer  
+Date: 2026-02-05  
+Status: **Operations Locked**
