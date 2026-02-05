@@ -1,27 +1,24 @@
 package com.goosage.dto.study;
 
-import com.goosage.service.study.action.NextActionDto;
-import com.goosage.service.study.dto.StudyStateDto;
-
 public class StudyCoachResponse {
 
-    private StudyStateDto state;
-    private NextActionDto nextAction;
+    private StudyStateView state;
+    private NextActionView nextAction;
     private PredictionDto prediction;
 
-    public StudyStateDto getState() {
+    public StudyStateView getState() {
         return state;
     }
 
-    public void setState(StudyStateDto state) {
+    public void setState(StudyStateView state) {
         this.state = state;
     }
 
-    public NextActionDto getNextAction() {
+    public NextActionView getNextAction() {
         return nextAction;
     }
 
-    public void setNextAction(NextActionDto nextAction) {
+    public void setNextAction(NextActionView nextAction) {
         this.nextAction = nextAction;
     }
 

@@ -2,8 +2,10 @@ package com.goosage.service.study;
 
 import org.springframework.stereotype.Service;
 
+import com.goosage.dto.study.NextActionView;
 import com.goosage.dto.study.PredictionDto;
 import com.goosage.dto.study.StudyCoachResponse;
+import com.goosage.dto.study.StudyStateView;
 import com.goosage.service.study.action.NextActionDto;
 import com.goosage.service.study.action.NextActionService;
 import com.goosage.service.study.dto.StudyStateDto;
@@ -25,17 +27,38 @@ public class StudyCoachService {
 
     public StudyCoachResponse coach(Long userId) {
 
-        // ✅ 원래 존재하던 “state 생성 주체”
         StudyStateDto state = studyInterpretationService.getState(userId);
-
         NextActionDto nextAction = nextActionService.decide(state);
 
         StudyCoachResponse response = new StudyCoachResponse();
-        response.setState(state);
-        response.setNextAction(nextAction);
+        response.setState(toView(state));
+        response.setNextAction(toView(nextAction));
         response.setPrediction(defaultPrediction());
 
         return response;
+    }
+
+    private StudyStateView toView(StudyStateDto s) {
+        return new StudyStateView(
+                s.ymd(),
+                s.studiedToday(),
+                s.streakDays(),
+                s.eventsCount(),
+                s.quizSubmits(),
+                s.wrongReviews(),
+                s.lastEventAt(),
+                s.recentKnowledgeId()
+        );
+    }
+
+    private NextActionView toView(NextActionDto a) {
+        return new NextActionView(
+                a.type(),
+                a.label(),
+                a.knowledgeId(),
+                a.requiresForge(),
+                a.reason()
+        );
     }
 
     private PredictionDto defaultPrediction() {
