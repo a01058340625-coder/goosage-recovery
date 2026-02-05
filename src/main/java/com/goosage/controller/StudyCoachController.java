@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.goosage.auth.SessionConst;
 import com.goosage.common.ApiResponse;
 import com.goosage.common.UnauthorizedException;
-import com.goosage.dto.study.StudyCoachResponse;
+import com.goosage.api.view.study.StudyCoachResponse;   // ✅ 여기로 통일
 import com.goosage.service.study.StudyCoachService;
 
 @RestController
@@ -28,7 +28,7 @@ public class StudyCoachController {
             throw new UnauthorizedException("UNAUTHORIZED");
         }
 
-        return ApiResponse.ok(studyCoachService.coach(userId));
+        StudyCoachResponse data = studyCoachService.coach(userId);
+        return ApiResponse.ok(data);
     }
 }
-

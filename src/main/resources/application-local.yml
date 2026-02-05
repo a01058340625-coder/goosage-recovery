@@ -1,21 +1,12 @@
 spring:
+  config:
+    activate:
+      on-profile: local
+
   datasource:
     url: jdbc:mysql://localhost:3306/goosage_local?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: goosage
     password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
-
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
 
 server:
   port: 8084

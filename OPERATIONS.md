@@ -111,3 +111,7 @@ From this point forward:
 Signed: GooSage Maintainer  
 Date: 2026-02-05  
 Status: **Operations Locked**
+
+- All responses must be UTF-8 encoded.
+- application.yml contains no environment-specific secrets or ports.
+

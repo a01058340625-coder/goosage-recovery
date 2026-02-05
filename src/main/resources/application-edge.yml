@@ -4,7 +4,7 @@ spring:
       on-profile: edge
 
   datasource:
-    url: jdbc:mysql://EDGE_HOST:3306/goosage_edge
+    url: jdbc:mysql://EDGE_HOST:3306/goosage_edge?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: edge_user
     password: edge_pw
 

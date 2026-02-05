@@ -1,5 +1,5 @@
-﻿Folder PATH listing
-Volume serial number is 000000ED B8B2:0FAA
+﻿폴더 PATH의 목록입니다.
+볼륨 일련 번호가 00000069 B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -134,9 +134,11 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       QuizSubmitResponse.java
 |   |           |   |       
 |   |           |   +---study
+|   |           |   |       NextActionView.java
 |   |           |   |       PredictionDto.java
 |   |           |   |       StudyCoachResponse.java
 |   |           |   |       StudyEventRequest.java
+|   |           |   |       StudyStateView.java
 |   |           |   |       
 |   |           |   \---template
 |   |           |           TemplateDto.java
@@ -201,6 +203,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |       SummaryV1Formatter.java
 |   |           |       
 |   |           \---util
+|   |                   PasswordHashUtil.java
 |   |                   TagUtils.java
 |   |                   
 |   \---resources
@@ -227,6 +230,8 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |                   V21__add_updated_at_to_academy_progress.sql
 |                   V22__add_wrong_count_to_quiz_results.sql
 |                   V23__add_user_id_to_posts.sql
+|                   V24__add_type_to_study_events.sql
+|                   V25__align_event_type_column.sql
 |                   V2__add_index_posts_created_at.sql
 |                   V3__create_knowledge.sql
 |                   V4__posts_created_at_default.sql
