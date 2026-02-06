@@ -13,6 +13,8 @@ import com.goosage.service.study.predict.PredictionService;
 import com.goosage.service.study.predict.mapper.PredictionViewMapper;
 import com.goosage.service.study.predict.model.Prediction;
 import com.goosage.service.study.predict.model.PredictionInput;
+import com.goosage.dao.study.StudyReadDao;
+
 
 @Service
 public class StudyCoachService {
@@ -22,19 +24,23 @@ public class StudyCoachService {
 
     // 9단계: 예측 레이어 (결정 엔진 보호)
     private final PredictionService predictionService;
-    private final PredictionViewMapper predictionViewMapper;
+    private final PredictionViewMapper predictionViewMapper; 
+    private final StudyReadDao studyReadDao;
+
 
     public StudyCoachService(
-            StudyInterpretationService studyInterpretationService,
-            NextActionService nextActionService,
-            PredictionService predictionService,
-            PredictionViewMapper predictionViewMapper
-    ) {
-        this.studyInterpretationService = studyInterpretationService;
-        this.nextActionService = nextActionService;
-        this.predictionService = predictionService;
-        this.predictionViewMapper = predictionViewMapper;
-    }
+    	    StudyInterpretationService studyInterpretationService,
+    	    NextActionService nextActionService,
+    	    PredictionService predictionService,
+    	    PredictionViewMapper predictionViewMapper,
+    	    StudyReadDao studyReadDao
+    	) {
+    	    this.studyInterpretationService = studyInterpretationService;
+    	    this.nextActionService = nextActionService;
+    	    this.predictionService = predictionService;
+    	    this.predictionViewMapper = predictionViewMapper;
+    	    this.studyReadDao = studyReadDao;
+    	}
 
     public StudyCoachResponse coach(Long userId) {
 
@@ -45,11 +51,16 @@ public class StudyCoachService {
         NextActionDto nextAction = nextActionService.decide(state);
 
         // 3) 예측 입력 구성 (v1.4 최소 입력)
+        int daysSinceLastEvent = studyReadDao.daysSinceLastEvent(userId);
+        int recentEventCount3d = studyReadDao.countEventsRecent3d(userId);
+
         PredictionInput input = new PredictionInput(
-                state.streakDays(),
-                calcDaysSinceLastEvent(state),
-                state.eventsCount() // TODO v1.4: recentEventCount3d 실제 계산으로 교체
+            state.streakDays(),
+            daysSinceLastEvent,
+            recentEventCount3d
         );
+
+
 
         Prediction prediction = predictionService.predict(input);
 

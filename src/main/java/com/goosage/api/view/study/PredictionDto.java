@@ -1,7 +1,7 @@
 package com.goosage.api.view.study;
 
 public record PredictionDto(
-        String level,          // SAFE / WARNING / RISK
+        String level,
         String expectedOutcome,
         String reason,
         String minimalAction

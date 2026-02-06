@@ -2,9 +2,7 @@ package com.goosage.service.study.predict.rule;
 
 import org.springframework.stereotype.Component;
 
-import com.goosage.service.study.predict.model.Prediction;
-import com.goosage.service.study.predict.model.PredictionInput;
-import com.goosage.service.study.predict.model.PredictionLevel;
+import com.goosage.service.study.predict.model.*;
 
 @Component
 public class StableStateRule implements PredictionRule {
@@ -16,11 +14,10 @@ public class StableStateRule implements PredictionRule {
 
     @Override
     public Prediction predict(PredictionInput i) {
-        return new Prediction(
+        return Prediction.of(
                 PredictionLevel.SAFE,
-                "현재 학습 흐름을 유지하고 있습니다",
-                "오늘 학습 완료",
-                "유지"
+                PredictionReasonCode.TODAY_DONE,
+                PredictionEvidence.from(i)
         );
     }
 

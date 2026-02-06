@@ -1,7 +1,6 @@
 package com.goosage.dao.study;
 
 import java.sql.Timestamp;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -166,5 +165,46 @@ public class StudyReadDao {
 	    }
 
 	    return streak;
+	}
+	
+	public Timestamp lastEventAtAll(long userId) {
+	    String sql = """
+	        SELECT MAX(created_at)
+	        FROM study_events
+	        WHERE user_id = ?
+	    """;
+	    return jdbcTemplate.queryForObject(sql, Timestamp.class, userId);
+	}
+
+	public int countEventsRecentDays(long userId, int days) {
+	    String sql = """
+	        SELECT COUNT(*)
+	        FROM study_events
+	        WHERE user_id = ?
+	          AND created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
+	    """;
+	    Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, days);
+	    return (cnt == null) ? 0 : cnt;
+	}
+	
+	public int daysSinceLastEvent(long userId) {
+	    String sql = """
+	        SELECT COALESCE(TIMESTAMPDIFF(DAY, MAX(created_at), NOW()), 999)
+	        FROM study_events
+	        WHERE user_id = ?
+	    """;
+	    Integer d = jdbcTemplate.queryForObject(sql, Integer.class, userId);
+	    return (d == null) ? 999 : d;
+	}
+
+	public int countEventsRecent3d(long userId) {
+	    String sql = """
+	        SELECT COUNT(*)
+	        FROM study_events
+	        WHERE user_id = ?
+	          AND created_at >= DATE_SUB(NOW(), INTERVAL 3 DAY)
+	    """;
+	    Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId);
+	    return (cnt == null) ? 0 : cnt;
 	}
 }

@@ -22,26 +22,31 @@ public class StudyInterpretationService {
 
         var opt = studyReadDao.findToday(userId);
 
+        // ✅ 전체 기준 lastEventAt 확보 (오늘 이벤트 없어도 살아있게)
+        var tsAll = studyReadDao.lastEventAtAll(userId);
+        var lastEventAtAll = (tsAll != null) ? tsAll.toLocalDateTime() : null;
+
+        int streakDays = studyReadDao.calcStreakDays(userId, today);
+
         if (opt.isEmpty()) {
             return new StudyStateDto(
-                today, false, 0,
+                today, false, streakDays,
                 0, 0, 0,
-                null, null
+                lastEventAtAll, null
             );
         }
 
         var row = opt.get();
 
-        int streakDays = studyReadDao.calcStreakDays(userId, today);
-
         return new StudyStateDto(
             row.ymd(),
             row.eventsCount() > 0,
-            streakDays,            // ✅ 여기만 채움
+            streakDays,
             row.eventsCount(),
             row.quizSubmits(),
             row.wrongReviews(),
-            row.lastEventAt(),
+            // ✅ row.lastEventAt() 대신 "전체 마지막 이벤트"로 통일
+            lastEventAtAll,
             null
         );
     }

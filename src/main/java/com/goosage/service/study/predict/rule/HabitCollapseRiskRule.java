@@ -3,8 +3,10 @@ package com.goosage.service.study.predict.rule;
 import org.springframework.stereotype.Component;
 
 import com.goosage.service.study.predict.model.Prediction;
+import com.goosage.service.study.predict.model.PredictionEvidence;
 import com.goosage.service.study.predict.model.PredictionInput;
 import com.goosage.service.study.predict.model.PredictionLevel;
+import com.goosage.service.study.predict.model.PredictionReasonCode;
 
 @Component
 public class HabitCollapseRiskRule implements PredictionRule {
@@ -16,13 +18,13 @@ public class HabitCollapseRiskRule implements PredictionRule {
 
     @Override
     public Prediction predict(PredictionInput i) {
-        return new Prediction(
-                PredictionLevel.RISK,
-                "학습 흐름이 무너질 가능성이 큽니다",
-                i.daysSinceLastEvent() + "일 연속 공백",
-                "퀴즈 1문제"
+        return Prediction.of(
+            PredictionLevel.RISK,
+            PredictionReasonCode.GAP_4DAYS,
+            PredictionEvidence.from(i)
         );
     }
+
 
     @Override
     public int priority() {
