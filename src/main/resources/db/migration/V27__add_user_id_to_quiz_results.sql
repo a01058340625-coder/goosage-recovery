@@ -1,0 +1,2 @@
+ALTER TABLE quiz_results
+ADD COLUMN user_id BIGINT NOT NULL AFTER id;

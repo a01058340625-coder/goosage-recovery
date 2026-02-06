@@ -30,7 +30,9 @@ public class JdbcKnowledgeRepository implements KnowledgeRepository {
         dto.setId(rs.getLong("id"));
         dto.setType(rs.getString("type"));
         dto.setSource(rs.getString("source"));
-        dto.setSourceId(rs.getLong("source_id"));
+        Long sid = rs.getObject("source_id", Long.class);
+        dto.setSourceId(sid);
+
         dto.setTitle(rs.getString("title"));
         dto.setContent(rs.getString("content"));
         dto.setTags(TagsCsv.split(rs.getString("tags")));
@@ -57,7 +59,7 @@ public class JdbcKnowledgeRepository implements KnowledgeRepository {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, knowledge.getType());
             ps.setString(2, knowledge.getSource());
-            ps.setLong(3, knowledge.getSourceId());
+            ps.setObject(3, knowledge.getSourceId(), java.sql.Types.BIGINT);
             ps.setString(4, knowledge.getTitle());
             ps.setString(5, knowledge.getContent());
             ps.setString(6, tagsCsv);

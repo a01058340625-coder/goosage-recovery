@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.goosage.entity.User;
+import com.goosage.exception.UnauthorizedException;
 import com.goosage.repository.UserRepository;
 
 @Service
@@ -42,12 +43,22 @@ public class AuthService {
     }
 
     // ✅ 로그인
+ // AuthService.java
+
     public User login(String email, String password) {
+
+        if (email == null || email.isBlank()) {
+            throw new UnauthorizedException("INVALID_CREDENTIALS");
+        }
+        if (password == null || password.isBlank()) {
+            throw new UnauthorizedException("INVALID_CREDENTIALS");
+        }
+
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("USER_NOT_FOUND"));
+                .orElseThrow(() -> new UnauthorizedException("INVALID_CREDENTIALS"));
 
         if (!encoder.matches(password, user.getPasswordHash())) {
-            throw new RuntimeException("INVALID_PASSWORD");
+            throw new UnauthorizedException("INVALID_CREDENTIALS");
         }
 
         return user;
