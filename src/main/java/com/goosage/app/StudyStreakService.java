@@ -2,7 +2,7 @@ package com.goosage.app;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.dao.study.StudyStreakDao;
+import com.goosage.infra.dao.StudyStreakDao;
 
 @Service
 public class StudyStreakService {

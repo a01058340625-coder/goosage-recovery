@@ -5,8 +5,9 @@ import jakarta.servlet.http.HttpSession;
 
 import com.goosage.app.StudyEventService;
 import com.goosage.auth.SessionConst;
-import com.goosage.dto.study.StudyEventRequest;
+import com.goosage.api.view.study.StudyEventRequest;
 import com.goosage.support.web.ApiResponse;
+
 
 @RestController
 public class StudyEventController {

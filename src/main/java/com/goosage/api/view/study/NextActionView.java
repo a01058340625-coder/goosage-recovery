@@ -1,4 +1,4 @@
-package com.goosage.dto.study;
+package com.goosage.api.view.study;
 
 import com.goosage.domain.NextActionType;
 

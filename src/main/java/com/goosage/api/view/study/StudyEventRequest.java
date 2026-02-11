@@ -1,4 +1,4 @@
-package com.goosage.dto.study;
+package com.goosage.api.view.study;
 
 public record StudyEventRequest(
         String type,     // 예: "COACH_OPEN", "WRONG_REVIEW_DONE"

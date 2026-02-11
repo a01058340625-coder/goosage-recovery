@@ -2,9 +2,10 @@ package com.goosage.app.study;
 
 import org.springframework.stereotype.Service;
 
+import com.goosage.api.view.study.NextActionView;
 import com.goosage.api.view.study.StudyCoachResponse;
-import com.goosage.dto.study.NextActionView;
-import com.goosage.dto.study.StudyStateView;
+import com.goosage.api.view.study.StudyStateView;
+import com.goosage.infra.dao.StudyReadDao;
 import com.goosage.service.study.action.NextActionDto;
 import com.goosage.service.study.action.NextActionService;
 import com.goosage.service.study.dto.StudyStateDto;
@@ -13,7 +14,18 @@ import com.goosage.service.study.predict.PredictionService;
 import com.goosage.service.study.predict.mapper.PredictionViewMapper;
 import com.goosage.service.study.predict.model.Prediction;
 import com.goosage.service.study.predict.model.PredictionInput;
-import com.goosage.dao.study.StudyReadDao;
+
+
+import com.goosage.api.view.study.StudyCoachResponse;
+import com.goosage.infra.dao.StudyReadDao;
+import com.goosage.service.study.action.NextActionDto;
+import com.goosage.service.study.action.NextActionService;
+import com.goosage.service.study.dto.StudyStateDto;
+import com.goosage.service.study.interpret.StudyInterpretationService;
+import com.goosage.service.study.predict.PredictionService;
+import com.goosage.service.study.predict.mapper.PredictionViewMapper;
+import com.goosage.service.study.predict.model.Prediction;
+import com.goosage.service.study.predict.model.PredictionInput;
 
 
 @Service

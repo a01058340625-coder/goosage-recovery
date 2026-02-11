@@ -1,4 +1,4 @@
-package com.goosage.dao.study;
+package com.goosage.infra.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

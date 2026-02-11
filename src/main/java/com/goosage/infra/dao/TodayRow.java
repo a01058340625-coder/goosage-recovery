@@ -1,4 +1,4 @@
-package com.goosage.dao.study;
+package com.goosage.infra.dao;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -3,7 +3,7 @@ package com.goosage.app;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.goosage.dao.study.DailyLearningDao;
+import com.goosage.infra.dao.DailyLearningDao;
 import com.goosage.infra.dao.StudyEventDao;
 
 @Service

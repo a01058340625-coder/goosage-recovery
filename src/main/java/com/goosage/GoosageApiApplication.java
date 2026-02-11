@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.goosage.infra.repository")
-
 @EntityScan(basePackages = "com.goosage")
 public class GoosageApiApplication {
 

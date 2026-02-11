@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.dao.study.StudyReadDao;
+import com.goosage.infra.dao.StudyReadDao;
 import com.goosage.service.study.dto.StudyStateDto;
 
 

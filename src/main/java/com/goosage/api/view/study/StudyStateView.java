@@ -1,4 +1,4 @@
-package com.goosage.dto.study;
+package com.goosage.api.view.study;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

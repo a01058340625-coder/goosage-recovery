@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.dao.study.StudyReadDao;
-import com.goosage.dao.study.TodayRow;
+import com.goosage.infra.dao.StudyReadDao;
+import com.goosage.infra.dao.TodayRow;
 
 @Service
 public class StudyTodayService {
