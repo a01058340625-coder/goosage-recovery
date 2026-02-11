@@ -1,6 +1,6 @@
 package com.goosage.dto.study;
 
-import com.goosage.service.study.action.NextActionType;
+import com.goosage.domain.NextActionType;
 
 public class NextActionView {
 

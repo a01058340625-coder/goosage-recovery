@@ -1,6 +1,8 @@
 package com.goosage.service.study.action;
 
 import org.springframework.stereotype.Service;
+
+import com.goosage.domain.NextActionType;
 import com.goosage.service.study.dto.StudyStateDto;
 
 @Service

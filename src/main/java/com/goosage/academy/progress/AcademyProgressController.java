@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goosage.auth.SessionConst;
-import com.goosage.common.ApiResponse;
+import com.goosage.support.web.ApiResponse;
 
 import jakarta.servlet.http.HttpSession;
 

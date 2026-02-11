@@ -1,5 +1,7 @@
 package com.goosage.service.study.action;
 
+import com.goosage.domain.NextActionType;
+
 public record NextActionDto(
         NextActionType type,
         String label,

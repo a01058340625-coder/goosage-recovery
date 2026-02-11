@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.goosage.api.view.study.PredictionDto;
-import com.goosage.service.study.predict.ExposurePolicy;
+import com.goosage.domain.study.ExposurePolicy;
 import com.goosage.service.study.predict.copy.PredictionCopyService;
 import com.goosage.service.study.predict.model.*;
 

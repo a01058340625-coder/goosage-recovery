@@ -1,7 +1,8 @@
 package com.goosage.academy.report;
 
 import com.goosage.auth.SessionConst;
-import com.goosage.common.ApiResponse;
+import com.goosage.support.web.ApiResponse;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 00000069 B8B2:0FAA입니다.
+볼륨 일련 번호가 000000E1 B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -51,9 +51,14 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |       AiTemplateService.java
 |   |           |       
 |   |           +---api
-|   |           |       HealthController.java
-|   |           |       HelloController.java
-|   |           |       
+|   |           |   |   HealthController.java
+|   |           |   |   HelloController.java
+|   |           |   |   
+|   |           |   \---view
+|   |           |       \---study
+|   |           |               PredictionDto.java
+|   |           |               StudyCoachResponse.java
+|   |           |               
 |   |           +---auth
 |   |           |       AuthResponse.java
 |   |           |       AuthSessionFilter.java
@@ -152,6 +157,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |       
 |   |           +---exception
 |   |           |       ForbiddenException.java
+|   |           |       UnauthorizedException.java
 |   |           |       
 |   |           +---forge
 |   |           |       ForgePrepareResult.java
@@ -195,14 +201,43 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |       +---interpret
 |   |           |       |       StudyInterpretationService.java
 |   |           |       |       
-|   |           |       \---model
-|   |           |               StudyState.java
-|   |           |               
+|   |           |       +---model
+|   |           |       |       StudyState.java
+|   |           |       |       
+|   |           |       \---predict
+|   |           |           |   ExposurePolicy.java
+|   |           |           |   PredictionService.java
+|   |           |           |   PredictionServiceImpl.java
+|   |           |           |   
+|   |           |           +---copy
+|   |           |           |       PredictionCopyService.java
+|   |           |           |       
+|   |           |           +---mapper
+|   |           |           |       PredictionViewMapper.java
+|   |           |           |       
+|   |           |           +---model
+|   |           |           |       EvidenceView.java
+|   |           |           |       ExposureLevel.java
+|   |           |           |       Prediction.java
+|   |           |           |       PredictionEvidence.java
+|   |           |           |       PredictionInput.java
+|   |           |           |       PredictionLevel.java
+|   |           |           |       PredictionReasonCode.java
+|   |           |           |       PredictionView.java
+|   |           |           |       
+|   |           |           \---rule
+|   |           |                   DataPoorDefaultRule.java
+|   |           |                   HabitCollapseRiskRule.java
+|   |           |                   PredictionRule.java
+|   |           |                   StableStateRule.java
+|   |           |                   StreakBreakRiskRule.java
+|   |           |                   
 |   |           +---template
 |   |           |       ActionRuleEngine.java
 |   |           |       SummaryV1Formatter.java
 |   |           |       
 |   |           \---util
+|   |                   BcryptGen.java
 |   |                   PasswordHashUtil.java
 |   |                   TagUtils.java
 |   |                   
@@ -232,6 +267,8 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |                   V23__add_user_id_to_posts.sql
 |                   V24__add_type_to_study_events.sql
 |                   V25__align_event_type_column.sql
+|                   V26__add_source_id_to_knowledge.sql
+|                   V27__add_user_id_to_quiz_results.sql
 |                   V2__add_index_posts_created_at.sql
 |                   V3__create_knowledge.sql
 |                   V4__posts_created_at_default.sql

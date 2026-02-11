@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.goosage.entity.Template;
-import com.goosage.repository.TemplateRepository;
+import com.goosage.infra.repository.TemplateRepository;
 
 @Service
 public class ForgeTriggerService {

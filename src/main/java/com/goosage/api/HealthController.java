@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.goosage.common.ApiResponse;
+import com.goosage.support.web.ApiResponse;
 
 /**
  * ✅ GooSage "살아있나?" 확인용 엔드포인트

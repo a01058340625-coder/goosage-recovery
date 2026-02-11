@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.goosage.domain.study.PredictionRule;
 import com.goosage.service.study.predict.model.Prediction;
 import com.goosage.service.study.predict.model.PredictionEvidence;
 import com.goosage.service.study.predict.model.PredictionInput;
 import com.goosage.service.study.predict.model.PredictionLevel;
 import com.goosage.service.study.predict.model.PredictionReasonCode;
-import com.goosage.service.study.predict.rule.PredictionRule;
 
 @Service
 public class PredictionServiceImpl implements PredictionService {
