@@ -4,6 +4,7 @@ import com.goosage.infra.service.study.action.NextActionDto;
 import com.goosage.infra.service.study.predict.model.Prediction;
 
 public record StudyCoachResult(
+        StudyState state,
         NextActionDto nextAction,
         Prediction prediction
 ) {}

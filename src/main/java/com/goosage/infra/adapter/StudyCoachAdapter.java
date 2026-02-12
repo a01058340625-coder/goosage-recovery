@@ -4,10 +4,12 @@ import org.springframework.stereotype.Component;
 
 import com.goosage.domain.study.StudyCoachPort;
 import com.goosage.domain.study.StudyCoachResult;
+import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.study.StudyState;
 import com.goosage.infra.service.study.action.NextActionDto;
 import com.goosage.infra.service.study.action.NextActionService;
-import com.goosage.infra.service.study.dto.StudyStateDto;
 import com.goosage.infra.service.study.interpret.StudyInterpretationService;
+import com.goosage.infra.service.study.mapper.PredictionInputMapper;
 import com.goosage.infra.service.study.predict.PredictionService;
 import com.goosage.infra.service.study.predict.model.Prediction;
 import com.goosage.infra.service.study.predict.model.PredictionInput;
@@ -32,16 +34,19 @@ public class StudyCoachAdapter implements StudyCoachPort {
     @Override
     public StudyCoachResult execute(long userId) {
 
-        // ✅ 너의 단일 진실: getState(Long)
-        StudyStateDto state = interpretationService.getState(userId);
+        // 1) 단일 출처 Snapshot
+        StudySnapshot snap = interpretationService.getSnapshot(userId);
 
-        // ✅ decide(StudyStateDto) 계약 그대로
+        // 2) 엔진 단일 진실
+        StudyState state = snap.state();
+
+        // 3) 결정은 state 단일 입력
         NextActionDto next = nextActionService.decide(state);
 
-        // ✅ predict(PredictionInput) 계약 그대로
-        PredictionInput input = PredictionInput.of(userId, 0, 0, 0);
+        // 4) 예측은 snapshot evidence 기반 input (단일 출처)
+        PredictionInput input = PredictionInputMapper.from(userId, snap);
         Prediction prediction = predictionService.predict(input);
 
-        return new StudyCoachResult(next, prediction);
+        return new StudyCoachResult(state, next, prediction);
     }
 }

@@ -1,5 +1,5 @@
 ﻿Folder PATH listing
-Volume serial number is 000000E3 B8B2:0FAA
+Volume serial number is 000000DF B8B2:0FAA
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -113,13 +113,15 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           +---domain
 |   |           |   |   NextActionType.java
 |   |           |   |   
+|   |           |   +---auth
+|   |           |   |       UserPort.java
+|   |           |   |       
 |   |           |   +---knowledge
 |   |           |   |       KnowledgeCrudPort.java
 |   |           |   |       KnowledgePort.java
 |   |           |   |       KnowledgeView.java
 |   |           |   |       
 |   |           |   +---post
-|   |           |   |       PostPort.java
 |   |           |   |       PostStorePort.java
 |   |           |   |       
 |   |           |   +---qa
@@ -197,6 +199,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       PostStoreAdapter.java
 |   |           |   |       QaRepositoryAdapter.java
 |   |           |   |       StudyCoachAdapter.java
+|   |           |   |       UserRepositoryAdapter.java
 |   |           |   |       
 |   |           |   +---dao
 |   |           |   |       DailyLearningDao.java
