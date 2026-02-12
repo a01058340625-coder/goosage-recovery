@@ -3,7 +3,6 @@ package com.goosage.api.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
-import com.goosage.dto.quiz.QuizRetryQuestion;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.goosage.app.QuizService;
 import com.goosage.auth.SessionConst;
 import com.goosage.dto.quiz.QuizMapper;
+import com.goosage.dto.quiz.QuizRetryQuestion;
 import com.goosage.dto.quiz.QuizRetryResponse;
 import com.goosage.dto.quiz.QuizSubmitRequest;
 import com.goosage.dto.quiz.QuizSubmitResponse;
-import com.goosage.infra.dao.QuizResultDao;
 import com.goosage.support.web.ApiResponse;
 import com.goosage.support.web.UnauthorizedException;
 
@@ -48,25 +47,28 @@ public class QuizController {
             @PathVariable("id") long knowledgeId,
             HttpSession session
     ) {
-    	long userId = requireUserId(session);
-    	QuizResultDao.QuizResultRow latest = quizService.findLatestByUserAndKnowledgeId(userId, knowledgeId);
+        long userId = requireUserId(session);
+
+        // 🔥 infra 타입 제거 — detailsJson만 받는다
+        String detailsJson = quizService.findLatestDetailsJson(userId, knowledgeId);
 
         List<QuizRetryQuestion> wrong = new ArrayList<>();
-        if (latest != null) {
-            List<Map<String, Object>> details = quizService.extractWrongDetails(latest.detailsJson());
+
+        if (detailsJson != null) {
+            List<Map<String, Object>> details =
+                    quizService.extractWrongDetails(detailsJson);
 
             for (Map<String, Object> d : details) {
-                // extractWrongDetails가 어떤 키로 주는지에 맞춰서 맞추면 됨
-                int qid = Integer.parseInt(String.valueOf(d.get("no")));          // 또는 "question_idx"
-                String qText = String.valueOf(d.get("question"));                 // 또는 "qText"
+                int qid = Integer.parseInt(String.valueOf(d.get("no")));
+                String qText = String.valueOf(d.get("question"));
                 wrong.add(new QuizRetryQuestion(qid, qText));
             }
         }
 
-        return ApiResponse.ok(QuizMapper.toWrongResponse(knowledgeId, latest, wrong));
+        return ApiResponse.ok(
+                QuizMapper.toWrongResponse(knowledgeId, null, wrong)
+        );
     }
-    
-
 
     @GetMapping("/knowledge/{id}/quiz/retry")
     public ApiResponse<QuizRetryResponse> retry(
@@ -78,7 +80,6 @@ public class QuizController {
         return ApiResponse.ok(res);
     }
 
-    
     private long requireUserId(HttpSession session) {
         Object uidObj = session.getAttribute(SessionConst.LOGIN_USER_ID);
         if (uidObj == null) throw new UnauthorizedException("UNAUTHORIZED");

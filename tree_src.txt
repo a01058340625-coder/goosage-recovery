@@ -1,5 +1,5 @@
 ﻿Folder PATH listing
-Volume serial number is 00000076 B8B2:0FAA
+Volume serial number is 000000E3 B8B2:0FAA
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -75,16 +75,22 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       
 |   |           |   \---view
 |   |           |       \---study
-|   |           |               PredictionDto.java
+|   |           |               NextActionView.java
 |   |           |               StudyCoachResponse.java
+|   |           |               StudyEventRequest.java
+|   |           |               StudyPredictionView.java
+|   |           |               StudyStateView.java
 |   |           |               
 |   |           +---app
+|   |           |   |   AiTestService.java
 |   |           |   |   AuthService.java
 |   |           |   |   KnowledgeService.java
 |   |           |   |   KnowledgeTemplateService.java
 |   |           |   |   PostService.java
 |   |           |   |   QaService.java
 |   |           |   |   QuizService.java
+|   |           |   |   StatsService.java
+|   |           |   |   StudyDebugService.java
 |   |           |   |   StudyEventService.java
 |   |           |   |   StudyStreakService.java
 |   |           |   |   StudyTodayResult.java
@@ -104,23 +110,37 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           +---common
 |   |           |       TagsCsv.java
 |   |           |       
-|   |           +---dao
-|   |           |   \---study
-|   |           |           DailyLearningDao.java
-|   |           |           StudyReadDao.java
-|   |           |           StudyStreakDao.java
-|   |           |           TodayRow.java
-|   |           |           
 |   |           +---domain
 |   |           |   |   NextActionType.java
 |   |           |   |   
+|   |           |   +---knowledge
+|   |           |   |       KnowledgeCrudPort.java
+|   |           |   |       KnowledgePort.java
+|   |           |   |       KnowledgeView.java
+|   |           |   |       
+|   |           |   +---post
+|   |           |   |       PostPort.java
+|   |           |   |       PostStorePort.java
+|   |           |   |       
+|   |           |   +---qa
+|   |           |   |       QaPort.java
+|   |           |   |       QaView.java
+|   |           |   |       
+|   |           |   +---stats
+|   |           |   |       StatsPort.java
+|   |           |   |       
 |   |           |   \---study
+|   |           |           DailyLearningPort.java
 |   |           |           DataPoorDefaultRule.java
 |   |           |           ExposurePolicy.java
 |   |           |           HabitCollapseRiskRule.java
 |   |           |           PredictionRule.java
 |   |           |           StableStateRule.java
 |   |           |           StreakBreakRiskRule.java
+|   |           |           StudyCoachPort.java
+|   |           |           StudyCoachResult.java
+|   |           |           StudyDebugPort.java
+|   |           |           StudyEventPort.java
 |   |           |           StudyState.java
 |   |           |           
 |   |           +---dto
@@ -154,13 +174,6 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       QuizSubmitRequest.java
 |   |           |   |       QuizSubmitResponse.java
 |   |           |   |       
-|   |           |   +---study
-|   |           |   |       NextActionView.java
-|   |           |   |       PredictionDto.java
-|   |           |   |       StudyCoachResponse.java
-|   |           |   |       StudyEventRequest.java
-|   |           |   |       StudyStateView.java
-|   |           |   |       
 |   |           |   \---template
 |   |           |           TemplateDto.java
 |   |           |           TemplateResponse.java
@@ -177,56 +190,72 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |       ForgeTriggerService.java
 |   |           |       
 |   |           +---infra
+|   |           |   +---adapter
+|   |           |   |       KnowledgeCrudAdapter.java
+|   |           |   |       KnowledgeRepositoryAdapter.java
+|   |           |   |       PostMapper.java
+|   |           |   |       PostStoreAdapter.java
+|   |           |   |       QaRepositoryAdapter.java
+|   |           |   |       StudyCoachAdapter.java
+|   |           |   |       
 |   |           |   +---dao
+|   |           |   |       DailyLearningDao.java
+|   |           |   |       DailyLearningDaoAdapter.java
 |   |           |   |       KnowledgeDao.java
 |   |           |   |       QuizItemDao.java
 |   |           |   |       QuizResultDao.java
 |   |           |   |       StatsDao.java
+|   |           |   |       StatsDaoAdapter.java
+|   |           |   |       StudyDebugDaoAdapter.java
 |   |           |   |       StudyEventDao.java
+|   |           |   |       StudyEventDaoAdapter.java
+|   |           |   |       StudyReadDao.java
+|   |           |   |       StudyStreakDao.java
 |   |           |   |       TemplateDao.java
+|   |           |   |       TodayRow.java
 |   |           |   |       
-|   |           |   \---repository
-|   |           |           InMemoryKnowledgeRepository.java
-|   |           |           JdbcKnowledgeRepository.java
-|   |           |           KnowledgeRepository.java
-|   |           |           PostRepository.java
-|   |           |           QaRepository.java
-|   |           |           TemplateRepository.java
-|   |           |           UserRepository.java
-|   |           |           
-|   |           +---service
-|   |           |   \---study
-|   |           |       +---action
-|   |           |       |       NextActionDto.java
-|   |           |       |       NextActionService.java
-|   |           |       |       
-|   |           |       +---dto
-|   |           |       |       RiskLevel.java
-|   |           |       |       StudyStateDto.java
-|   |           |       |       
-|   |           |       +---interpret
-|   |           |       |       StudyInterpretationService.java
-|   |           |       |       
-|   |           |       \---predict
-|   |           |           |   PredictionService.java
-|   |           |           |   PredictionServiceImpl.java
-|   |           |           |   
-|   |           |           +---copy
-|   |           |           |       PredictionCopyService.java
+|   |           |   +---repository
+|   |           |   |       InMemoryKnowledgeRepository.java
+|   |           |   |       JdbcKnowledgeRepository.java
+|   |           |   |       KnowledgeRepository.java
+|   |           |   |       PostRepository.java
+|   |           |   |       QaRepository.java
+|   |           |   |       TemplateRepository.java
+|   |           |   |       UserRepository.java
+|   |           |   |       
+|   |           |   \---service
+|   |           |       \---study
+|   |           |           +---action
+|   |           |           |       NextActionDto.java
+|   |           |           |       NextActionService.java
 |   |           |           |       
-|   |           |           +---mapper
-|   |           |           |       PredictionViewMapper.java
+|   |           |           +---dto
+|   |           |           |       RiskLevel.java
+|   |           |           |       StudyStateDto.java
 |   |           |           |       
-|   |           |           \---model
-|   |           |                   EvidenceView.java
-|   |           |                   ExposureLevel.java
-|   |           |                   Prediction.java
-|   |           |                   PredictionEvidence.java
-|   |           |                   PredictionInput.java
-|   |           |                   PredictionLevel.java
-|   |           |                   PredictionReasonCode.java
-|   |           |                   PredictionView.java
-|   |           |                   
+|   |           |           +---interpret
+|   |           |           |       StudyInterpretationService.java
+|   |           |           |       
+|   |           |           \---predict
+|   |           |               |   PredictionService.java
+|   |           |               |   PredictionServiceImpl.java
+|   |           |               |   
+|   |           |               +---copy
+|   |           |               |       PredictionCopyService.java
+|   |           |               |       
+|   |           |               +---mapper
+|   |           |               |       PredictionViewMapper.java
+|   |           |               |       
+|   |           |               \---model
+|   |           |                       EvidenceView.java
+|   |           |                       ExposureLevel.java
+|   |           |                       Prediction.java
+|   |           |                       PredictionEvidence.java
+|   |           |                       PredictionInput.java
+|   |           |                       PredictionLevel.java
+|   |           |                       PredictionReasonCode.java
+|   |           |                       PredictionView.java
+|   |           |                       
 |   |           +---support
 |   |           |   \---web
 |   |           |           ApiResponse.java

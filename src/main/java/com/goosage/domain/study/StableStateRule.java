@@ -2,7 +2,11 @@ package com.goosage.domain.study;
 
 import org.springframework.stereotype.Component;
 
-import com.goosage.service.study.predict.model.*;
+import com.goosage.infra.service.study.predict.model.Prediction;
+import com.goosage.infra.service.study.predict.model.PredictionEvidence;
+import com.goosage.infra.service.study.predict.model.PredictionInput;
+import com.goosage.infra.service.study.predict.model.PredictionLevel;
+import com.goosage.infra.service.study.predict.model.PredictionReasonCode;
 
 @Component
 public class StableStateRule implements PredictionRule {

@@ -1,7 +1,7 @@
 package com.goosage.domain.study;
 
-import com.goosage.service.study.predict.model.Prediction;
-import com.goosage.service.study.predict.model.PredictionInput;
+import com.goosage.infra.service.study.predict.model.Prediction;
+import com.goosage.infra.service.study.predict.model.PredictionInput;
 
 public interface PredictionRule {
     boolean matches(PredictionInput input);

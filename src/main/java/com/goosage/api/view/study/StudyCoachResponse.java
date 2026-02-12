@@ -7,5 +7,5 @@ import com.goosage.api.view.study.StudyStateView;
 public record StudyCoachResponse(
         StudyStateView state,
         NextActionView next,
-        PredictionDto prediction
+        StudyPredictionView prediction
 ) {}

@@ -222,5 +222,10 @@ public class QuizService {
 			throw new RuntimeException("quiz wrong parse failed", e);
 		}
 	}
+	public String findLatestDetailsJson(long userId, long knowledgeId) {
+	    var row = quizResultDao.findLatestByUserAndKnowledgeId(userId, knowledgeId);
+	    return row == null ? null : row.detailsJson();
+	}
+
 
 }
