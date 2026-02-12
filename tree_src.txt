@@ -1,5 +1,5 @@
 ﻿Folder PATH listing
-Volume serial number is 000000DF B8B2:0FAA
+Volume serial number is 0000008F B8B2:0FAA
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -143,6 +143,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |           StudyCoachResult.java
 |   |           |           StudyDebugPort.java
 |   |           |           StudyEventPort.java
+|   |           |           StudySnapshot.java
 |   |           |           StudyState.java
 |   |           |           
 |   |           +---dto
@@ -238,6 +239,13 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |           |       
 |   |           |           +---interpret
 |   |           |           |       StudyInterpretationService.java
+|   |           |           |       
+|   |           |           +---mapper
+|   |           |           |       PredictionInputMapper.java
+|   |           |           |       StudySnapshotViewMapper.java
+|   |           |           |       StudyStateMapper.java
+|   |           |           |       StudyStateViewMapper.java
+|   |           |           |       StudyStateViewMapper2.java
 |   |           |           |       
 |   |           |           \---predict
 |   |           |               |   PredictionService.java

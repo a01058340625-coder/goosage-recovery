@@ -10,15 +10,6 @@ public class PostResponse {
     private String content;
     private LocalDateTime createdAt;
 
-    public static PostResponse from(PostEntity e) {
-        PostResponse r = new PostResponse();
-        r.id = e.getId();
-        r.title = e.getTitle();
-        r.content = e.getContent();
-        r.createdAt = e.getCreatedAt();
-        return r;
-    }
-
     // ✅ Service에서 Entity 없이도 응답 만들 수 있게 잠금
     public static PostResponse fromDto(PostDto d) {
         PostResponse r = new PostResponse();
