@@ -3,11 +3,14 @@ package com.goosage.infra.service.study.mapper;
 import com.goosage.domain.study.StudySnapshot;
 import com.goosage.infra.service.study.predict.model.PredictionInput;
 
-public class PredictionInputMapper {
+public final class PredictionMappers {
 
-    private PredictionInputMapper() {}
+    private PredictionMappers() {}
 
-    public static PredictionInput from(long userId, StudySnapshot s) {
+    public static PredictionInput toPredictionInput(long userId, StudySnapshot s) {
+        if (s == null) {
+            return PredictionInput.of(userId, 0, 9999, 0);
+        }
         return PredictionInput.of(
                 userId,
                 s.streakDays(),

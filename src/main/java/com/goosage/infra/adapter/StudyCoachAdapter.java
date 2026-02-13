@@ -9,7 +9,7 @@ import com.goosage.domain.study.StudyState;
 import com.goosage.infra.service.study.action.NextActionDto;
 import com.goosage.infra.service.study.action.NextActionService;
 import com.goosage.infra.service.study.interpret.StudyInterpretationService;
-import com.goosage.infra.service.study.mapper.PredictionInputMapper;
+import com.goosage.infra.service.study.mapper.PredictionMappers;
 import com.goosage.infra.service.study.predict.PredictionService;
 import com.goosage.infra.service.study.predict.model.Prediction;
 import com.goosage.infra.service.study.predict.model.PredictionInput;
@@ -44,7 +44,7 @@ public class StudyCoachAdapter implements StudyCoachPort {
         NextActionDto next = nextActionService.decide(state);
 
         // 4) 예측은 snapshot evidence 기반 input (단일 출처)
-        PredictionInput input = PredictionInputMapper.from(userId, snap);
+        PredictionInput input = PredictionMappers.toPredictionInput(userId, snap);
         Prediction prediction = predictionService.predict(input);
 
         return new StudyCoachResult(state, next, prediction);

@@ -5,19 +5,19 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.goosage.domain.qa.QaPort;
 import com.goosage.dto.qa.QaRequest;
 import com.goosage.dto.qa.QaResponse;
 import com.goosage.entity.QaEntity;
-import com.goosage.infra.repository.QaRepository;
 import com.goosage.support.web.NotFoundException;
 
 @Service
 public class QaService {
 
-    private final QaRepository qaRepository;
+    private final QaPort qaPort;
 
-    public QaService(QaRepository qaRepository) {
-        this.qaRepository = qaRepository;
+    public QaService(QaPort qaPort) {
+        this.qaPort = qaPort;
     }
 
     /** 1) 질문 저장(답은 없어도 됨) */
@@ -27,13 +27,13 @@ public class QaService {
         e.setAnswer(req.getAnswer()); // null 가능
         e.setTags(req.getTags());
 
-        QaEntity saved = qaRepository.save(e);
+        QaEntity saved = qaPort.save(e);
         return QaResponse.from(saved);
     }
 
     /** 2) 목록 */
     public List<QaResponse> findAll() {
-        return qaRepository.findAll()
+        return qaPort.findAll()
                 .stream()
                 .map(QaResponse::from)
                 .collect(Collectors.toList());
@@ -41,14 +41,13 @@ public class QaService {
 
     /** 3) 답변 채우기(부분 업데이트) */
     public QaResponse answer(long id, QaRequest req) {
-        QaEntity e = qaRepository.findById(id)
+        QaEntity e = qaPort.findById(id)
                 .orElseThrow(() -> new NotFoundException("qa not found: id=" + id));
 
-        // 질문 수정은 일단 막고, "답변"만 채우는 MVP로 고정
         e.setAnswer(req.getAnswer());
-        e.setTags(req.getTags()); // tags도 같이 갱신 허용(선택)
+        e.setTags(req.getTags());
 
-        QaEntity saved = qaRepository.save(e);
+        QaEntity saved = qaPort.save(e);
         return QaResponse.from(saved);
     }
 }

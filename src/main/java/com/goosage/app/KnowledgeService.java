@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.goosage.domain.knowledge.KnowledgeCrudPort;
 import com.goosage.domain.qa.QaPort;
-import com.goosage.domain.qa.QaView;
 import com.goosage.dto.KnowledgeDto;
+import com.goosage.entity.QaEntity;
 import com.goosage.support.web.ConflictException;
 
 @Service
@@ -69,20 +69,20 @@ public class KnowledgeService {
         return repository.findBySourceAndSourceId("qa", qaId)
                 .orElseGet(() -> {
 
-                    QaView qa = qaPort.findById(qaId)
-                            .orElseThrow(() -> new IllegalArgumentException("qa not found: " + qaId));
+                    QaEntity qa = qaPort.findById(qaId)
+                            .orElseThrow(() -> new IllegalArgumentException("qa not found: id=" + qaId));
 
                     KnowledgeDto created = new KnowledgeDto();
                     created.setType("QA");
                     created.setSource("qa");
                     created.setSourceId(qaId);
 
-                    created.setTitle(qa.question());
-                    created.setContent(qa.answer() == null ? "" : qa.answer());
+                    created.setTitle(qa.getQuestion());
+                    created.setContent(qa.getAnswer() == null ? "" : qa.getAnswer());
 
                     created.setSubject("QA");
 
-                    String tagsCsv = qa.tagsCsv();
+                    String tagsCsv = qa.getTags(); // tags를 csv로 저장하는 필드라면
                     if (tagsCsv != null && !tagsCsv.trim().isEmpty()) {
                         List<String> tags = java.util.Arrays.stream(tagsCsv.split(","))
                                 .map(String::trim)

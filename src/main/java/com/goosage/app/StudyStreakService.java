@@ -2,18 +2,18 @@ package com.goosage.app;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.infra.dao.StudyStreakDao;
+import com.goosage.domain.study.StudyStreakPort;
 
 @Service
 public class StudyStreakService {
 
-    private final StudyStreakDao studyStreakDao;
+    private final StudyStreakPort studyStreakPort;
 
-    public StudyStreakService(StudyStreakDao studyStreakDao) {
-        this.studyStreakDao = studyStreakDao;
+    public StudyStreakService(StudyStreakPort studyStreakPort) {
+        this.studyStreakPort = studyStreakPort;
     }
 
     public int getStreak(long userId) {
-        return studyStreakDao.countStreak(userId);
+        return studyStreakPort.countStreak(userId);
     }
 }

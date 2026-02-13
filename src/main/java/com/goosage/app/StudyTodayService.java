@@ -4,31 +4,26 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.infra.dao.StudyReadDao;
-import com.goosage.infra.dao.TodayRow;
+import com.goosage.domain.study.StudyReadPort;
+import com.goosage.domain.study.StudyTodayRow;
 
 @Service
 public class StudyTodayService {
 
-    private final StudyReadDao studyReadDao;
+    private final StudyReadPort studyReadPort;
 
-    public StudyTodayService(StudyReadDao studyReadDao) {
-        this.studyReadDao = studyReadDao;
+    public StudyTodayService(StudyReadPort studyReadPort) {
+        this.studyReadPort = studyReadPort;
     }
 
     public StudyTodayResult getToday(long userId) {
-        Optional<TodayRow> rowOpt = studyReadDao.findToday(userId);
+        Optional<StudyTodayRow> rowOpt = studyReadPort.findToday(userId);
 
         if (rowOpt.isEmpty()) {
-            return new StudyTodayResult(
-                    0,
-                    0,
-                    0,
-                    "오늘 아직 학습 기록이 없습니다"
-            );
+            return new StudyTodayResult(0, 0, 0, "오늘 아직 학습 기록이 없습니다");
         }
 
-        TodayRow row = rowOpt.get();
+        StudyTodayRow row = rowOpt.get();
 
         return new StudyTodayResult(
                 row.eventsCount(),
@@ -38,7 +33,7 @@ public class StudyTodayService {
         );
     }
 
-    private String messageFor(TodayRow row) {
+    private String messageFor(StudyTodayRow row) {
         if (row.quizSubmits() > 0) {
             return "오늘 퀴즈를 " + row.quizSubmits() + "회 진행했어요";
         }

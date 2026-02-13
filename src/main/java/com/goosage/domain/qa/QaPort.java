@@ -1,8 +1,12 @@
 package com.goosage.domain.qa;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.goosage.entity.QaEntity;
+
 public interface QaPort {
-    Optional<QaView> findById(long id);
-    // 필요한 메서드가 더 있으면 여기 추가(일단 findById부터 시작)
+    QaEntity save(QaEntity e);
+    List<QaEntity> findAll();
+    Optional<QaEntity> findById(long id);
 }
