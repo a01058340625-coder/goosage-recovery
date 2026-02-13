@@ -1,7 +1,9 @@
 package com.goosage.infra.dao;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -56,11 +58,40 @@ public class StudyReadDao {
         return jdbcTemplate.queryForObject(sql, Timestamp.class, userId);
     }
 
-    /** streakDays 계산(네 기존 DAO 로직 있으면 그걸로 교체) */
     public int calcStreakDays(long userId, LocalDate today) {
-        // ✅ 일단 “간단 버전(정공법 최소)”:
-        // daily streak 로직이 따로 있으면 그걸 그대로 쓰고,
-        // 없으면 0으로 두고 나중에 확장해도 됨.
-        return 0;
+
+        String sql =
+            "SELECT DISTINCT DATE(created_at) AS ymd " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "ORDER BY ymd DESC";
+
+        List<LocalDate> days = jdbcTemplate.query(
+            sql,
+            (rs, rowNum) -> rs.getDate("ymd").toLocalDate(),
+            userId
+        );
+
+        if (days.isEmpty()) return 0;
+
+        // 기준 anchor:
+        // - 오늘 학습했으면 today부터
+        // - 아니면 yesterday부터 (오늘 비어있어도 streak 유지되게)
+        LocalDate anchor = today;
+        if (!days.contains(today)) {
+            anchor = today.minusDays(1);
+        }
+
+        int streak = 0;
+        LocalDate cursor = anchor;
+
+        // days는 내림차순. cursor부터 하루씩 감소하며 존재 여부 체크
+        // (데이터량 적을 때는 contains로 충분. 커지면 Set으로 바꾸면 됨)
+        while (days.contains(cursor)) {
+            streak++;
+            cursor = cursor.minusDays(1);
+        }
+
+        return streak;
     }
 }
