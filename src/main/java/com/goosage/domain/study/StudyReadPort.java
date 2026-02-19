@@ -8,10 +8,8 @@ import java.util.Optional;
  * Domain Port: infra 타입 import 금지
  */
 public interface StudyReadPort {
-
-    Optional<TodayRow> findToday(long userId, LocalDate today);
-
-    LocalDateTime lastEventAtAll(long userId);
-
+    Optional<TodayRow> findToday(long userId, LocalDate nowDate);
+    Optional<LocalDateTime> lastEventAtAll(long userId);
     int calcStreakDays(long userId, LocalDate today);
+    int recentEventCount3d(long userId, LocalDate today);
 }

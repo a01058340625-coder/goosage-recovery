@@ -1,6 +1,5 @@
 package com.goosage.infra.adapter;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -34,9 +33,13 @@ public class StudyReadDaoAdapter implements StudyReadPort {
     }
 
     @Override
-    public LocalDateTime lastEventAtAll(long userId) {
-        Timestamp ts = dao.lastEventAtAll(userId);
-        return ts == null ? null : ts.toLocalDateTime();
+    public Optional<LocalDateTime> lastEventAtAll(long userId) {
+        return dao.lastEventAtAll(userId);
+    }
+
+    @Override
+    public int recentEventCount3d(long userId, LocalDate today) {
+        return dao.recentEventCount3d(userId, today);
     }
 
     @Override

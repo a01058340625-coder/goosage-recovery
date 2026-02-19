@@ -17,7 +17,7 @@ public class StudySnapshotService {
         var opt = readPort.findToday(userId, nowDate);
 
         // ✅ Port에서 LocalDateTime으로 받는다 (Timestamp 금지)
-        LocalDateTime lastEventAtAll = readPort.lastEventAtAll(userId);
+        LocalDateTime lastEventAtAll = readPort.lastEventAtAll(userId).orElse(null);
 
         int streakDays = readPort.calcStreakDays(userId, nowDate);
 
@@ -37,8 +37,8 @@ public class StudySnapshotService {
         StudyState state = new StudyState(wrong, quiz, events);
         int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll, nowDateTime);
 
-        // TODO: recent3d 진짜 집계로 교체 예정
-        int recent3d = Math.max(0, events);
+        // ✅ 진짜 3일 집계로 교체 완료
+        int recent3d = readPort.recentEventCount3d(userId, nowDate);
 
         return new StudySnapshot(
                 nowDate,

@@ -1,5 +1,5 @@
-﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 00000055 B8B2:0FAA입니다.
+﻿Folder PATH listing
+Volume serial number is 000000C7 B8B2:0FAA
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -128,23 +128,34 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       QaPort.java
 |   |           |   |       QaView.java
 |   |           |   |       
+|   |           |   +---quiz
+|   |           |   |       QuizPort.java
+|   |           |   |       
 |   |           |   +---stats
 |   |           |   |       StatsPort.java
 |   |           |   |       
-|   |           |   \---study
-|   |           |           DailyLearningPort.java
-|   |           |           DataPoorDefaultRule.java
-|   |           |           ExposurePolicy.java
-|   |           |           HabitCollapseRiskRule.java
-|   |           |           PredictionRule.java
-|   |           |           StableStateRule.java
-|   |           |           StreakBreakRiskRule.java
-|   |           |           StudyCoachPort.java
-|   |           |           StudyCoachResult.java
-|   |           |           StudyDebugPort.java
-|   |           |           StudyEventPort.java
-|   |           |           StudySnapshot.java
-|   |           |           StudyState.java
+|   |           |   +---study
+|   |           |   |       DailyLearningPort.java
+|   |           |   |       DataPoorDefaultRule.java
+|   |           |   |       ExposurePolicy.java
+|   |           |   |       HabitCollapseRiskRule.java
+|   |           |   |       PredictionRule.java
+|   |           |   |       StableStateRule.java
+|   |           |   |       StreakBreakRiskRule.java
+|   |           |   |       StudyCoachPort.java
+|   |           |   |       StudyCoachResult.java
+|   |           |   |       StudyDebugPort.java
+|   |           |   |       StudyEventPort.java
+|   |           |   |       StudyReadPort.java
+|   |           |   |       StudySnapshot.java
+|   |           |   |       StudySnapshotService.java
+|   |           |   |       StudyState.java
+|   |           |   |       StudyStreakPort.java
+|   |           |   |       StudyTodayRow.java
+|   |           |   |       TodayRow.java
+|   |           |   |       
+|   |           |   \---template
+|   |           |           TemplatePort.java
 |   |           |           
 |   |           +---dto
 |   |           |   |   KnowledgeDto.java
@@ -199,7 +210,10 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       PostMapper.java
 |   |           |   |       PostStoreAdapter.java
 |   |           |   |       QaRepositoryAdapter.java
+|   |           |   |       QuizJdbcAdapter.java
 |   |           |   |       StudyCoachAdapter.java
+|   |           |   |       StudyReadDaoAdapter.java
+|   |           |   |       TemplateRepositoryAdapter.java
 |   |           |   |       UserRepositoryAdapter.java
 |   |           |   |       
 |   |           |   +---dao
@@ -215,6 +229,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       StudyEventDaoAdapter.java
 |   |           |   |       StudyReadDao.java
 |   |           |   |       StudyStreakDao.java
+|   |           |   |       StudyStreakDaoAdapter.java
 |   |           |   |       TemplateDao.java
 |   |           |   |       TodayRow.java
 |   |           |   |       
@@ -235,16 +250,13 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |           |       
 |   |           |           +---dto
 |   |           |           |       RiskLevel.java
-|   |           |           |       StudyStateDto.java
 |   |           |           |       
 |   |           |           +---interpret
 |   |           |           |       StudyInterpretationService.java
 |   |           |           |       
 |   |           |           +---mapper
-|   |           |           |       PredictionInputMapper.java
-|   |           |           |       StudySnapshotViewMapper.java
-|   |           |           |       StudyStateMapper.java
-|   |           |           |       StudyStateViewMapper.java
+|   |           |           |       PredictionMappers.java
+|   |           |           |       StudyMappers.java
 |   |           |           |       
 |   |           |           \---predict
 |   |           |               |   PredictionService.java

@@ -30,10 +30,9 @@ public class StudyInterpretationService {
 
         var opt = studyReadPort.findToday(userId, today);
 
-        LocalDateTime lastEventAtAll = studyReadPort.lastEventAtAll(userId);
+        LocalDateTime lastEventAtAll = studyReadPort.lastEventAtAll(userId).orElse(null);
 
         int streakDays = studyReadPort.calcStreakDays(userId, today);
-
         int events = 0;
         int quiz = 0;
         int wrong = 0;

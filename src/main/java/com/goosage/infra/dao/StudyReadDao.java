@@ -1,9 +1,9 @@
 package com.goosage.infra.dao;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,7 +18,6 @@ public class StudyReadDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    /** 오늘 집계(단일 row) */
     public Optional<TodayRow> findToday(long userId) {
 
         String sql =
@@ -29,13 +28,14 @@ public class StudyReadDao {
             "  SUM(CASE WHEN event_type = 'WRONG_REVIEW_DONE' THEN 1 ELSE 0 END) AS wrong_reviews " +
             "FROM study_events " +
             "WHERE user_id = ? " +
-            "  AND DATE(created_at) = CURDATE()";
+            "  AND DATE(created_at) = CURDATE() " +
+            "HAVING COUNT(*) > 0"; // ✅ 핵심: 0이면 행 자체가 없어짐
 
         try {
             TodayRow row = jdbcTemplate.queryForObject(
                 sql,
                 (rs, rowNum) -> new TodayRow(
-                    rs.getDate("ymd").toLocalDate(),
+                    rs.getDate("ymd").toLocalDate(),   // 이제 null이 될 수 없음
                     rs.getInt("events_count"),
                     rs.getInt("quiz_submits"),
                     rs.getInt("wrong_reviews")
@@ -43,19 +43,17 @@ public class StudyReadDao {
                 userId
             );
 
-            // events_count가 0이면 “오늘 row 없음”으로 처리(정공법)
-            if (row == null || row.eventsCount() <= 0) return Optional.empty();
-            return Optional.of(row);
+            return Optional.ofNullable(row);
 
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    /** 전체 마지막 이벤트 시각 */
-    public Timestamp lastEventAtAll(long userId) {
+    public Optional<LocalDateTime> lastEventAtAll(long userId) {
         String sql = "SELECT MAX(created_at) FROM study_events WHERE user_id = ?";
-        return jdbcTemplate.queryForObject(sql, Timestamp.class, userId);
+        Timestamp ts = jdbcTemplate.queryForObject(sql, Timestamp.class, userId);
+        return (ts == null) ? Optional.empty() : Optional.of(ts.toLocalDateTime());
     }
 
     public int calcStreakDays(long userId, LocalDate today) {
@@ -94,4 +92,22 @@ public class StudyReadDao {
 
         return streak;
     }
+    
+    public int recentEventCount3d(long userId, LocalDate today) {
+
+        // MySQL: 최근 3일(오늘 포함) = [today-2 00:00:00, tomorrow 00:00:00)
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "  AND created_at >= ? " +
+            "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay()); // 내일 00:00 미만
+
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        return (cnt == null) ? 0 : cnt;
+    }
+
 }
