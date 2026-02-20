@@ -18,7 +18,7 @@ public class StudyReadDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Optional<TodayRow> findToday(long userId) {
+    public Optional<TodayRowRecord> findToday(long userId) {
 
         String sql =
             "SELECT " +
@@ -32,9 +32,9 @@ public class StudyReadDao {
             "HAVING COUNT(*) > 0"; // ✅ 핵심: 0이면 행 자체가 없어짐
 
         try {
-            TodayRow row = jdbcTemplate.queryForObject(
+            TodayRowRecord row = jdbcTemplate.queryForObject(
                 sql,
-                (rs, rowNum) -> new TodayRow(
+                (rs, rowNum) -> new TodayRowRecord(
                     rs.getDate("ymd").toLocalDate(),   // 이제 null이 될 수 없음
                     rs.getInt("events_count"),
                     rs.getInt("quiz_submits"),

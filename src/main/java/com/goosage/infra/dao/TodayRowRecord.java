@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * DAO 전용 Row (JDBC 결과)
  */
-public record TodayRow(
+public record TodayRowRecord(
         LocalDate ymd,
         int eventsCount,
         int quizSubmits,
