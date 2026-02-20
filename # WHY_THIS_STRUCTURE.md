@@ -1,184 +1,318 @@
-# WHY_THIS_STRUCTURE.md
-
-## ?? Purpose
+WHY_THIS_STRUCTURE.md
+Purpose
 
 This document explains why GooSage uses its current structure.
 
-This is not accidental.
+This structure is not accidental.
 This is not over-engineering.
-This is intentional architecture for a decision-based system.
+This is intentional architecture for a long-term decision engine.
 
----
+GooSage is designed to become a state-based learning OS and decision platform.
 
-# 1?? GooSage is NOT a CRUD system
+1. GooSage is NOT a CRUD system
 
-Most applications:
+Most applications follow:
 
-Controller ¡æ Service ¡æ Repository ¡æ DB
+Controller â†’ Service â†’ Repository â†’ DB
 
-GooSage is different.
+GooSage does not.
 
 GooSage is a:
 
-> State-based Decision Engine
+State-based Decision Engine
 
-It does not just store data.
-It calculates state.
-It makes decisions.
-It predicts risk.
-It suggests next actions.
+It does not simply store data.
 
-Therefore the structure must reflect that.
+It:
 
----
+Calculates user state
 
-# 2?? Core Principle: Single Source of Truth
+Interprets behavioral signals
 
-The system is built around:
+Predicts risk
 
-- StudyState (engine minimal state)
-- StudySnapshot (state + evidence)
+Suggests next actions
 
-All decisions must originate from this snapshot.
+Drives habit loops
 
-No controller-level logic.
-No duplicated evidence calculation.
-No scattered interpretation.
+Therefore, the architecture must protect decision integrity.
 
-InterpretationService is the only place where state is assembled.
+CRUD-centric architecture cannot support this.
 
----
+2. Core Principle: Single Source of Truth (SSOT)
 
-# 3?? Separation of Responsibilities
+The entire system revolves around a single source of truth.
 
-## Domain (Pure Logic)
+Key objects:
 
-- StudyState
-- StudySnapshot
-- StudyCoachPort
-- StudyCoachResult
+StudyState â†’ minimal decision state
 
-Domain does not know about:
-- Spring
-- DB
-- HTTP
-- DTOs
+StudySnapshot â†’ full interpreted state + evidence
 
-It represents the brain.
+All decision logic must originate from StudySnapshot.
 
----
+There must be:
 
-## Infra (Implementation)
+No duplicated calculation
 
-- DAO
-- Adapter
-- PredictionService
-- NextActionService
-- InterpretationService
+No controller-level decision logic
 
-Infra knows:
-- how to fetch data
-- how to assemble snapshot
-- how to apply rules
+No rule execution outside the engine
 
-But it does not decide business direction.
-It only executes contracts.
+InterpretationService is the only place where raw data becomes interpreted state.
 
----
+This ensures:
 
-## App Layer
+Determinism
 
-App coordinates.
-It does not compute.
+Traceability
 
----
+Reproducibility
 
-# 4?? Why Snapshot Exists
+Regression safety
 
-Snapshot exists because:
+3. Separation of Responsibilities
+Domain Layer (Pure Decision Logic)
 
-Prediction needs:
-- streakDays
-- daysSinceLastEvent
-- recentEventCount3d
+Examples:
 
-NextAction needs:
-- wrongReviews
-- quizSubmits
-- eventsCount
+StudyState
 
-Instead of recomputing everywhere,
-we compute once and freeze it.
+StudySnapshot
 
-Snapshot is the frozen moment of user state.
+PredictionRule
 
----
+NextActionRule
 
-# 5?? Why Port / Adapter Pattern
+StudyCoachPort
+
+StudyCoachResult
+
+Domain represents the brain of GooSage.
+
+Domain must not know:
+
+Spring
+
+HTTP
+
+DB
+
+JSON
+
+DTOs
+
+Domain must be:
+
+Deterministic
+
+Testable
+
+Framework-independent
+
+Infra Layer (Execution & Integration)
+
+Examples:
+
+DAO
+
+Adapter
+
+InterpretationService
+
+PredictionService
+
+NextActionService
+
+Infra is responsible for:
+
+Data access
+
+Snapshot assembly
+
+Rule execution orchestration
+
+Mapping between domain and API
+
+Infra does not define business meaning.
+It only executes domain contracts.
+
+App Layer (Use-case Coordination)
+
+The App layer:
+
+Orchestrates use-cases
+
+Connects domain and infra
+
+Does not compute business rules
+
+This prevents:
+
+Fat controllers
+
+Hidden business logic
+
+Framework-driven design
+
+4. Why StudySnapshot Exists
+
+Prediction and action require many signals:
+
+Prediction:
+
+streakDays
+
+daysSinceLastEvent
+
+recentEventCount3d
+
+NextAction:
+
+wrongReviews
+
+quizSubmits
+
+eventsCount
+
+Instead of recomputing everywhere, we:
+
+Compute once â†’ freeze â†’ share
+
+StudySnapshot is a frozen moment of user state.
+
+This ensures:
+
+Consistency
+
+Debuggability
+
+Explainable AI foundation
+
+5. Why Rule Engine
+
+Decision logic is implemented as rules because:
+
+Rules are composable
+
+Rules are testable
+
+Rules are extendable
+
+Rules can evolve into ML later
+
+Prediction and NextAction follow the same pattern.
+
+Future:
+
+Rules â†’ Hybrid AI â†’ ML model
+
+The architecture is intentionally ML-ready.
+
+6. Why Port / Adapter Pattern
 
 We enforce:
 
-Controller ¡æ Service ¡æ Port ¡æ Adapter ¡æ DAO
+Controller â†’ Service â†’ Port â†’ Adapter â†’ DAO
 
-Because:
+This prevents:
 
-- It prevents DB leakage.
-- It prevents entity leakage.
-- It allows replacement of storage.
-- It keeps domain pure.
+Database leakage into domain
 
-This is intentional.
+DTO leakage into domain
 
----
+Tight coupling with frameworks
 
-# 6?? Regression Lock
+Vendor lock-in
 
-Every structural change must pass:
+It enables:
 
-- run-all regression
-- study flow validation
-- prediction SAFE contract
+Storage replacement
 
-Fail fast > silent corruption.
+External service expansion
 
----
+Multi-domain growth
 
-# 7?? Long-Term Vision
+7. Regression Lock Philosophy
+
+All structural changes must pass:
+
+run-all regression
+
+study loop validation
+
+prediction safety contract
+
+Fail-fast is preferred over silent corruption.
+
+This ensures that decision quality never degrades unnoticed.
+
+8. Decision Stability First
+
+Feature development is secondary.
+
+Before adding new features:
+
+Decision stability must be proven
+
+Prediction accuracy must be stable
+
+Evidence must be trustworthy
+
+This phase (v1.5) is focused on:
+
+Decision reliability and structural integrity.
+
+9. Long-Term Vision
 
 GooSage is designed to evolve into:
 
-- A personal learning engine
-- A decision recommendation system
-- A risk prediction loop
-- Possibly a SaaS platform
+A personal learning operating system
 
-This structure allows:
+A behavioral decision platform
 
-- Adding new rules without breaking controllers
-- Changing storage without touching domain
-- Expanding evidence model safely
+A predictive coaching engine
 
----
+A SaaS-based habit and skill platform
 
-# 8?? Rule
+This architecture enables:
 
-If a change:
+Scalable rule evolution
 
-- spreads logic across layers
-- duplicates state calculation
-- bypasses ports
-- leaks entity to controller
+Explainable AI
 
-It must be rejected.
+Multi-domain learning
 
----
+Enterprise onboarding systems
 
-# 9?? Summary
+Adaptive coaching
 
-GooSage is not about storing posts.
+10. Architectural Guardrails
+
+Any change that:
+
+Duplicates state calculation
+
+Bypasses ports
+
+Spreads decision logic
+
+Leaks infrastructure concerns into domain
+
+Breaks snapshot integrity
+
+must be rejected.
+
+Architecture integrity > short-term speed.
+
+11. Final Summary
+
+GooSage is not about storing content.
 
 It is about:
 
-State ¡æ Interpretation ¡æ Decision ¡æ Prediction ¡æ Action
+State â†’ Interpretation â†’ Decision â†’ Prediction â†’ Action â†’ Feedback â†’ Loop
 
-This structure exists to protect that flow.
+This structure exists to protect this cycle.
+
+This is the foundation of a long-term intelligent system.

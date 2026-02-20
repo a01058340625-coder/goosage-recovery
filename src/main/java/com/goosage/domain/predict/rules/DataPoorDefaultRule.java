@@ -11,28 +11,30 @@ import org.springframework.stereotype.Component;
 
 @Component
 
-public class LowActivity3dRule implements PredictionRule {
+public class DataPoorDefaultRule implements PredictionRule {
 
-    @Override public int priority() { return 30; }
+    @Override
+    public int priority() {
+        return 5;
+    }
 
     @Override
     public boolean matches(StudySnapshot s) {
-    	return !s.studiedToday()
-    		    && s.recentEventCount3d() <= 1
-    		    && !(s.recentEventCount3d() == 0 && s.streakDays() == 0); // DATA_POOR 제외
+        // fresh/empty user 판단: 최근 3일 이벤트 0 + streak 0
+        return s.recentEventCount3d() == 0 && s.streakDays() == 0;
     }
 
     @Override
     public Prediction apply(StudySnapshot s) {
         return Prediction.of(
-            PredictionLevel.WARNING,
-            PredictionReasonCode.LOW_ACTIVITY_3D,
-            "최근 3일 학습 활동이 낮아. 오늘 최소 1개 이벤트만 만들어보자.",
+            PredictionLevel.WARNING,                 // (너가 Level을 SAFE/WARNING/DANGER로 했다면 WARNING)
+            PredictionReasonCode.DATA_POOR,
+            "학습 데이터가 부족해. 일단 최소 1개 이벤트부터 쌓아보자.",
             Map.of(
-                "studiedToday", s.studiedToday(),
                 "recentEventCount3d", s.recentEventCount3d(),
+                "streakDays", s.streakDays(),
                 "daysSinceLastEvent", s.daysSinceLastEvent(),
-                "streakDays", s.streakDays()
+                "lastEventAt", s.lastEventAt()
             )
         );
     }

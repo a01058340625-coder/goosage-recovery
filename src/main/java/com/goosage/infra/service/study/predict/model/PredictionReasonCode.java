@@ -7,7 +7,9 @@ public enum PredictionReasonCode {
     GAP_3DAYS("최근 3일 연속 학습 공백이 발생함"),
     STABLE("학습 상태가 안정적으로 유지되고 있음"),
     TODAY_DONE("오늘 학습을 이미 완료함"),
+    LOW_ACTIVITY_3D("최근 3일 활동이 낮음"),
     DEFAULT_FALLBACK("기본 안전 판단 적용");
+	
 
     private final String description;
 

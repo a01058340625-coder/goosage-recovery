@@ -41,11 +41,8 @@ public class StudyCoachAdapter implements StudyCoachPort {
         StudyState state = snap.state();
 
         // ✅ 3) 결정은 snapshot 단일 입력 (context 포함)
-        NextActionDto next = nextActionService.decide(snap);
-
-        // 4) 예측은 snapshot evidence 기반 input (단일 출처)
-        PredictionInput input = PredictionMappers.toPredictionInput(userId, snap);
-        Prediction prediction = predictionService.predict(input);
+        Prediction prediction = predictionService.predict(snap);
+        NextActionDto next = nextActionService.decide(snap, prediction.reasonCode());
 
         return new StudyCoachResult(state, next, prediction);
     }

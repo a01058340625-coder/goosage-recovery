@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 
-public class StreakRiskRule implements PredictionRule {
+public class HabitCollapseRiskRule implements PredictionRule {
 
-    @Override public int priority() { return 20; }
+    @Override public int priority() { return 10; }
 
     @Override
     public boolean matches(StudySnapshot s) {
-        return !s.studiedToday() && s.daysSinceLastEvent() >= 2;
+        return !s.studiedToday() && s.daysSinceLastEvent() >= 3;
     }
 
     @Override
@@ -23,13 +23,13 @@ public class StreakRiskRule implements PredictionRule {
 
         return Prediction.of(
             level,
-            PredictionReasonCode.LOW_ACTIVITY_3D, // ✅ 통일
-            "최근 며칠 학습이 뜸했어. 오늘 최소 1개 이벤트만 만들자.",
+            PredictionReasonCode.LOW_ACTIVITY_3D, // ✅ enum에 있는 값으로 통일
+            "학습 공백이 길어지고 있어. 오늘 최소 1개 이벤트로 흐름을 되살리자.",
             Map.of(
                 "studiedToday", s.studiedToday(),
                 "daysSinceLastEvent", s.daysSinceLastEvent(),
-                "streakDays", s.streakDays(),
-                "recentEventCount3d", s.recentEventCount3d()
+                "recentEventCount3d", s.recentEventCount3d(),
+                "streakDays", s.streakDays()
             )
         );
     }

@@ -1,0 +1,14 @@
+package com.goosage.app.predict;
+
+import java.util.List;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import com.goosage.domain.predict.PredictionRule;
+
+@Configuration
+public class PredictConfig {
+    @Bean
+    public PredictionEngine predictionEngine(List<PredictionRule> rules) {
+        return new PredictionEngine(rules);
+    }
+}

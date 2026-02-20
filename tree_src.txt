@@ -1,5 +1,5 @@
-﻿Folder PATH listing
-Volume serial number is 000000C7 B8B2:0FAA
+﻿폴더 PATH의 목록입니다.
+볼륨 일련 번호가 0000003D B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -97,6 +97,10 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |   StudyTodayService.java
 |   |           |   |   TemplateService.java
 |   |           |   |   
+|   |           |   +---predict
+|   |           |   |       PredictConfig.java
+|   |           |   |       PredictionEngine.java
+|   |           |   |       
 |   |           |   \---study
 |   |           |           StudyCoachService.java
 |   |           |           
@@ -124,6 +128,20 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   +---post
 |   |           |   |       PostStorePort.java
 |   |           |   |       
+|   |           |   +---predict
+|   |           |   |   |   Prediction.java
+|   |           |   |   |   PredictionLevel.java
+|   |           |   |   |   PredictionReasonCode.java
+|   |           |   |   |   PredictionRule.java
+|   |           |   |   |   
+|   |           |   |   \---rules
+|   |           |   |           DataPoorDefaultRule.java
+|   |           |   |           HabitCollapseRiskRule.java
+|   |           |   |           LowActivity3dRule.java
+|   |           |   |           StreakBreakRiskRule.java
+|   |           |   |           StreakRiskRule.java
+|   |           |   |           TodayDoneRule.java
+|   |           |   |           
 |   |           |   +---qa
 |   |           |   |       QaPort.java
 |   |           |   |       QaView.java
@@ -136,12 +154,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       
 |   |           |   +---study
 |   |           |   |       DailyLearningPort.java
-|   |           |   |       DataPoorDefaultRule.java
 |   |           |   |       ExposurePolicy.java
-|   |           |   |       HabitCollapseRiskRule.java
-|   |           |   |       PredictionRule.java
-|   |           |   |       StableStateRule.java
-|   |           |   |       StreakBreakRiskRule.java
 |   |           |   |       StudyCoachPort.java
 |   |           |   |       StudyCoachResult.java
 |   |           |   |       StudyDebugPort.java
@@ -259,6 +272,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |           |       StudyMappers.java
 |   |           |           |       
 |   |           |           \---predict
+|   |           |               |   PredictionMapper.java
 |   |           |               |   PredictionService.java
 |   |           |               |   PredictionServiceImpl.java
 |   |           |               |   

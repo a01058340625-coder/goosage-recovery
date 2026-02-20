@@ -4,13 +4,14 @@ import org.springframework.stereotype.Service;
 
 import com.goosage.domain.NextActionType;
 import com.goosage.domain.study.StudySnapshot;
+import com.goosage.infra.service.study.predict.model.PredictionReasonCode;
 
 @Service
 public class NextActionService {
 
-    public NextActionDto decide(StudySnapshot snap) {
+	public NextActionDto decide(StudySnapshot snap, PredictionReasonCode reasonCode) {
 
-        // 0) 안전장치: 상태 자체가 없으면 시작 유도
+        // 0) 안전장치
         if (snap == null) {
             return new NextActionDto(
                     NextActionType.JUST_OPEN,
@@ -18,6 +19,17 @@ public class NextActionService {
                     null,
                     false,
                     "상태를 못 읽었어. 그래도 1분만 열면 루프가 다시 돈다."
+            );
+        }
+
+     // ✅ Prediction 우선 정책: 충돌 방지 핵심
+        if (reasonCode == PredictionReasonCode.TODAY_DONE) {
+            return new NextActionDto(
+                NextActionType.TODAY_DONE,
+                "오늘은 이미 한 번 돌렸어. 내일을 위해 가볍게 정리할까?",
+                null,
+                false,
+                "오늘 루프는 완료! 내일은 오답/템플릿 중 하나만 이어가면 돼."
             );
         }
 
@@ -34,7 +46,7 @@ public class NextActionService {
             );
         }
 
-        // 2) 오늘 오답복습이 존재 + 리뷰 대상 지식이 있음 → REVIEW
+        // 2) 오답복습
         if (s.wrongReviews() > 0 && snap.recentKnowledgeId() != null) {
             return new NextActionDto(
                     NextActionType.REVIEW_WRONG_ONE,
@@ -56,7 +68,7 @@ public class NextActionService {
             );
         }
 
-        // 4) 기본 fallback
+        // 4) fallback
         return new NextActionDto(
                 NextActionType.JUST_OPEN,
                 "오늘은 여기서 가볍게 시작할까?",

@@ -8,23 +8,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 
-public class StreakRiskRule implements PredictionRule {
+public class StreakBreakRiskRule implements PredictionRule {
 
     @Override public int priority() { return 20; }
 
     @Override
     public boolean matches(StudySnapshot s) {
-        return !s.studiedToday() && s.daysSinceLastEvent() >= 2;
+        return !s.studiedToday()
+            && s.streakDays() >= 3
+            && s.daysSinceLastEvent() >= 1;
     }
 
     @Override
     public Prediction apply(StudySnapshot s) {
-        var level = (s.daysSinceLastEvent() >= 4) ? PredictionLevel.DANGER : PredictionLevel.WARNING;
-
         return Prediction.of(
-            level,
+            PredictionLevel.WARNING,
             PredictionReasonCode.LOW_ACTIVITY_3D, // ✅ 통일
-            "최근 며칠 학습이 뜸했어. 오늘 최소 1개 이벤트만 만들자.",
+            "연속 학습 흐름이 끊길 위험이 있어. 오늘 1개만 하면 바로 회복 가능.",
             Map.of(
                 "studiedToday", s.studiedToday(),
                 "daysSinceLastEvent", s.daysSinceLastEvent(),
