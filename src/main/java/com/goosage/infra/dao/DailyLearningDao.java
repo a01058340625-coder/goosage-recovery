@@ -12,9 +12,10 @@ public class DailyLearningDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void upsertToday(long userId, boolean isQuizSubmit, boolean isWrongReviewDone) {
+    // 기존: isWrongReviewDone  -> 변경: isReviewWrong
+    public void upsertToday(long userId, boolean isQuizSubmit, boolean isReviewWrong) {
         int quizInc = isQuizSubmit ? 1 : 0;
-        int wrongInc = isWrongReviewDone ? 1 : 0;
+        int wrongInc = isReviewWrong ? 1 : 0;
 
         String sql = """
             INSERT INTO daily_learning (user_id, ymd, events_count, quiz_submits, wrong_reviews, last_event_at)

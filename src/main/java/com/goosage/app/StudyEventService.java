@@ -22,12 +22,11 @@ public class StudyEventService {
     @Transactional
     public void record(long userId, String type, Long knowledgeId) {
 
-    	studyEventPort.recordEvent(userId, type, "KNOWLEDGE", knowledgeId, null);
-
+        studyEventPort.recordEvent(userId, type, "KNOWLEDGE", knowledgeId, null);
 
         boolean isQuizSubmit = "QUIZ_SUBMIT".equals(type);
-        boolean isWrongDone  = "WRONG_REVIEW_DONE".equals(type);
+        boolean isReviewWrong = "REVIEW_WRONG".equals(type);   // ✅ 여기로 교체
 
-        dailyLearningPort.upsertToday(userId, isQuizSubmit, isWrongDone);
+        dailyLearningPort.upsertToday(userId, isQuizSubmit, isReviewWrong);
     }
 }
