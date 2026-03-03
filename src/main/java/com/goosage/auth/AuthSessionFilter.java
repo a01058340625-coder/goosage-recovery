@@ -21,6 +21,9 @@ public class AuthSessionFilter extends OncePerRequestFilter {
 	    String ctx = request.getContextPath();
 	    String path = uri.substring(ctx.length());
 
+	    // ✅ 내부 서버-서버 호출 (세션 없이 허용)
+	    if (path.startsWith("/internal")) return true;
+
 	    // 공개 엔드포인트
 	    if (path.equals("/") || path.startsWith("/health") || path.startsWith("/hello")) return true;
 
@@ -28,8 +31,10 @@ public class AuthSessionFilter extends OncePerRequestFilter {
 	    if (path.equals("/login")) return true;
 
 	    // (선택) auth 계열
-	    if (path.startsWith("/auth") || path.startsWith("/api/auth")) return true;
-
+	 // 공개 엔드포인트
+	    if (path.equals("/") || path.startsWith("/health") || path.startsWith("/hello")) return true;
+	    if (path.startsWith("/internal/")) return true;
+	    
 	    // academy health/debug (개발 중)
 	    if (path.equals("/academy/health")) return true;
 	    if (path.startsWith("/academy/debug")) return true;

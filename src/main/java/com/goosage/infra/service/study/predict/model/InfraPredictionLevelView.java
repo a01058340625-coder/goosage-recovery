@@ -1,6 +1,6 @@
 package com.goosage.infra.service.study.predict.model;
 
-public enum PredictionLevel {
+public enum InfraPredictionLevelView {
     SAFE,
     RISK
 }

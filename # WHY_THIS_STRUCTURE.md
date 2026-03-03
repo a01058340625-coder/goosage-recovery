@@ -316,3 +316,42 @@ State → Interpretation → Decision → Prediction → Action → Feedback →
 This structure exists to protect this cycle.
 
 This is the foundation of a long-term intelligent system.
+
+12. Execution Evidence (v1.5)
+
+Today, the system moved from design to behavioral simulation.
+
+The following have been verified:
+
+Persona-based simulation environment is operational.
+
+Multiple users can generate behavioral events.
+
+Daily loop execution has been automated through scripts.
+
+Behavioral data is accumulated in study_events.
+
+Coach prediction and NextAction are triggered from real behavior.
+
+System determinism and reproducibility have been confirmed.
+
+This marks the transition from a CRUD-like system to a real decision engine.
+
+Future work will focus on:
+
+Long-term behavioral pattern validation.
+
+Prediction stability.
+
+Risk detection.
+
+Adaptive intervention strategies.
+
+This phase establishes the foundation for ML-driven decision evolution.
+
+## Package Guardrails (No Refactor Until Day7)
+- api.controller에는 새 파일을 더 넣지 말고, 기능별 하위 패키지로만 추가한다. (study/academy/admin/internal)
+- domain 패키지는 infra/entity/JPA를 import 하지 않는다.
+- predict는 domain=규칙/모델, app=조립, infra=연동(있을 때만)으로 고정한다.
+- academy 패키지는 당장 이동 금지(데이터 루프 7일 안정화 이후에만 정리).
+- 리팩토링은 “기능 1개 추가에 파일 5개 이상 수정”이 반복될 때 시작한다.

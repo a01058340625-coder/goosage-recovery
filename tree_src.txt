@@ -1,5 +1,5 @@
-﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 0000003D B8B2:0FAA입니다.
+﻿Folder PATH listing
+Volume serial number is 0000008A B8B2:0FAA
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -59,19 +59,30 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       WebConfig.java
 |   |           |   |       
 |   |           |   +---controller
-|   |           |   |       AiTestController.java
-|   |           |   |       AuthController.java
-|   |           |   |       KnowledgeController.java
-|   |           |   |       PostController.java
-|   |           |   |       QaController.java
-|   |           |   |       QuizController.java
-|   |           |   |       RunController.java
-|   |           |   |       StatsController.java
-|   |           |   |       StudyCoachController.java
-|   |           |   |       StudyController.java
-|   |           |   |       StudyDebugController.java
-|   |           |   |       StudyEventController.java
-|   |           |   |       StudyStreakController.java
+|   |           |   |   |   AiTestController.java
+|   |           |   |   |   AuthController.java
+|   |           |   |   |   KnowledgeController.java
+|   |           |   |   |   PostController.java
+|   |           |   |   |   QaController.java
+|   |           |   |   |   QuizController.java
+|   |           |   |   |   RunController.java
+|   |           |   |   |   StatsController.java
+|   |           |   |   |   StudyCoachController.java
+|   |           |   |   |   StudyController.java
+|   |           |   |   |   StudyDebugController.java
+|   |           |   |   |   StudyEventController.java
+|   |           |   |   |   StudyStreakController.java
+|   |           |   |   |   
+|   |           |   |   +---admin
+|   |           |   |   |       AdminKpiController.java
+|   |           |   |   |       AdminKpiService.java
+|   |           |   |   |       AdminObservabilityController.java
+|   |           |   |   |       
+|   |           |   |   \---internal
+|   |           |   |           InternalStudyController.java
+|   |           |   |           
+|   |           |   +---security
+|   |           |   |       InternalKeyFilter.java
 |   |           |   |       
 |   |           |   \---view
 |   |           |       \---study
@@ -230,22 +241,25 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       UserRepositoryAdapter.java
 |   |           |   |       
 |   |           |   +---dao
-|   |           |   |       DailyLearningDao.java
-|   |           |   |       DailyLearningDaoAdapter.java
-|   |           |   |       KnowledgeDao.java
-|   |           |   |       QuizItemDao.java
-|   |           |   |       QuizResultDao.java
-|   |           |   |       StatsDao.java
-|   |           |   |       StatsDaoAdapter.java
-|   |           |   |       StudyDebugDaoAdapter.java
-|   |           |   |       StudyEventDao.java
-|   |           |   |       StudyEventDaoAdapter.java
-|   |           |   |       StudyReadDao.java
-|   |           |   |       StudyStreakDao.java
-|   |           |   |       StudyStreakDaoAdapter.java
-|   |           |   |       TemplateDao.java
-|   |           |   |       TodayRow.java
-|   |           |   |       
+|   |           |   |   |   DailyLearningDao.java
+|   |           |   |   |   DailyLearningDaoAdapter.java
+|   |           |   |   |   KnowledgeDao.java
+|   |           |   |   |   QuizItemDao.java
+|   |           |   |   |   QuizResultDao.java
+|   |           |   |   |   StatsDao.java
+|   |           |   |   |   StatsDaoAdapter.java
+|   |           |   |   |   StudyDebugDaoAdapter.java
+|   |           |   |   |   StudyEventDao.java
+|   |           |   |   |   StudyEventDaoAdapter.java
+|   |           |   |   |   StudyReadDao.java
+|   |           |   |   |   StudyStreakDao.java
+|   |           |   |   |   StudyStreakDaoAdapter.java
+|   |           |   |   |   TemplateDao.java
+|   |           |   |   |   TodayRowRecord.java
+|   |           |   |   |   
+|   |           |   |   \---admin
+|   |           |   |           StudyEventsAdminDao.java
+|   |           |   |           
 |   |           |   +---repository
 |   |           |   |       InMemoryKnowledgeRepository.java
 |   |           |   |       JdbcKnowledgeRepository.java
@@ -285,11 +299,11 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |               \---model
 |   |           |                       EvidenceView.java
 |   |           |                       ExposureLevel.java
-|   |           |                       Prediction.java
+|   |           |                       InfraPredictionLevelView.java
+|   |           |                       InfraPredictionReasonCodeView.java
+|   |           |                       InfraPredictionView.java
 |   |           |                       PredictionEvidence.java
 |   |           |                       PredictionInput.java
-|   |           |                       PredictionLevel.java
-|   |           |                       PredictionReasonCode.java
 |   |           |                       PredictionView.java
 |   |           |                       
 |   |           +---support
@@ -338,6 +352,8 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |                   V25__align_event_type_column.sql
 |                   V26__add_source_id_to_knowledge.sql
 |                   V27__add_user_id_to_quiz_results.sql
+|                   V28__seed_users_u12_to_u21.sql
+|                   V29__seed_test_user.sql
 |                   V2__add_index_posts_created_at.sql
 |                   V3__create_knowledge.sql
 |                   V4__posts_created_at_default.sql

@@ -1,11 +1,11 @@
 package com.goosage.domain.study;
 
 import com.goosage.infra.service.study.predict.model.ExposureLevel;
-import com.goosage.infra.service.study.predict.model.Prediction;
+import com.goosage.infra.service.study.predict.model.InfraPredictionView;
 
 public class ExposurePolicy {
 
-    public static ExposureLevel decide(Prediction p) {
+    public static ExposureLevel decide(InfraPredictionView p) {
         if (p == null) return ExposureLevel.SUMMARY;
         if (p.isDataPoor()) return ExposureLevel.SUMMARY;
 

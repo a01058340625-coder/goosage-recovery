@@ -2,15 +2,15 @@ package com.goosage.infra.service.study.predict.copy;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.infra.service.study.predict.model.Prediction;
+import com.goosage.infra.service.study.predict.model.InfraPredictionView;
 import com.goosage.infra.service.study.predict.model.PredictionEvidence;
-import com.goosage.infra.service.study.predict.model.PredictionReasonCode;
+import com.goosage.infra.service.study.predict.model.InfraPredictionReasonCodeView;
 
 @Service
 public class PredictionCopyService {
 
-    public Copy render(Prediction p) {
-        PredictionReasonCode code = p.reasonCode();
+    public Copy render(InfraPredictionView p) {
+        InfraPredictionReasonCodeView code = p.reasonCode();
         PredictionEvidence ev = p.evidence(); // (지금은 미사용. v1.4에 근거 표시에 쓸 수 있음)
 
         return switch (code) {

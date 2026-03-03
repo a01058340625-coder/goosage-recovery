@@ -26,16 +26,24 @@ public class DataPoorDefaultRule implements PredictionRule {
 
     @Override
     public Prediction apply(StudySnapshot s) {
+
+        Map<String, Object> ev = new java.util.LinkedHashMap<>();
+        ev.put("recentEventCount3d", s.recentEventCount3d());
+        ev.put("streakDays", s.streakDays());
+
+        // primitive라 null 불가능 → 그대로 넣는다
+        ev.put("daysSinceLastEvent", s.daysSinceLastEvent());
+
+        // 이건 nullable
+        if (s.lastEventAt() != null) {
+            ev.put("lastEventAt", s.lastEventAt().toString());
+        }
+
         return Prediction.of(
-            PredictionLevel.WARNING,                 // (너가 Level을 SAFE/WARNING/DANGER로 했다면 WARNING)
+            PredictionLevel.WARNING,
             PredictionReasonCode.DATA_POOR,
             "학습 데이터가 부족해. 일단 최소 1개 이벤트부터 쌓아보자.",
-            Map.of(
-                "recentEventCount3d", s.recentEventCount3d(),
-                "streakDays", s.streakDays(),
-                "daysSinceLastEvent", s.daysSinceLastEvent(),
-                "lastEventAt", s.lastEventAt()
-            )
+            java.util.Map.copyOf(ev)
         );
     }
 }

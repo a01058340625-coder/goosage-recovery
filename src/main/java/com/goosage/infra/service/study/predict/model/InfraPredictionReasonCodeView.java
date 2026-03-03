@@ -1,6 +1,6 @@
 package com.goosage.infra.service.study.predict.model;
 
-public enum PredictionReasonCode {
+public enum InfraPredictionReasonCodeView {
 
     DATA_POOR("데이터가 충분하지 않아 보수적으로 판단함"),
     GAP_4DAYS("최근 4일 이상 학습 공백이 발생함"),
@@ -13,7 +13,7 @@ public enum PredictionReasonCode {
 
     private final String description;
 
-    PredictionReasonCode(String description) {
+    InfraPredictionReasonCodeView(String description) {
         this.description = description;
     }
 
