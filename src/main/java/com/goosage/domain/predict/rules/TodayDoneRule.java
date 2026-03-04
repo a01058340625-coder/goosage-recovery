@@ -13,12 +13,16 @@ import com.goosage.domain.study.StudySnapshot;
 @Component
 public class TodayDoneRule implements PredictionRule {
 
+    private static final int QUIZ_MIN = 5;
+
     @Override
     public int priority() { return 10; }
 
     @Override
     public boolean matches(StudySnapshot s) {
-        return s.studiedToday();
+        int quiz  = s.state().quizSubmits();
+        int wrong = s.state().wrongReviews();
+        return quiz >= QUIZ_MIN && wrong == 0;
     }
 
     @Override
@@ -27,14 +31,16 @@ public class TodayDoneRule implements PredictionRule {
             PredictionLevel.SAFE,
             PredictionReasonCode.TODAY_DONE,
             Map.of(
-                // ✅ 핵심 3키 (infra Evidence로 내려갈 값)
                 "streakDays", s.streakDays(),
                 "daysSinceLastEvent", s.daysSinceLastEvent(),
                 "recentEventCount3d", s.recentEventCount3d(),
 
-                // (추가 근거)
                 "eventsCount", s.state().eventsCount(),
-                "studiedToday", s.studiedToday()
+                "quizSubmits", s.state().quizSubmits(),
+                "wrongReviews", s.state().wrongReviews(),
+                "studiedToday", s.studiedToday(),
+
+                "quizMin", QUIZ_MIN
             )
         );
     }

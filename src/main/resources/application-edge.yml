@@ -8,6 +8,11 @@ spring:
     username: edge_user
     password: edge_pw
 
+  security:
+    user:
+      name: user
+      password: goosage-dev
+
 server:
   port: 8083
 

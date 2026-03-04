@@ -4,9 +4,19 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:mysql://localhost:3306/goosage_local?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: goosage
-    password: goosage123
+    url: jdbc:mysql://127.0.0.1:3307/goosage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: root123
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      validation-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  flyway:
+    enabled: true
 
   security:
     user:

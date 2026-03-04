@@ -46,4 +46,10 @@ public class StudyReadDaoAdapter implements StudyReadPort {
     public int calcStreakDays(long userId, LocalDate today) {
         return dao.calcStreakDays(userId, today);
     }
+
+    // ✅ 추가: daily_learning(집계)이 0일 때, study_events(팩트)로 오늘 이벤트 존재를 교차검증
+    @Override
+    public int todayEventCountFromEvents(long userId, LocalDate today) {
+        return dao.todayEventCountFromEvents(userId, today);
+    }
 }

@@ -9,7 +9,7 @@ import com.goosage.infra.service.study.predict.model.InfraPredictionReasonCodeVi
 @Service
 public class NextActionService {
 
-	public NextActionDto decide(StudySnapshot snap, InfraPredictionReasonCodeView reasonCode) {
+    public NextActionDto decide(StudySnapshot snap, InfraPredictionReasonCodeView reasonCode) {
 
         // 0) 안전장치
         if (snap == null) {
@@ -22,27 +22,36 @@ public class NextActionService {
             );
         }
 
-     // ✅ Prediction 우선 정책: 충돌 방지 핵심
+        // ✅ Prediction 우선 정책: 충돌 방지 핵심
         if (reasonCode == InfraPredictionReasonCodeView.TODAY_DONE) {
             return new NextActionDto(
-                NextActionType.TODAY_DONE,
-                "오늘은 이미 한 번 돌렸어. 내일을 위해 가볍게 정리할까?",
-                null,
-                false,
-                "오늘 루프는 완료! 내일은 오답/템플릿 중 하나만 이어가면 돼."
+                    NextActionType.TODAY_DONE,
+                    "오늘은 이미 한 번 돌렸어. 내일을 위해 가볍게 정리할까?",
+                    null,
+                    false,
+                    "오늘 루프는 완료! 내일은 오답/템플릿 중 하나만 이어가면 돼."
             );
         }
 
-        var s = snap.state();
-
-        // 1) 오늘 이벤트 0 → JUST_OPEN
+        // ✅ 오늘 첫 진입 (이유를 분리해서 남기기)
         if (!snap.studiedToday()) {
             return new NextActionDto(
                     NextActionType.JUST_OPEN,
                     "오늘은 가볍게 1개만 시작할까?",
                     null,
                     false,
-                    "오늘의 첫 진입이야. 1분만 열어도 학습 루프가 시작돼."
+                    "오늘의 첫 진입이야. 이벤트 1개만 생기면 루프가 시작돼."
+            );
+        }
+
+        var s = snap.state();
+        if (s == null) {
+            return new NextActionDto(
+                    NextActionType.JUST_OPEN,
+                    "오늘은 가볍게 1개만 시작할까?",
+                    null,
+                    false,
+                    "상태(state)가 비어있어. 이벤트 1개만 넣어서 다시 스냅샷을 만들자."
             );
         }
 
@@ -54,17 +63,6 @@ public class NextActionService {
                     snap.recentKnowledgeId(),
                     true,
                     "오늘 남아있는 오답 1개만 잡아도 효율이 확 올라가."
-            );
-        }
-
-        // 3) 오늘 퀴즈 제출이 있음 → TODAY_DONE
-        if (s.quizSubmits() > 0) {
-            return new NextActionDto(
-                    NextActionType.TODAY_DONE,
-                    "오늘은 이미 한 번 돌렸어. 내일을 위해 가볍게 정리할까?",
-                    null,
-                    false,
-                    "오늘 루프는 완료! 내일은 오답/템플릿 중 하나만 이어가면 돼."
             );
         }
 

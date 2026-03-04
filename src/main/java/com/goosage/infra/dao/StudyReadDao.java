@@ -25,7 +25,7 @@ public class StudyReadDao {
             "  DATE(MAX(created_at)) AS ymd, " +
             "  COUNT(*) AS events_count, " +
             "  SUM(CASE WHEN event_type = 'QUIZ_SUBMIT' THEN 1 ELSE 0 END) AS quiz_submits, " +
-            "  SUM(CASE WHEN event_type = 'WRONG_REVIEW_DONE' THEN 1 ELSE 0 END) AS wrong_reviews " +
+            "  SUM(CASE WHEN event_type IN ('REVIEW_WRONG', 'WRONG_REVIEW_DONE') THEN 1 ELSE 0 END) AS wrong_reviews " +
             "FROM study_events " +
             "WHERE user_id = ? " +
             "  AND DATE(created_at) = CURDATE() " +
@@ -93,9 +93,26 @@ public class StudyReadDao {
         return streak;
     }
     
+    public int todayEventCountFromEvents(long userId, LocalDate today) {
+
+        // MySQL: 오늘 00:00:00 ~ 내일 00:00:00 미만
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "  AND created_at >= ? " +
+            "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        return (cnt == null) ? 0 : cnt;
+    }
+    
     public int recentEventCount3d(long userId, LocalDate today) {
 
-        // MySQL: 최근 3일(오늘 포함) = [today-2 00:00:00, tomorrow 00:00:00)
+        // 최근 3일(오늘 포함) = [today-2 00:00:00, tomorrow 00:00:00)
         String sql =
             "SELECT COUNT(*) " +
             "FROM study_events " +
@@ -104,7 +121,7 @@ public class StudyReadDao {
             "  AND created_at < ?";
 
         Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
-        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay()); // 내일 00:00 미만
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
 
         Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
         return (cnt == null) ? 0 : cnt;

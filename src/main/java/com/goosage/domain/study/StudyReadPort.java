@@ -12,4 +12,5 @@ public interface StudyReadPort {
     Optional<LocalDateTime> lastEventAtAll(long userId);
     int calcStreakDays(long userId, LocalDate today);
     int recentEventCount3d(long userId, LocalDate today);
+    int todayEventCountFromEvents(long userId, LocalDate today);
 }
