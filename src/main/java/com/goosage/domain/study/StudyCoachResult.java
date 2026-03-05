@@ -1,7 +1,7 @@
 package com.goosage.domain.study;
 
-import com.goosage.infra.service.study.action.NextActionDto;
-import com.goosage.infra.service.study.predict.model.InfraPredictionView;
+import com.goosage.api.view.study.InfraPredictionView;
+import com.goosage.api.view.study.NextActionDto;
 
 public record StudyCoachResult(
         StudyState state,

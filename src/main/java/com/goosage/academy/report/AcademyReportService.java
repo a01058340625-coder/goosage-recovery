@@ -1,13 +1,12 @@
 package com.goosage.academy.report;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goosage.academy.course.AcademyCourseDao;
 import com.goosage.academy.progress.AcademyProgressDao;
-
-import java.util.List;
-import java.util.Optional;
 
 
 @Service

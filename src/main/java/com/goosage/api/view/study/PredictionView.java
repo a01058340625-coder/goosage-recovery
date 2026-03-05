@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.predict.model;
+package com.goosage.api.view.study;
 
 import java.util.List;
 

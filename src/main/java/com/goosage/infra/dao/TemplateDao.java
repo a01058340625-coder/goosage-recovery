@@ -4,13 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 // import org.springframework.stereotype.Repository;  // ✅ 지금 단계에서는 DAO 퇴장(빈 등록 차단)
 
 import com.goosage.dto.template.TemplateDto;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 // ✅ FM 잠금: JPA TemplateRepository로 통일.
 // ✅ TemplateDao(JdbcTemplate)는 "특수쿼리/성능" 필요할 때만 다시 활성화.

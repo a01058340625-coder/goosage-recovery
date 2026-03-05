@@ -3,7 +3,6 @@ package com.goosage.api.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.goosage.api.view.study.StudyCoachResponse;   // ✅ 여기로 통일
 import com.goosage.app.study.StudyCoachService;
 import com.goosage.auth.SessionConst;
 import com.goosage.domain.study.StudyCoachResult;

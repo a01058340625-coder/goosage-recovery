@@ -2,9 +2,10 @@ package com.goosage.infra.service.study.action;
 
 import org.springframework.stereotype.Service;
 
+import com.goosage.api.view.study.InfraPredictionReasonCodeView;
+import com.goosage.api.view.study.NextActionDto;
 import com.goosage.domain.NextActionType;
 import com.goosage.domain.study.StudySnapshot;
-import com.goosage.infra.service.study.predict.model.InfraPredictionReasonCodeView;
 
 @Service
 public class NextActionService {

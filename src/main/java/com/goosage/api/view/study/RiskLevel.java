@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.dto;
+package com.goosage.api.view.study;
 
 public enum RiskLevel {
     SAFE,

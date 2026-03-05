@@ -2,17 +2,15 @@ package com.goosage.infra.adapter;
 
 import org.springframework.stereotype.Component;
 
-import com.goosage.domain.study.StudySnapshot;
-import com.goosage.domain.study.StudyState;
+import com.goosage.api.view.study.InfraPredictionView;
+import com.goosage.api.view.study.NextActionDto;
 import com.goosage.domain.study.StudyCoachPort;
 import com.goosage.domain.study.StudyCoachResult;
-import com.goosage.infra.service.study.action.NextActionDto;
+import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.study.StudyState;
 import com.goosage.infra.service.study.action.NextActionService;
 import com.goosage.infra.service.study.interpret.StudyInterpretationService;
 import com.goosage.infra.service.study.predict.PredictionService;
-import com.goosage.infra.service.study.predict.model.InfraPredictionView;
-import com.goosage.infra.service.study.predict.model.PredictionInput;
-import com.goosage.infra.service.study.mapper.PredictionMappers;
 
 @Component
 public class StudyCoachAdapter implements StudyCoachPort {

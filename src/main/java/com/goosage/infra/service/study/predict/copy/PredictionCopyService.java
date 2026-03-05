@@ -2,9 +2,9 @@ package com.goosage.infra.service.study.predict.copy;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.infra.service.study.predict.model.InfraPredictionView;
-import com.goosage.infra.service.study.predict.model.PredictionEvidence;
-import com.goosage.infra.service.study.predict.model.InfraPredictionReasonCodeView;
+import com.goosage.api.view.study.InfraPredictionReasonCodeView;
+import com.goosage.api.view.study.InfraPredictionView;
+import com.goosage.api.view.study.PredictionEvidence;
 
 @Service
 public class PredictionCopyService {

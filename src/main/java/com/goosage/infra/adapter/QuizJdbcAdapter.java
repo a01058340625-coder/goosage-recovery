@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.goosage.domain.quiz.QuizPort;
 import com.goosage.infra.dao.QuizItemDao;
 import com.goosage.infra.dao.QuizResultDao;
-import com.goosage.infra.dao.StudyEventDao;
 import com.goosage.infra.dao.QuizResultDao.QuizResultRow;
+import com.goosage.infra.dao.StudyEventDao;
 
 @Repository
 public class QuizJdbcAdapter implements QuizPort {

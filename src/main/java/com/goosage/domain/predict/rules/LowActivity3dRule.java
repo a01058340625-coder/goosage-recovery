@@ -2,12 +2,13 @@ package com.goosage.domain.predict.rules;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
 import com.goosage.domain.study.StudySnapshot;
-import org.springframework.stereotype.Component;
 
 @Component
 

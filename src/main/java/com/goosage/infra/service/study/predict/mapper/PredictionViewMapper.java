@@ -1,14 +1,12 @@
 package com.goosage.infra.service.study.predict.mapper;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
+import com.goosage.api.view.study.ExposureLevel;
+import com.goosage.api.view.study.InfraPredictionView;
 import com.goosage.api.view.study.StudyPredictionView;
 import com.goosage.domain.study.ExposurePolicy;
 import com.goosage.infra.service.study.predict.copy.PredictionCopyService;
-import com.goosage.infra.service.study.predict.model.ExposureLevel;
-import com.goosage.infra.service.study.predict.model.InfraPredictionView;
 
 @Component
 public class PredictionViewMapper {

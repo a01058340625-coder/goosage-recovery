@@ -12,7 +12,6 @@ import com.goosage.dto.KnowledgeDto;
 import com.goosage.dto.post.PostCreateRequest;
 import com.goosage.dto.post.PostDto;
 import com.goosage.dto.post.PostResponse;
-import com.goosage.support.web.ForbiddenException;
 
 @Service
 public class PostService {

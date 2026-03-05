@@ -2,8 +2,6 @@ package com.goosage.dto.post;
 
 import java.time.LocalDateTime;
 
-import com.goosage.entity.PostEntity;
-
 public class PostResponse {
     private Long id;
     private String title;

@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.predict.model;
+package com.goosage.api.view.study;
 
 /**
  * Prediction 계산에 필요한 입력값 묶음

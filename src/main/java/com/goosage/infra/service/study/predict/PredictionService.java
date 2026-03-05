@@ -1,9 +1,9 @@
 package com.goosage.infra.service.study.predict;
 
+import com.goosage.api.view.study.InfraPredictionView;
+import com.goosage.api.view.study.PredictionInput;
 import com.goosage.domain.study.StudySnapshot;
 import com.goosage.domain.study.StudyState;
-import com.goosage.infra.service.study.predict.model.InfraPredictionView;
-import com.goosage.infra.service.study.predict.model.PredictionInput;
 
 public interface PredictionService {
     InfraPredictionView predict(PredictionInput input);  // (임시/삭제대상)

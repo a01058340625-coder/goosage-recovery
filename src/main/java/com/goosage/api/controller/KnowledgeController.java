@@ -16,6 +16,7 @@ import com.goosage.app.TemplateService;
 import com.goosage.auth.SessionConst;
 import com.goosage.dto.KnowledgeDto;
 import com.goosage.dto.knowledge.KnowledgeCreateRequest;
+import com.goosage.dto.knowledge.KnowledgeMapper;
 import com.goosage.dto.knowledge.KnowledgeResponse;
 import com.goosage.dto.quiz.QuizResponse;
 import com.goosage.dto.quiz.QuizResultResponse;
@@ -27,9 +28,6 @@ import com.goosage.support.web.ApiResponse;
 import com.goosage.support.web.UnauthorizedException;
 
 import jakarta.servlet.http.HttpSession;
-import com.goosage.dto.knowledge.KnowledgeMapper;
-import com.goosage.dto.knowledge.KnowledgeCreateRequest;
-import com.goosage.dto.knowledge.KnowledgeResponse;
 
 
 @RestController

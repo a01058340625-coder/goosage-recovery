@@ -1,6 +1,5 @@
-package com.goosage.infra.service.study.mapper;
+package com.goosage.api.view.study;
 
-import com.goosage.api.view.study.StudyStateView;
 import com.goosage.domain.study.StudySnapshot;
 
 public final class StudyMappers {

@@ -1,7 +1,6 @@
-package com.goosage.infra.service.study.mapper;
+package com.goosage.api.view.study;
 
 import com.goosage.domain.study.StudySnapshot;
-import com.goosage.infra.service.study.predict.model.PredictionInput;
 
 public final class PredictionMappers {
 

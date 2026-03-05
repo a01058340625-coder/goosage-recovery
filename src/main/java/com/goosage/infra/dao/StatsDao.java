@@ -1,7 +1,6 @@
 // src/main/java/com/goosage/repository/StatsDao.java
 package com.goosage.infra.dao;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,7 +1,7 @@
 package com.goosage.domain.study;
 
-import com.goosage.infra.service.study.predict.model.ExposureLevel;
-import com.goosage.infra.service.study.predict.model.InfraPredictionView;
+import com.goosage.api.view.study.ExposureLevel;
+import com.goosage.api.view.study.InfraPredictionView;
 
 public class ExposurePolicy {
 
