@@ -2,7 +2,7 @@ package com.goosage.infra.adapter;
 
 import org.springframework.stereotype.Component;
 
-import com.goosage.api.view.study.InfraPredictionView;
+import com.goosage.api.view.study.CoachPredictionView;
 import com.goosage.api.view.study.NextActionDto;
 import com.goosage.app.predict.PredictionService;
 import com.goosage.app.study.action.NextActionService;
@@ -39,7 +39,7 @@ public class StudyCoachAdapter implements StudyCoachPort {
         StudyState state = snap.state();
 
         // ✅ 3) 결정은 snapshot 단일 입력 (context 포함)
-        InfraPredictionView prediction = predictionService.predict(snap);
+        CoachPredictionView prediction = predictionService.predict(snap);
         NextActionDto next = nextActionService.decide(snap, prediction.reasonCode());
 
         return new StudyCoachResult(state, next, prediction);

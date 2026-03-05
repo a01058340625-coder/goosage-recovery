@@ -2,7 +2,7 @@ package com.goosage.app.study.action;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.api.view.study.InfraPredictionReasonCodeView;
+import com.goosage.api.view.study.CoachPredictionReasonCode;
 import com.goosage.api.view.study.NextActionDto;
 import com.goosage.domain.NextActionType;
 import com.goosage.domain.study.StudySnapshot;
@@ -10,7 +10,7 @@ import com.goosage.domain.study.StudySnapshot;
 @Service
 public class NextActionService {
 
-    public NextActionDto decide(StudySnapshot snap, InfraPredictionReasonCodeView reasonCode) {
+    public NextActionDto decide(StudySnapshot snap, CoachPredictionReasonCode reasonCode) {
 
         // 0) 안전장치
         if (snap == null) {
@@ -24,7 +24,7 @@ public class NextActionService {
         }
 
         // ✅ Prediction 우선 정책: 충돌 방지 핵심
-        if (reasonCode == InfraPredictionReasonCodeView.TODAY_DONE) {
+        if (reasonCode == CoachPredictionReasonCode.TODAY_DONE) {
             return new NextActionDto(
                     NextActionType.TODAY_DONE,
                     "오늘은 이미 한 번 돌렸어. 내일을 위해 가볍게 정리할까?",

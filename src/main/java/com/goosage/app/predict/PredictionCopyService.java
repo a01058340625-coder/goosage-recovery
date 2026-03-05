@@ -2,15 +2,15 @@ package com.goosage.app.predict;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.api.view.study.InfraPredictionReasonCodeView;
-import com.goosage.api.view.study.InfraPredictionView;
+import com.goosage.api.view.study.CoachPredictionReasonCode;
+import com.goosage.api.view.study.CoachPredictionView;
 import com.goosage.api.view.study.PredictionEvidence;
 
 @Service
 public class PredictionCopyService {
 
-    public Copy render(InfraPredictionView p) {
-        InfraPredictionReasonCodeView code = p.reasonCode();
+    public Copy render(CoachPredictionView p) {
+        CoachPredictionReasonCode code = p.reasonCode();
         PredictionEvidence ev = p.evidence(); // (지금은 미사용. v1.4에 근거 표시에 쓸 수 있음)
 
         return switch (code) {

@@ -1,6 +1,6 @@
 package com.goosage.api.view.study;
 
-public enum InfraPredictionLevelView {
+public enum CoachPredictionLevel {
     SAFE,
     RISK
 }

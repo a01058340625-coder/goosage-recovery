@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 000000D2 B8B2:0FAA입니다.
+볼륨 일련 번호가 0000001A B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -99,8 +99,10 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |               NextActionView.java
 |   |           |               PredictionEvidence.java
 |   |           |               PredictionInput.java
+|   |           |               PredictionMapper.java
 |   |           |               PredictionMappers.java
 |   |           |               PredictionView.java
+|   |           |               PredictionViewMapper.java
 |   |           |               RiskLevel.java
 |   |           |               StudyCoachResponse.java
 |   |           |               StudyEventRequest.java
@@ -285,23 +287,15 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |   \---admin
 |   |           |   |           StudyEventsAdminDao.java
 |   |           |   |           
-|   |           |   +---repository
-|   |           |   |       InMemoryKnowledgeRepository.java
-|   |           |   |       JdbcKnowledgeRepository.java
-|   |           |   |       KnowledgeRepository.java
-|   |           |   |       PostRepository.java
-|   |           |   |       QaRepository.java
-|   |           |   |       TemplateRepository.java
-|   |           |   |       UserRepository.java
-|   |           |   |       
-|   |           |   \---service
-|   |           |       \---study
-|   |           |           \---predict
-|   |           |               |   PredictionMapper.java
-|   |           |               |   
-|   |           |               \---mapper
-|   |           |                       PredictionViewMapper.java
-|   |           |                       
+|   |           |   \---repository
+|   |           |           InMemoryKnowledgeRepository.java
+|   |           |           JdbcKnowledgeRepository.java
+|   |           |           KnowledgeRepository.java
+|   |           |           PostRepository.java
+|   |           |           QaRepository.java
+|   |           |           TemplateRepository.java
+|   |           |           UserRepository.java
+|   |           |           
 |   |           +---support
 |   |           |   \---web
 |   |           |           ApiResponse.java
