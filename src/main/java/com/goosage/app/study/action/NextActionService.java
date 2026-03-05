@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.action;
+package com.goosage.app.study.action;
 
 import org.springframework.stereotype.Service;
 
