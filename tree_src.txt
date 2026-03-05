@@ -1,5 +1,5 @@
-﻿Folder PATH listing
-Volume serial number is 0000008A B8B2:0FAA
+﻿폴더 PATH의 목록입니다.
+볼륨 일련 번호가 000000CB B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -81,6 +81,10 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |   \---internal
 |   |           |   |           InternalStudyController.java
 |   |           |   |           
+|   |           |   +---internal
+|   |           |   |       InternalPingController.java
+|   |           |   |       InternalStudyCoachController.java
+|   |           |   |       
 |   |           |   +---security
 |   |           |   |       InternalKeyFilter.java
 |   |           |   |       
