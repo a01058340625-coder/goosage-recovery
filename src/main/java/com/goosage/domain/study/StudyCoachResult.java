@@ -1,10 +1,10 @@
 package com.goosage.domain.study;
 
-import com.goosage.api.view.study.CoachPredictionView;
-import com.goosage.api.view.study.NextActionDto;
+import com.goosage.domain.NextActionType;
+import com.goosage.domain.predict.Prediction;
 
 public record StudyCoachResult(
         StudyState state,
-        NextActionDto nextAction,
-        CoachPredictionView prediction
+        Prediction prediction,
+        NextActionType nextAction
 ) {}

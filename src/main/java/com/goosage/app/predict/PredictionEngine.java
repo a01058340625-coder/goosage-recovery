@@ -1,14 +1,12 @@
+// src/main/java/com/goosage/app/predict/PredictionEngine.java
 package com.goosage.app.predict;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
 import com.goosage.domain.predict.Prediction;
-import com.goosage.domain.predict.PredictionLevel;
-import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
 import com.goosage.domain.study.StudySnapshot;
 
@@ -18,6 +16,7 @@ public class PredictionEngine {
     private final List<PredictionRule> rules;
 
     public PredictionEngine(List<PredictionRule> rules) {
+        // ✅ priority 숫자 작을수록 먼저 적용(우선순위 높음)
         this.rules = rules.stream()
                 .sorted(Comparator.comparingInt(PredictionRule::priority))
                 .toList();
@@ -28,16 +27,8 @@ public class PredictionEngine {
             if (r.matches(s)) return r.apply(s);
         }
 
-        // v1.5: 임시 디폴트 (나중에 EXPLICIT_DEFAULT 등으로 분리)
-        return Prediction.of(
-                PredictionLevel.WARNING,
-                PredictionReasonCode.DEFAULT_FALLBACK,
-                Map.of(
-                        "note", "no rule matched",
-                        "streakDays", s.streakDays(),
-                        "daysSinceLastEvent", s.daysSinceLastEvent(),
-                        "recentEventCount3d", s.recentEventCount3d()
-                )
-        );
+        // ✅ 정공법: 여기까지 오면 안 됨 (DefaultFallbackRule이 항상 true)
+        // 그래도 혹시 모를 안전망(절대경로)
+        throw new IllegalStateException("No PredictionRule matched. DefaultFallbackRule missing?");
     }
 }

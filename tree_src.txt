@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 0000001A B8B2:0FAA입니다.
+볼륨 일련 번호가 0000001F B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -90,11 +90,12 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       
 |   |           |   \---view
 |   |           |       \---study
+|   |           |               CoachPredictionLevel.java
+|   |           |               CoachPredictionReasonCode.java
+|   |           |               CoachPredictionView.java
 |   |           |               EvidenceView.java
 |   |           |               ExposureLevel.java
-|   |           |               InfraPredictionLevelView.java
-|   |           |               InfraPredictionReasonCodeView.java
-|   |           |               InfraPredictionView.java
+|   |           |               ExposurePolicy.java
 |   |           |               NextActionDto.java
 |   |           |               NextActionView.java
 |   |           |               PredictionEvidence.java
@@ -174,6 +175,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |   |   
 |   |           |   |   \---rules
 |   |           |   |           DataPoorDefaultRule.java
+|   |           |   |           DefaultFallbackRule.java
 |   |           |   |           HabitCollapseRiskRule.java
 |   |           |   |           LowActivity3dRule.java
 |   |           |   |           StreakBreakRiskRule.java
@@ -192,7 +194,6 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       
 |   |           |   +---study
 |   |           |   |       DailyLearningPort.java
-|   |           |   |       ExposurePolicy.java
 |   |           |   |       StudyCoachPort.java
 |   |           |   |       StudyCoachResult.java
 |   |           |   |       StudyDebugPort.java

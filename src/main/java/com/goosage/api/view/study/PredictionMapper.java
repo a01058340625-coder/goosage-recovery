@@ -28,7 +28,8 @@ public final class PredictionMapper {
         return switch (c) {
             case TODAY_DONE -> CoachPredictionReasonCode.TODAY_DONE;
             case DATA_POOR -> CoachPredictionReasonCode.DATA_POOR;
-            case LOW_ACTIVITY_3D -> CoachPredictionReasonCode.STABLE; // 임시
+            case LOW_ACTIVITY_3D -> CoachPredictionReasonCode.LOW_ACTIVITY_3D;
+            case HABIT_COLLAPSE -> CoachPredictionReasonCode.HABIT_COLLAPSE;
             default -> CoachPredictionReasonCode.DEFAULT_FALLBACK;
         };
     }

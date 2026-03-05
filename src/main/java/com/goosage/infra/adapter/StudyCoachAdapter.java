@@ -2,11 +2,11 @@ package com.goosage.infra.adapter;
 
 import org.springframework.stereotype.Component;
 
-import com.goosage.api.view.study.CoachPredictionView;
-import com.goosage.api.view.study.NextActionDto;
 import com.goosage.app.predict.PredictionService;
 import com.goosage.app.study.action.NextActionService;
 import com.goosage.app.study.interpret.StudyInterpretationService;
+import com.goosage.domain.NextActionType;
+import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.study.StudyCoachPort;
 import com.goosage.domain.study.StudyCoachResult;
 import com.goosage.domain.study.StudySnapshot;
@@ -32,17 +32,12 @@ public class StudyCoachAdapter implements StudyCoachPort {
     @Override
     public StudyCoachResult execute(long userId) {
 
-        // 1) 단일 출처 Snapshot
         StudySnapshot snap = interpretationService.getSnapshot(userId);
-
-        // 2) 엔진 단일 진실
         StudyState state = snap.state();
 
-        // ✅ 3) 결정은 snapshot 단일 입력 (context 포함)
-        CoachPredictionView prediction = predictionService.predict(snap);
-        NextActionDto next = nextActionService.decide(snap, prediction.reasonCode());
+        Prediction prediction = predictionService.predict(snap); // ✅ 도메인
+        NextActionType next = nextActionService.decide(snap, prediction.reasonCode()); // ✅ 도메인 enum
 
-        return new StudyCoachResult(state, next, prediction);
+        return new StudyCoachResult(state, prediction, next); // (레코드 필드 순서에 맞춰)
     }
 }
-
