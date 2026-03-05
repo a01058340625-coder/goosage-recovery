@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.predict;
+package com.goosage.app.predict;
 
 import com.goosage.api.view.study.InfraPredictionView;
 import com.goosage.api.view.study.PredictionInput;

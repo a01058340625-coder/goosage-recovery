@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.predict.copy;
+package com.goosage.app.predict;
 
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,10 @@
-package com.goosage.infra.service.study.predict;
+package com.goosage.app.predict;
 
 import org.springframework.stereotype.Service;
 
-import com.goosage.app.predict.PredictionEngine;
 import com.goosage.domain.study.StudySnapshot;
 import com.goosage.domain.study.StudyState;
+import com.goosage.infra.service.study.predict.PredictionMapper;
 
 @Service
 public class PredictionServiceImpl implements PredictionService {
