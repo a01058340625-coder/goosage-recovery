@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.interpret;
+package com.goosage.app.study.interpret;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

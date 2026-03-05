@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 import com.goosage.api.view.study.InfraPredictionView;
 import com.goosage.api.view.study.NextActionDto;
 import com.goosage.app.study.action.NextActionService;
+import com.goosage.app.study.interpret.StudyInterpretationService;
 import com.goosage.domain.study.StudyCoachPort;
 import com.goosage.domain.study.StudyCoachResult;
 import com.goosage.domain.study.StudySnapshot;
 import com.goosage.domain.study.StudyState;
-import com.goosage.infra.service.study.interpret.StudyInterpretationService;
 import com.goosage.infra.service.study.predict.PredictionService;
 
 @Component
