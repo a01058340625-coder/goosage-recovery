@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 000000CB B8B2:0FAA입니다.
+볼륨 일련 번호가 000000D2 B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -90,9 +90,21 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       
 |   |           |   \---view
 |   |           |       \---study
+|   |           |               EvidenceView.java
+|   |           |               ExposureLevel.java
+|   |           |               InfraPredictionLevelView.java
+|   |           |               InfraPredictionReasonCodeView.java
+|   |           |               InfraPredictionView.java
+|   |           |               NextActionDto.java
 |   |           |               NextActionView.java
+|   |           |               PredictionEvidence.java
+|   |           |               PredictionInput.java
+|   |           |               PredictionMappers.java
+|   |           |               PredictionView.java
+|   |           |               RiskLevel.java
 |   |           |               StudyCoachResponse.java
 |   |           |               StudyEventRequest.java
+|   |           |               StudyMappers.java
 |   |           |               StudyPredictionView.java
 |   |           |               StudyStateView.java
 |   |           |               
@@ -114,11 +126,20 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |   
 |   |           |   +---predict
 |   |           |   |       PredictConfig.java
+|   |           |   |       PredictionCopyService.java
 |   |           |   |       PredictionEngine.java
+|   |           |   |       PredictionService.java
+|   |           |   |       PredictionServiceImpl.java
 |   |           |   |       
 |   |           |   \---study
-|   |           |           StudyCoachService.java
-|   |           |           
+|   |           |       |   StudyCoachService.java
+|   |           |       |   
+|   |           |       +---action
+|   |           |       |       NextActionService.java
+|   |           |       |       
+|   |           |       \---interpret
+|   |           |               StudyInterpretationService.java
+|   |           |               
 |   |           +---auth
 |   |           |       AuthResponse.java
 |   |           |       AuthSessionFilter.java
@@ -275,40 +296,11 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       
 |   |           |   \---service
 |   |           |       \---study
-|   |           |           +---action
-|   |           |           |       NextActionDto.java
-|   |           |           |       NextActionService.java
-|   |           |           |       
-|   |           |           +---dto
-|   |           |           |       RiskLevel.java
-|   |           |           |       
-|   |           |           +---interpret
-|   |           |           |       StudyInterpretationService.java
-|   |           |           |       
-|   |           |           +---mapper
-|   |           |           |       PredictionMappers.java
-|   |           |           |       StudyMappers.java
-|   |           |           |       
 |   |           |           \---predict
 |   |           |               |   PredictionMapper.java
-|   |           |               |   PredictionService.java
-|   |           |               |   PredictionServiceImpl.java
 |   |           |               |   
-|   |           |               +---copy
-|   |           |               |       PredictionCopyService.java
-|   |           |               |       
-|   |           |               +---mapper
-|   |           |               |       PredictionViewMapper.java
-|   |           |               |       
-|   |           |               \---model
-|   |           |                       EvidenceView.java
-|   |           |                       ExposureLevel.java
-|   |           |                       InfraPredictionLevelView.java
-|   |           |                       InfraPredictionReasonCodeView.java
-|   |           |                       InfraPredictionView.java
-|   |           |                       PredictionEvidence.java
-|   |           |                       PredictionInput.java
-|   |           |                       PredictionView.java
+|   |           |               \---mapper
+|   |           |                       PredictionViewMapper.java
 |   |           |                       
 |   |           +---support
 |   |           |   \---web

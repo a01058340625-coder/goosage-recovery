@@ -1,4 +1,4 @@
-package com.goosage.infra.service.study.predict;
+package com.goosage.api.view.study;
 
 import java.util.Map;
 
