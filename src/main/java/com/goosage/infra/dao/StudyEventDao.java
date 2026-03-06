@@ -94,7 +94,7 @@ public class StudyEventDao {
     private void upsertDaily(long userId, LocalDate ymd, String eventType) {
         // 이벤트 타입별 카운트 (초기 v0.9 기준: QUIZ_SUBMIT, WRONG_REVIEW만 별도)
         int quizInc = "QUIZ_SUBMIT".equals(eventType) ? 1 : 0;
-        int wrongInc = "WRONG_REVIEW".equals(eventType) ? 1 : 0;
+        int wrongInc = "REVIEW_WRONG".equals(eventType) ? 1 : 0;
 
         String sql = """
             INSERT INTO daily_learning (user_id, ymd, events_count, quiz_submits, wrong_reviews, last_event_at)

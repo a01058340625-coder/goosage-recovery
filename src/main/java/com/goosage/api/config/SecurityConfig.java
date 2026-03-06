@@ -20,11 +20,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/health").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/internal/**").permitAll()
-                        .requestMatchers("/admin/kpi/**").permitAll()   // ✅ 지금 네 목표
-                        .anyRequest().authenticated()
+                        .requestMatchers("/admin/kpi/**").permitAll()
+                        .anyRequest().permitAll()
                 )
-                // 원하면 켜도 되고, 꺼도 됨. (permitAll이면 영향 거의 없음)
                 .httpBasic(b -> {})
                 .build();
     }

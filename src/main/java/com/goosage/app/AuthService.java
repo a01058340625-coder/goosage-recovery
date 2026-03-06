@@ -15,9 +15,9 @@ public class AuthService {
     private final UserPort userPort;
     private final BCryptPasswordEncoder encoder;
 
-    public AuthService(UserPort userPort) {
+    public AuthService(UserPort userPort, BCryptPasswordEncoder encoder) {
         this.userPort = userPort;
-        this.encoder = new BCryptPasswordEncoder();
+        this.encoder = encoder;
     }
 
     public User mustFindById(long userId) {
@@ -25,9 +25,7 @@ public class AuthService {
                 .orElseThrow(() -> new IllegalArgumentException("USER_NOT_FOUND"));
     }
 
-    // ✅ 회원가입
     public User signup(String email, String password) {
-
         Optional<User> existing = userPort.findByEmail(email);
         if (existing.isPresent()) {
             throw new RuntimeException("EMAIL_ALREADY_EXISTS");
@@ -40,20 +38,31 @@ public class AuthService {
         return userPort.save(user);
     }
 
-    // ✅ 로그인
     public User login(String email, String password) {
 
+        System.out.println("[LOGIN] email=" + email + ", password=" + password);
+
         if (email == null || email.isBlank()) {
+            System.out.println("[LOGIN] email blank");
             throw new UnauthorizedException("INVALID_CREDENTIALS");
         }
         if (password == null || password.isBlank()) {
+            System.out.println("[LOGIN] password blank");
             throw new UnauthorizedException("INVALID_CREDENTIALS");
         }
 
         User user = userPort.findByEmail(email)
-                .orElseThrow(() -> new UnauthorizedException("INVALID_CREDENTIALS"));
+                .orElseThrow(() -> {
+                    System.out.println("[LOGIN] user not found");
+                    return new UnauthorizedException("INVALID_CREDENTIALS");
+                });
 
-        if (!encoder.matches(password, user.getPasswordHash())) {
+        System.out.println("[LOGIN] hash=" + user.getPasswordHash());
+
+        boolean ok = encoder.matches(password, user.getPasswordHash());
+        System.out.println("[LOGIN] matches=" + ok);
+
+        if (!ok) {
             throw new UnauthorizedException("INVALID_CREDENTIALS");
         }
 

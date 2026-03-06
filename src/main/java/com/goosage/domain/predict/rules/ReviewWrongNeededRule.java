@@ -11,19 +11,18 @@ import com.goosage.domain.predict.PredictionRule;
 import com.goosage.domain.study.StudySnapshot;
 
 @Component
-public class TodayDoneRule implements PredictionRule {
+public class ReviewWrongNeededRule implements PredictionRule {
 
     private static final int QUIZ_MIN = 5;
 
-    // 가장 강한 완료 조건(SAFE) 우선
     @Override
     public int priority() {
-        return 5;
+        // TodayDoneRule(5) 다음
+        return 10;
     }
 
     @Override
     public boolean matches(StudySnapshot s) {
-        // 오늘 공부한 경우에만 TODAY_DONE 대상
         if (!s.studiedToday()) {
             return false;
         }
@@ -31,23 +30,23 @@ public class TodayDoneRule implements PredictionRule {
         int quiz = s.state().quizSubmits();
         int wrong = s.state().wrongReviews();
 
-        return quiz >= QUIZ_MIN && wrong == 0;
+        return quiz >= QUIZ_MIN && wrong > 0;
     }
 
     @Override
     public Prediction apply(StudySnapshot s) {
         return Prediction.of(
-                PredictionLevel.SAFE,
-                PredictionReasonCode.TODAY_DONE,
-                "오늘 학습은 충분히 완료됐다. 현재 흐름을 유지하자.",
+                PredictionLevel.WARNING,
+                PredictionReasonCode.REVIEW_WRONG_PENDING,
+                "오늘 학습량은 충분하지만 오답 복습이 남아 있다. REVIEW_WRONG부터 정리하자.",
                 Map.of(
+                        "studiedToday", s.studiedToday(),
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
                         "recentEventCount3d", s.recentEventCount3d(),
                         "eventsCount", s.state().eventsCount(),
                         "quizSubmits", s.state().quizSubmits(),
                         "wrongReviews", s.state().wrongReviews(),
-                        "studiedToday", s.studiedToday(),
                         "quizMin", QUIZ_MIN
                 )
         );

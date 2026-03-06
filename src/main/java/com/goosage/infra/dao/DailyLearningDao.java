@@ -5,15 +5,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DailyLearningDao {
-
     private final JdbcTemplate jdbcTemplate;
 
     public DailyLearningDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // 기존: isWrongReviewDone  -> 변경: isReviewWrong
     public void upsertToday(long userId, boolean isQuizSubmit, boolean isReviewWrong) {
+
         int quizInc = isQuizSubmit ? 1 : 0;
         int wrongInc = isReviewWrong ? 1 : 0;
 

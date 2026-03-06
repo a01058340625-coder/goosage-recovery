@@ -25,9 +25,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-    /**
-     * 회원가입
-     */
     @PostMapping("/signup")
     public ApiResponse<Map<String, Object>> signup(@RequestBody Map<String, String> body) {
         User user = authService.signup(body.get("email"), body.get("password"));
@@ -37,9 +34,6 @@ public class AuthController {
         ));
     }
 
-    /**
-     * 로그인
-     */
     @PostMapping("/login")
     public ApiResponse<Map<String, Object>> login(
             @RequestBody Map<String, String> body,
@@ -54,18 +48,6 @@ public class AuthController {
         ));
     }
 
-    /**
-     * 로그아웃
-     */
-    @PostMapping("/logout")
-    public ApiResponse<Void> logout(HttpSession session) {
-        session.invalidate();
-        return ApiResponse.ok("LOGOUT_OK", null);
-    }
-
-    /**
-     * ✅ 현재 로그인 사용자 조회 (/auth/me)
-     */
     private long requireUserId(HttpSession session) {
         Object v = session.getAttribute(SessionConst.LOGIN_USER_ID);
         if (v == null) throw new IllegalArgumentException("UNAUTHORIZED");
@@ -80,5 +62,4 @@ public class AuthController {
         User user = authService.mustFindById(userId);
         return ApiResponse.ok(Map.of("id", user.getId(), "email", user.getEmail()));
     }
-
 }

@@ -1,8 +1,9 @@
-package com.goosage.infra.dao;
+package com.goosage.infra.adapter;
 
 import org.springframework.stereotype.Component;
 
 import com.goosage.domain.study.DailyLearningPort;
+import com.goosage.infra.dao.DailyLearningDao;
 
 @Component
 public class DailyLearningDaoAdapter implements DailyLearningPort {
@@ -14,14 +15,7 @@ public class DailyLearningDaoAdapter implements DailyLearningPort {
     }
 
     @Override
-    public void upsertToday(long userId,
-                            boolean isQuizSubmit,
-                            boolean isWrongDone) {
-
-        dailyLearningDao.upsertToday(
-                userId,
-                isQuizSubmit,
-                isWrongDone
-        );
+    public void upsertToday(long userId, boolean isQuizSubmit, boolean isReviewWrong) {
+        dailyLearningDao.upsertToday(userId, isQuizSubmit, isReviewWrong);
     }
 }

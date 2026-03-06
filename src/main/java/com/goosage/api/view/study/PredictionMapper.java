@@ -27,6 +27,7 @@ public final class PredictionMapper {
     private static CoachPredictionReasonCode toCoachReason(PredictionReasonCode c) {
         return switch (c) {
             case TODAY_DONE -> CoachPredictionReasonCode.TODAY_DONE;
+            case REVIEW_WRONG_PENDING -> CoachPredictionReasonCode.REVIEW_WRONG_PENDING;
             case DATA_POOR -> CoachPredictionReasonCode.DATA_POOR;
             case LOW_ACTIVITY_3D -> CoachPredictionReasonCode.LOW_ACTIVITY_3D;
             case HABIT_COLLAPSE -> CoachPredictionReasonCode.HABIT_COLLAPSE;
@@ -48,7 +49,10 @@ public final class PredictionMapper {
         if (v instanceof Integer i) return i;
         if (v instanceof Long l) return (int) l.longValue();
         if (v instanceof String s) {
-            try { return Integer.parseInt(s); } catch (Exception ignored) {}
+            try {
+                return Integer.parseInt(s);
+            } catch (Exception ignored) {
+            }
         }
         return defaultValue;
     }
