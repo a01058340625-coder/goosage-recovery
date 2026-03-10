@@ -1,5 +1,5 @@
 ﻿폴더 PATH의 목록입니다.
-볼륨 일련 번호가 0000001F B8B2:0FAA입니다.
+볼륨 일련 번호가 0000005D B8B2:0FAA입니다.
 C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 +---main
 |   +---java
@@ -178,6 +178,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |           DefaultFallbackRule.java
 |   |           |   |           HabitCollapseRiskRule.java
 |   |           |   |           LowActivity3dRule.java
+|   |           |   |           ReviewWrongNeededRule.java
 |   |           |   |           StreakBreakRiskRule.java
 |   |           |   |           StreakRiskRule.java
 |   |           |   |           TodayDoneRule.java
@@ -257,6 +258,7 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |       
 |   |           +---infra
 |   |           |   +---adapter
+|   |           |   |       DailyLearningDaoAdapter.java
 |   |           |   |       KnowledgeCrudAdapter.java
 |   |           |   |       KnowledgeRepositoryAdapter.java
 |   |           |   |       PostMapper.java
@@ -270,7 +272,6 @@ C:\DEV\LOOSEGOOSE\GOOSAGE-API\SRC
 |   |           |   |       
 |   |           |   +---dao
 |   |           |   |   |   DailyLearningDao.java
-|   |           |   |   |   DailyLearningDaoAdapter.java
 |   |           |   |   |   KnowledgeDao.java
 |   |           |   |   |   QuizItemDao.java
 |   |           |   |   |   QuizResultDao.java
