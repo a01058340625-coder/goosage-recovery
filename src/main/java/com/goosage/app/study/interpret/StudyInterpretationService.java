@@ -23,7 +23,6 @@ public class StudyInterpretationService {
         return getSnapshot(userId).state();
     }
 
-    // ✅ 단일 출처 Snapshot
     public StudySnapshot getSnapshot(long userId) {
 
         LocalDate today = LocalDate.now();
@@ -36,7 +35,7 @@ public class StudyInterpretationService {
         int events = 0;
         int quiz = 0;
         int wrong = 0;
-        Long recentKnowledgeId = null; // 아직 TodayRow에 없으니 null 고정
+        Long recentKnowledgeId = null;
 
         if (opt.isPresent()) {
             var row = opt.get();
@@ -48,8 +47,7 @@ public class StudyInterpretationService {
         StudyState state = new StudyState(wrong, quiz, events);
         int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll);
 
-        // TODO: 진짜 3일 집계로 교체 예정. 지금은 계약 유지용 브릿지.
-        int recent3d = Math.max(0, events);
+        int recent3d = studyReadPort.recentEventCount3d(userId, today);
 
         return new StudySnapshot(
                 today,
