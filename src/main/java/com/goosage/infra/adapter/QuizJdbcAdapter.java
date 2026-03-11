@@ -1,9 +1,9 @@
 package com.goosage.infra.adapter;
 
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
+import com.goosage.domain.EventType;
 import com.goosage.domain.quiz.QuizPort;
 import com.goosage.infra.dao.QuizItemDao;
 import com.goosage.infra.dao.QuizResultDao;
@@ -43,7 +43,7 @@ public class QuizJdbcAdapter implements QuizPort {
                                         int wrongCount, String detailsJson) {
 
         quizResultDao.save(userId, knowledgeId, total, correct, percent, wrongCount, detailsJson);
-        studyEventDao.recordEvent(userId, "QUIZ_SUBMIT", "KNOWLEDGE", knowledgeId, detailsJson);
+        studyEventDao.recordEvent(userId, EventType.QUIZ_SUBMIT, "KNOWLEDGE", knowledgeId, detailsJson);
     }
 
     @Override

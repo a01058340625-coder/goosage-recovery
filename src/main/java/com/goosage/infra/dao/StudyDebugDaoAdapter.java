@@ -1,7 +1,7 @@
 package com.goosage.infra.dao;
 
 import org.springframework.stereotype.Component;
-
+import com.goosage.domain.EventType;
 import com.goosage.domain.study.StudyDebugPort;
 
 @Component
@@ -15,6 +15,6 @@ public class StudyDebugDaoAdapter implements StudyDebugPort {
 
     @Override
     public void recordPing(Long userId) {
-        studyEventDao.recordEvent(userId, "PING", null, null, null);
+    	studyEventDao.recordEvent(userId, EventType.PING, null, null, null);
     }
 }

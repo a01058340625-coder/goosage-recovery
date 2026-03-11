@@ -1,7 +1,7 @@
 package com.goosage.api.controller.internal;
 
 import java.util.Map;
-
+import com.goosage.domain.EventType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +53,7 @@ public class InternalStudyController {
 
         // ✅ req.type() 자리에 들어가던 타입이 enum이면 valueOf 필요
         // - 만약 StudyEventService.record가 String을 받는 구조면 아래 한 줄을 String로 바꿔
-        studyEventService.record(userId, typeStr, knowledgeId);
+        studyEventService.record(userId, EventType.valueOf(typeStr), knowledgeId);
 
         return ApiResponse.ok(null);
     }

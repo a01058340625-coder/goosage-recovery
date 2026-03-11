@@ -1,6 +1,7 @@
 package com.goosage.app;
 
 import org.springframework.stereotype.Service;
+import com.goosage.domain.EventType;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goosage.domain.study.StudyEventPort;
@@ -15,7 +16,7 @@ public class StudyEventService {
     }
 
     @Transactional
-    public void record(long userId, String type, Long knowledgeId) {
+    public void record(Long userId, EventType type, Long knowledgeId) {
 
         // knowledgeId가 없으면 refType도 null로 두는 게 더 자연스러움(선택)
         String refType = (knowledgeId == null) ? null : "KNOWLEDGE";
