@@ -20,26 +20,28 @@ public class StudyReadDao {
 
     public Optional<TodayRowRecord> findToday(long userId) {
 
-        String sql =
-            "SELECT " +
-            "  DATE(MAX(created_at)) AS ymd, " +
-            "  COUNT(*) AS events_count, " +
-            "  SUM(CASE WHEN event_type = 'QUIZ_SUBMIT' THEN 1 ELSE 0 END) AS quiz_submits, " +
-            "  SUM(CASE WHEN event_type IN ('REVIEW_WRONG', 'WRONG_REVIEW_DONE') THEN 1 ELSE 0 END) AS wrong_reviews " +
-            "FROM study_events " +
-            "WHERE user_id = ? " +
-            "  AND DATE(created_at) = CURDATE() " +
-            "HAVING COUNT(*) > 0"; // ✅ 핵심: 0이면 행 자체가 없어짐
+    	String sql =
+    		    "SELECT " +
+    		    "  DATE(MAX(created_at)) AS ymd, " +
+    		    "  COUNT(*) AS events_count, " +
+    		    "  SUM(CASE WHEN event_type = 'QUIZ_SUBMIT' THEN 1 ELSE 0 END) AS quiz_submits, " +
+    		    "  SUM(CASE WHEN event_type = 'REVIEW_WRONG' THEN 1 ELSE 0 END) AS wrong_reviews, " +
+    		    "  SUM(CASE WHEN event_type = 'WRONG_REVIEW_DONE' THEN 1 ELSE 0 END) AS wrong_review_done_count " +
+    		    "FROM study_events " +
+    		    "WHERE user_id = ? " +
+    		    "  AND DATE(created_at) = CURDATE() " +
+    		    "HAVING COUNT(*) > 0";
 
         try {
             TodayRowRecord row = jdbcTemplate.queryForObject(
                 sql,
                 (rs, rowNum) -> new TodayRowRecord(
-                    rs.getDate("ymd").toLocalDate(),   // 이제 null이 될 수 없음
-                    rs.getInt("events_count"),
-                    rs.getInt("quiz_submits"),
-                    rs.getInt("wrong_reviews")
-                ),
+                	    rs.getDate("ymd").toLocalDate(),
+                	    rs.getInt("events_count"),
+                	    rs.getInt("quiz_submits"),
+                	    rs.getInt("wrong_reviews"),
+                	    rs.getInt("wrong_review_done_count")   // 🔥 추가
+                	),
                 userId
             );
 
@@ -117,6 +119,40 @@ public class StudyReadDao {
             "SELECT COUNT(*) " +
             "FROM study_events " +
             "WHERE user_id = ? " +
+            "  AND created_at >= ? " +
+            "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        return (cnt == null) ? 0 : cnt;
+    }
+    
+    public int recentWrong3d(long userId, LocalDate today) {
+
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "  AND type = 'REVIEW_WRONG' " +
+            "  AND created_at >= ? " +
+            "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        return (cnt == null) ? 0 : cnt;
+    }
+
+    public int recentWrongDone3d(long userId, LocalDate today) {
+
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "  AND event_type = 'WRONG_REVIEW_DONE' " +
             "  AND created_at >= ? " +
             "  AND created_at < ?";
 

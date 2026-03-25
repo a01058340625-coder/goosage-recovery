@@ -11,22 +11,70 @@ public class NextActionService {
 
     public NextActionType decide(StudySnapshot snap, PredictionReasonCode reasonCode) {
 
-        // 0) 오늘 끝이면 무조건 종료
+        if (reasonCode == null) {
+            return NextActionType.READ_SUMMARY;
+        }
+
         if (reasonCode == PredictionReasonCode.TODAY_DONE) {
             return NextActionType.TODAY_DONE;
         }
 
-        // 1) 데이터 부족이면 "한 번 열기"부터 (증거 생성)
         if (reasonCode == PredictionReasonCode.DATA_POOR) {
             return NextActionType.JUST_OPEN;
         }
 
-        // 2) 최근 활동 저하 → 부담 낮은 요약 읽기
-        if (reasonCode == PredictionReasonCode.LOW_ACTIVITY_3D) {
+        if (reasonCode == PredictionReasonCode.MINIMUM_ACTION) {
+            return NextActionType.JUST_OPEN;
+        }
+
+        if (reasonCode == PredictionReasonCode.REVIEW_WRONG_PENDING) {
+            return NextActionType.REVIEW_WRONG_ONE;
+        }
+
+        if (reasonCode == PredictionReasonCode.RECOVERY_PROGRESS) {
+            return NextActionType.REVIEW_WRONG_ONE;
+        }
+
+        if (reasonCode == PredictionReasonCode.RECOVERY_SAFE) {
+            return NextActionType.REVIEW_WRONG_ONE;
+        }
+
+        if (reasonCode == PredictionReasonCode.WRONG_HEAVY) {
+            return NextActionType.REVIEW_WRONG_ONE;
+        }
+
+        if (reasonCode == PredictionReasonCode.LOW_QUALITY_OPEN) {
+            return NextActionType.RETRY_QUIZ;
+        }
+
+        if (reasonCode == PredictionReasonCode.STABLE_PROGRESS) {
+            return NextActionType.RETRY_QUIZ;
+        }
+
+        if (reasonCode == PredictionReasonCode.GOOD_PROGRESS) {
             return NextActionType.READ_SUMMARY;
         }
 
-        // 3) 기본값(안전하게) → 요약 읽기
+        if (reasonCode == PredictionReasonCode.HABIT_STABLE) {
+            return NextActionType.READ_SUMMARY;
+        }
+
+        if (snap != null && snap.state() != null && snap.state().wrongReviews() > 0) {
+            return NextActionType.REVIEW_WRONG_ONE;
+        }
+
+        if (reasonCode == PredictionReasonCode.LOW_ACTIVITY_3D
+                || reasonCode == PredictionReasonCode.HABIT_COLLAPSE) {
+            return NextActionType.READ_SUMMARY;
+        }
+
+        if (snap != null
+                && snap.daysSinceLastEvent() == 0
+                && snap.state() != null
+                && snap.state().quizSubmits() < 2) {
+            return NextActionType.RETRY_QUIZ;
+        }
+
         return NextActionType.READ_SUMMARY;
     }
 }

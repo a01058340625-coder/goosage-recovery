@@ -12,5 +12,6 @@ public record TodayRow(
         int eventsCount,
         int quizSubmits,
         int wrongReviews,
+        int wrongReviewDoneCount,
         Long recentKnowledgeId
 ) {}

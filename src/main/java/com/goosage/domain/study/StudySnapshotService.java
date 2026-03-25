@@ -21,7 +21,10 @@ public class StudySnapshotService {
 
         int streakDays = readPort.calcStreakDays(userId, nowDate);
 
-        int events = 0, quiz = 0, wrong = 0;
+        int events = 0;
+        int quiz = 0;
+        int wrong = 0;
+        int wrongDone = 0;
         Long recentKnowledgeId = null;
         boolean studiedToday = false;
 
@@ -31,6 +34,7 @@ public class StudySnapshotService {
             events = a.eventsCount();
             quiz = a.quizSubmits();
             wrong = a.wrongReviews();
+            wrongDone = a.wrongReviewDoneCount();
             recentKnowledgeId = a.recentKnowledgeId(); // 지금은 null일 것
             studiedToday = events > 0; // (일단 유지, 아래에서 보정)
         }
@@ -45,7 +49,7 @@ public class StudySnapshotService {
             }
         }
 
-        StudyState state = new StudyState(wrong, quiz, events);
+        StudyState state = new StudyState(wrong, quiz, events, wrongDone);
         int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll, nowDateTime);
 
         // ✅ 진짜 3일 집계로 교체 완료

@@ -35,16 +35,19 @@ public class StudyInterpretationService {
         int events = 0;
         int quiz = 0;
         int wrong = 0;
+        int wrongDone = 0;
         Long recentKnowledgeId = null;
 
         if (opt.isPresent()) {
             var row = opt.get();
             events = row.eventsCount();
             quiz = row.quizSubmits();
-            wrong = row.wrongReviews();
+            wrong = studyReadPort.recentWrong3d(userId, today);
+            wrongDone = studyReadPort.recentWrongDone3d(userId, today);
         }
 
-        StudyState state = new StudyState(wrong, quiz, events);
+        StudyState state = new StudyState(wrong, quiz, events, wrongDone);
+        
         int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll);
 
         int recent3d = studyReadPort.recentEventCount3d(userId, today);

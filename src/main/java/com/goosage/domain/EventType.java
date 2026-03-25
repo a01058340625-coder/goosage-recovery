@@ -4,5 +4,5 @@ public enum EventType {
     JUST_OPEN,
     QUIZ_SUBMIT,
     REVIEW_WRONG,
-    PING
+    WRONG_REVIEW_DONE   // ✅ 이거 추가
 }

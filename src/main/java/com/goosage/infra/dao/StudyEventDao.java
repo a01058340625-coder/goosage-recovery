@@ -112,32 +112,36 @@ public class StudyEventDao {
     }
 
     private void upsertDaily(long userId, LocalDate ymd, EventType eventType) {
-        int quizInc = (eventType == EventType.QUIZ_SUBMIT) ? 1 : 0;
-        int wrongInc = (eventType == EventType.REVIEW_WRONG) ? 1 : 0;
+    	int quizInc = (eventType == EventType.QUIZ_SUBMIT) ? 1 : 0;
+    	int wrongInc = (eventType == EventType.REVIEW_WRONG) ? 1 : 0;
+    	int wrongDoneInc = (eventType == EventType.WRONG_REVIEW_DONE) ? 1 : 0;
+    	
+    	String sql = """
+    		    INSERT INTO daily_learning (
+    		        user_id,
+    		        ymd,
+    		        events_count,
+    		        quiz_submits,
+    		        wrong_reviews,
+    		        wrong_review_done_count,
+    		        last_event_at
+    		    )
+    		    VALUES (?, ?, 1, ?, ?, ?, NOW())
+    		    ON DUPLICATE KEY UPDATE
+    		        events_count = events_count + 1,
+    		        quiz_submits = quiz_submits + VALUES(quiz_submits),
+    		        wrong_reviews = wrong_reviews + VALUES(wrong_reviews),
+    		        wrong_review_done_count = wrong_review_done_count + VALUES(wrong_review_done_count),
+    		        last_event_at = NOW()
+    		""";
 
-        String sql = """
-            INSERT INTO daily_learning (
-                user_id,
-                ymd,
-                events_count,
-                quiz_submits,
-                wrong_reviews,
-                last_event_at
-            )
-            VALUES (?, ?, 1, ?, ?, NOW())
-            ON DUPLICATE KEY UPDATE
-                events_count = events_count + 1,
-                quiz_submits = quiz_submits + VALUES(quiz_submits),
-                wrong_reviews = wrong_reviews + VALUES(wrong_reviews),
-                last_event_at = NOW()
-        """;
-
-        jdbcTemplate.update(
-                sql,
-                userId,
-                java.sql.Date.valueOf(ymd),
-                quizInc,
-                wrongInc
-        );
+    	jdbcTemplate.update(
+    		    sql,
+    		    userId,
+    		    java.sql.Date.valueOf(ymd),
+    		    quizInc,
+    		    wrongInc,
+    		    wrongDoneInc
+    		);
     }
 }

@@ -21,15 +21,15 @@ public class StudyReadDaoAdapter implements StudyReadPort {
 
     @Override
     public Optional<TodayRow> findToday(long userId, LocalDate today) {
-        // DAO가 내부에서 '오늘' 기준이면 today는 계약상만 받고 위임해도 OK
         return dao.findToday(userId)
-                .map(r -> new TodayRow(
-                        r.ymd(),
-                        r.eventsCount(),
-                        r.quizSubmits(),
-                        r.wrongReviews(),
-                        null // TODO: DAO row에 recentKnowledgeId 붙이면 여기 매핑
-                ));
+        		.map(r -> new TodayRow(
+        			    r.ymd(),
+        			    r.eventsCount(),
+        			    r.quizSubmits(),
+        			    r.wrongReviews(),
+        			    r.wrongReviewDoneCount(),   // 🔥 추가
+        			    null
+        			));
     }
 
     @Override
@@ -47,9 +47,18 @@ public class StudyReadDaoAdapter implements StudyReadPort {
         return dao.calcStreakDays(userId, today);
     }
 
-    // ✅ 추가: daily_learning(집계)이 0일 때, study_events(팩트)로 오늘 이벤트 존재를 교차검증
     @Override
     public int todayEventCountFromEvents(long userId, LocalDate today) {
         return dao.todayEventCountFromEvents(userId, today);
+    }
+    
+    @Override
+    public int recentWrong3d(long userId, LocalDate today) {
+        return dao.recentWrong3d(userId, today);
+    }
+
+    @Override
+    public int recentWrongDone3d(long userId, LocalDate today) {
+        return dao.recentWrongDone3d(userId, today);
     }
 }
