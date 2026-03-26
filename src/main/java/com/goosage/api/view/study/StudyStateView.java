@@ -11,6 +11,7 @@ public class StudyStateView {
     private int eventsCount;
     private int quizSubmits;
     private int wrongReviews;
+    private int wrongReviewDoneCount;
     private LocalDateTime lastEventAt;
     private Long recentKnowledgeId;
 
@@ -21,6 +22,7 @@ public class StudyStateView {
             int eventsCount,
             int quizSubmits,
             int wrongReviews,
+            int wrongReviewDoneCount,
             LocalDateTime lastEventAt,
             Long recentKnowledgeId
     ) {
@@ -30,6 +32,7 @@ public class StudyStateView {
         this.eventsCount = eventsCount;
         this.quizSubmits = quizSubmits;
         this.wrongReviews = wrongReviews;
+        this.wrongReviewDoneCount = wrongReviewDoneCount;
         this.lastEventAt = lastEventAt;
         this.recentKnowledgeId = recentKnowledgeId;
     }
@@ -40,6 +43,7 @@ public class StudyStateView {
     public int getEventsCount() { return eventsCount; }
     public int getQuizSubmits() { return quizSubmits; }
     public int getWrongReviews() { return wrongReviews; }
+    public int getWrongReviewDoneCount() { return wrongReviewDoneCount; }
     public LocalDateTime getLastEventAt() { return lastEventAt; }
     public Long getRecentKnowledgeId() { return recentKnowledgeId; }
 }

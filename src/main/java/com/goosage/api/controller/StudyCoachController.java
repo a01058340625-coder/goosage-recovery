@@ -22,12 +22,13 @@ public class StudyCoachController {
 
     @GetMapping("/study/coach")
     public ApiResponse<StudyCoachResult> coach(HttpSession session) {
+
         Long userId = (Long) session.getAttribute(SessionConst.LOGIN_USER_ID);
         if (userId == null) throw new UnauthorizedException("UNAUTHORIZED");
+
+        System.out.println("[COACH-ENTRY] user=" + userId);
 
         StudyCoachResult result = studyCoachService.coach(userId);
         return ApiResponse.ok(result);
     }
-
-
 }

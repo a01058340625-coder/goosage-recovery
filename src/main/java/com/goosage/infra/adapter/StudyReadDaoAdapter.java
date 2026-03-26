@@ -61,4 +61,19 @@ public class StudyReadDaoAdapter implements StudyReadPort {
     public int recentWrongDone3d(long userId, LocalDate today) {
         return dao.recentWrongDone3d(userId, today);
     }
+    
+    @Override
+    public int todayWrongFromEvents(long userId, LocalDate today) {
+        return dao.todayWrongFromEvents(userId, today);
+    }
+
+    @Override
+    public int todayWrongDoneFromEvents(long userId, LocalDate today) {
+        return dao.todayWrongDoneFromEvents(userId, today);
+    }
+    
+    @Override
+    public int todayQuizFromEvents(long userId, LocalDate today) {
+        return dao.todayQuizFromEvents(userId, today);
+    }
 }

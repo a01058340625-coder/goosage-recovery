@@ -9,9 +9,15 @@ public final class StudyMappers {
     public static StudyStateView toView(StudySnapshot s) {
         if (s == null) {
             return new StudyStateView(
-                    null, false, 0,
-                    0, 0, 0,
-                    null, null
+                    null,
+                    false,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    null,
+                    null
             );
         }
 
@@ -22,6 +28,7 @@ public final class StudyMappers {
                 s.state().eventsCount(),
                 s.state().quizSubmits(),
                 s.state().wrongReviews(),
+                s.state().wrongReviewDoneCount(),
                 s.lastEventAt(),
                 s.recentKnowledgeId()
         );

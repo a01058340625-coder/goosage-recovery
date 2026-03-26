@@ -21,23 +21,27 @@ public class StudyTodayService {
         LocalDate today = LocalDate.now();
         var rowOpt = studyReadPort.findToday(userId, today);
 
-        if (rowOpt.isEmpty()) {
+        int events = studyReadPort.todayEventCountFromEvents(userId, today);
+        int quiz = studyReadPort.todayQuizFromEvents(userId, today);
+        int wrong = studyReadPort.todayWrongFromEvents(userId, today);
+
+        if (events == 0) {
             return new StudyTodayResult(0, 0, 0, "오늘 아직 학습 기록이 없습니다");
         }
 
-        TodayRow row = rowOpt.get();
+        TodayRow row = rowOpt.orElse(null);
 
         return new StudyTodayResult(
-                row.eventsCount(),
-                row.quizSubmits(),
-                row.wrongReviews(),
-                messageFor(row)
+                events,
+                quiz,
+                wrong,
+                messageFor(events, quiz)
         );
     }
 
-    private String messageFor(TodayRow row) {
-        if (row.quizSubmits() > 0) return "오늘 퀴즈를 " + row.quizSubmits() + "회 진행했어요";
-        if (row.eventsCount() > 0) return "오늘 학습 활동이 있습니다";
+    private String messageFor(int events, int quiz) {
+        if (quiz > 0) return "오늘 퀴즈를 " + quiz + "회 진행했어요";
+        if (events > 0) return "오늘 학습 활동이 있습니다";
         return "오늘 아직 학습 기록이 없습니다";
     }
 }

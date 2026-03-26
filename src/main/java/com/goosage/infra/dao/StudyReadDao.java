@@ -24,9 +24,9 @@ public class StudyReadDao {
     		    "SELECT " +
     		    "  DATE(MAX(created_at)) AS ymd, " +
     		    "  COUNT(*) AS events_count, " +
-    		    "  SUM(CASE WHEN event_type = 'QUIZ_SUBMIT' THEN 1 ELSE 0 END) AS quiz_submits, " +
-    		    "  SUM(CASE WHEN event_type = 'REVIEW_WRONG' THEN 1 ELSE 0 END) AS wrong_reviews, " +
-    		    "  SUM(CASE WHEN event_type = 'WRONG_REVIEW_DONE' THEN 1 ELSE 0 END) AS wrong_review_done_count " +
+    		    "  SUM(CASE WHEN type = 'QUIZ_SUBMIT' THEN 1 ELSE 0 END) AS quiz_submits, " +
+    		    "  SUM(CASE WHEN type = 'REVIEW_WRONG' THEN 1 ELSE 0 END) AS wrong_reviews, " +
+    		    "  SUM(CASE WHEN type = 'WRONG_REVIEW_DONE' THEN 1 ELSE 0 END) AS wrong_review_done_count " +
     		    "FROM study_events " +
     		    "WHERE user_id = ? " +
     		    "  AND DATE(created_at) = CURDATE() " +
@@ -131,13 +131,13 @@ public class StudyReadDao {
     
     public int recentWrong3d(long userId, LocalDate today) {
 
-        String sql =
-            "SELECT COUNT(*) " +
-            "FROM study_events " +
-            "WHERE user_id = ? " +
-            "  AND type = 'REVIEW_WRONG' " +
-            "  AND created_at >= ? " +
-            "  AND created_at < ?";
+    	String sql =
+    		    "SELECT COUNT(*) " +
+    		    "FROM study_events " +
+    		    "WHERE user_id = ? " +
+    		    "  AND type = 'REVIEW_WRONG' " +
+    		    "  AND created_at >= ? " +
+    		    "  AND created_at < ?";
 
         Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
         Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
@@ -152,11 +152,62 @@ public class StudyReadDao {
             "SELECT COUNT(*) " +
             "FROM study_events " +
             "WHERE user_id = ? " +
-            "  AND event_type = 'WRONG_REVIEW_DONE' " +
+            "  AND type = 'WRONG_REVIEW_DONE' " +
             "  AND created_at >= ? " +
             "  AND created_at < ?";
 
         Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        return (cnt == null) ? 0 : cnt;
+    }
+    
+    public int todayWrongFromEvents(long userId, LocalDate today) {
+
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "  AND type = 'REVIEW_WRONG' " +
+            "  AND created_at >= ? " +
+            "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        return (cnt == null) ? 0 : cnt;
+    }
+    
+    public int todayWrongDoneFromEvents(long userId, LocalDate today) {
+
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "  AND type = 'WRONG_REVIEW_DONE' " +
+            "  AND created_at >= ? " +
+            "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        return (cnt == null) ? 0 : cnt;
+    }
+    
+    public int todayQuizFromEvents(long userId, LocalDate today) {
+
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM study_events " +
+            "WHERE user_id = ? " +
+            "  AND type = 'QUIZ_SUBMIT' " +
+            "  AND created_at >= ? " +
+            "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
         Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
 
         Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);

@@ -28,6 +28,7 @@ public final class PredictionMapper {
         return switch (c) {
             case TODAY_DONE -> CoachPredictionReasonCode.TODAY_DONE;
             case REVIEW_WRONG_PENDING -> CoachPredictionReasonCode.REVIEW_WRONG_PENDING;
+            case RECOVERY_PROGRESS -> CoachPredictionReasonCode.RECOVERY_PROGRESS;
             case DATA_POOR -> CoachPredictionReasonCode.DATA_POOR;
             case LOW_ACTIVITY_3D -> CoachPredictionReasonCode.LOW_ACTIVITY_3D;
             case HABIT_COLLAPSE -> CoachPredictionReasonCode.HABIT_COLLAPSE;

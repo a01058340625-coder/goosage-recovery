@@ -13,24 +13,27 @@ import com.goosage.domain.study.StudySnapshot;
 @Component
 public class ReviewWrongNeededRule implements PredictionRule {
 
-    private static final int QUIZ_MIN = 5;
+    private static final int QUIZ_MIN = 1;
 
     @Override
     public int priority() {
-        // TodayDoneRule(5) 다음
         return 10;
     }
 
     @Override
     public boolean matches(StudySnapshot s) {
+        if (s == null || s.state() == null) {
+            return false;
+        }
+
         if (!s.studiedToday()) {
             return false;
         }
 
-        int quiz = s.state().quizSubmits();
         int wrong = s.state().wrongReviews();
+        int wrongDone = s.state().wrongReviewDoneCount();
 
-        return quiz >= QUIZ_MIN && wrong > 0;
+        return wrong > 0 && wrongDone == 0;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class ReviewWrongNeededRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.REVIEW_WRONG_PENDING,
-                "오늘 학습량은 충분하지만 오답 복습이 남아 있다. REVIEW_WRONG부터 정리하자.",
+                "오답이 남아 있어. 하나씩 다시 정리하자.",
                 Map.of(
                         "studiedToday", s.studiedToday(),
                         "streakDays", s.streakDays(),
@@ -47,7 +50,7 @@ public class ReviewWrongNeededRule implements PredictionRule {
                         "eventsCount", s.state().eventsCount(),
                         "quizSubmits", s.state().quizSubmits(),
                         "wrongReviews", s.state().wrongReviews(),
-                        "quizMin", QUIZ_MIN
+                        "wrongReviewDoneCount", s.state().wrongReviewDoneCount()
                 )
         );
     }

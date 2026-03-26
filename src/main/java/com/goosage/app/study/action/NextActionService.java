@@ -32,11 +32,11 @@ public class NextActionService {
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_PROGRESS) {
-            return NextActionType.REVIEW_WRONG_ONE;
+            return NextActionType.READ_SUMMARY;
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_SAFE) {
-            return NextActionType.REVIEW_WRONG_ONE;
+            return NextActionType.READ_SUMMARY;
         }
 
         if (reasonCode == PredictionReasonCode.WRONG_HEAVY) {

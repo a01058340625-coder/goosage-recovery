@@ -18,7 +18,6 @@ public class StudyInterpretationService {
         this.studyReadPort = studyReadPort;
     }
 
-    // ✅ 엔진 단일 진실: snapshot 기반
     public StudyState getEngineState(long userId) {
         return getSnapshot(userId).state();
     }
@@ -28,28 +27,26 @@ public class StudyInterpretationService {
         LocalDate today = LocalDate.now();
 
         var opt = studyReadPort.findToday(userId, today);
-
         LocalDateTime lastEventAtAll = studyReadPort.lastEventAtAll(userId).orElse(null);
 
         int streakDays = studyReadPort.calcStreakDays(userId, today);
-        int events = 0;
-        int quiz = 0;
-        int wrong = 0;
-        int wrongDone = 0;
-        Long recentKnowledgeId = null;
 
+        int events = studyReadPort.todayEventCountFromEvents(userId, today);
+        int quiz = studyReadPort.todayQuizFromEvents(userId, today);
+        int wrong = studyReadPort.todayWrongFromEvents(userId, today);
+        int wrongDone = studyReadPort.todayWrongDoneFromEvents(userId, today);
+        
+        System.out.println("[INTERPRET-SVC] user=" + userId);
+
+        Long recentKnowledgeId = null;
         if (opt.isPresent()) {
             var row = opt.get();
-            events = row.eventsCount();
-            quiz = row.quizSubmits();
-            wrong = studyReadPort.recentWrong3d(userId, today);
-            wrongDone = studyReadPort.recentWrongDone3d(userId, today);
+            recentKnowledgeId = row.recentKnowledgeId();
         }
 
         StudyState state = new StudyState(wrong, quiz, events, wrongDone);
-        
-        int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll);
 
+        int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll);
         int recent3d = studyReadPort.recentEventCount3d(userId, today);
 
         return new StudySnapshot(

@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-/**
- * Domain Port: infra 타입 import 금지
- */
 public interface StudyReadPort {
     Optional<TodayRow> findToday(long userId, LocalDate nowDate);
     Optional<LocalDateTime> lastEventAtAll(long userId);
@@ -15,4 +12,7 @@ public interface StudyReadPort {
     int todayEventCountFromEvents(long userId, LocalDate today);
     int recentWrong3d(long userId, LocalDate today);
     int recentWrongDone3d(long userId, LocalDate today);
+    int todayWrongFromEvents(long userId, LocalDate today);
+    int todayWrongDoneFromEvents(long userId, LocalDate today);
+    int todayQuizFromEvents(long userId, LocalDate today);
 }
