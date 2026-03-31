@@ -14,12 +14,24 @@ import com.goosage.domain.study.StudySnapshot;
 public class HabitCollapseRiskRule implements PredictionRule {
 
     @Override
-    public int priority() { return 15; }
+    public int priority() {
+        return 40;
+    }
 
     @Override
     public boolean matches(StudySnapshot s) {
-        // 오늘 안했고, 마지막 이벤트가 3일 이상 전
-        return !s.studiedToday() && s.daysSinceLastEvent() >= 3;
+        if (s == null) {
+            return false;
+        }
+
+        if (s.studiedToday()) {
+            return false;
+        }
+
+        int daysSince = s.daysSinceLastEvent();
+        int recent3d = s.recentEventCount3d();
+
+        return daysSince >= 2 && recent3d == 0;
     }
 
     @Override
@@ -36,7 +48,8 @@ public class HabitCollapseRiskRule implements PredictionRule {
                         "studiedToday", s.studiedToday(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
                         "recentEventCount3d", s.recentEventCount3d(),
-                        "streakDays", s.streakDays()
+                        "streakDays", s.streakDays(),
+                        "eventsCount", s.state() != null ? s.state().eventsCount() : 0
                 )
         );
     }

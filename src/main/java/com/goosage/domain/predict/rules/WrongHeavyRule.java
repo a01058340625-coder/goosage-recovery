@@ -15,7 +15,7 @@ public class WrongHeavyRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 45;
+        return 9;
     }
 
     @Override
@@ -24,11 +24,8 @@ public class WrongHeavyRule implements PredictionRule {
             return false;
         }
 
-        if (s.state().eventsCount() < 5) {
-            return false;
-        }
-
-        return s.wrongRatio() >= 0.5;
+        return s.studiedToday()
+                && s.state().wrongReviews() >= 3;
     }
 
     @Override
@@ -36,13 +33,13 @@ public class WrongHeavyRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.WRONG_HEAVY,
-                "틀린 문제 비율이 높다. 새 학습보다 틀린 문제 복습을 먼저 하자.",
+                "틀린 문제가 많이 쌓였어. 새 학습보다 오답 복습을 먼저 하자.",
                 Map.of(
-                        "wrongRatio", s.wrongRatio(),
                         "wrongReviews", s.state().wrongReviews(),
                         "wrongReviewDoneCount", s.state().wrongReviewDoneCount(),
                         "eventsCount", s.state().eventsCount(),
-                        "quizRatio", s.quizRatio()
+                        "quizSubmits", s.state().quizSubmits(),
+                        "wrongRatio", s.wrongRatio()
                 )
         );
     }

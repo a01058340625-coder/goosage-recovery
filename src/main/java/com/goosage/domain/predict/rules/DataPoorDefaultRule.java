@@ -21,10 +21,11 @@ public class DataPoorDefaultRule implements PredictionRule {
 
     @Override
     public boolean matches(StudySnapshot s) {
-        // ✅ 정공법 잠금: 오늘 학습했으면 DATA_POOR로 떨어뜨리지 않는다
         if (s.studiedToday()) return false;
 
-        // fresh/empty user 판단: 최근 3일 이벤트 0 + streak 0
+        // 장기 공백은 collapse 쪽으로 넘긴다
+        if (s.daysSinceLastEvent() >= 3) return false;
+
         return s.recentEventCount3d() == 0 && s.streakDays() == 0;
     }
 

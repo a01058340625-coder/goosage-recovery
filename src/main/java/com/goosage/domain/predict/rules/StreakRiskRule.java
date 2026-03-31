@@ -20,7 +20,9 @@ public class StreakRiskRule implements PredictionRule {
 
     @Override
     public boolean matches(StudySnapshot s) {
-        return !s.studiedToday() && s.daysSinceLastEvent() >= 2;
+        return !s.studiedToday()
+                && s.daysSinceLastEvent() >= 2
+                && s.daysSinceLastEvent() < 4;
     }
 
     @Override

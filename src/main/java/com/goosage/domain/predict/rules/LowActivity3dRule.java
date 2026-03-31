@@ -21,14 +21,13 @@ public class LowActivity3dRule implements PredictionRule {
 
     @Override
     public boolean matches(StudySnapshot s) {
-        // 오늘 이미 공부했으면 "3일 저활동" 경고 대상은 아님
-        if (s.studiedToday()) {
-            return false;
-        }
+        if (s.studiedToday()) return false;
 
-        // DATA_POOR(0/0)와 구분
+        // 🔥 장기 공백은 제외 (collapse로 보내기)
+        if (s.daysSinceLastEvent() >= 3) return false;
+
         return s.recentEventCount3d() <= 1
-                && !(s.recentEventCount3d() == 0 && s.streakDays() == 0);
+            && !(s.recentEventCount3d() == 0 && s.streakDays() == 0);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class RecoveryProgressRule implements PredictionRule {
 
 	@Override
 	public int priority() {
-	    return 5;
+	    return 10;
 	}
 
 	@Override
@@ -21,7 +21,8 @@ public class RecoveryProgressRule implements PredictionRule {
 	    return s != null
 	            && s.state() != null
 	            && s.studiedToday()
-	            && s.state().wrongReviewDoneCount() > s.state().wrongReviews();
+	            && s.state().wrongReviews() > 0
+	            && s.state().wrongReviewDoneCount() > 0;
 	}
 
     @Override

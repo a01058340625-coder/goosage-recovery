@@ -29,9 +29,14 @@ public final class PredictionMapper {
             case TODAY_DONE -> CoachPredictionReasonCode.TODAY_DONE;
             case REVIEW_WRONG_PENDING -> CoachPredictionReasonCode.REVIEW_WRONG_PENDING;
             case RECOVERY_PROGRESS -> CoachPredictionReasonCode.RECOVERY_PROGRESS;
+            case RECOVERY_SAFE -> CoachPredictionReasonCode.RECOVERY_SAFE;
             case DATA_POOR -> CoachPredictionReasonCode.DATA_POOR;
             case LOW_ACTIVITY_3D -> CoachPredictionReasonCode.LOW_ACTIVITY_3D;
             case HABIT_COLLAPSE -> CoachPredictionReasonCode.HABIT_COLLAPSE;
+            case HABIT_STABLE -> CoachPredictionReasonCode.HABIT_STABLE;
+            case WRONG_HEAVY -> CoachPredictionReasonCode.WRONG_HEAVY;
+            case LOW_QUALITY_OPEN -> CoachPredictionReasonCode.LOW_QUALITY_OPEN;
+            case MINIMUM_ACTION -> CoachPredictionReasonCode.MINIMUM_ACTION;
             default -> CoachPredictionReasonCode.DEFAULT_FALLBACK;
         };
     }

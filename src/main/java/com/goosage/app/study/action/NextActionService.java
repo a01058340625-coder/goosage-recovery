@@ -32,7 +32,7 @@ public class NextActionService {
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_PROGRESS) {
-            return NextActionType.READ_SUMMARY;
+            return NextActionType.REVIEW_WRONG_ONE;
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_SAFE) {
@@ -59,13 +59,13 @@ public class NextActionService {
             return NextActionType.READ_SUMMARY;
         }
 
-        if (snap != null && snap.state() != null && snap.state().wrongReviews() > 0) {
-            return NextActionType.REVIEW_WRONG_ONE;
-        }
-
         if (reasonCode == PredictionReasonCode.LOW_ACTIVITY_3D
                 || reasonCode == PredictionReasonCode.HABIT_COLLAPSE) {
             return NextActionType.READ_SUMMARY;
+        }
+
+        if (snap != null && snap.state() != null && snap.state().wrongReviews() > 0) {
+            return NextActionType.REVIEW_WRONG_ONE;
         }
 
         if (snap != null
