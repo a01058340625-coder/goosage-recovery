@@ -1,10 +1,11 @@
 package com.goosage.app;
 
 import org.springframework.stereotype.Service;
-import com.goosage.domain.EventType;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goosage.domain.EventType;
 import com.goosage.domain.study.StudyEventPort;
+import com.goosage.infra.log.EventLogWriter;
 
 @Service
 public class StudyEventService {
@@ -22,6 +23,8 @@ public class StudyEventService {
         String refType = (knowledgeId == null) ? null : "KNOWLEDGE";
 
         studyEventPort.recordEvent(userId, type, refType, knowledgeId, null);
+
+        EventLogWriter.write(userId, type.name());
 
         // ✅ daily_learning 집계는 StudyEventDao.recordEvent() 내부 upsertDaily()에서만 처리한다.
         //    (중복 집계 방지: service 레벨에서 upsert 금지)
