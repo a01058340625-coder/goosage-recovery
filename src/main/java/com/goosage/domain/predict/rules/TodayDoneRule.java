@@ -3,6 +3,7 @@ package com.goosage.domain.predict.rules;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import static java.util.Map.entry;
 
 import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
@@ -14,8 +15,9 @@ import com.goosage.domain.study.StudySnapshot;
 public class TodayDoneRule implements PredictionRule {
 
     private static final int QUIZ_MIN = 5;
+    private static final double QUIZ_RATIO_MIN = 0.60;
+    private static final double OPEN_RATIO_MAX = 0.40;
 
-    // 가장 강한 완료 조건(SAFE) 우선
     @Override
     public int priority() {
         return 5;
@@ -23,7 +25,6 @@ public class TodayDoneRule implements PredictionRule {
 
     @Override
     public boolean matches(StudySnapshot s) {
-        // 오늘 공부한 경우에만 TODAY_DONE 대상
         if (!s.studiedToday()) {
             return false;
         }
@@ -31,7 +32,13 @@ public class TodayDoneRule implements PredictionRule {
         int quiz = s.state().quizSubmits();
         int wrong = s.state().wrongReviews();
 
-        return quiz >= QUIZ_MIN && wrong == 0;
+        double quizRatio = s.quizRatio();
+        double openRatio = s.openRatio();
+
+        return quiz >= QUIZ_MIN
+                && wrong == 0
+                && quizRatio >= QUIZ_RATIO_MIN
+                && openRatio <= OPEN_RATIO_MAX;
     }
 
     @Override
@@ -40,16 +47,20 @@ public class TodayDoneRule implements PredictionRule {
                 PredictionLevel.SAFE,
                 PredictionReasonCode.TODAY_DONE,
                 "오늘 학습은 충분히 완료됐다. 현재 흐름을 유지하자.",
-                Map.of(
-                        "streakDays", s.streakDays(),
-                        "daysSinceLastEvent", s.daysSinceLastEvent(),
-                        "recentEventCount3d", s.recentEventCount3d(),
-                        "eventsCount", s.state().eventsCount(),
-                        "quizSubmits", s.state().quizSubmits(),
-                        "wrongReviews", s.state().wrongReviews(),
-                        "studiedToday", s.studiedToday(),
-                        "quizMin", QUIZ_MIN
-                )
+                Map.ofEntries(
+                	    entry("streakDays", s.streakDays()),
+                	    entry("daysSinceLastEvent", s.daysSinceLastEvent()),
+                	    entry("recentEventCount3d", s.recentEventCount3d()),
+                	    entry("eventsCount", s.state().eventsCount()),
+                	    entry("quizSubmits", s.state().quizSubmits()),
+                	    entry("wrongReviews", s.state().wrongReviews()),
+                	    entry("studiedToday", s.studiedToday()),
+                	    entry("quizMin", QUIZ_MIN),
+                	    entry("quizRatio", s.quizRatio()),
+                	    entry("openRatio", s.openRatio()),
+                	    entry("quizRatioMin", QUIZ_RATIO_MIN),
+                	    entry("openRatioMax", OPEN_RATIO_MAX)
+                	)
         );
     }
 }

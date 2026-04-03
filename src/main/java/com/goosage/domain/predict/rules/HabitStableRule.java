@@ -28,11 +28,18 @@ public class HabitStableRule implements PredictionRule {
             return false;
         }
 
-        return s.studiedToday()
-        	    && s.streakDays() >= 3
-        	    && s.recentEventCount3d() >= 3;
-    } 	    
-        	           	   
+        int wrong = s.state().wrongReviews();
+        int done = s.state().wrongReviewDoneCount();
+
+        // recovery-safe 케이스는 여기서 제외
+        if (wrong == 0 && done > 0) {
+            return false;
+        }
+
+        return s.streakDays() >= 3
+                && s.recentEventCount3d() >= 3;
+    }
+
     @Override
     public Prediction apply(StudySnapshot s) {
         return Prediction.of(
@@ -43,8 +50,10 @@ public class HabitStableRule implements PredictionRule {
                         "streakDays", s.streakDays(),
                         "recentEventCount3d", s.recentEventCount3d(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
-                        "eventsCount", s.state() != null ? s.state().eventsCount() : 0,
-                        "quizSubmits", s.state() != null ? s.state().quizSubmits() : 0
+                        "eventsCount", s.state().eventsCount(),
+                        "quizSubmits", s.state().quizSubmits(),
+                        "wrongReviews", s.state().wrongReviews(),
+                        "wrongReviewDoneCount", s.state().wrongReviewDoneCount()
                 )
         );
     }

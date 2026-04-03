@@ -13,6 +13,10 @@ import com.goosage.domain.study.StudySnapshot;
 @Component
 public class LowQualityOpenRule implements PredictionRule {
 
+    private static final int EVENTS_MIN = 5;
+    private static final double OPEN_RATIO_MIN = 0.55;
+    private static final double QUIZ_RATIO_MAX = 0.45;
+
     @Override
     public int priority() {
         return 20;
@@ -29,9 +33,13 @@ public class LowQualityOpenRule implements PredictionRule {
         }
 
         int events = s.state().eventsCount();
-        int quiz = s.state().quizSubmits();
 
-        return events >= 5 && quiz == 0;
+        double openRatio = s.openRatio();
+        double quizRatio = s.quizRatio();
+
+        return events >= EVENTS_MIN
+                && openRatio >= OPEN_RATIO_MIN
+                && quizRatio <= QUIZ_RATIO_MAX;
     }
 
     @Override
@@ -39,12 +47,15 @@ public class LowQualityOpenRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.LOW_QUALITY_OPEN,
-                "열기 행동만 반복되고 있어. 퀴즈 1개로 실제 학습으로 전환하자.",
+                "열기 행동 비중이 너무 높아 실제 학습 품질이 떨어지고 있어. 퀴즈 1개로 흐름을 바로잡자.",
                 Map.of(
                         "openRatio", s.openRatio(),
                         "quizRatio", s.quizRatio(),
                         "eventsCount", s.state().eventsCount(),
-                        "studiedToday", s.studiedToday()
+                        "studiedToday", s.studiedToday(),
+                        "eventsMin", EVENTS_MIN,
+                        "openRatioMin", OPEN_RATIO_MIN,
+                        "quizRatioMax", QUIZ_RATIO_MAX
                 )
         );
     }

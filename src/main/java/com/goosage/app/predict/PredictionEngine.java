@@ -7,14 +7,25 @@ import org.springframework.stereotype.Component;
 
 import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionRule;
+import com.goosage.domain.predict.vector.BehaviorPattern;
+import com.goosage.domain.predict.vector.ObservationVector;
+import com.goosage.domain.predict.vector.VectorConverter;
+import com.goosage.domain.predict.vector.VectorMatcher;
 import com.goosage.domain.study.StudySnapshot;
 
 @Component
 public class PredictionEngine {
 
     private final List<PredictionRule> rules;
+    private final VectorConverter vectorConverter;
+    private final VectorMatcher vectorMatcher;
 
-    public PredictionEngine(List<PredictionRule> rules) {
+    public PredictionEngine(List<PredictionRule> rules,
+                            VectorConverter vectorConverter,
+                            VectorMatcher vectorMatcher) {
+        this.vectorConverter = vectorConverter;
+        this.vectorMatcher = vectorMatcher;
+
         this.rules = rules.stream()
                 .sorted(Comparator.comparingInt(PredictionRule::priority))
                 .toList();
@@ -36,6 +47,21 @@ public class PredictionEngine {
                 + ", quizSubmits=" + (s.state() != null ? s.state().quizSubmits() : -1)
                 + ", wrongReviews=" + (s.state() != null ? s.state().wrongReviews() : -1)
                 + ", wrongReviewDoneCount=" + (s.state() != null ? s.state().wrongReviewDoneCount() : -1));
+
+        ObservationVector vector = vectorConverter.from(s);
+        BehaviorPattern pattern = vectorMatcher.match(vector);
+
+        System.out.println("[VECTOR] activity=" + vector.activity()
+                + ", openRatio=" + vector.openRatio()
+                + ", quizRatio=" + vector.quizRatio()
+                + ", wrongRatio=" + vector.wrongRatio()
+                + ", wrongDoneRatio=" + vector.wrongDoneRatio()
+                + ", recentScore=" + vector.recentScore()
+                + ", streakScore=" + vector.streakScore()
+                + ", recencyPenalty=" + vector.recencyPenalty());
+
+        System.out.println("[VECTOR] nearestPattern=" + pattern
+                + ", distance=" + vectorMatcher.distanceTo(vector, pattern));
 
         for (PredictionRule r : rules) {
             boolean matched = r.matches(s);

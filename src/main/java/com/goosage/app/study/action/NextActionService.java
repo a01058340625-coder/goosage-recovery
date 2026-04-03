@@ -32,7 +32,28 @@ public class NextActionService {
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_PROGRESS) {
-            return NextActionType.REVIEW_WRONG_ONE;
+            if (snap != null && snap.state() != null) {
+                int wrong = snap.state().wrongReviews();
+                int quiz = snap.state().quizSubmits();
+                int done = snap.state().wrongReviewDoneCount();
+
+                // 실제 오답이 남아 있으면 오답 복습
+                if (wrong > 0) {
+                    return NextActionType.REVIEW_WRONG_ONE;
+                }
+
+                // 오답은 없고 DONE만 쌓인 회복 경계면 퀴즈로 품질 확인
+                if (wrong == 0 && done > 0) {
+                    return NextActionType.RETRY_QUIZ;
+                }
+
+                // 회복 진행 중인데 퀴즈도 아직 너무 적으면 퀴즈 재시도
+                if (quiz < 2) {
+                    return NextActionType.RETRY_QUIZ;
+                }
+            }
+
+            return NextActionType.READ_SUMMARY;
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_SAFE) {
@@ -69,8 +90,8 @@ public class NextActionService {
         }
 
         if (snap != null
-                && snap.daysSinceLastEvent() == 0
                 && snap.state() != null
+                && snap.daysSinceLastEvent() == 0
                 && snap.state().quizSubmits() < 2) {
             return NextActionType.RETRY_QUIZ;
         }
