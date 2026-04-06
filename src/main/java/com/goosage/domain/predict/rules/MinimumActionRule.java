@@ -4,7 +4,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.goosage.domain.predict.*;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class MinimumActionRule implements PredictionRule {
@@ -15,12 +15,12 @@ public class MinimumActionRule implements PredictionRule {
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         return true; // 무조건 매칭 (최후 안전 Rule)
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.MINIMUM_ACTION,

@@ -12,9 +12,9 @@
 	</parent>
 
 	<groupId>com.goosage</groupId>
-	<artifactId>goosage-api</artifactId>
+	<artifactId>goosage-recovery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>goosage-api</name>
+	<name>goosage-recovery</name>
 	<description>GooSage API</description>
 
 	<properties>

@@ -1,8 +1,8 @@
 package com.goosage.app.predict;
 
 import com.goosage.domain.predict.Prediction;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 public interface PredictionService {
-    Prediction predict(StudySnapshot snapshot); // ✅ SSOT 계약
+    Prediction predict(RecoverySnapshot snapshot); // ✅ SSOT 계약
 }

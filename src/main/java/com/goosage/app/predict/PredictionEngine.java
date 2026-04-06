@@ -11,7 +11,7 @@ import com.goosage.domain.predict.vector.BehaviorPattern;
 import com.goosage.domain.predict.vector.ObservationVector;
 import com.goosage.domain.predict.vector.VectorConverter;
 import com.goosage.domain.predict.vector.VectorMatcher;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class PredictionEngine {
@@ -37,7 +37,7 @@ public class PredictionEngine {
         System.out.println("=== END RULE ORDER ===");
     }
 
-    public Prediction predict(StudySnapshot s) {
+    public Prediction predict(RecoverySnapshot s) {
         System.out.println("=== PREDICT START ===");
         System.out.println("studiedToday=" + s.studiedToday()
                 + ", streakDays=" + s.streakDays()

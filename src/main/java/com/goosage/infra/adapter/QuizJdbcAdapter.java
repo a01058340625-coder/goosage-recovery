@@ -8,19 +8,19 @@ import com.goosage.domain.quiz.QuizPort;
 import com.goosage.infra.dao.QuizItemDao;
 import com.goosage.infra.dao.QuizResultDao;
 import com.goosage.infra.dao.QuizResultDao.QuizResultRow;
-import com.goosage.infra.dao.StudyEventDao;
+import com.goosage.infra.dao.RecoveryEventDao;
 
 @Repository
 public class QuizJdbcAdapter implements QuizPort {
 
     private final QuizResultDao quizResultDao;
     private final QuizItemDao quizItemDao;
-    private final StudyEventDao studyEventDao;
+    private final RecoveryEventDao recoveryEventDao;
 
-    public QuizJdbcAdapter(QuizResultDao quizResultDao, QuizItemDao quizItemDao, StudyEventDao studyEventDao) {
+    public QuizJdbcAdapter(QuizResultDao quizResultDao, QuizItemDao quizItemDao, RecoveryEventDao recoveryEventDao) {
         this.quizResultDao = quizResultDao;
         this.quizItemDao = quizItemDao;
-        this.studyEventDao = studyEventDao;
+        this.recoveryEventDao = recoveryEventDao;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class QuizJdbcAdapter implements QuizPort {
                                         int wrongCount, String detailsJson) {
 
         quizResultDao.save(userId, knowledgeId, total, correct, percent, wrongCount, detailsJson);
-        studyEventDao.recordEvent(userId, EventType.QUIZ_SUBMIT, "KNOWLEDGE", knowledgeId, detailsJson);
+        recoveryEventDao.recordEvent(userId, EventType.BET_ATTEMPT, "KNOWLEDGE", knowledgeId, detailsJson);
     }
 
     @Override

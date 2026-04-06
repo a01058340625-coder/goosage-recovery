@@ -6,7 +6,7 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class RecoveryProgressRule implements PredictionRule {
@@ -17,7 +17,7 @@ public class RecoveryProgressRule implements PredictionRule {
 	}
 
 	@Override
-	public boolean matches(StudySnapshot s) {
+	public boolean matches(RecoverySnapshot s) {
 	    return s != null
 	            && s.state() != null
 	            && s.studiedToday()
@@ -26,7 +26,7 @@ public class RecoveryProgressRule implements PredictionRule {
 	}
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         return new Prediction(
             PredictionLevel.WARNING,
             PredictionReasonCode.RECOVERY_PROGRESS,

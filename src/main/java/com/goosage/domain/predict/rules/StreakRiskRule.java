@@ -8,7 +8,7 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class StreakRiskRule implements PredictionRule {
@@ -19,14 +19,14 @@ public class StreakRiskRule implements PredictionRule {
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         return !s.studiedToday()
                 && s.daysSinceLastEvent() >= 2
                 && s.daysSinceLastEvent() < 4;
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         var level = (s.daysSinceLastEvent() >= 4)
                 ? PredictionLevel.DANGER
                 : PredictionLevel.WARNING;

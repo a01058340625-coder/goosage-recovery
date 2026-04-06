@@ -8,7 +8,7 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class HabitStableRule implements PredictionRule {
@@ -19,7 +19,7 @@ public class HabitStableRule implements PredictionRule {
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         if (s == null || s.state() == null) {
             return false;
         }
@@ -41,7 +41,7 @@ public class HabitStableRule implements PredictionRule {
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         return Prediction.of(
                 PredictionLevel.SAFE,
                 PredictionReasonCode.HABIT_STABLE,

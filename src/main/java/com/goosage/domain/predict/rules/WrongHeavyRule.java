@@ -8,7 +8,7 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class WrongHeavyRule implements PredictionRule {
@@ -19,7 +19,7 @@ public class WrongHeavyRule implements PredictionRule {
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         if (s == null || s.state() == null) {
             return false;
         }
@@ -29,11 +29,11 @@ public class WrongHeavyRule implements PredictionRule {
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.WRONG_HEAVY,
-                "틀린 문제가 많이 쌓였어. 새 학습보다 오답 복습을 먼저 하자.",
+                "위험 신호가 많이 쌓였어. 새 행동보다 회복 행동을 먼저 하자.",
                 Map.of(
                         "wrongReviews", s.state().wrongReviews(),
                         "wrongReviewDoneCount", s.state().wrongReviewDoneCount(),

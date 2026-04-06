@@ -8,7 +8,7 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class FalseRecoveryGuardRule implements PredictionRule {
@@ -24,7 +24,7 @@ public class FalseRecoveryGuardRule implements PredictionRule {
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         int events = s.state().eventsCount();
         int quiz = s.state().quizSubmits();
         int wrong = s.state().wrongReviews();
@@ -51,7 +51,7 @@ public class FalseRecoveryGuardRule implements PredictionRule {
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         int events = s.state().eventsCount();
         int quiz = s.state().quizSubmits();
         int wrong = s.state().wrongReviews();

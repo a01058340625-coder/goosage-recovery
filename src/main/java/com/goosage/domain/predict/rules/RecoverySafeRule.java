@@ -10,14 +10,14 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class RecoverySafeRule implements PredictionRule {
 
     private static final int EVENTS_MIN = 5;
-    private static final int WRONG_DONE_MIN = 3;
-    private static final int QUIZ_MIN = 5;
+    private static final int WRONG_DONE_MIN = 2;
+    private static final int QUIZ_MIN = 2;
     private static final int RECENT_3D_MIN = 3;
     private static final double OPEN_RATIO_MAX = 0.55;
     private static final double QUIZ_RATIO_MIN = 0.25;
@@ -28,7 +28,7 @@ public class RecoverySafeRule implements PredictionRule {
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         if (s == null || s.state() == null) {
             return false;
         }
@@ -78,7 +78,7 @@ public class RecoverySafeRule implements PredictionRule {
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         int events = s.state().eventsCount();
         int quiz = s.state().quizSubmits();
         int wrong = s.state().wrongReviews();
@@ -93,19 +93,21 @@ public class RecoverySafeRule implements PredictionRule {
                 PredictionReasonCode.RECOVERY_SAFE,
                 "복습 완료와 퀴즈 흐름이 함께 유지되어 회복 안정권에 들어왔다.",
                 Map.ofEntries(
-                	    entry("streakDays", s.streakDays()),
-                	    entry("daysSinceLastEvent", s.daysSinceLastEvent()),
-                	    entry("recentEventCount3d", s.recentEventCount3d()),
-                	    entry("eventsCount", s.state().eventsCount()),
-                	    entry("quizSubmits", s.state().quizSubmits()),
-                	    entry("wrongReviews", s.state().wrongReviews()),
-                	    entry("studiedToday", s.studiedToday()),
-                	    entry("quizMin", QUIZ_MIN),
-                	    entry("quizRatio", s.quizRatio()),
-                	    entry("openRatio", s.openRatio()),
-                	    entry("quizRatioMin", QUIZ_RATIO_MIN),
-                	    entry("openRatioMax", OPEN_RATIO_MAX)
-                	)
+                        entry("streakDays", s.streakDays()),
+                        entry("daysSinceLastEvent", s.daysSinceLastEvent()),
+                        entry("recentEventCount3d", s.recentEventCount3d()),
+                        entry("eventsCount", events),
+                        entry("quizSubmits", quiz),
+                        entry("wrongReviews", wrong),
+                        entry("wrongReviewDoneCount", done),
+                        entry("studiedToday", s.studiedToday()),
+                        entry("quizMin", QUIZ_MIN),
+                        entry("wrongDoneMin", WRONG_DONE_MIN),
+                        entry("quizRatio", quizRatio),
+                        entry("openRatio", openRatio),
+                        entry("quizRatioMin", QUIZ_RATIO_MIN),
+                        entry("openRatioMax", OPEN_RATIO_MAX)
+                )
         );
     }
 }

@@ -1,9 +1,9 @@
 package com.goosage.domain.predict;
 
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 public interface PredictionRule {
-    int priority();                 // 낮을수록 먼저 적용
-    boolean matches(StudySnapshot s);
-    Prediction apply(StudySnapshot s);
+    int priority();
+    boolean matches(RecoverySnapshot s);
+    Prediction apply(RecoverySnapshot s);
 }

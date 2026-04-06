@@ -8,7 +8,7 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 
@@ -17,14 +17,14 @@ public class StreakBreakRiskRule implements PredictionRule {
     @Override public int priority() { return 20; }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         return !s.studiedToday()
             && s.streakDays() >= 3
             && s.daysSinceLastEvent() >= 1;
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         return Prediction.of(
             PredictionLevel.WARNING,
             PredictionReasonCode.LOW_ACTIVITY_3D, // ✅ 통일

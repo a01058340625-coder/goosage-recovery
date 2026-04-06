@@ -8,12 +8,12 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class ReviewWrongNeededRule implements PredictionRule {
 
-    private static final int QUIZ_MIN = 1;
+    private static final int ACTION_MIN = 1;
 
     @Override
     public int priority() {
@@ -21,7 +21,7 @@ public class ReviewWrongNeededRule implements PredictionRule {
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         if (s == null || s.state() == null) {
             return false;
         }
@@ -30,27 +30,27 @@ public class ReviewWrongNeededRule implements PredictionRule {
             return false;
         }
 
-        int wrong = s.state().wrongReviews();
-        int wrongDone = s.state().wrongReviewDoneCount();
+        int risk = s.state().wrongReviews();
+        int recovered = s.state().wrongReviewDoneCount();
 
-        return wrong > 0 && wrongDone == 0;
+        return risk > 0 && recovered == 0;
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.REVIEW_WRONG_PENDING,
-                "오답이 남아 있어. 하나씩 다시 정리하자.",
+                "위험 신호가 남아 있어. 하나씩 회복 행동으로 정리하자.",
                 Map.of(
                         "studiedToday", s.studiedToday(),
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
                         "recentEventCount3d", s.recentEventCount3d(),
                         "eventsCount", s.state().eventsCount(),
-                        "quizSubmits", s.state().quizSubmits(),
-                        "wrongReviews", s.state().wrongReviews(),
-                        "wrongReviewDoneCount", s.state().wrongReviewDoneCount()
+                        "actionCount", s.state().quizSubmits(),
+                        "riskSignal", s.state().wrongReviews(),
+                        "recoveryAction", s.state().wrongReviewDoneCount()
                 )
         );
     }

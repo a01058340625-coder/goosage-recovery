@@ -1,8 +1,9 @@
 package com.goosage.domain;
 
 public enum EventType {
-    JUST_OPEN,
-    QUIZ_SUBMIT,
-    REVIEW_WRONG,
-    WRONG_REVIEW_DONE   // ✅ 이거 추가
+    URGE_LOG,
+    BET_ATTEMPT,
+    BET_BLOCKED,
+    RECOVERY_ACTION,
+    RELAPSE_SIGNAL
 }

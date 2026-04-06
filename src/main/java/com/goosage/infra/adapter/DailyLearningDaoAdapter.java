@@ -2,7 +2,7 @@ package com.goosage.infra.adapter;
 
 import org.springframework.stereotype.Component;
 
-import com.goosage.domain.study.DailyLearningPort;
+import com.goosage.domain.recovery.DailyLearningPort;
 import com.goosage.infra.dao.DailyLearningDao;
 
 @Component

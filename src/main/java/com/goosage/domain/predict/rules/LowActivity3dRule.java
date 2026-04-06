@@ -8,34 +8,32 @@ import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
 import com.goosage.domain.predict.PredictionReasonCode;
 import com.goosage.domain.predict.PredictionRule;
-import com.goosage.domain.study.StudySnapshot;
+import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
 public class LowActivity3dRule implements PredictionRule {
 
-    // DATA_POOR 다음
     @Override
     public int priority() {
         return 30;
     }
 
     @Override
-    public boolean matches(StudySnapshot s) {
+    public boolean matches(RecoverySnapshot s) {
         if (s.studiedToday()) return false;
 
-        // 🔥 장기 공백은 제외 (collapse로 보내기)
         if (s.daysSinceLastEvent() >= 3) return false;
 
         return s.recentEventCount3d() <= 1
-            && !(s.recentEventCount3d() == 0 && s.streakDays() == 0);
+                && !(s.recentEventCount3d() == 0 && s.streakDays() == 0);
     }
 
     @Override
-    public Prediction apply(StudySnapshot s) {
+    public Prediction apply(RecoverySnapshot s) {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.LOW_ACTIVITY_3D,
-                "최근 3일 학습 활동이 낮다. 오늘 최소 1개 이벤트부터 다시 만들자.",
+                "최근 3일 행동 기록이 부족해. 오늘 최소 1개 행동부터 다시 시작하자.",
                 Map.of(
                         "studiedToday", s.studiedToday(),
                         "recentEventCount3d", s.recentEventCount3d(),
