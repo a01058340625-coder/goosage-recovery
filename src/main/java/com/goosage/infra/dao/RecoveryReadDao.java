@@ -24,10 +24,12 @@ public class RecoveryReadDao {
                 "SELECT " +
                 "  DATE(MAX(created_at)) AS ymd, " +
                 "  COUNT(*) AS events_count, " +
-                "  SUM(CASE WHEN type = 'BET_ATTEMPT' THEN 1 ELSE 0 END) AS quiz_submits, " +
-                "  SUM(CASE WHEN type = 'BET_BLOCKED' THEN 1 ELSE 0 END) AS wrong_reviews, " +
-                "  SUM(CASE WHEN type = 'RECOVERY_ACTION' THEN 1 ELSE 0 END) AS wrong_review_done_count " +
-                "FROM study_events " +
+                "  SUM(CASE WHEN type = 'URGE_LOG' THEN 1 ELSE 0 END) AS urge_logs, " +
+                "  SUM(CASE WHEN type = 'BET_ATTEMPT' THEN 1 ELSE 0 END) AS bet_attempts, " +
+                "  SUM(CASE WHEN type = 'BET_BLOCKED' THEN 1 ELSE 0 END) AS bet_blocked_count, " +
+                "  SUM(CASE WHEN type = 'RECOVERY_ACTION' THEN 1 ELSE 0 END) AS recovery_action_count, " +
+                "  SUM(CASE WHEN type = 'RELAPSE_SIGNAL' THEN 1 ELSE 0 END) AS relapse_signal_count " +
+                "FROM recovery_events " +
                 "WHERE user_id = ? " +
                 "  AND DATE(created_at) = CURDATE() " +
                 "HAVING COUNT(*) > 0";
@@ -38,9 +40,11 @@ public class RecoveryReadDao {
                     (rs, rowNum) -> new TodayRowRecord(
                             rs.getDate("ymd").toLocalDate(),
                             rs.getInt("events_count"),
-                            rs.getInt("quiz_submits"),
-                            rs.getInt("wrong_reviews"),
-                            rs.getInt("wrong_review_done_count")
+                            rs.getInt("urge_logs"),
+                            rs.getInt("bet_attempts"),
+                            rs.getInt("bet_blocked_count"),
+                            rs.getInt("recovery_action_count"),
+                            rs.getInt("relapse_signal_count")
                     ),
                     userId
             );
@@ -53,7 +57,7 @@ public class RecoveryReadDao {
     }
 
     public Optional<LocalDateTime> lastEventAtAll(long userId) {
-        String sql = "SELECT MAX(created_at) FROM study_events WHERE user_id = ?";
+        String sql = "SELECT MAX(created_at) FROM recovery_events WHERE user_id = ?";
         Timestamp ts = jdbcTemplate.queryForObject(sql, Timestamp.class, userId);
         return (ts == null) ? Optional.empty() : Optional.of(ts.toLocalDateTime());
     }
@@ -62,7 +66,7 @@ public class RecoveryReadDao {
 
         String sql =
                 "SELECT DISTINCT DATE(created_at) AS ymd " +
-                "FROM study_events " +
+                "FROM recovery_events " +
                 "WHERE user_id = ? " +
                 "ORDER BY ymd DESC";
 
@@ -91,26 +95,13 @@ public class RecoveryReadDao {
     }
 
     public int todayEventCountFromEvents(long userId, LocalDate today) {
-
-        String sql =
-                "SELECT COUNT(*) " +
-                "FROM study_events " +
-                "WHERE user_id = ? " +
-                "  AND created_at >= ? " +
-                "  AND created_at < ?";
-
-        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
-        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
-
-        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
-        return (cnt == null) ? 0 : cnt;
+        return countByType(userId, today, null);
     }
 
     public int recentEventCount3d(long userId, LocalDate today) {
-
         String sql =
                 "SELECT COUNT(*) " +
-                "FROM study_events " +
+                "FROM recovery_events " +
                 "WHERE user_id = ? " +
                 "  AND created_at >= ? " +
                 "  AND created_at < ?";
@@ -122,88 +113,78 @@ public class RecoveryReadDao {
         return (cnt == null) ? 0 : cnt;
     }
 
-    public int recentWrong3d(long userId, LocalDate today) {
+    public int recentUrgeLog3d(long userId, LocalDate today) {
+        return countByType3d(userId, today, "URGE_LOG");
+    }
 
+    public int recentBetAttempt3d(long userId, LocalDate today) {
+        return countByType3d(userId, today, "BET_ATTEMPT");
+    }
+
+    public int recentBetBlocked3d(long userId, LocalDate today) {
+        return countByType3d(userId, today, "BET_BLOCKED");
+    }
+
+    public int recentRecoveryAction3d(long userId, LocalDate today) {
+        return countByType3d(userId, today, "RECOVERY_ACTION");
+    }
+
+    public int recentRelapseSignal3d(long userId, LocalDate today) {
+        return countByType3d(userId, today, "RELAPSE_SIGNAL");
+    }
+
+    public int todayUrgeLogFromEvents(long userId, LocalDate today) {
+        return countByType(userId, today, "URGE_LOG");
+    }
+
+    public int todayBetAttemptFromEvents(long userId, LocalDate today) {
+        return countByType(userId, today, "BET_ATTEMPT");
+    }
+
+    public int todayBetBlockedFromEvents(long userId, LocalDate today) {
+        return countByType(userId, today, "BET_BLOCKED");
+    }
+
+    public int todayRecoveryActionFromEvents(long userId, LocalDate today) {
+        return countByType(userId, today, "RECOVERY_ACTION");
+    }
+
+    public int todayRelapseSignalFromEvents(long userId, LocalDate today) {
+        return countByType(userId, today, "RELAPSE_SIGNAL");
+    }
+
+    private int countByType(long userId, LocalDate today, String type) {
         String sql =
                 "SELECT COUNT(*) " +
-                "FROM study_events " +
+                "FROM recovery_events " +
                 "WHERE user_id = ? " +
-                "  AND type = 'BET_BLOCKED' " +
+                (type != null ? "  AND type = ? " : "") +
+                "  AND created_at >= ? " +
+                "  AND created_at < ?";
+
+        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
+        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
+
+        Integer cnt = (type == null)
+                ? jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to)
+                : jdbcTemplate.queryForObject(sql, Integer.class, userId, type, from, to);
+
+        return (cnt == null) ? 0 : cnt;
+    }
+
+    private int countByType3d(long userId, LocalDate today, String type) {
+        String sql =
+                "SELECT COUNT(*) " +
+                "FROM recovery_events " +
+                "WHERE user_id = ? " +
+                "  AND type = ? " +
                 "  AND created_at >= ? " +
                 "  AND created_at < ?";
 
         Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
         Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
 
-        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
-        return (cnt == null) ? 0 : cnt;
-    }
-
-    public int recentWrongDone3d(long userId, LocalDate today) {
-
-        String sql =
-                "SELECT COUNT(*) " +
-                "FROM study_events " +
-                "WHERE user_id = ? " +
-                "  AND type = 'RECOVERY_ACTION' " +
-                "  AND created_at >= ? " +
-                "  AND created_at < ?";
-
-        Timestamp from = Timestamp.valueOf(today.minusDays(2).atStartOfDay());
-        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
-
-        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
-        return (cnt == null) ? 0 : cnt;
-    }
-
-    public int todayWrongFromEvents(long userId, LocalDate today) {
-
-        String sql =
-                "SELECT COUNT(*) " +
-                "FROM study_events " +
-                "WHERE user_id = ? " +
-                "  AND type = 'BET_BLOCKED' " +
-                "  AND created_at >= ? " +
-                "  AND created_at < ?";
-
-        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
-        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
-
-        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
-        return (cnt == null) ? 0 : cnt;
-    }
-
-    public int todayWrongDoneFromEvents(long userId, LocalDate today) {
-
-        String sql =
-                "SELECT COUNT(*) " +
-                "FROM study_events " +
-                "WHERE user_id = ? " +
-                "  AND type = 'RECOVERY_ACTION' " +
-                "  AND created_at >= ? " +
-                "  AND created_at < ?";
-
-        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
-        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
-
-        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
-        return (cnt == null) ? 0 : cnt;
-    }
-
-    public int todayQuizFromEvents(long userId, LocalDate today) {
-
-        String sql =
-                "SELECT COUNT(*) " +
-                "FROM study_events " +
-                "WHERE user_id = ? " +
-                "  AND type = 'BET_ATTEMPT' " +
-                "  AND created_at >= ? " +
-                "  AND created_at < ?";
-
-        Timestamp from = Timestamp.valueOf(today.atStartOfDay());
-        Timestamp to   = Timestamp.valueOf(today.plusDays(1).atStartOfDay());
-
-        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, from, to);
+        Integer cnt = jdbcTemplate.queryForObject(sql, Integer.class, userId, type, from, to);
         return (cnt == null) ? 0 : cnt;
     }
 }

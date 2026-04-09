@@ -21,7 +21,7 @@ public class AdminKpiService {
     public List<Long> findActiveUserIdsToday() {
         String sql = """
             SELECT DISTINCT user_id
-            FROM study_events
+            FROM recovery_events
             WHERE created_at >= CURDATE()
             ORDER BY user_id
         """;

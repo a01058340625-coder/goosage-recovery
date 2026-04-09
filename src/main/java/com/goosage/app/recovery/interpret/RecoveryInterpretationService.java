@@ -32,19 +32,30 @@ public class RecoveryInterpretationService {
         int streakDays = recoveryReadPort.calcStreakDays(userId, today);
 
         int events = recoveryReadPort.todayEventCountFromEvents(userId, today);
-        int quiz = recoveryReadPort.todayActionFromEvents(userId, today);
-        int wrong = recoveryReadPort.todayRiskSignalFromEvents(userId, today);
-        int wrongDone = recoveryReadPort.todayRecoveryActionFromEvents(userId, today);
+        int urgeLogs = recoveryReadPort.todayUrgeLogFromEvents(userId, today);
+        int betAttempts = recoveryReadPort.todayBetAttemptFromEvents(userId, today);
+        int betBlockedCount = recoveryReadPort.todayBetBlockedFromEvents(userId, today);
+        int recoveryActionCount = recoveryReadPort.todayRecoveryActionFromEvents(userId, today);
+        int relapseSignalCount = recoveryReadPort.todayRelapseSignalFromEvents(userId, today);
 
-        System.out.println("[INTERPRET-SVC] user=" + userId);
+        System.out.println("[INTERPRET-SVC] user=" + userId
+                + " events=" + events
+                + " urgeLogs=" + urgeLogs
+                + " betAttempts=" + betAttempts
+                + " betBlockedCount=" + betBlockedCount
+                + " recoveryActionCount=" + recoveryActionCount
+                + " relapseSignalCount=" + relapseSignalCount);
 
         Long recentKnowledgeId = null;
-        if (opt.isPresent()) {
-            var row = opt.get();
-            recentKnowledgeId = row.recentKnowledgeId();
-        }
 
-        RecoveryState state = new RecoveryState(wrong, quiz, events, wrongDone);
+        RecoveryState state = new RecoveryState(
+                urgeLogs,
+                betAttempts,
+                betBlockedCount,
+                recoveryActionCount,
+                relapseSignalCount,
+                events
+        );
 
         int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll);
         int recent3d = recoveryReadPort.recentEventCount3d(userId, today);

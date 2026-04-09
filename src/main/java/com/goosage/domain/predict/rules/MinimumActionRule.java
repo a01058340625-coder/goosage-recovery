@@ -1,9 +1,13 @@
 package com.goosage.domain.predict.rules;
 
 import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
-import com.goosage.domain.predict.*;
+import com.goosage.domain.predict.Prediction;
+import com.goosage.domain.predict.PredictionLevel;
+import com.goosage.domain.predict.PredictionReasonCode;
+import com.goosage.domain.predict.PredictionRule;
 import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
@@ -29,7 +33,12 @@ public class MinimumActionRule implements PredictionRule {
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
                         "recentEventCount3d", s.recentEventCount3d(),
-                        "eventsCount", s.state().eventsCount()
+                        "eventsCount", s.state().eventsCount(),
+                        "urgeLogs", s.state().urgeLogs(),
+                        "betAttempts", s.state().betAttempts(),
+                        "betBlockedCount", s.state().betBlockedCount(),
+                        "recoveryActionCount", s.state().recoveryActionCount(),
+                        "relapseSignalCount", s.state().relapseSignalCount()
                 )
         );
     }

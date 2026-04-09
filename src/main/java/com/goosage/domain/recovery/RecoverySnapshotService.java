@@ -23,25 +23,32 @@ public class RecoverySnapshotService {
         int streakDays = readPort.calcStreakDays(userId, nowDate);
 
         int events = readPort.todayEventCountFromEvents(userId, nowDate);
-        int quiz = readPort.todayActionFromEvents(userId, nowDate);
-        int wrong = readPort.todayRiskSignalFromEvents(userId, nowDate);
-        int wrongDone = readPort.todayRecoveryActionFromEvents(userId, nowDate);
+        int urgeLogs = readPort.todayUrgeLogFromEvents(userId, nowDate);
+        int betAttempts = readPort.todayBetAttemptFromEvents(userId, nowDate);
+        int betBlockedCount = readPort.todayBetBlockedFromEvents(userId, nowDate);
+        int recoveryActionCount = readPort.todayRecoveryActionFromEvents(userId, nowDate);
+        int relapseSignalCount = readPort.todayRelapseSignalFromEvents(userId, nowDate);
 
-        // 👇 여기 추가
         System.out.println("[SNAPSHOT-SVC] user=" + userId
-        	    + " events=" + events
-        	    + " quiz=" + quiz
-        	    + " wrong=" + wrong
-        	    + " wrongDone=" + wrongDone);
-        
+                + " events=" + events
+                + " urgeLogs=" + urgeLogs
+                + " betAttempts=" + betAttempts
+                + " betBlockedCount=" + betBlockedCount
+                + " recoveryActionCount=" + recoveryActionCount
+                + " relapseSignalCount=" + relapseSignalCount);
+
         Long recentKnowledgeId = null;
         boolean studiedToday = events > 0;
-        if (opt.isPresent()) {
-            var a = opt.get();
-            recentKnowledgeId = a.recentKnowledgeId();
-        }
 
-        RecoveryState state = new RecoveryState(wrong, quiz, events, wrongDone);
+        RecoveryState state = new RecoveryState(
+                urgeLogs,
+                betAttempts,
+                betBlockedCount,
+                recoveryActionCount,
+                relapseSignalCount,
+                events
+        );
+
         int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll, nowDateTime);
         int recent3d = readPort.recentEventCount3d(userId, nowDate);
 

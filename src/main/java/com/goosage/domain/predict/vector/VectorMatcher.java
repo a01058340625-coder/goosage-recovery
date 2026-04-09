@@ -31,10 +31,11 @@ public class VectorMatcher {
 
     private double distance(ObservationVector a, ObservationVector b) {
         return Math.abs(a.activity() - b.activity())
-                + Math.abs(a.openRatio() - b.openRatio())
-                + Math.abs(a.quizRatio() - b.quizRatio())
-                + Math.abs(a.wrongRatio() - b.wrongRatio())
-                + Math.abs(a.wrongDoneRatio() - b.wrongDoneRatio())
+                + Math.abs(a.urgeRatio() - b.urgeRatio())
+                + Math.abs(a.attemptRatio() - b.attemptRatio())
+                + Math.abs(a.blockedRatio() - b.blockedRatio())
+                + Math.abs(a.recoveryRatio() - b.recoveryRatio())
+                + Math.abs(a.relapseRatio() - b.relapseRatio())
                 + Math.abs(a.recentScore() - b.recentScore())
                 + Math.abs(a.streakScore() - b.streakScore())
                 + Math.abs(a.recencyPenalty() - b.recencyPenalty());
@@ -44,19 +45,19 @@ public class VectorMatcher {
         Map<BehaviorPattern, ObservationVector> map = new LinkedHashMap<>();
 
         map.put(BehaviorPattern.LOW_ACTIVITY,
-                new ObservationVector(0.2, 0.8, 0.1, 0.0, 0.0, 0.2, 0.1, 0.3));
+                new ObservationVector(0.2, 0.8, 0.1, 0.0, 0.0, 0.0, 0.2, 0.1, 0.3));
 
         map.put(BehaviorPattern.QUIZ_ONLY,
-                new ObservationVector(0.5, 0.2, 0.8, 0.0, 0.0, 0.5, 0.4, 0.0));
+                new ObservationVector(0.5, 0.2, 0.8, 0.0, 0.0, 0.0, 0.5, 0.4, 0.0));
 
         map.put(BehaviorPattern.WRONG_HEAVY,
-                new ObservationVector(0.7, 0.1, 0.2, 0.7, 0.0, 0.6, 0.4, 0.0));
+                new ObservationVector(0.7, 0.1, 0.4, 0.1, 0.1, 0.7, 0.6, 0.4, 0.0));
 
         map.put(BehaviorPattern.RECOVERY_PROGRESS,
-                new ObservationVector(0.7, 0.1, 0.2, 0.2, 0.6, 0.7, 0.5, 0.0));
+                new ObservationVector(0.7, 0.1, 0.2, 0.2, 0.6, 0.1, 0.7, 0.5, 0.0));
 
         map.put(BehaviorPattern.HABIT_STABLE,
-                new ObservationVector(0.8, 0.2, 0.5, 0.1, 0.2, 0.8, 0.9, 0.0));
+                new ObservationVector(0.8, 0.2, 0.2, 0.3, 0.3, 0.0, 0.8, 0.9, 0.0));
 
         return map;
     }

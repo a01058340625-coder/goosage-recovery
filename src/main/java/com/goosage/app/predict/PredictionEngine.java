@@ -44,18 +44,21 @@ public class PredictionEngine {
                 + ", recentEventCount3d=" + s.recentEventCount3d()
                 + ", daysSinceLastEvent=" + s.daysSinceLastEvent()
                 + ", eventsCount=" + (s.state() != null ? s.state().eventsCount() : -1)
-                + ", quizSubmits=" + (s.state() != null ? s.state().quizSubmits() : -1)
-                + ", wrongReviews=" + (s.state() != null ? s.state().wrongReviews() : -1)
-                + ", wrongReviewDoneCount=" + (s.state() != null ? s.state().wrongReviewDoneCount() : -1));
+                + ", urgeLogs=" + (s.state() != null ? s.state().urgeLogs() : -1)
+                + ", betAttempts=" + (s.state() != null ? s.state().betAttempts() : -1)
+                + ", betBlockedCount=" + (s.state() != null ? s.state().betBlockedCount() : -1)
+                + ", recoveryActionCount=" + (s.state() != null ? s.state().recoveryActionCount() : -1)
+                + ", relapseSignalCount=" + (s.state() != null ? s.state().relapseSignalCount() : -1));
 
         ObservationVector vector = vectorConverter.from(s);
         BehaviorPattern pattern = vectorMatcher.match(vector);
 
         System.out.println("[VECTOR] activity=" + vector.activity()
-                + ", openRatio=" + vector.openRatio()
-                + ", quizRatio=" + vector.quizRatio()
-                + ", wrongRatio=" + vector.wrongRatio()
-                + ", wrongDoneRatio=" + vector.wrongDoneRatio()
+                + ", urgeRatio=" + vector.urgeRatio()
+                + ", attemptRatio=" + vector.attemptRatio()
+                + ", blockedRatio=" + vector.blockedRatio()
+                + ", recoveryRatio=" + vector.recoveryRatio()
+                + ", relapseRatio=" + vector.relapseRatio()
                 + ", recentScore=" + vector.recentScore()
                 + ", streakScore=" + vector.streakScore()
                 + ", recencyPenalty=" + vector.recencyPenalty());
@@ -79,6 +82,6 @@ public class PredictionEngine {
             }
         }
 
-        throw new IllegalStateException("No PredictionRule matched. DefaultFallbackRule missing?");
+        throw new IllegalStateException("No PredictionRule matched. MinimumActionRule missing?");
     }
 }

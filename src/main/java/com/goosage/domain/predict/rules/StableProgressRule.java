@@ -15,7 +15,7 @@ public class StableProgressRule implements PredictionRule {
 
     @Override
     public int priority() {
-    	return 55;
+        return 55;
     }
 
     @Override
@@ -28,15 +28,17 @@ public class StableProgressRule implements PredictionRule {
             return false;
         }
 
-        double open = s.openRatio();
-        double quiz = s.quizRatio();
-        double wrong = s.wrongRatio();
-        double done = s.wrongDoneRatio();
+        double urge = s.urgeRatio();
+        double attempt = s.attemptRatio();
+        double blocked = s.blockedRatio();
+        double recovery = s.recoveryRatio();
+        double relapse = s.relapseRatio();
 
-        return open >= 0.1 && open <= 0.4
-                && quiz >= 0.2 && quiz <= 0.5
-                && wrong <= 0.4
-                && done <= 0.4;
+        return urge >= 0.1 && urge <= 0.5
+                && attempt >= 0.1 && attempt <= 0.5
+                && blocked <= 0.5
+                && recovery <= 0.6
+                && relapse <= 0.3;
     }
 
     @Override
@@ -44,12 +46,13 @@ public class StableProgressRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.STABLE_PROGRESS,
-                "행동 흐름은 비교적 균형적이다. 지금 리듬을 유지하며 퀴즈를 조금 더 늘리자.",
+                "행동 흐름은 비교적 균형적이다. 지금 리듬을 유지하며 회복 행동을 조금 더 늘리자.",
                 Map.of(
-                        "openRatio", s.openRatio(),
-                        "quizRatio", s.quizRatio(),
-                        "wrongRatio", s.wrongRatio(),
-                        "wrongDoneRatio", s.wrongDoneRatio(),
+                        "urgeRatio", s.urgeRatio(),
+                        "attemptRatio", s.attemptRatio(),
+                        "blockedRatio", s.blockedRatio(),
+                        "recoveryRatio", s.recoveryRatio(),
+                        "relapseRatio", s.relapseRatio(),
                         "eventsCount", s.state().eventsCount()
                 )
         );

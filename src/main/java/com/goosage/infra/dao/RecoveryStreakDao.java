@@ -15,15 +15,15 @@ public class RecoveryStreakDao {
     public int countStreak(long userId) {
         String sql = """
             SELECT COUNT(*)
-            FROM daily_learning
+            FROM recovery_daily_learning
             WHERE user_id = ?
               AND ymd <= CURDATE()
               AND (
                 SELECT COUNT(*)
-                FROM daily_learning d2
+                FROM recovery_daily_learning d2
                 WHERE d2.user_id = ?
-                  AND d2.ymd BETWEEN daily_learning.ymd AND CURDATE()
-              ) = DATEDIFF(CURDATE(), daily_learning.ymd) + 1
+                  AND d2.ymd BETWEEN recovery_daily_learning.ymd AND CURDATE()
+              ) = DATEDIFF(CURDATE(), recovery_daily_learning.ymd) + 1
         """;
 
         Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userId, userId);

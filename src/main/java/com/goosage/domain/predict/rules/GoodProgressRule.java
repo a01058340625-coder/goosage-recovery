@@ -1,6 +1,7 @@
 package com.goosage.domain.predict.rules;
 
 import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 import com.goosage.domain.predict.Prediction;
@@ -19,10 +20,30 @@ public class GoodProgressRule implements PredictionRule {
 
     @Override
     public boolean matches(RecoverySnapshot s) {
-        return s.studiedToday()
-                && s.state().eventsCount() >= 5
-                && s.quizRatio() >= 0.5
-                && s.state().wrongReviews() == 0;
+        if (s == null || s.state() == null) {
+            return false;
+        }
+
+        if (!s.studiedToday()) {
+            return false;
+        }
+
+        // recovery 도메인에서는 relapse/attempt/recovery 컨텍스트가 있으면
+        // 일반 GOOD_PROGRESS로 보내지 않는다.
+        if (s.state().betAttempts() > 0) {
+            return false;
+        }
+
+        if (s.state().relapseSignalCount() > 0) {
+            return false;
+        }
+
+        if (s.state().recoveryActionCount() > 0) {
+            return false;
+        }
+
+        return s.state().eventsCount() >= 5
+                && s.urgeRatio() >= 0.5;
     }
 
     @Override
@@ -30,12 +51,14 @@ public class GoodProgressRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.SAFE,
                 PredictionReasonCode.GOOD_PROGRESS,
-                "퀴즈 중심으로 안정적으로 진행 중이다. 지금 흐름을 유지하자.",
+                "위험 신호 없이 안정적으로 기록 흐름이 유지되고 있다.",
                 Map.of(
-                        "quizRatio", s.quizRatio(),
+                        "urgeRatio", s.urgeRatio(),
                         "eventsCount", s.state().eventsCount(),
-                        "quizSubmits", s.state().quizSubmits(),
-                        "wrongReviews", s.state().wrongReviews()
+                        "urgeLogs", s.state().urgeLogs(),
+                        "betAttempts", s.state().betAttempts(),
+                        "recoveryActionCount", s.state().recoveryActionCount(),
+                        "relapseSignalCount", s.state().relapseSignalCount()
                 )
         );
     }

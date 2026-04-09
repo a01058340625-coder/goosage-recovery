@@ -1,7 +1,5 @@
 package com.goosage.domain.predict.rules;
 
-import static java.util.Map.entry;
-
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -15,98 +13,47 @@ import com.goosage.domain.recovery.RecoverySnapshot;
 @Component
 public class RecoverySafeRule implements PredictionRule {
 
-    private static final int EVENTS_MIN = 5;
-    private static final int WRONG_DONE_MIN = 2;
-    private static final int QUIZ_MIN = 2;
-    private static final int RECENT_3D_MIN = 3;
-    private static final double OPEN_RATIO_MAX = 0.55;
-    private static final double QUIZ_RATIO_MIN = 0.25;
+    private static final int EVENTS_MIN = 4;
+    private static final int RECOVERY_MIN = 2;
+    private static final int RECENT_3D_MIN = 2;
 
     @Override
     public int priority() {
-        return 15;
+        return 8;
     }
 
     @Override
     public boolean matches(RecoverySnapshot s) {
-        if (s == null || s.state() == null) {
-            return false;
-        }
+        if (s == null || s.state() == null) return false;
+        if (!s.studiedToday()) return false;
 
-        if (!s.studiedToday()) {
-            return false;
-        }
+        int recovery = s.state().recoveryActionCount();
+        int attempts = s.state().betAttempts();
+        int relapse = s.state().relapseSignalCount();
 
-        int events = s.state().eventsCount();
-        int quiz = s.state().quizSubmits();
-        int wrong = s.state().wrongReviews();
-        int done = s.state().wrongReviewDoneCount();
-        int justOpen = s.state().justOpenCount();
-
-        if (wrong != 0) {
-            return false;
-        }
-
-        if (events < EVENTS_MIN) {
-            return false;
-        }
-
-        if (done < WRONG_DONE_MIN) {
-            return false;
-        }
-
-        if (quiz < QUIZ_MIN) {
-            return false;
-        }
-
-        if (s.recentEventCount3d() < RECENT_3D_MIN) {
-            return false;
-        }
-
-        double openRatio = events <= 0 ? 0.0 : (double) justOpen / events;
-        double quizRatio = events <= 0 ? 0.0 : (double) quiz / events;
-
-        if (openRatio > OPEN_RATIO_MAX) {
-            return false;
-        }
-
-        if (quizRatio < QUIZ_RATIO_MIN) {
-            return false;
-        }
-
-        return true;
+        // 🔥 recovery dominance 명확히
+        return recovery >= 3
+            && recovery > (attempts + relapse)
+            && s.recentEventCount3d() >= 2;
     }
 
     @Override
     public Prediction apply(RecoverySnapshot s) {
-        int events = s.state().eventsCount();
-        int quiz = s.state().quizSubmits();
-        int wrong = s.state().wrongReviews();
-        int done = s.state().wrongReviewDoneCount();
-        int justOpen = s.state().justOpenCount();
-
-        double openRatio = events <= 0 ? 0.0 : (double) justOpen / events;
-        double quizRatio = events <= 0 ? 0.0 : (double) quiz / events;
-
         return Prediction.of(
                 PredictionLevel.SAFE,
                 PredictionReasonCode.RECOVERY_SAFE,
-                "복습 완료와 퀴즈 흐름이 함께 유지되어 회복 안정권에 들어왔다.",
-                Map.ofEntries(
-                        entry("streakDays", s.streakDays()),
-                        entry("daysSinceLastEvent", s.daysSinceLastEvent()),
-                        entry("recentEventCount3d", s.recentEventCount3d()),
-                        entry("eventsCount", events),
-                        entry("quizSubmits", quiz),
-                        entry("wrongReviews", wrong),
-                        entry("wrongReviewDoneCount", done),
-                        entry("studiedToday", s.studiedToday()),
-                        entry("quizMin", QUIZ_MIN),
-                        entry("wrongDoneMin", WRONG_DONE_MIN),
-                        entry("quizRatio", quizRatio),
-                        entry("openRatio", openRatio),
-                        entry("quizRatioMin", QUIZ_RATIO_MIN),
-                        entry("openRatioMax", OPEN_RATIO_MAX)
+                "회복 행동이 위험 신호보다 우세하여 회복 안정권에 들어왔다.",
+                Map.of(
+                        "streakDays", s.streakDays(),
+                        "daysSinceLastEvent", s.daysSinceLastEvent(),
+                        "recentEventCount3d", s.recentEventCount3d(),
+                        "eventsCount", s.state().eventsCount(),
+                        "urgeLogs", s.state().urgeLogs(),
+                        "betAttempts", s.state().betAttempts(),
+                        "betBlockedCount", s.state().betBlockedCount(),
+                        "recoveryActionCount", s.state().recoveryActionCount(),
+                        "relapseSignalCount", s.state().relapseSignalCount(),
+                        "studiedToday", s.studiedToday()
                 )
         );
     }

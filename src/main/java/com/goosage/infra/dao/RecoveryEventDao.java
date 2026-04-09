@@ -36,14 +36,14 @@ public class RecoveryEventDao {
         // 4) 세션 집계 업데이트
         touchSession(sessionId);
 
-        // 5) daily_learning upsert
+        // 5) recovery_daily_learning upsert
         upsertDaily(userId, LocalDate.now(), eventType);
     }
 
     private Long findActiveSessionId(long userId) {
         String sql = """
             SELECT id
-            FROM study_sessions
+            FROM recovery_sessions
             WHERE user_id = ?
               AND ended_at IS NULL
             ORDER BY started_at DESC
@@ -56,7 +56,7 @@ public class RecoveryEventDao {
 
     private long createSession(long userId) {
         String sql = """
-            INSERT INTO study_sessions (user_id, started_at, total_events, last_event_at)
+            INSERT INTO recovery_sessions (user_id, started_at, total_events, last_event_at)
             VALUES (?, NOW(), 0, NOW())
         """;
 
@@ -68,7 +68,7 @@ public class RecoveryEventDao {
 
     private void insertEvent(long sessionId, long userId, EventType eventType, String refType, Long refId, String payloadJson) {
         String sql = """
-            INSERT INTO study_events (
+            INSERT INTO recovery_events (
                 session_id,
                 user_id,
                 type,
@@ -102,7 +102,7 @@ public class RecoveryEventDao {
 
     private void touchSession(long sessionId) {
         String sql = """
-            UPDATE study_sessions
+            UPDATE recovery_sessions
             SET total_events = total_events + 1,
                 last_event_at = NOW()
             WHERE id = ?
@@ -115,33 +115,33 @@ public class RecoveryEventDao {
     	int quizInc = (eventType == EventType.BET_ATTEMPT) ? 1 : 0;
     	int wrongInc = (eventType == EventType.BET_BLOCKED) ? 1 : 0;
     	int wrongDoneInc = (eventType == EventType.RECOVERY_ACTION) ? 1 : 0;
-    	
+
     	String sql = """
-    		    INSERT INTO daily_learning (
-    		        user_id,
-    		        ymd,
-    		        events_count,
-    		        quiz_submits,
-    		        wrong_reviews,
-    		        wrong_review_done_count,
-    		        last_event_at
-    		    )
-    		    VALUES (?, ?, 1, ?, ?, ?, NOW())
-    		    ON DUPLICATE KEY UPDATE
-    		        events_count = events_count + 1,
-    		        quiz_submits = quiz_submits + VALUES(quiz_submits),
-    		        wrong_reviews = wrong_reviews + VALUES(wrong_reviews),
-    		        wrong_review_done_count = wrong_review_done_count + VALUES(wrong_review_done_count),
-    		        last_event_at = NOW()
-    		""";
+    	    INSERT INTO recovery_daily_learning (
+    	        user_id,
+    	        ymd,
+    	        events_count,
+    	        quiz_submits,
+    	        wrong_reviews,
+    	        wrong_review_done_count,
+    	        last_event_at
+    	    )
+    	    VALUES (?, ?, 1, ?, ?, ?, NOW())
+    	    ON DUPLICATE KEY UPDATE
+    	        events_count = events_count + 1,
+    	        quiz_submits = quiz_submits + VALUES(quiz_submits),
+    	        wrong_reviews = wrong_reviews + VALUES(wrong_reviews),
+    	        wrong_review_done_count = wrong_review_done_count + VALUES(wrong_review_done_count),
+    	        last_event_at = NOW()
+    	""";
 
     	jdbcTemplate.update(
-    		    sql,
-    		    userId,
-    		    java.sql.Date.valueOf(ymd),
-    		    quizInc,
-    		    wrongInc,
-    		    wrongDoneInc
-    		);
+    	    sql,
+    	    userId,
+    	    java.sql.Date.valueOf(ymd),
+    	    quizInc,
+    	    wrongInc,
+    	    wrongDoneInc
+    	);
     }
 }

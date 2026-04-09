@@ -14,8 +14,8 @@ import com.goosage.domain.recovery.RecoverySnapshot;
 public class LowQualityOpenRule implements PredictionRule {
 
     private static final int EVENTS_MIN = 5;
-    private static final double OPEN_RATIO_MIN = 0.55;
-    private static final double QUIZ_RATIO_MAX = 0.45;
+    private static final double URGE_RATIO_MIN = 0.55;
+    private static final double ATTEMPT_RATIO_MAX = 0.45;
 
     @Override
     public int priority() {
@@ -34,12 +34,12 @@ public class LowQualityOpenRule implements PredictionRule {
 
         int events = s.state().eventsCount();
 
-        double openRatio = s.openRatio();
-        double quizRatio = s.quizRatio();
+        double urgeRatio = s.urgeRatio();
+        double attemptRatio = s.attemptRatio();
 
         return events >= EVENTS_MIN
-                && openRatio >= OPEN_RATIO_MIN
-                && quizRatio <= QUIZ_RATIO_MAX;
+                && urgeRatio >= URGE_RATIO_MIN
+                && attemptRatio <= ATTEMPT_RATIO_MAX;
     }
 
     @Override
@@ -47,15 +47,15 @@ public class LowQualityOpenRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.LOW_QUALITY_OPEN,
-                "열기 행동 비중이 너무 높아 실제 학습 품질이 떨어지고 있어. 퀴즈 1개로 흐름을 바로잡자.",
+                "충동 기록 비중이 너무 높아 실제 회복 품질이 떨어지고 있어. 회복 행동 1개로 흐름을 바로잡자.",
                 Map.of(
-                        "openRatio", s.openRatio(),
-                        "quizRatio", s.quizRatio(),
+                        "urgeRatio", s.urgeRatio(),
+                        "attemptRatio", s.attemptRatio(),
                         "eventsCount", s.state().eventsCount(),
                         "studiedToday", s.studiedToday(),
                         "eventsMin", EVENTS_MIN,
-                        "openRatioMin", OPEN_RATIO_MIN,
-                        "quizRatioMax", QUIZ_RATIO_MAX
+                        "urgeRatioMin", URGE_RATIO_MIN,
+                        "attemptRatioMax", ATTEMPT_RATIO_MAX
                 )
         );
     }

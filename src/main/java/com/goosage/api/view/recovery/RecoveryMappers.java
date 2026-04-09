@@ -16,6 +16,8 @@ public final class RecoveryMappers {
                     0,
                     0,
                     0,
+                    0,
+                    0,
                     null,
                     null
             );
@@ -26,9 +28,11 @@ public final class RecoveryMappers {
                 s.studiedToday(),
                 s.streakDays(),
                 s.state().eventsCount(),
-                s.state().quizSubmits(),
-                s.state().wrongReviews(),
-                s.state().wrongReviewDoneCount(),
+                s.state().urgeLogs(),
+                s.state().betAttempts(),
+                s.state().betBlockedCount(),
+                s.state().recoveryActionCount(),
+                s.state().relapseSignalCount(),
                 s.lastEventAt(),
                 s.recentKnowledgeId()
         );

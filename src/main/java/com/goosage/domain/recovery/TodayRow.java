@@ -10,8 +10,10 @@ import java.time.LocalDate;
 public record TodayRow(
         LocalDate ymd,
         int eventsCount,
-        int quizSubmits,
-        int wrongReviews,
-        int wrongReviewDoneCount,
-        Long recentKnowledgeId
-) {}
+        int urgeLogs,
+        int betAttempts,
+        int betBlockedCount,
+        int recoveryActionCount,
+        int relapseSignalCount
+) {
+}

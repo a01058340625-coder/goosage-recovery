@@ -22,25 +22,31 @@ public class RecoveryTodayService {
         var rowOpt = recoveryReadPort.findToday(userId, today);
 
         int events = recoveryReadPort.todayEventCountFromEvents(userId, today);
-        int actions = recoveryReadPort.todayActionFromEvents(userId, today);
-        int risk = recoveryReadPort.todayRiskSignalFromEvents(userId, today);
-        
+        int attempts = recoveryReadPort.todayBetAttemptFromEvents(userId, today);
+        int risk = recoveryReadPort.todayRelapseSignalFromEvents(userId, today);
+
         if (events == 0) {
             return new RecoveryTodayResult(0, 0, 0, "오늘 아직 기록이 없습니다");
         }
 
         TodayRow row = rowOpt.orElse(null);
 
+        if (row != null) {
+            attempts = row.betAttempts();
+            risk = row.relapseSignalCount();
+        }
+
         return new RecoveryTodayResult(
                 events,
-                actions,
+                attempts,
                 risk,
-                messageFor(events, actions)
+                messageFor(events, attempts, risk)
         );
     }
 
-    private String messageFor(int events, int actions) {
-        if (actions > 0) return "오늘 행동을 " + actions + "회 기록했어요";
+    private String messageFor(int events, int attempts, int risk) {
+        if (risk > 0) return "오늘 위험 신호가 감지되었어요";
+        if (attempts > 0) return "오늘 행동 시도가 " + attempts + "회 기록되었어요";
         if (events > 0) return "오늘 활동 기록이 있습니다";
         return "오늘 아직 기록이 없습니다";
     }

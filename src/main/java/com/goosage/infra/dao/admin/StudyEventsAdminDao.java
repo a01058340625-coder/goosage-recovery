@@ -19,7 +19,7 @@ public class StudyEventsAdminDao {
     public List<StudyEventRow> recent(long userId, int limit) {
         String sql = """
             SELECT id, user_id, type, created_at
-            FROM study_events
+            FROM recovery_events
             WHERE user_id = ?
             ORDER BY created_at DESC
             LIMIT ?

@@ -25,10 +25,11 @@ public class RecoveryReadDaoAdapter implements RecoveryReadPort {
                 .map(r -> new TodayRow(
                         r.ymd(),
                         r.eventsCount(),
-                        r.quizSubmits(),
-                        r.wrongReviews(),
-                        r.wrongReviewDoneCount(),
-                        null
+                        r.urgeLogs(),
+                        r.betAttempts(),
+                        r.betBlockedCount(),
+                        r.recoveryActionCount(),
+                        r.relapseSignalCount()
                 ));
     }
 
@@ -52,29 +53,53 @@ public class RecoveryReadDaoAdapter implements RecoveryReadPort {
         return dao.todayEventCountFromEvents(userId, today);
     }
 
-    // 🔥 이름만 바꿔서 매핑
     @Override
-    public int recentRiskSignal3d(long userId, LocalDate today) {
-        return dao.recentWrong3d(userId, today);
+    public int recentUrgeLog3d(long userId, LocalDate today) {
+        return dao.recentUrgeLog3d(userId, today);
+    }
+
+    @Override
+    public int recentBetAttempt3d(long userId, LocalDate today) {
+        return dao.recentBetAttempt3d(userId, today);
+    }
+
+    @Override
+    public int recentBetBlocked3d(long userId, LocalDate today) {
+        return dao.recentBetBlocked3d(userId, today);
     }
 
     @Override
     public int recentRecoveryAction3d(long userId, LocalDate today) {
-        return dao.recentWrongDone3d(userId, today);
+        return dao.recentRecoveryAction3d(userId, today);
     }
 
     @Override
-    public int todayRiskSignalFromEvents(long userId, LocalDate today) {
-        return dao.todayWrongFromEvents(userId, today);
+    public int recentRelapseSignal3d(long userId, LocalDate today) {
+        return dao.recentRelapseSignal3d(userId, today);
+    }
+
+    @Override
+    public int todayUrgeLogFromEvents(long userId, LocalDate today) {
+        return dao.todayUrgeLogFromEvents(userId, today);
+    }
+
+    @Override
+    public int todayBetAttemptFromEvents(long userId, LocalDate today) {
+        return dao.todayBetAttemptFromEvents(userId, today);
+    }
+
+    @Override
+    public int todayBetBlockedFromEvents(long userId, LocalDate today) {
+        return dao.todayBetBlockedFromEvents(userId, today);
     }
 
     @Override
     public int todayRecoveryActionFromEvents(long userId, LocalDate today) {
-        return dao.todayWrongDoneFromEvents(userId, today);
+        return dao.todayRecoveryActionFromEvents(userId, today);
     }
 
     @Override
-    public int todayActionFromEvents(long userId, LocalDate today) {
-        return dao.todayQuizFromEvents(userId, today);
+    public int todayRelapseSignalFromEvents(long userId, LocalDate today) {
+        return dao.todayRelapseSignalFromEvents(userId, today);
     }
 }

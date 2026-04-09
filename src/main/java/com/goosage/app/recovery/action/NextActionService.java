@@ -32,7 +32,7 @@ public class NextActionService {
         }
 
         if (reasonCode == PredictionReasonCode.WRONG_HEAVY) {
-            return NextActionType.PROCESS_RISK_SIGNAL;
+            return NextActionType.DO_RECOVERY_ACTION;
         }
 
         if (reasonCode == PredictionReasonCode.URGE_HIGH) {
@@ -44,22 +44,24 @@ public class NextActionService {
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_PROGRESS) {
-            if (snap != null && snap.state() != null) {
-                int wrong = snap.state().wrongReviews();
-                int quiz = snap.state().quizSubmits();
-                int done = snap.state().wrongReviewDoneCount();
 
-                if (wrong > 0) {
+            if (snap != null && snap.state() != null) {
+
+                int relapse = snap.state().relapseSignalCount();
+                int recovery = snap.state().recoveryActionCount();
+
+                // 🔥 stable 케이스
+                if (relapse == 0 && recovery > 0) {
                     return NextActionType.PROCESS_RISK_SIGNAL;
                 }
 
-                if (wrong == 0 && done > 0) {
+                // 🔥 relapse 섞인 경우
+                if (relapse > 0) {
                     return NextActionType.DO_RECOVERY_ACTION;
                 }
 
-                if (quiz < 2) {
-                    return NextActionType.DO_RECOVERY_ACTION;
-                }
+                // 🔥 완전 초기 상태
+                return NextActionType.PROCESS_RISK_SIGNAL;
             }
 
             return NextActionType.RECOVERY_CHECK;
@@ -93,14 +95,18 @@ public class NextActionService {
             return NextActionType.RECOVERY_CHECK;
         }
 
-        if (snap != null && snap.state() != null && snap.state().wrongReviews() > 0) {
+        if (snap != null && snap.state() != null && snap.state().relapseSignalCount() > 0) {
+            return NextActionType.PROCESS_RISK_SIGNAL;
+        }
+        
+        if (reasonCode == PredictionReasonCode.RELAPSE_RISK) {
             return NextActionType.PROCESS_RISK_SIGNAL;
         }
 
         if (snap != null
                 && snap.state() != null
                 && snap.daysSinceLastEvent() == 0
-                && snap.state().quizSubmits() < 2) {
+                && snap.state().recoveryActionCount() < 1) {
             return NextActionType.DO_RECOVERY_ACTION;
         }
 

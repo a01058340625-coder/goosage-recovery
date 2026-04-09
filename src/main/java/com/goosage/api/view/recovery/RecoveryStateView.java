@@ -9,9 +9,13 @@ public class RecoveryStateView {
     private boolean studiedToday;
     private int streakDays;
     private int eventsCount;
-    private int quizSubmits;
-    private int wrongReviews;
-    private int wrongReviewDoneCount;
+
+    private int urgeLogs;
+    private int betAttempts;
+    private int betBlockedCount;
+    private int recoveryActionCount;
+    private int relapseSignalCount;
+
     private LocalDateTime lastEventAt;
     private Long recentKnowledgeId;
 
@@ -20,9 +24,11 @@ public class RecoveryStateView {
             boolean studiedToday,
             int streakDays,
             int eventsCount,
-            int quizSubmits,
-            int wrongReviews,
-            int wrongReviewDoneCount,
+            int urgeLogs,
+            int betAttempts,
+            int betBlockedCount,
+            int recoveryActionCount,
+            int relapseSignalCount,
             LocalDateTime lastEventAt,
             Long recentKnowledgeId
     ) {
@@ -30,20 +36,56 @@ public class RecoveryStateView {
         this.studiedToday = studiedToday;
         this.streakDays = streakDays;
         this.eventsCount = eventsCount;
-        this.quizSubmits = quizSubmits;
-        this.wrongReviews = wrongReviews;
-        this.wrongReviewDoneCount = wrongReviewDoneCount;
+        this.urgeLogs = urgeLogs;
+        this.betAttempts = betAttempts;
+        this.betBlockedCount = betBlockedCount;
+        this.recoveryActionCount = recoveryActionCount;
+        this.relapseSignalCount = relapseSignalCount;
         this.lastEventAt = lastEventAt;
         this.recentKnowledgeId = recentKnowledgeId;
     }
 
-    public LocalDate getYmd() { return ymd; }
-    public boolean isStudiedToday() { return studiedToday; }
-    public int getStreakDays() { return streakDays; }
-    public int getEventsCount() { return eventsCount; }
-    public int getQuizSubmits() { return quizSubmits; }
-    public int getWrongReviews() { return wrongReviews; }
-    public int getWrongReviewDoneCount() { return wrongReviewDoneCount; }
-    public LocalDateTime getLastEventAt() { return lastEventAt; }
-    public Long getRecentKnowledgeId() { return recentKnowledgeId; }
+    public LocalDate getYmd() {
+        return ymd;
+    }
+
+    public boolean isStudiedToday() {
+        return studiedToday;
+    }
+
+    public int getStreakDays() {
+        return streakDays;
+    }
+
+    public int getEventsCount() {
+        return eventsCount;
+    }
+
+    public int getUrgeLogs() {
+        return urgeLogs;
+    }
+
+    public int getBetAttempts() {
+        return betAttempts;
+    }
+
+    public int getBetBlockedCount() {
+        return betBlockedCount;
+    }
+
+    public int getRecoveryActionCount() {
+        return recoveryActionCount;
+    }
+
+    public int getRelapseSignalCount() {
+        return relapseSignalCount;
+    }
+
+    public LocalDateTime getLastEventAt() {
+        return lastEventAt;
+    }
+
+    public Long getRecentKnowledgeId() {
+        return recentKnowledgeId;
+    }
 }

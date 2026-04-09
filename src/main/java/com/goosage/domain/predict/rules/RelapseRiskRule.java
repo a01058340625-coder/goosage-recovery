@@ -11,11 +11,11 @@ import com.goosage.domain.predict.PredictionRule;
 import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
-public class HabitStableRule implements PredictionRule {
+public class RelapseRiskRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 25;
+        return 12; // HabitStableRule(25)보다 먼저
     }
 
     @Override
@@ -24,50 +24,35 @@ public class HabitStableRule implements PredictionRule {
             return false;
         }
 
-        if (!s.studiedToday()) {
-            return false;
-        }
-
         int attempts = s.state().betAttempts();
         int relapse = s.state().relapseSignalCount();
-        int recovery = s.state().recoveryActionCount();
-        int blocked = s.state().betBlockedCount();
 
-        // recovery-safe 케이스는 여기서 제외
-        if (recovery > 0 && recovery > (attempts + relapse)) {
-            return false;
-        }
-
-        // 핵심 1: 시도/재발 신호가 있으면 stable 금지
-        if (attempts > 0 || relapse > 0) {
-            return false;
-        }
-
-        // 핵심 2: blocked만 있고 recovery 정리가 없으면 아직 안정으로 보지 않음
-        if (blocked > 0 && recovery == 0) {
-            return false;
-        }
-
-        return s.streakDays() >= 3
-                && s.recentEventCount3d() >= 3;
+        return attempts > 0 || relapse > 0;
     }
 
     @Override
     public Prediction apply(RecoverySnapshot s) {
+        int attempts = s.state().betAttempts();
+        int relapse = s.state().relapseSignalCount();
+
+        PredictionLevel level = (relapse >= 2 || attempts >= 2)
+                ? PredictionLevel.DANGER
+                : PredictionLevel.WARNING;
+
         return Prediction.of(
-                PredictionLevel.SAFE,
-                PredictionReasonCode.HABIT_STABLE,
-                "행동 습관이 안정화되고 있다. 지금 리듬을 유지하자.",
+                level,
+                PredictionReasonCode.RELAPSE_RISK,
+                "재시도 또는 재발 신호가 감지됐다. 지금 바로 회복 행동으로 흐름을 끊자.",
                 Map.of(
                         "streakDays", s.streakDays(),
-                        "recentEventCount3d", s.recentEventCount3d(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
+                        "recentEventCount3d", s.recentEventCount3d(),
                         "eventsCount", s.state().eventsCount(),
                         "urgeLogs", s.state().urgeLogs(),
-                        "betAttempts", s.state().betAttempts(),
+                        "betAttempts", attempts,
                         "betBlockedCount", s.state().betBlockedCount(),
                         "recoveryActionCount", s.state().recoveryActionCount(),
-                        "relapseSignalCount", s.state().relapseSignalCount()
+                        "relapseSignalCount", relapse
                 )
         );
     }

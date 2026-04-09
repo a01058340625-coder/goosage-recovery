@@ -19,35 +19,54 @@ public record RecoverySnapshot(
         Long recentKnowledgeId
 ) {
 
-    public double openRatio() {
+    public double urgeRatio() {
         if (state == null || state.eventsCount() <= 0) return 0.0;
-        return (double) state.justOpenCount() / state.eventsCount();
+        return (double) state.urgeLogs() / state.eventsCount();
     }
 
-    public double quizRatio() {
+    public double attemptRatio() {
         if (state == null || state.eventsCount() <= 0) return 0.0;
-        return (double) state.quizSubmits() / state.eventsCount();
+        return (double) state.betAttempts() / state.eventsCount();
     }
 
-    public double wrongRatio() {
+    public double blockedRatio() {
         if (state == null || state.eventsCount() <= 0) return 0.0;
-        return (double) state.wrongReviews() / state.eventsCount();
+        return (double) state.betBlockedCount() / state.eventsCount();
     }
 
-    public double wrongDoneRatio() {
+    public double recoveryRatio() {
         if (state == null || state.eventsCount() <= 0) return 0.0;
-        return (double) state.wrongReviewDoneCount() / state.eventsCount();
+        return (double) state.recoveryActionCount() / state.eventsCount();
     }
 
-    public boolean hasWrongToReview() {
-        return state != null && state.wrongReviews() > 0;
+    public double relapseRatio() {
+        if (state == null || state.eventsCount() <= 0) return 0.0;
+        return (double) state.relapseSignalCount() / state.eventsCount();
+    }
+
+    public boolean hasUrge() {
+        return state != null && state.urgeLogs() > 0;
+    }
+
+    public boolean hasAttempt() {
+        return state != null && state.betAttempts() > 0;
+    }
+
+    public boolean hasBlocked() {
+        return state != null && state.betBlockedCount() > 0;
     }
 
     public boolean hasRecoveryProgress() {
-        return state != null && state.wrongReviewDoneCount() > 0;
+        return state != null && state.recoveryActionCount() > 0;
+    }
+
+    public boolean hasRelapseSignal() {
+        return state != null && state.relapseSignalCount() > 0;
     }
 
     public boolean isRecoverySafe() {
-        return state != null && state.wrongReviewDoneCount() > state.wrongReviews();
+        return state != null
+                && state.recoveryActionCount() > 0
+                && state.recoveryActionCount() > (state.betAttempts() + state.relapseSignalCount());
     }
 }

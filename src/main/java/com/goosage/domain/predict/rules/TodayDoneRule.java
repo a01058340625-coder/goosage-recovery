@@ -1,9 +1,10 @@
 package com.goosage.domain.predict.rules;
 
+import static java.util.Map.entry;
+
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
-import static java.util.Map.entry;
 
 import com.goosage.domain.predict.Prediction;
 import com.goosage.domain.predict.PredictionLevel;
@@ -14,9 +15,9 @@ import com.goosage.domain.recovery.RecoverySnapshot;
 @Component
 public class TodayDoneRule implements PredictionRule {
 
-    private static final int ACTION_MIN = 5;
-    private static final double ACTION_RATIO_MIN = 0.60;
-    private static final double PASSIVE_RATIO_MAX = 0.40;
+    private static final int RECOVERY_MIN = 3;
+    private static final double RECOVERY_RATIO_MIN = 0.60;
+    private static final double URGE_RATIO_MAX = 0.40;
 
     @Override
     public int priority() {
@@ -25,20 +26,29 @@ public class TodayDoneRule implements PredictionRule {
 
     @Override
     public boolean matches(RecoverySnapshot s) {
+        if (s == null || s.state() == null) {
+            return false;
+        }
+
         if (!s.studiedToday()) {
             return false;
         }
 
-        int action = s.state().quizSubmits();
-        int risk = s.state().wrongReviews();
+        // recovery-safe 케이스는 RecoverySafeRule에게 넘김
+        if (s.isRecoverySafe()) {
+            return false;
+        }
 
-        double actionRatio = s.quizRatio();
-        double passiveRatio = s.openRatio();
+        int recovery = s.state().recoveryActionCount();
+        int relapse = s.state().relapseSignalCount();
 
-        return action >= ACTION_MIN
-                && risk == 0
-                && actionRatio >= ACTION_RATIO_MIN
-                && passiveRatio <= PASSIVE_RATIO_MAX;
+        double recoveryRatio = s.recoveryRatio();
+        double urgeRatio = s.urgeRatio();
+
+        return recovery >= RECOVERY_MIN
+                && relapse == 0
+                && recoveryRatio >= RECOVERY_RATIO_MIN
+                && urgeRatio <= URGE_RATIO_MAX;
     }
 
     @Override
@@ -52,14 +62,17 @@ public class TodayDoneRule implements PredictionRule {
                         entry("daysSinceLastEvent", s.daysSinceLastEvent()),
                         entry("recentEventCount3d", s.recentEventCount3d()),
                         entry("eventsCount", s.state().eventsCount()),
-                        entry("actionCount", s.state().quizSubmits()),
-                        entry("riskSignal", s.state().wrongReviews()),
+                        entry("urgeLogs", s.state().urgeLogs()),
+                        entry("betAttempts", s.state().betAttempts()),
+                        entry("betBlockedCount", s.state().betBlockedCount()),
+                        entry("recoveryActionCount", s.state().recoveryActionCount()),
+                        entry("relapseSignalCount", s.state().relapseSignalCount()),
                         entry("studiedToday", s.studiedToday()),
-                        entry("actionMin", ACTION_MIN),
-                        entry("actionRatio", s.quizRatio()),
-                        entry("passiveRatio", s.openRatio()),
-                        entry("actionRatioMin", ACTION_RATIO_MIN),
-                        entry("passiveRatioMax", PASSIVE_RATIO_MAX)
+                        entry("recoveryMin", RECOVERY_MIN),
+                        entry("recoveryRatio", s.recoveryRatio()),
+                        entry("urgeRatio", s.urgeRatio()),
+                        entry("recoveryRatioMin", RECOVERY_RATIO_MIN),
+                        entry("urgeRatioMax", URGE_RATIO_MAX)
                 )
         );
     }

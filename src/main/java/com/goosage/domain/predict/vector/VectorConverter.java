@@ -9,20 +9,22 @@ public class VectorConverter {
 
     public ObservationVector from(RecoverySnapshot s) {
         double activity = clamp((s.state() != null ? s.state().eventsCount() : 0) / 6.0);
-        double openRatio = s.openRatio();
-        double quizRatio = s.quizRatio();
-        double wrongRatio = s.wrongRatio();
-        double wrongDoneRatio = s.wrongDoneRatio();
+        double urgeRatio = s.urgeRatio();
+        double attemptRatio = s.attemptRatio();
+        double blockedRatio = s.blockedRatio();
+        double recoveryRatio = s.recoveryRatio();
+        double relapseRatio = s.relapseRatio();
         double recentScore = clamp(s.recentEventCount3d() / 12.0);
         double streakScore = clamp(s.streakDays() / 7.0);
         double recencyPenalty = clamp(s.daysSinceLastEvent() / 3.0);
 
         return new ObservationVector(
                 activity,
-                openRatio,
-                quizRatio,
-                wrongRatio,
-                wrongDoneRatio,
+                urgeRatio,
+                attemptRatio,
+                blockedRatio,
+                recoveryRatio,
+                relapseRatio,
                 recentScore,
                 streakScore,
                 recencyPenalty
