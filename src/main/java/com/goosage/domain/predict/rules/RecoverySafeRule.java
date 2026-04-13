@@ -19,7 +19,7 @@ public class RecoverySafeRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 8;
+        return 6;
     }
 
     @Override

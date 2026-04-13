@@ -15,7 +15,7 @@ public class RelapseRiskRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 12; // HabitStableRule(25)보다 먼저
+        return 7; // HabitStableRule(25)보다 먼저
     }
 
     @Override

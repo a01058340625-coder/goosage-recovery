@@ -15,7 +15,7 @@ public class WrongHeavyRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 9;
+        return 13;
     }
 
     @Override

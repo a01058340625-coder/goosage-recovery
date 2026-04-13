@@ -28,28 +28,40 @@ public class HabitStableRule implements PredictionRule {
             return false;
         }
 
+        int urge = s.state().urgeLogs();
         int attempts = s.state().betAttempts();
         int relapse = s.state().relapseSignalCount();
         int recovery = s.state().recoveryActionCount();
         int blocked = s.state().betBlockedCount();
 
-        // recovery-safe 케이스는 여기서 제외
+        // recovery-safe 케이스는 더 상위/별도 rule에서 처리
         if (recovery > 0 && recovery > (attempts + relapse)) {
             return false;
         }
 
-        // 핵심 1: 시도/재발 신호가 있으면 stable 금지
+        // 충동이 아직 있으면 stable로 보지 않음
+        if (urge > 0) {
+            return false;
+        }
+
+        // 시도/재발 신호가 있으면 stable 금지
         if (attempts > 0 || relapse > 0) {
             return false;
         }
 
-        // 핵심 2: blocked만 있고 recovery 정리가 없으면 아직 안정으로 보지 않음
+        // blocked만 있고 recovery 정리가 없으면 아직 안정 아님
         if (blocked > 0 && recovery == 0) {
             return false;
         }
 
+        // 진짜 stable은 recovery 흐름이 어느 정도 누적된 상태만 허용
+        if (recovery <= 0) {
+            return false;
+        }
+
         return s.streakDays() >= 3
-                && s.recentEventCount3d() >= 3;
+                && s.recentEventCount3d() >= 3
+                && s.daysSinceLastEvent() == 0;
     }
 
     @Override

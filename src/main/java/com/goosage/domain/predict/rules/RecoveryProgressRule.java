@@ -24,20 +24,39 @@ public class RecoveryProgressRule implements PredictionRule {
             return false;
         }
 
-     // recoveryAction 없어도 "차단 상태"는 회복 흐름으로 본다
-        if (s.state().recoveryActionCount() <= 0 
-            && s.state().betBlockedCount() <= 0) {
+        int urge = s.state().urgeLogs();
+        int attempts = s.state().betAttempts();
+        int blocked = s.state().betBlockedCount();
+        int recovery = s.state().recoveryActionCount();
+        int relapse = s.state().relapseSignalCount();
+
+        // recovery action이 실제로 있어야 회복 흐름으로 본다
+        if (recovery <= 0) {
             return false;
         }
 
-        // relapse는 RecoveryProgress가 아니라 RelapseRiskRule에서 먼저 처리
-        if (s.state().relapseSignalCount() > 0) {
+        // 재발 신호가 있으면 progress가 아니라 relapse 쪽에서 처리
+        if (relapse > 0) {
             return false;
         }
 
-        // 진짜 회복 흐름만 잡음: 시도 또는 차단 이후 회복 행동
-        return s.state().betAttempts() > 0
-                || s.state().betBlockedCount() > 0;
+        // 실제 시도(attempt)가 있으면 아직 progress보다 risk가 우선
+        if (attempts > 0) {
+            return false;
+        }
+
+        // urge가 recovery보다 너무 우세하면 아직 progress 아님
+        if (urge >= recovery + 2) {
+            return false;
+        }
+
+        // blocked가 recovery보다 너무 우세하면 아직 progress 아님
+        if (blocked >= recovery + 2) {
+            return false;
+        }
+
+        // recovery가 실제로 중심축이거나 최소 균형권일 때만 progress 허용
+        return true;
     }
 
     @Override
@@ -50,12 +69,12 @@ public class RecoveryProgressRule implements PredictionRule {
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
                         "recentEventCount3d", s.recentEventCount3d(),
-                        "eventsCount", s.state() != null ? s.state().eventsCount() : 0,
-                        "urgeLogs", s.state() != null ? s.state().urgeLogs() : 0,
-                        "betAttempts", s.state() != null ? s.state().betAttempts() : 0,
-                        "betBlockedCount", s.state() != null ? s.state().betBlockedCount() : 0,
-                        "recoveryActionCount", s.state() != null ? s.state().recoveryActionCount() : 0,
-                        "relapseSignalCount", s.state() != null ? s.state().relapseSignalCount() : 0
+                        "eventsCount", s.state().eventsCount(),
+                        "urgeLogs", s.state().urgeLogs(),
+                        "betAttempts", s.state().betAttempts(),
+                        "betBlockedCount", s.state().betBlockedCount(),
+                        "recoveryActionCount", s.state().recoveryActionCount(),
+                        "relapseSignalCount", s.state().relapseSignalCount()
                 )
         );
     }

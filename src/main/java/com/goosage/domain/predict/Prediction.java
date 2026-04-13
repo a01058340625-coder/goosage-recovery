@@ -32,4 +32,8 @@ public record Prediction(
     ) {
         return new Prediction(level, reasonCode, null, evidence);
     }
+
+    public Prediction withEvidence(Map<String, Object> newEvidence) {
+        return new Prediction(level, reasonCode, message, newEvidence);
+    }
 }

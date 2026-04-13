@@ -1,7 +1,9 @@
 package com.goosage.app.predict;
 
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -52,6 +54,7 @@ public class PredictionEngine {
 
         ObservationVector vector = vectorConverter.from(s);
         BehaviorPattern pattern = vectorMatcher.match(vector);
+        double distance = vectorMatcher.distanceTo(vector, pattern);
 
         System.out.println("[VECTOR] activity=" + vector.activity()
                 + ", urgeRatio=" + vector.urgeRatio()
@@ -64,7 +67,7 @@ public class PredictionEngine {
                 + ", recencyPenalty=" + vector.recencyPenalty());
 
         System.out.println("[VECTOR] nearestPattern=" + pattern
-                + ", distance=" + vectorMatcher.distanceTo(vector, pattern));
+                + ", distance=" + distance);
 
         for (PredictionRule r : rules) {
             boolean matched = r.matches(s);
@@ -73,12 +76,24 @@ public class PredictionEngine {
                     + " / matched=" + matched);
 
             if (matched) {
-                Prediction p = r.apply(s);
+                Prediction base = r.apply(s);
+
+                Map<String, Object> mergedEvidence = new LinkedHashMap<>();
+                if (base.evidence() != null) {
+                    mergedEvidence.putAll(base.evidence());
+                }
+
+                mergedEvidence.put("nearestPattern", pattern.name());
+                mergedEvidence.put("distance", distance);
+
+                Prediction enriched = base.withEvidence(mergedEvidence);
+
                 System.out.println("[APPLY] " + r.getClass().getName()
-                        + " => level=" + p.level()
-                        + ", reason=" + p.reasonCode());
+                        + " => level=" + enriched.level()
+                        + ", reason=" + enriched.reasonCode());
                 System.out.println("=== PREDICT END ===");
-                return p;
+
+                return enriched;
             }
         }
 

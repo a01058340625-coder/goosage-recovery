@@ -30,9 +30,16 @@ public class ReviewWrongNeededRule implements PredictionRule {
 
         int blocked = s.state().betBlockedCount();
         int recovery = s.state().recoveryActionCount();
+        int attempts = s.state().betAttempts();
+        int relapse = s.state().relapseSignalCount();
 
-        // blocked 중심의 pending 시나리오 전용
-        return blocked > 0 && recovery == 0;
+        // attempt / relapse는 더 위험한 룰에서 처리
+        if (attempts > 0 || relapse > 0) {
+            return false;
+        }
+
+        // blocked가 recovery보다 우세하면 아직 pending 상태로 본다
+        return blocked > 0 && blocked > recovery;
     }
 
     @Override
