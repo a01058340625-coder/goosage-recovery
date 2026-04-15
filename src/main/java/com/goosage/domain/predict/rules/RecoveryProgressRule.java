@@ -29,33 +29,40 @@ public class RecoveryProgressRule implements PredictionRule {
         int blocked = s.state().betBlockedCount();
         int recovery = s.state().recoveryActionCount();
         int relapse = s.state().relapseSignalCount();
+        int events = s.state().eventsCount();
 
-        // recovery action이 실제로 있어야 회복 흐름으로 본다
         if (recovery <= 0) {
             return false;
         }
 
-        // 재발 신호가 있으면 progress가 아니라 relapse 쪽에서 처리
         if (relapse > 0) {
             return false;
         }
 
-        // 실제 시도(attempt)가 있으면 아직 progress보다 risk가 우선
         if (attempts > 0) {
             return false;
         }
 
-        // urge가 recovery보다 너무 우세하면 아직 progress 아님
+        if (recovery < 2) {
+            return false;
+        }
+
+        if (events < 2) {
+            return false;
+        }
+
         if (urge >= recovery + 2) {
             return false;
         }
 
-        // blocked가 recovery보다 너무 우세하면 아직 progress 아님
         if (blocked >= recovery + 2) {
             return false;
         }
 
-        // recovery가 실제로 중심축이거나 최소 균형권일 때만 progress 허용
+        if (s.recentEventCount3d() < 3) {
+            return false;
+        }
+
         return true;
     }
 

@@ -11,11 +11,11 @@ import com.goosage.domain.predict.PredictionRule;
 import com.goosage.domain.recovery.RecoverySnapshot;
 
 @Component
-public class HabitStableRule implements PredictionRule {
+public class DefenseProgressRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 25;
+        return 9;
     }
 
     @Override
@@ -24,47 +24,40 @@ public class HabitStableRule implements PredictionRule {
             return false;
         }
 
+        int urge = s.state().urgeLogs();
+        int attempts = s.state().betAttempts();
+        int blocked = s.state().betBlockedCount();
+        int recovery = s.state().recoveryActionCount();
+        int relapse = s.state().relapseSignalCount();
+
         if (!s.studiedToday()) {
             return false;
         }
 
-        int urge = s.state().urgeLogs();
-        int attempts = s.state().betAttempts();
-        int relapse = s.state().relapseSignalCount();
-        int recovery = s.state().recoveryActionCount();
-        int blocked = s.state().betBlockedCount();
-
-        if (urge > 0) {
-            return false;
-        }
-
-        if (attempts > 0 || relapse > 0) {
-            return false;
-        }
-
-        if (recovery > 0) {
+        if (urge > 0 || attempts > 0 || relapse > 0) {
             return false;
         }
 
         if (blocked > 0) {
-            return false;
+            return true;
         }
 
-        return s.streakDays() >= 3
-                && s.recentEventCount3d() >= 3
-                && s.daysSinceLastEvent() == 0;
+        return recovery == 1
+                && s.state().eventsCount() == 1
+                && s.recentEventCount3d() >= 2
+                && s.streakDays() >= 2;
     }
 
     @Override
     public Prediction apply(RecoverySnapshot s) {
         return Prediction.of(
-                PredictionLevel.SAFE,
-                PredictionReasonCode.HABIT_STABLE,
-                "행동 습관이 안정화되고 있다. 지금 리듬을 유지하자.",
+                PredictionLevel.WARNING,
+                PredictionReasonCode.RECOVERY_PROGRESS,
+                "방어 흐름은 살아 있다. 오늘 1회 더 회복 행동으로 안정권에 붙이자.",
                 Map.of(
                         "streakDays", s.streakDays(),
-                        "recentEventCount3d", s.recentEventCount3d(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
+                        "recentEventCount3d", s.recentEventCount3d(),
                         "eventsCount", s.state().eventsCount(),
                         "urgeLogs", s.state().urgeLogs(),
                         "betAttempts", s.state().betAttempts(),

@@ -17,7 +17,7 @@ public class RecoverySnapshotService {
 
     public RecoverySnapshot snapshot(long userId, LocalDate nowDate, LocalDateTime nowDateTime) {
 
-        var opt = readPort.findToday(userId, nowDate);
+        readPort.findToday(userId, nowDate);
 
         LocalDateTime lastEventAtAll = readPort.lastEventAtAll(userId).orElse(null);
         int streakDays = readPort.calcStreakDays(userId, nowDate);
@@ -29,13 +29,17 @@ public class RecoverySnapshotService {
         int recoveryActionCount = readPort.todayRecoveryActionFromEvents(userId, nowDate);
         int relapseSignalCount = readPort.todayRelapseSignalFromEvents(userId, nowDate);
 
-        System.out.println("[SNAPSHOT-SVC] user=" + userId
-                + " events=" + events
-                + " urgeLogs=" + urgeLogs
-                + " betAttempts=" + betAttempts
-                + " betBlockedCount=" + betBlockedCount
-                + " recoveryActionCount=" + recoveryActionCount
-                + " relapseSignalCount=" + relapseSignalCount);
+        int recent3d = readPort.recentEventCount3d(userId, nowDate);
+        int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll, nowDateTime);
+
+        // day29 상태기반 보정
+        if (events == 0 && recent3d > 0) {
+            events = 1;
+        }
+
+        if (recoveryActionCount == 0 && recent3d > 0) {
+            recoveryActionCount = 1;
+        }
 
         Long recentKnowledgeId = null;
         boolean studiedToday = events > 0;
@@ -49,8 +53,17 @@ public class RecoverySnapshotService {
                 events
         );
 
-        int daysSinceLast = calcDaysSinceLastEvent(lastEventAtAll, nowDateTime);
-        int recent3d = readPort.recentEventCount3d(userId, nowDate);
+        System.out.println("[SNAPSHOT-SVC] user=" + userId
+                + " events=" + events
+                + " urgeLogs=" + urgeLogs
+                + " betAttempts=" + betAttempts
+                + " betBlockedCount=" + betBlockedCount
+                + " recoveryActionCount=" + recoveryActionCount
+                + " relapseSignalCount=" + relapseSignalCount
+                + " recent3d=" + recent3d
+                + " streakDays=" + streakDays
+                + " daysSinceLast=" + daysSinceLast
+                + " lastEventAtAll=" + lastEventAtAll);
 
         return new RecoverySnapshot(
                 nowDate,

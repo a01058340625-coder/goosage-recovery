@@ -13,10 +13,6 @@ import com.goosage.domain.recovery.RecoverySnapshot;
 @Component
 public class RecoverySafeRule implements PredictionRule {
 
-    private static final int EVENTS_MIN = 4;
-    private static final int RECOVERY_MIN = 2;
-    private static final int RECENT_3D_MIN = 2;
-
     @Override
     public int priority() {
         return 6;
@@ -27,14 +23,18 @@ public class RecoverySafeRule implements PredictionRule {
         if (s == null || s.state() == null) return false;
         if (!s.studiedToday()) return false;
 
-        int recovery = s.state().recoveryActionCount();
+        int urge = s.state().urgeLogs();
         int attempts = s.state().betAttempts();
+        int recovery = s.state().recoveryActionCount();
         int relapse = s.state().relapseSignalCount();
 
-        // 🔥 recovery dominance 명확히
-        return recovery >= 3
-            && recovery > (attempts + relapse)
-            && s.recentEventCount3d() >= 2;
+        return recovery >= 2
+                && attempts == 0
+                && relapse == 0
+                && urge == 0
+                && s.recentEventCount3d() >= 5
+                && s.streakDays() >= 3
+                && s.daysSinceLastEvent() == 0;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class RecoverySafeRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.SAFE,
                 PredictionReasonCode.RECOVERY_SAFE,
-                "회복 행동이 위험 신호보다 우세하여 회복 안정권에 들어왔다.",
+                "회복 행동이 충분히 누적되어 오늘은 안정권에 들어왔다.",
                 Map.of(
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),

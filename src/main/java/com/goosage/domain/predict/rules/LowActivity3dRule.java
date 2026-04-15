@@ -20,12 +20,27 @@ public class LowActivity3dRule implements PredictionRule {
 
     @Override
     public boolean matches(RecoverySnapshot s) {
-        if (s.studiedToday()) return false;
+        if (s == null || s.state() == null) {
+            return false;
+        }
 
-        if (s.daysSinceLastEvent() >= 3) return false;
+        int events = s.state().eventsCount();
+        int recovery = s.state().recoveryActionCount();
+        int attempts = s.state().betAttempts();
+        int relapse = s.state().relapseSignalCount();
+
+        if (attempts > 0 || relapse > 0) {
+            return false;
+        }
+
+        if (recovery > 0 && s.daysSinceLastEvent() == 0) {
+            return false;
+        }
 
         return s.recentEventCount3d() <= 1
-                && !(s.recentEventCount3d() == 0 && s.streakDays() == 0);
+                && s.streakDays() <= 1
+                && events <= 1
+                && recovery <= 1;
     }
 
     @Override
@@ -33,12 +48,17 @@ public class LowActivity3dRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.LOW_ACTIVITY_3D,
-                "최근 3일 행동 기록이 부족해. 오늘 최소 1개 행동부터 다시 시작하자.",
+                "회복 흐름이 아직 약해. 오늘 1회 더 행동해서 리듬을 붙이자.",
                 Map.of(
-                        "studiedToday", s.studiedToday(),
-                        "recentEventCount3d", s.recentEventCount3d(),
+                        "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
-                        "streakDays", s.streakDays()
+                        "recentEventCount3d", s.recentEventCount3d(),
+                        "eventsCount", s.state().eventsCount(),
+                        "urgeLogs", s.state().urgeLogs(),
+                        "betAttempts", s.state().betAttempts(),
+                        "betBlockedCount", s.state().betBlockedCount(),
+                        "recoveryActionCount", s.state().recoveryActionCount(),
+                        "relapseSignalCount", s.state().relapseSignalCount()
                 )
         );
     }

@@ -31,12 +31,16 @@ public class HabitCollapseRiskRule implements PredictionRule {
         int daysSince = s.daysSinceLastEvent();
         int recent3d = s.recentEventCount3d();
 
-        return daysSince >= 2 && recent3d == 0;
+        if (daysSince < 7) {
+            return false;
+        }
+
+        return recent3d == 0;
     }
 
     @Override
     public Prediction apply(RecoverySnapshot s) {
-        var level = (s.daysSinceLastEvent() >= 4)
+        var level = (s.daysSinceLastEvent() >= 10)
                 ? PredictionLevel.DANGER
                 : PredictionLevel.WARNING;
 

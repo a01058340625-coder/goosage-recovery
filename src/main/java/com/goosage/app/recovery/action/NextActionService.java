@@ -46,29 +46,35 @@ public class NextActionService {
         if (reasonCode == PredictionReasonCode.RECOVERY_PROGRESS) {
 
             if (snap != null && snap.state() != null) {
-
                 int relapse = snap.state().relapseSignalCount();
                 int recovery = snap.state().recoveryActionCount();
+                int blocked = snap.state().betBlockedCount();
+                int attempts = snap.state().betAttempts();
+                int urge = snap.state().urgeLogs();
 
-                // 🔥 stable 케이스
-                if (relapse == 0 && recovery > 0) {
-                    return NextActionType.PROCESS_RISK_SIGNAL;
-                }
-
-                // 🔥 relapse 섞인 경우
-                if (relapse > 0) {
+                // 회복/방어 신호가 있고, 직접 재발 위험이 없으면 회복 행동 유지
+                if (relapse == 0 && attempts == 0 && urge == 0 && (recovery > 0 || blocked > 0)) {
                     return NextActionType.DO_RECOVERY_ACTION;
                 }
 
-                // 🔥 완전 초기 상태
-                return NextActionType.PROCESS_RISK_SIGNAL;
+                // 회복은 있으나 아직 불안정하면 체크
+                if (relapse == 0 && (recovery > 0 || blocked > 0)) {
+                    return NextActionType.RECOVERY_CHECK;
+                }
+
+                // 재발 신호가 섞였으면 위험 처리
+                if (relapse > 0 || attempts > 0) {
+                    return NextActionType.PROCESS_RISK_SIGNAL;
+                }
+
+                return NextActionType.RECOVERY_CHECK;
             }
 
             return NextActionType.RECOVERY_CHECK;
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_SAFE) {
-            return NextActionType.RECOVERY_CHECK;
+            return NextActionType.TODAY_SAFE;
         }
 
         if (reasonCode == PredictionReasonCode.LOW_QUALITY_OPEN) {
@@ -96,10 +102,6 @@ public class NextActionService {
         }
 
         if (snap != null && snap.state() != null && snap.state().relapseSignalCount() > 0) {
-            return NextActionType.PROCESS_RISK_SIGNAL;
-        }
-        
-        if (reasonCode == PredictionReasonCode.RELAPSE_RISK) {
             return NextActionType.PROCESS_RISK_SIGNAL;
         }
 
