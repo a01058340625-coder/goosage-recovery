@@ -15,7 +15,7 @@ public class RecoveryProgressRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 8;
+        return 10;
     }
 
     @Override
@@ -35,7 +35,11 @@ public class RecoveryProgressRule implements PredictionRule {
             return false;
         }
 
-        if (relapse > 0) {
+        if (events <= 0) {
+            return false;
+        }
+
+        if (urge > 0) {
             return false;
         }
 
@@ -43,23 +47,17 @@ public class RecoveryProgressRule implements PredictionRule {
             return false;
         }
 
-        if (recovery < 2) {
+        if (relapse > 0) {
             return false;
         }
 
-        if (events < 2) {
+        // blocked가 회복보다 과하면 방어 쪽으로 넘김
+        if (blocked > recovery) {
             return false;
         }
 
-        if (urge >= recovery + 2) {
-            return false;
-        }
-
-        if (blocked >= recovery + 2) {
-            return false;
-        }
-
-        if (s.recentEventCount3d() < 3) {
+        // hold 케이스(327) 허용 위해 2로 완화
+        if (s.recentEventCount3d() < 2) {
             return false;
         }
 
@@ -71,7 +69,7 @@ public class RecoveryProgressRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.RECOVERY_PROGRESS,
-                "위험 신호를 정리하며 회복 중이야. 흐름을 이어가자.",
+                "위험 신호 없이 회복 행동을 이어가고 있어. 지금 흐름을 유지하자.",
                 Map.of(
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),

@@ -45,35 +45,57 @@ public class NextActionService {
 
         if (reasonCode == PredictionReasonCode.RECOVERY_PROGRESS) {
 
-            if (snap != null && snap.state() != null) {
-                int relapse = snap.state().relapseSignalCount();
-                int recovery = snap.state().recoveryActionCount();
-                int blocked = snap.state().betBlockedCount();
-                int attempts = snap.state().betAttempts();
-                int urge = snap.state().urgeLogs();
-
-                // 회복/방어 신호가 있고, 직접 재발 위험이 없으면 회복 행동 유지
-                if (relapse == 0 && attempts == 0 && urge == 0 && (recovery > 0 || blocked > 0)) {
-                    return NextActionType.DO_RECOVERY_ACTION;
-                }
-
-                // 회복은 있으나 아직 불안정하면 체크
-                if (relapse == 0 && (recovery > 0 || blocked > 0)) {
-                    return NextActionType.RECOVERY_CHECK;
-                }
-
-                // 재발 신호가 섞였으면 위험 처리
-                if (relapse > 0 || attempts > 0) {
-                    return NextActionType.PROCESS_RISK_SIGNAL;
-                }
-
+            if (snap == null || snap.state() == null) {
                 return NextActionType.RECOVERY_CHECK;
+            }
+
+            int relapse = snap.state().relapseSignalCount();
+            int recovery = snap.state().recoveryActionCount();
+            int blocked = snap.state().betBlockedCount();
+            int attempts = snap.state().betAttempts();
+            int urge = snap.state().urgeLogs();
+            int events = snap.state().eventsCount();
+            int recent3d = snap.recentEventCount3d();
+
+            if (relapse > 0 || attempts > 0 || urge > 0) {
+                return NextActionType.PROCESS_RISK_SIGNAL;
+            }
+
+            // hold 성격: 얇은 진행은 체크 우선
+            if (events <= 1 && recent3d <= 2) {
+                return NextActionType.RECOVERY_CHECK;
+            }
+
+            // blocked 중심 방어 케이스는 행동 유지
+            if (blocked > 0) {
+                return NextActionType.DO_RECOVERY_ACTION;
+            }
+
+            // recovery는 있지만 아직 얇으면 체크
+            if (recovery <= 1 && events <= 1) {
+                return NextActionType.RECOVERY_CHECK;
+            }
+
+            if (recovery > 0 || blocked > 0) {
+                return NextActionType.DO_RECOVERY_ACTION;
             }
 
             return NextActionType.RECOVERY_CHECK;
         }
 
         if (reasonCode == PredictionReasonCode.RECOVERY_SAFE) {
+            if (snap == null || snap.state() == null) {
+                return NextActionType.TODAY_SAFE;
+            }
+
+            int events = snap.state().eventsCount();
+            int recovery = snap.state().recoveryActionCount();
+
+            // thin safe는 완료가 아니라 점검
+            if (events <= 1 || recovery <= 1) {
+                return NextActionType.RECOVERY_CHECK;
+            }
+
             return NextActionType.TODAY_SAFE;
         }
 

@@ -15,7 +15,7 @@ public class WrongHeavyRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 13;
+        return 8;
     }
 
     @Override
@@ -24,29 +24,43 @@ public class WrongHeavyRule implements PredictionRule {
             return false;
         }
 
+        int urge = s.state().urgeLogs();
         int attempts = s.state().betAttempts();
-        int relapse = s.state().relapseSignalCount();
         int blocked = s.state().betBlockedCount();
         int recovery = s.state().recoveryActionCount();
+        int relapse = s.state().relapseSignalCount();
 
-        // Recovery 도메인 기준:
-        // 단순 차단 성공 / 회복 진행은 여기서 잡지 않음
-        if (relapse <= 0) {
+        // 재발 신호 + 시도 있으면 바로 위험 누적
+        if (relapse >= 1 && attempts >= 1) {
+            return true;
+        }
+
+        // 재발 신호가 2건 이상이면 명확한 위험 누적
+        if (relapse >= 2) {
+            return true;
+        }
+
+        // urge와 relapse가 같이 있으면 표면 회복으로 보지 않음
+        if (relapse >= 1 && urge >= 1) {
+            return true;
+        }
+
+        // 회복보다 위험 신호가 앞서면 위험 누적
+        if (relapse > recovery) {
+            return true;
+        }
+
+        // attempt가 누적되고 recovery가 못 따라오면 위험 누적
+        if (attempts >= 2 && recovery <= attempts - 1) {
+            return true;
+        }
+
+        // blocked만 있는 방어 상태는 제외
+        if (blocked > 0 && relapse == 0 && attempts == 0) {
             return false;
         }
 
-        // 회복 행동이 충분히 앞서는 경우는 RecoveryProgress / RecoverySafe로 넘김
-        if (recovery > relapse && recovery >= attempts) {
-            return false;
-        }
-
-        // blocked만 있는 경우는 relapse-heavy가 아님
-        if (blocked > 0 && relapse == 0) {
-            return false;
-        }
-
-        // 진짜 위험 누적 상태만 여기서 처리
-        return relapse >= 2 || (relapse >= 1 && attempts >= 2);
+        return false;
     }
 
     @Override
@@ -54,7 +68,7 @@ public class WrongHeavyRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.WRONG_HEAVY,
-                "위험 신호가 많이 쌓였어. 새 행동보다 회복 행동을 먼저 하자.",
+                "위험 신호가 누적되고 있어. 새 시도보다 회복 행동을 먼저 하자.",
                 Map.of(
                         "urgeLogs", s.state().urgeLogs(),
                         "betAttempts", s.state().betAttempts(),

@@ -9,16 +9,34 @@ import org.springframework.stereotype.Component;
 public class VectorMatcher {
 
     public BehaviorPattern match(ObservationVector v) {
+        // urge-only 위험 재진입 케이스는 WRONG_HEAVY로 고정
+        if (v.urgeRatio() > 0.0
+                && v.attemptRatio() == 0.0
+                && v.relapseRatio() == 0.0
+                && v.recoveryRatio() > 0.0) {
+            return BehaviorPattern.WRONG_HEAVY;
+        }
+
         Map<BehaviorPattern, ObservationVector> targets = targetVectors();
 
         BehaviorPattern best = null;
         double bestDistance = Double.MAX_VALUE;
 
         for (Map.Entry<BehaviorPattern, ObservationVector> entry : targets.entrySet()) {
+            BehaviorPattern pattern = entry.getKey();
+
+            if (hasRiskSignal(v)
+                    && (pattern == BehaviorPattern.RECOVERY_PROGRESS
+                    || pattern == BehaviorPattern.QUIZ_ONLY
+                    || pattern == BehaviorPattern.HABIT_STABLE
+                    || pattern == BehaviorPattern.LOW_ACTIVITY)) {
+                continue;
+            }
+
             double d = distance(v, entry.getValue());
             if (d < bestDistance) {
                 bestDistance = d;
-                best = entry.getKey();
+                best = pattern;
             }
         }
 
@@ -27,6 +45,12 @@ public class VectorMatcher {
 
     public double distanceTo(ObservationVector actual, BehaviorPattern pattern) {
         return distance(actual, targetVectors().get(pattern));
+    }
+
+    private boolean hasRiskSignal(ObservationVector v) {
+        return v.urgeRatio() > 0.0
+                || v.attemptRatio() > 0.0
+                || v.relapseRatio() > 0.0;
     }
 
     private double distance(ObservationVector a, ObservationVector b) {
@@ -44,19 +68,15 @@ public class VectorMatcher {
     private Map<BehaviorPattern, ObservationVector> targetVectors() {
         Map<BehaviorPattern, ObservationVector> map = new LinkedHashMap<>();
 
-        // 저활동: urge를 높게 두지 말고, 전체 활동 저하 + 최근성 약화 중심
         map.put(BehaviorPattern.LOW_ACTIVITY,
                 new ObservationVector(0.15, 0.0, 0.0, 0.0, 0.1, 0.0, 0.15, 0.10, 0.60));
 
-        // recovery 도메인에서는 사실상 노이즈에 가까움 → 가장 덜 끌리게 약화
         map.put(BehaviorPattern.QUIZ_ONLY,
                 new ObservationVector(0.55, 0.0, 0.95, 0.0, 0.0, 0.0, 0.20, 0.20, 0.10));
 
-        // 위험 신호: urge/attempt/relapse 중심
         map.put(BehaviorPattern.WRONG_HEAVY,
                 new ObservationVector(0.60, 0.50, 0.70, 0.10, 0.10, 0.80, 0.35, 0.20, 0.10));
 
-        // 회복 진행: recovery + blocked + recent/streak 가 살아있어야 함
         map.put(BehaviorPattern.RECOVERY_PROGRESS,
                 new ObservationVector(0.45, 0.00, 0.00, 0.35, 0.75, 0.00, 0.45, 0.35, 0.20));
 

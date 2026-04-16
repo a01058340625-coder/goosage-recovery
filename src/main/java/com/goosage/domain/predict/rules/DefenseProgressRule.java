@@ -38,14 +38,27 @@ public class DefenseProgressRule implements PredictionRule {
             return false;
         }
 
-        if (blocked > 0) {
-            return true;
+        // 방어 진행은 blocked가 실제로 있을 때만 인정
+        if (blocked <= 0) {
+            return false;
         }
 
-        return recovery == 1
-                && s.state().eventsCount() == 1
-                && s.recentEventCount3d() >= 2
-                && s.streakDays() >= 2;
+        // recovery 없이 blocked만 있는 불안정 케이스 제외
+        if (recovery <= 0) {
+            return false;
+        }
+
+        // 너무 얇은 recent는 제외
+        if (s.recentEventCount3d() < 4) {
+            return false;
+        }
+
+        // streak도 최소 확보
+        if (s.streakDays() < 3) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -53,7 +66,7 @@ public class DefenseProgressRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.WARNING,
                 PredictionReasonCode.RECOVERY_PROGRESS,
-                "방어 흐름은 살아 있다. 오늘 1회 더 회복 행동으로 안정권에 붙이자.",
+                "방어 흐름이 유지되고 있어. 지금 회복 행동을 이어가자.",
                 Map.of(
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),

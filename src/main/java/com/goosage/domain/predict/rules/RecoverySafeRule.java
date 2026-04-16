@@ -20,21 +20,27 @@ public class RecoverySafeRule implements PredictionRule {
 
     @Override
     public boolean matches(RecoverySnapshot s) {
-        if (s == null || s.state() == null) return false;
-        if (!s.studiedToday()) return false;
+        if (s == null || s.state() == null) {
+            return false;
+        }
+        if (!s.studiedToday()) {
+            return false;
+        }
 
         int urge = s.state().urgeLogs();
         int attempts = s.state().betAttempts();
+        int blocked = s.state().betBlockedCount();
         int recovery = s.state().recoveryActionCount();
         int relapse = s.state().relapseSignalCount();
 
-        return recovery >= 2
+        return recovery >= 1
                 && attempts == 0
+                && blocked == 0
                 && relapse == 0
                 && urge == 0
-                && s.recentEventCount3d() >= 5
+                && s.recentEventCount3d() >= 3
                 && s.streakDays() >= 3
-                && s.daysSinceLastEvent() == 0;
+                && s.daysSinceLastEvent() <= 1;
     }
 
     @Override
@@ -42,7 +48,7 @@ public class RecoverySafeRule implements PredictionRule {
         return Prediction.of(
                 PredictionLevel.SAFE,
                 PredictionReasonCode.RECOVERY_SAFE,
-                "회복 행동이 충분히 누적되어 오늘은 안정권에 들어왔다.",
+                "회복 흐름이 안정권에 들어왔다. 오늘은 점검만 하고 유지하자.",
                 Map.of(
                         "streakDays", s.streakDays(),
                         "daysSinceLastEvent", s.daysSinceLastEvent(),

@@ -15,7 +15,7 @@ public class RelapseRiskRule implements PredictionRule {
 
     @Override
     public int priority() {
-        return 7; // HabitStableRule(25)보다 먼저
+        return 7;
     }
 
     @Override
@@ -24,18 +24,20 @@ public class RelapseRiskRule implements PredictionRule {
             return false;
         }
 
+        int urge = s.state().urgeLogs();
         int attempts = s.state().betAttempts();
         int relapse = s.state().relapseSignalCount();
 
-        return attempts > 0 || relapse > 0;
+        return urge > 0 || attempts > 0 || relapse > 0;
     }
 
     @Override
     public Prediction apply(RecoverySnapshot s) {
+        int urge = s.state().urgeLogs();
         int attempts = s.state().betAttempts();
         int relapse = s.state().relapseSignalCount();
 
-        PredictionLevel level = (relapse >= 2 || attempts >= 2)
+        PredictionLevel level = (relapse >= 1 && attempts >= 1)
                 ? PredictionLevel.DANGER
                 : PredictionLevel.WARNING;
 
@@ -48,7 +50,7 @@ public class RelapseRiskRule implements PredictionRule {
                         "daysSinceLastEvent", s.daysSinceLastEvent(),
                         "recentEventCount3d", s.recentEventCount3d(),
                         "eventsCount", s.state().eventsCount(),
-                        "urgeLogs", s.state().urgeLogs(),
+                        "urgeLogs", urge,
                         "betAttempts", attempts,
                         "betBlockedCount", s.state().betBlockedCount(),
                         "recoveryActionCount", s.state().recoveryActionCount(),

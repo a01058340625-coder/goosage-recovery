@@ -13,14 +13,10 @@ import com.goosage.domain.recovery.RecoverySnapshot;
 @Component
 public class FalseRecoveryGuardRule implements PredictionRule {
 
-    private static final int EVENTS_MIN = 5;
-    private static final double URGE_RATIO_MAX = 0.55;
-    private static final double ATTEMPT_RATIO_MIN = 0.30;
-
     @Override
     public int priority() {
-        // RecoverySafeRule보다 먼저 막아야 함
-        return 14;
+        // RecoveryProgress / DefenseProgress보다 먼저 차단
+        return 8;
     }
 
     @Override
@@ -29,57 +25,47 @@ public class FalseRecoveryGuardRule implements PredictionRule {
             return false;
         }
 
-        int events = s.state().eventsCount();
-        int urgeLogs = s.state().urgeLogs();
-        int betAttempts = s.state().betAttempts();
-        int recoveryActionCount = s.state().recoveryActionCount();
-        int relapseSignalCount = s.state().relapseSignalCount();
+        int urge = s.state().urgeLogs();
+        int attempts = s.state().betAttempts();
+        int recovery = s.state().recoveryActionCount();
+        int relapse = s.state().relapseSignalCount();
 
-        if (events < EVENTS_MIN) {
+        if (recovery <= 0) {
             return false;
         }
 
-        if (recoveryActionCount <= 0) {
+        // urge only는 WrongHeavy가 아니라 RelapseRiskRule로 보내기 위해 제외
+        if (relapse == 0 && attempts == 0 && urge > 0) {
             return false;
         }
 
-        double urgeRatio = events <= 0 ? 0.0 : (double) urgeLogs / events;
-        double attemptRatio = events <= 0 ? 0.0 : (double) betAttempts / events;
+        if (attempts > 0) {
+            return true;
+        }
 
-        boolean noRelapseContext = relapseSignalCount == 0;
-        boolean lowAttemptQuality = attemptRatio < ATTEMPT_RATIO_MIN;
-        boolean urgeHeavy = urgeRatio > URGE_RATIO_MAX;
+        if (relapse > 0) {
+            return true;
+        }
 
-        // recoveryAction은 있는데 실제 회복 맥락이 빈약하고
-        // 동시에 품질도 낮으면 가짜 회복으로 본다.
-        return noRelapseContext && (lowAttemptQuality || urgeHeavy);
+        return false;
     }
 
     @Override
     public Prediction apply(RecoverySnapshot s) {
-        int events = s.state().eventsCount();
-        int urgeLogs = s.state().urgeLogs();
-        int betAttempts = s.state().betAttempts();
-        int recoveryActionCount = s.state().recoveryActionCount();
-        int relapseSignalCount = s.state().relapseSignalCount();
-
-        double urgeRatio = events <= 0 ? 0.0 : (double) urgeLogs / events;
-        double attemptRatio = events <= 0 ? 0.0 : (double) betAttempts / events;
-
         return Prediction.of(
                 PredictionLevel.WARNING,
-                PredictionReasonCode.RECOVERY_PROGRESS,
-                "회복 행동이 일부 쌓였지만 아직 실제 회복 안정으로 보기엔 맥락이 약하다. 한 번 더 회복 행동 흐름을 확인하자.",
+                PredictionReasonCode.WRONG_HEAVY,
+                "회복 행동이 있어도 위험 신호가 남아 있어. 먼저 위험 신호를 정리하자.",
                 Map.of(
-                        "eventsCount", events,
-                        "urgeLogs", urgeLogs,
-                        "betAttempts", betAttempts,
-                        "recoveryActionCount", recoveryActionCount,
-                        "relapseSignalCount", relapseSignalCount,
-                        "urgeRatio", urgeRatio,
-                        "attemptRatio", attemptRatio,
-                        "urgeRatioMax", URGE_RATIO_MAX,
-                        "attemptRatioMin", ATTEMPT_RATIO_MIN
+                        "streakDays", s.streakDays(),
+                        "daysSinceLastEvent", s.daysSinceLastEvent(),
+                        "recentEventCount3d", s.recentEventCount3d(),
+                        "eventsCount", s.state().eventsCount(),
+                        "urgeLogs", s.state().urgeLogs(),
+                        "betAttempts", s.state().betAttempts(),
+                        "betBlockedCount", s.state().betBlockedCount(),
+                        "recoveryActionCount", s.state().recoveryActionCount(),
+                        "relapseSignalCount", s.state().relapseSignalCount()
                 )
         );
     }
