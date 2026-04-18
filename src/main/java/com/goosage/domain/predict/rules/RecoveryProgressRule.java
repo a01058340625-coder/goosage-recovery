@@ -51,12 +51,19 @@ public class RecoveryProgressRule implements PredictionRule {
             return false;
         }
 
-        // blocked가 회복보다 과하면 방어 쪽으로 넘김
         if (blocked > recovery) {
             return false;
         }
 
-        // hold 케이스(327) 허용 위해 2로 완화
+        // very-thin recovery 시작 상태: progress-check로 허용
+        if (recovery >= 1
+                && events >= 1
+                && s.daysSinceLastEvent() == 0
+                && s.recentEventCount3d() == 1
+                && s.streakDays() <= 1) {
+            return true;
+        }
+
         if (s.recentEventCount3d() < 2) {
             return false;
         }

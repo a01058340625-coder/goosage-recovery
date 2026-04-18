@@ -28,12 +28,21 @@ public class LowActivity3dRule implements PredictionRule {
         int recovery = s.state().recoveryActionCount();
         int attempts = s.state().betAttempts();
         int relapse = s.state().relapseSignalCount();
+        int urge = s.state().urgeLogs();
+        int blocked = s.state().betBlockedCount();
 
         if (attempts > 0 || relapse > 0) {
             return false;
         }
 
-        if (recovery > 0 && s.daysSinceLastEvent() == 0) {
+        // 회복 행동이 실제로 시작된 경우는 low-activity fallback으로 바로 보내지 않는다.
+        if (recovery >= 1
+                && events >= 1
+                && s.daysSinceLastEvent() == 0
+                && urge == 0
+                && attempts == 0
+                && relapse == 0
+                && blocked <= recovery) {
             return false;
         }
 
