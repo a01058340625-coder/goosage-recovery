@@ -86,6 +86,16 @@ public class PredictionEngine {
                 mergedEvidence.put("nearestPattern", pattern.name());
                 mergedEvidence.put("distance", distance);
 
+                mergedEvidence.put("activity", vector.activity());
+                mergedEvidence.put("urgeRatio", vector.urgeRatio());
+                mergedEvidence.put("attemptRatio", vector.attemptRatio());
+                mergedEvidence.put("blockedRatio", vector.blockedRatio());
+                mergedEvidence.put("recoveryRatio", vector.recoveryRatio());
+                mergedEvidence.put("relapseRatio", vector.relapseRatio());
+                mergedEvidence.put("recentScore", vector.recentScore());
+                mergedEvidence.put("streakScore", vector.streakScore());
+                mergedEvidence.put("recencyPenalty", vector.recencyPenalty());
+
                 Prediction enriched = base.withEvidence(mergedEvidence);
 
                 System.out.println("[APPLY] " + r.getClass().getName()
