@@ -56,14 +56,10 @@ public class NextActionService {
             int urge = snap.state().urgeLogs();
             int events = snap.state().eventsCount();
             int recent3d = snap.recentEventCount3d();
+            int daysSinceLast = snap.daysSinceLastEvent();
 
-            if (relapse > 0 || attempts > 0 || urge > 0) {
+            if ((relapse > recovery) || attempts > 0 || urge > 0) {
                 return NextActionType.PROCESS_RISK_SIGNAL;
-            }
-
-            // hold 성격: 얇은 진행은 체크 우선
-            if (events <= 1 && recent3d <= 2) {
-                return NextActionType.RECOVERY_CHECK;
             }
 
             // blocked 중심 방어 케이스는 행동 유지
@@ -71,8 +67,20 @@ public class NextActionService {
                 return NextActionType.DO_RECOVERY_ACTION;
             }
 
-            // recovery는 있지만 아직 얇으면 체크
-            if (recovery <= 1 && events <= 1) {
+            // Day61 보정:
+            // 의미 있는 회복 진행이면 체크가 아니라 행동으로 끌어올린다.
+         // entry 단계 보호 (623 해결)
+            if (events <= 1 && recovery <= 1 && recent3d <= 2) {
+                return NextActionType.RECOVERY_CHECK;
+            }
+
+            // strong progress만 action 상승
+            if (recovery >= 2 || recent3d >= 3) {
+                return NextActionType.DO_RECOVERY_ACTION;
+            }
+
+            // 얇은 진행은 체크 우선
+            if (events <= 1 && recent3d <= 1) {
                 return NextActionType.RECOVERY_CHECK;
             }
 
@@ -90,9 +98,17 @@ public class NextActionService {
 
             int events = snap.state().eventsCount();
             int recovery = snap.state().recoveryActionCount();
+            int recent3d = snap.recentEventCount3d();
+            int streak = snap.streakDays();
 
-            // thin safe는 완료가 아니라 점검
-            if (events <= 1 || recovery <= 1) {
+            // Day61 보정 핵심:
+            // long streak 안정 상태는 무조건 TODAY_SAFE
+            if (streak >= 5 && recent3d >= 3) {
+                return NextActionType.TODAY_SAFE;
+            }
+
+            // 진짜 얇은 safe만 체크로 보낸다
+            if (events <= 1 && recovery <= 1 && recent3d <= 2) {
                 return NextActionType.RECOVERY_CHECK;
             }
 

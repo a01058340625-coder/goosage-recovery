@@ -24,6 +24,18 @@ public class ReviewWrongNeededRule implements PredictionRule {
             return false;
         }
 
+        System.out.println(
+                "[DEBUG] ReviewWrongNeededRule entered"
+                        + " recovery=" + s.state().recoveryActionCount()
+                        + " relapse=" + s.state().relapseSignalCount()
+                        + " urge=" + s.state().urgeLogs()
+                        + " attempts=" + s.state().betAttempts()
+                        + " blocked=" + s.state().betBlockedCount()
+                        + " events=" + s.state().eventsCount()
+                        + " recent3d=" + s.recentEventCount3d()
+                        + " studiedToday=" + s.studiedToday()
+        );
+
         if (!s.studiedToday()) {
             return false;
         }
@@ -32,14 +44,37 @@ public class ReviewWrongNeededRule implements PredictionRule {
         int recovery = s.state().recoveryActionCount();
         int attempts = s.state().betAttempts();
         int relapse = s.state().relapseSignalCount();
+        int urge = s.state().urgeLogs();
 
-        // attempt / relapse는 더 위험한 룰에서 처리
-        if (attempts > 0 || relapse > 0) {
+        /*
+         * attempt는 더 위험한 룰에서 처리
+         */
+        if (attempts > 0) {
             return false;
         }
 
-        // blocked가 recovery보다 우세하면 아직 pending 상태로 본다
-        return blocked > 0 && blocked > recovery;
+        /*
+         * 기존 blocked 우세 pending
+         */
+        if (blocked > 0 && blocked > recovery) {
+            return true;
+        }
+
+        /*
+         * Day66:
+         * relapse 흔적은 남아 있지만
+         * 현재 urge/attempt는 없고 recovery가 존재하는 상태는
+         * risk-first 점검 상태로 본다.
+         * (예: recent relapse hold)
+         */
+        if (relapse > 0
+                && recovery > 0
+                && urge == 0
+                && attempts == 0) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

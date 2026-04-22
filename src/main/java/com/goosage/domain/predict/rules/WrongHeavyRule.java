@@ -30,13 +30,46 @@ public class WrongHeavyRule implements PredictionRule {
         int recovery = s.state().recoveryActionCount();
         int relapse = s.state().relapseSignalCount();
 
+        System.out.println(
+                "[DEBUG] WrongHeavyRule entered"
+                        + " urge=" + urge
+                        + " attempts=" + attempts
+                        + " blocked=" + blocked
+                        + " recovery=" + recovery
+                        + " relapse=" + relapse
+                        + " events=" + s.state().eventsCount()
+                        + " recent3d=" + s.recentEventCount3d()
+                        + " studiedToday=" + s.studiedToday()
+        );
+
+        // blocked만 있는 방어 상태는 제외
+        if (blocked > 0 && relapse == 0 && attempts == 0) {
+            return false;
+        }
+
+        /*
+         * Day66 핵심:
+         * relapse 이후 recovery가 따라온 상태는 WRONG_HEAVY로 잡지 않는다.
+         */
+        if (urge == 0
+                && attempts == 0
+                && relapse > 0
+                && recovery >= relapse) {
+            System.out.println(
+                    "[DEBUG] WrongHeavyRule bypass"
+                            + " recovery=" + recovery
+                            + " relapse=" + relapse
+            );
+            return false;
+        }
+
         // 재발 신호 + 시도 있으면 바로 위험 누적
         if (relapse >= 1 && attempts >= 1) {
             return true;
         }
 
         // 재발 신호가 2건 이상이면 명확한 위험 누적
-        if (relapse >= 2) {
+        if (relapse >= 2 && recovery < relapse) {
             return true;
         }
 
@@ -53,11 +86,6 @@ public class WrongHeavyRule implements PredictionRule {
         // attempt가 누적되고 recovery가 못 따라오면 위험 누적
         if (attempts >= 2 && recovery <= attempts - 1) {
             return true;
-        }
-
-        // blocked만 있는 방어 상태는 제외
-        if (blocked > 0 && relapse == 0 && attempts == 0) {
-            return false;
         }
 
         return false;

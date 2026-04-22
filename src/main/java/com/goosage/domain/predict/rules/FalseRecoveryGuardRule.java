@@ -30,12 +30,41 @@ public class FalseRecoveryGuardRule implements PredictionRule {
         int recovery = s.state().recoveryActionCount();
         int relapse = s.state().relapseSignalCount();
 
+        System.out.println(
+                "[DEBUG] FalseRecoveryGuardRule entered"
+                        + " urge=" + urge
+                        + " attempts=" + attempts
+                        + " recovery=" + recovery
+                        + " relapse=" + relapse
+                        + " events=" + s.state().eventsCount()
+                        + " recent3d=" + s.recentEventCount3d()
+                        + " studiedToday=" + s.studiedToday()
+        );
+
         if (recovery <= 0) {
             return false;
         }
 
-        // urge only는 WrongHeavy가 아니라 RelapseRiskRule로 보내기 위해 제외
+        // urge only는 RelapseRiskRule로 보내기 위해 제외
         if (relapse == 0 && attempts == 0 && urge > 0) {
+            return false;
+        }
+
+        /*
+         * Day66 핵심:
+         * recovery가 relapse를 따라잡았고
+         * 현재 urge/attempt가 없으면 false recovery로 보지 않는다.
+         * 아래 RecoveryProgress / ReviewWrongNeeded로 내려보낸다.
+         */
+        if (urge == 0
+                && attempts == 0
+                && relapse > 0
+                && recovery >= relapse) {
+            System.out.println(
+                    "[DEBUG] FalseRecoveryGuardRule bypass"
+                            + " recovery=" + recovery
+                            + " relapse=" + relapse
+            );
             return false;
         }
 
