@@ -16,6 +16,6 @@ public class RecoveryDebugDaoAdapter implements RecoveryDebugPort {
 
     @Override
     public void recordPing(Long userId) {
-        recoveryEventDao.recordEvent(userId, EventType.URGE_LOG, null, null, null);
+    	recoveryEventDao.recordEvent(userId, EventType.URGE_LOG, null, null, null, "user");
     }
 }

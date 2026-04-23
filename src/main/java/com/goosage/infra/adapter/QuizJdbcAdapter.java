@@ -43,7 +43,7 @@ public class QuizJdbcAdapter implements QuizPort {
                                         int wrongCount, String detailsJson) {
 
         quizResultDao.save(userId, knowledgeId, total, correct, percent, wrongCount, detailsJson);
-        recoveryEventDao.recordEvent(userId, EventType.BET_ATTEMPT, "KNOWLEDGE", knowledgeId, detailsJson);
+        recoveryEventDao.recordEvent(userId, EventType.BET_ATTEMPT, "KNOWLEDGE", knowledgeId, detailsJson, "user");
     }
 
     @Override

@@ -27,8 +27,9 @@ public class RecoveryEventService {
     ) {
         String refType = (knowledgeId == null) ? null : "KNOWLEDGE";
         String payload = buildPayloadJson(type, isBrainAction, brainActionType, brainPatternType);
+        String source = isBrainAction ? "brain" : "user";
 
-        recoveryEventPort.recordEvent(userId, type, refType, knowledgeId, payload);
+        recoveryEventPort.recordEvent(userId, type, refType, knowledgeId, payload, source);
 
         EventLogWriter.write(userId, type.name());
     }
