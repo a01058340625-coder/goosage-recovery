@@ -27,7 +27,15 @@ public class RecoveryEventController {
             return ApiResponse.fail("로그인이 필요합니다");
         }
 
-        recoveryEventService.record(userId, req.type(), req.knowledgeId());
+        recoveryEventService.record(
+                userId,
+                req.type(),
+                req.knowledgeId(),
+                false,
+                null,
+                null
+        );
+
         return ApiResponse.ok(null);
     }
 }

@@ -77,26 +77,47 @@ public class RecoveryProgressRule implements PredictionRule {
          * Day62 strong-safe는 progress로 먹지 않게 차단
          * 621 보호
          */
+        /*
+         * Day62 strong-safe는 progress로 먹지 않게 차단
+         */
         if (recent3d >= 5
                 && daysSinceLast == 0
                 && recovery >= 2
                 && events >= 2
                 && blocked == 0
                 && relapse == 0
+                && urge == 0
+                && attempts == 0
                 && streak >= 4) {
             return false;
         }
 
         /*
+         * Day68 cumulative-stable-safe도 progress에서 제외
+         */
+        if (recent3d >= 2
+                && daysSinceLast == 0
+                && recovery >= 2
+                && events >= 2
+                && blocked == 0
+                && relapse == 0
+                && urge == 0
+                && attempts == 0
+                && streak >= 2) {
+            return false;
+        }
+
+        /*
          * Day61 long-streak stable-safe도 progress에서 제외
-         * 611 보호
          */
         if (recent3d == 3
                 && streak >= 5
                 && recovery == 1
                 && daysSinceLast <= 1
                 && blocked == 0
-                && relapse == 0) {
+                && relapse == 0
+                && urge == 0
+                && attempts == 0) {
             return false;
         }
 

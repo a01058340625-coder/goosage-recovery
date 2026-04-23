@@ -55,23 +55,52 @@ public class RecoverySafeRule implements PredictionRule {
          * 621 같은 케이스 보호
          * recent 높고, gap 없고, recovery가 충분하면 SAFE
          */
+        /*
+         * Day62 strong-safe:
+         * recent / streak / recovery 누적이 충분한 강한 safe
+         */
         if (recent3d >= 5
                 && daysSinceLast == 0
                 && recovery >= 2
                 && events >= 2
-                && streak >= 4) {
+                && streak >= 4
+                && blocked == 0
+                && relapse == 0
+                && urge == 0
+                && attempts == 0) {
+            return true;
+        }
+
+        /*
+         * Day68 cumulative-stable-safe:
+         * 회복 행동이 누적되고 최근 연결이 유지되며
+         * 위험 신호가 없으면 SAFE로 승격
+         */
+        if (recent3d >= 2
+                && daysSinceLast == 0
+                && recovery >= 2
+                && events >= 2
+                && streak >= 2
+                && blocked == 0
+                && relapse == 0
+                && urge == 0
+                && attempts == 0) {
             return true;
         }
 
         /*
          * Day61 long-streak stable-safe:
-         * 611 같은 케이스만 좁게 SAFE 허용
-         * recent=3 / recovery=1 / streak>=5 / low-risk / connected
+         * 얇지만 길게 유지된 회복 연결은 SAFE 허용
          */
         if (recent3d == 3
+                && daysSinceLast <= 1
                 && streak >= 5
                 && recovery == 1
-                && events >= 1) {
+                && events >= 1
+                && blocked == 0
+                && relapse == 0
+                && urge == 0
+                && attempts == 0) {
             return true;
         }
 
