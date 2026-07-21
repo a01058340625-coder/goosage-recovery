@@ -1,6 +1,8 @@
 package com.goosage.app.recovery.message;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,6 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunClient;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResult;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunStatus;
 import com.goosage.domain.recovery.RecoverySnapshot;
 import com.goosage.domain.recovery.RecoverySnapshotService;
 import com.goosage.domain.recovery.RecoveryState;
@@ -21,6 +26,7 @@ class RecoveryMessageAnalysisServiceTest {
     private RuleBasedRecoveryMessageAnalyzer analyzer;
     private RecoverySnapshotService snapshotService;
     private RecoverySnapshotProjector snapshotProjector;
+    private BrainRecoveryDryRunClient brainDryRunClient;
     private RecoveryMessageAnalysisService service;
 
     @BeforeEach
@@ -28,11 +34,15 @@ class RecoveryMessageAnalysisServiceTest {
         analyzer = new RuleBasedRecoveryMessageAnalyzer();
         snapshotService = Mockito.mock(RecoverySnapshotService.class);
         snapshotProjector = new RecoverySnapshotProjector();
+        brainDryRunClient = Mockito.mock(
+                BrainRecoveryDryRunClient.class
+        );
 
         service = new RecoveryMessageAnalysisService(
                 analyzer,
                 snapshotService,
-                snapshotProjector
+                snapshotProjector,
+                brainDryRunClient
         );
     }
 
@@ -66,6 +76,14 @@ class RecoveryMessageAnalysisServiceTest {
                 nowDate,
                 nowDateTime
         )).thenReturn(baseSnapshot);
+        when(brainDryRunClient.analyze(
+                eq(userId),
+                any(RecoverySnapshot.class)
+        )).thenReturn(
+                BrainRecoveryDryRunResult.unavailable(
+                        "BRAIN_UNAVAILABLE"
+                )
+        );
 
         RecoveryMessageProjection result = service.analyze(
                 userId,
@@ -89,6 +107,16 @@ class RecoveryMessageAnalysisServiceTest {
                 .isEqualTo(6);
         assertThat(result.projectedSnapshot().recentEventCount3d())
                 .isEqualTo(8);
+
+        assertThat(result.brainResult().status())
+                .isEqualTo(BrainRecoveryDryRunStatus.UNAVAILABLE);
+        assertThat(result.brainResult().failureCode())
+                .isEqualTo("BRAIN_UNAVAILABLE");
+
+        verify(brainDryRunClient).analyze(
+                eq(userId),
+                any(RecoverySnapshot.class)
+        );
 
         verify(snapshotService).snapshot(
                 userId,
@@ -118,10 +146,18 @@ class RecoveryMessageAnalysisServiceTest {
         assertThat(result.projectedSnapshot()).isNull();
         assertThat(result.projected()).isFalse();
 
+        assertThat(result.brainResult().status())
+                .isEqualTo(BrainRecoveryDryRunStatus.NOT_REQUESTED);
+
         verify(snapshotService, never()).snapshot(
                 userId,
                 nowDate,
                 nowDateTime
+        );
+
+        verify(brainDryRunClient, never()).analyze(
+                eq(userId),
+                any(RecoverySnapshot.class)
         );
     }
 }

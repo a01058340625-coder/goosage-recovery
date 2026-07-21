@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import com.goosage.app.recovery.message.RecoveryMessageAnalysis;
 import com.goosage.app.recovery.message.RecoveryMessageProjection;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResponse;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResult;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunStatus;
 import com.goosage.domain.recovery.RecoverySnapshot;
 import com.goosage.domain.recovery.RecoveryState;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
@@ -42,11 +45,34 @@ class RecoveryMessageAnalyzeResponseTest {
                 2, 0, 1, 3, 0, 6, 8
         );
 
+        BrainRecoveryDryRunResponse brainResponse =
+                new BrainRecoveryDryRunResponse(
+                        "RECOVERY_DRIVEN",
+                        0.8,
+                        "recovery signal",
+                        0.8,
+                        0.2,
+                        0.6,
+                        "CLEAR",
+                        "REINFORCE_RECOVERY",
+                        "guide",
+                        "MID",
+                        "RECOVERY",
+                        "RECOVERY_DO_RECOVERY_ACTION",
+                        "do recovery action",
+                        "RECOVERY_DO_RECOVERY_ACTION",
+                        1.0,
+                        "FIXED_RULE"
+                );
+
         RecoveryMessageProjection projection =
                 new RecoveryMessageProjection(
                         analysis,
                         base,
-                        projected
+                        projected,
+                        BrainRecoveryDryRunResult.available(
+                                brainResponse
+                        )
                 );
 
         RecoveryMessageAnalyzeResponse response =
@@ -72,6 +98,16 @@ class RecoveryMessageAnalyzeResponseTest {
                 .isEqualTo(6);
         assertThat(response.projectedSnapshot().recentEventCount3d())
                 .isEqualTo(8);
+
+        assertThat(response.brain().status())
+                .isEqualTo("AVAILABLE");
+        assertThat(response.brain().failureCode()).isNull();
+        assertThat(response.brain().patternType())
+                .isEqualTo("RECOVERY_DRIVEN");
+        assertThat(response.brain().recommendedAction())
+                .isEqualTo("RECOVERY_DO_RECOVERY_ACTION");
+        assertThat(response.brain().recommendationConfidence())
+                .isEqualTo(1.0);
     }
 
     @Test
@@ -99,6 +135,53 @@ class RecoveryMessageAnalyzeResponseTest {
         assertThat(response.signal()).isNull();
         assertThat(response.baseSnapshot()).isNull();
         assertThat(response.projectedSnapshot()).isNull();
+
+        assertThat(response.brain().status())
+                .isEqualTo("NOT_REQUESTED");
+        assertThat(response.brain().failureCode()).isNull();
+        assertThat(response.brain().patternType()).isNull();
+    }
+
+    @Test
+    void mapsUnavailableBrainResultWithoutFailingResponse() {
+        RecoveryMessageAnalysis analysis =
+                new RecoveryMessageAnalysis(
+                        "recovery message",
+                        true,
+                        new RecoveryMessageSignal(
+                                1,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0.8,
+                                "urge signal"
+                        ),
+                        null
+                );
+
+        RecoveryMessageProjection projection =
+                new RecoveryMessageProjection(
+                        analysis,
+                        snapshot(1, 0, 0, 0, 0, 1, 1),
+                        snapshot(2, 0, 0, 0, 0, 2, 2),
+                        BrainRecoveryDryRunResult.unavailable(
+                                "BRAIN_UNAVAILABLE"
+                        )
+                );
+
+        RecoveryMessageAnalyzeResponse response =
+                RecoveryMessageAnalyzeResponse.from(projection);
+
+        assertThat(response.analyzable()).isTrue();
+        assertThat(response.projectedSnapshot()).isNotNull();
+
+        assertThat(response.brain().status())
+                .isEqualTo("UNAVAILABLE");
+        assertThat(response.brain().failureCode())
+                .isEqualTo("BRAIN_UNAVAILABLE");
+        assertThat(response.brain().patternType()).isNull();
+        assertThat(response.brain().recommendedAction()).isNull();
     }
 
     private RecoverySnapshot snapshot(

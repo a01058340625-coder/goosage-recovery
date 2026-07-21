@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunClient;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResult;
 import com.goosage.domain.recovery.RecoverySnapshot;
 import com.goosage.domain.recovery.RecoverySnapshotService;
 
@@ -14,15 +16,18 @@ public class RecoveryMessageAnalysisService {
     private final RuleBasedRecoveryMessageAnalyzer analyzer;
     private final RecoverySnapshotService snapshotService;
     private final RecoverySnapshotProjector snapshotProjector;
+    private final BrainRecoveryDryRunClient brainDryRunClient;
 
     public RecoveryMessageAnalysisService(
             RuleBasedRecoveryMessageAnalyzer analyzer,
             RecoverySnapshotService snapshotService,
-            RecoverySnapshotProjector snapshotProjector
+            RecoverySnapshotProjector snapshotProjector,
+            BrainRecoveryDryRunClient brainDryRunClient
     ) {
         this.analyzer = analyzer;
         this.snapshotService = snapshotService;
         this.snapshotProjector = snapshotProjector;
+        this.brainDryRunClient = brainDryRunClient;
     }
 
     public RecoveryMessageProjection analyze(
@@ -49,7 +54,8 @@ public class RecoveryMessageAnalysisService {
             return new RecoveryMessageProjection(
                     analysis,
                     null,
-                    null
+                    null,
+                    BrainRecoveryDryRunResult.notRequested()
             );
         }
 
@@ -62,10 +68,17 @@ public class RecoveryMessageAnalysisService {
                         analysis.signal()
                 );
 
+        BrainRecoveryDryRunResult brainResult =
+                brainDryRunClient.analyze(
+                        userId,
+                        projectedSnapshot
+                );
+
         return new RecoveryMessageProjection(
                 analysis,
                 baseSnapshot,
-                projectedSnapshot
+                projectedSnapshot,
+                brainResult
         );
     }
 }

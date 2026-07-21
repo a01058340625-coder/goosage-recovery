@@ -40,8 +40,6 @@ public class AuthService {
 
     public User login(String email, String password) {
 
-        System.out.println("[LOGIN] email=" + email + ", password=" + password);
-
         if (email == null || email.isBlank()) {
             System.out.println("[LOGIN] email blank");
             throw new UnauthorizedException("INVALID_CREDENTIALS");
@@ -56,8 +54,6 @@ public class AuthService {
                     System.out.println("[LOGIN] user not found");
                     return new UnauthorizedException("INVALID_CREDENTIALS");
                 });
-
-        System.out.println("[LOGIN] hash=" + user.getPasswordHash());
 
         boolean ok = encoder.matches(password, user.getPasswordHash());
         System.out.println("[LOGIN] matches=" + ok);

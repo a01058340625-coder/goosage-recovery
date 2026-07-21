@@ -1,6 +1,8 @@
 package com.goosage.api.view.recovery.message;
 
 import com.goosage.app.recovery.message.RecoveryMessageProjection;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResponse;
+import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResult;
 import com.goosage.domain.recovery.RecoverySnapshot;
 import com.goosage.domain.recovery.RecoveryState;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
@@ -11,7 +13,8 @@ public record RecoveryMessageAnalyzeResponse(
         String originalMessage,
         SignalResponse signal,
         SnapshotResponse baseSnapshot,
-        SnapshotResponse projectedSnapshot
+        SnapshotResponse projectedSnapshot,
+        BrainResponse brain
 ) {
 
     public static RecoveryMessageAnalyzeResponse from(
@@ -37,7 +40,8 @@ public record RecoveryMessageAnalyzeResponse(
                         : projection.analysis().originalMessage(),
                 SignalResponse.from(signal),
                 SnapshotResponse.from(projection.baseSnapshot()),
-                SnapshotResponse.from(projection.projectedSnapshot())
+                SnapshotResponse.from(projection.projectedSnapshot()),
+                BrainResponse.from(projection.brainResult())
         );
     }
 
@@ -97,6 +101,101 @@ public record RecoveryMessageAnalyzeResponse(
                     snapshot.streakDays(),
                     snapshot.daysSinceLastEvent(),
                     snapshot.recentEventCount3d()
+            );
+        }
+    }
+
+    public record BrainResponse(
+            String status,
+            String failureCode,
+            String patternType,
+            double score,
+            String reason,
+            double topScore,
+            double secondScore,
+            double gap,
+            String gapClass,
+            String nextActionType,
+            String actionGuide,
+            String actionIntensity,
+            String actionTarget,
+            String domainActionType,
+            String domainActionGuide,
+            String recommendedAction,
+            double recommendationConfidence,
+            String recommendationSource
+    ) {
+
+        public static BrainResponse from(
+                BrainRecoveryDryRunResult result
+        ) {
+            if (result == null) {
+                return new BrainResponse(
+                        "NOT_REQUESTED",
+                        null,
+                        null,
+                        0.0,
+                        null,
+                        0.0,
+                        0.0,
+                        0.0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        0.0,
+                        null
+                );
+            }
+
+            BrainRecoveryDryRunResponse response = result.response();
+
+            if (!result.available() || response == null) {
+                return new BrainResponse(
+                        result.status().name(),
+                        result.failureCode(),
+                        null,
+                        0.0,
+                        null,
+                        0.0,
+                        0.0,
+                        0.0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        0.0,
+                        null
+                );
+            }
+
+            return new BrainResponse(
+                    result.status().name(),
+                    null,
+                    response.patternType(),
+                    response.score(),
+                    response.reason(),
+                    response.topScore(),
+                    response.secondScore(),
+                    response.gap(),
+                    response.gapClass(),
+                    response.nextActionType(),
+                    response.actionGuide(),
+                    response.actionIntensity(),
+                    response.actionTarget(),
+                    response.domainActionType(),
+                    response.domainActionGuide(),
+                    response.recommendedAction(),
+                    response.recommendationConfidence(),
+                    response.recommendationSource()
             );
         }
     }
