@@ -10,10 +10,13 @@ package com.goosage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
+import java.util.UUID;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +32,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PostRegressionTest {
 
     @Autowired
@@ -36,13 +40,55 @@ class PostRegressionTest {
 
     private static Long createdId; // 테스트 간 공유 (간단 회귀용)
 
+    private String sessionCookie;
+
+    @BeforeAll
+    void loginForRegressionTests() {
+        String email = "post-regression-" + UUID.randomUUID() + "@test.local";
+        String password = "regression-password";
+
+        Map<String, String> credentials = Map.of(
+                "email", email,
+                "password", password
+        );
+
+        ResponseEntity<Map> signup =
+                rest.postForEntity("/auth/signup", credentials, Map.class);
+        assertThat(signup.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ResponseEntity<Map> login =
+                rest.postForEntity("/auth/login", credentials, Map.class);
+        assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        String setCookie = login.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+        assertThat(setCookie).isNotBlank();
+
+        sessionCookie = setCookie.split(";", 2)[0];
+    }
+
+    private HttpHeaders authenticatedHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.COOKIE, sessionCookie);
+        return headers;
+    }
+
+    private <T> HttpEntity<T> authenticatedEntity(T body) {
+        return new HttpEntity<>(body, authenticatedHeaders());
+    }
+
+
     /**
      * 1) GET /posts : 목록 조회가 200이고 ApiResponse 형태인지
      */
     @Test
     @Order(1)
     void reg_01_findAll() {
-        ResponseEntity<Map> res = rest.getForEntity("/posts", Map.class);
+        ResponseEntity<Map> res = rest.exchange(
+                "/posts",
+                HttpMethod.GET,
+                authenticatedEntity(null),
+                Map.class
+        );
 
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -63,11 +109,16 @@ class PostRegressionTest {
                 "content", "reg-content"
         );
 
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = authenticatedHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(req, headers);
 
-        ResponseEntity<Map> res = rest.postForEntity("/posts", entity, Map.class);
+        ResponseEntity<Map> res = rest.exchange(
+                "/posts",
+                HttpMethod.POST,
+                entity,
+                Map.class
+        );
 
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -99,7 +150,12 @@ class PostRegressionTest {
     void reg_03_findOne() {
         assertThat(createdId).isNotNull();
 
-        ResponseEntity<Map> res = rest.getForEntity("/posts/" + createdId, Map.class);
+        ResponseEntity<Map> res = rest.exchange(
+                "/posts/" + createdId,
+                HttpMethod.GET,
+                authenticatedEntity(null),
+                Map.class
+        );
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         Map body = res.getBody();
@@ -122,22 +178,31 @@ class PostRegressionTest {
         ResponseEntity<Map> delRes = rest.exchange(
                 "/posts/" + createdId,
                 HttpMethod.DELETE,
-                HttpEntity.EMPTY,
+                authenticatedEntity(null),
                 Map.class
         );
 
         assertThat(delRes.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         // 삭제 검증: 다시 조회하면 404(NotFound) 또는 4xx여야 정상
-        ResponseEntity<String> getRes = rest.getForEntity("/posts/" + createdId, String.class);
+        ResponseEntity<String> getRes = rest.exchange(
+                "/posts/" + createdId,
+                HttpMethod.GET,
+                authenticatedEntity(null),
+                String.class
+        );
         assertThat(getRes.getStatusCode().is4xxClientError()).isTrue();
     }
 
     @Test
     @Order(5)
     void reg_05_paging_and_search() {
-        ResponseEntity<Map> res =
-                rest.getForEntity("/posts/page?page=0&size=5&keyword=t", Map.class);
+        ResponseEntity<Map> res = rest.exchange(
+                "/posts/page?page=0&size=5&keyword=t",
+                HttpMethod.GET,
+                authenticatedEntity(null),
+                Map.class
+        );
 
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
 

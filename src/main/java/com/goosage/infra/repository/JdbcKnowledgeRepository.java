@@ -9,12 +9,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import com.goosage.common.TagsCsv;
 import com.goosage.dto.KnowledgeDto;
 
 @Repository
+@Profile("!test")
 public class JdbcKnowledgeRepository implements KnowledgeRepository {
 
     private final JdbcTemplate jdbcTemplate;
