@@ -154,6 +154,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
     }
 
     private boolean containsProtectiveBlock(String text) {
+        if (containsAny(
+                text,
+                "차단하지 않았",
+                "막지 않았",
+                "중단하지 않았"
+        )) {
+            return false;
+        }
+
         return containsAny(
                 text,
                 "사이트를 닫",
@@ -161,18 +170,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "결제를 멈췄",
                 "결제를 취소",
                 "차단했",
+                "차단하고",
                 "막았",
                 "중단했"
         );
     }
 
     private boolean containsRecoveryAction(String text) {
+        if (containsAny(
+                text,
+                "상담을 요청하지 않았",
+                "도움을 요청하지 않았"
+        )) {
+            return false;
+        }
+
         return containsAny(
                 text,
                 "산책했",
                 "운동했",
                 "전화했",
                 "상담했",
+                "상담을 요청",
                 "도움을 요청",
                 "회복 행동",
                 "일기를 썼",

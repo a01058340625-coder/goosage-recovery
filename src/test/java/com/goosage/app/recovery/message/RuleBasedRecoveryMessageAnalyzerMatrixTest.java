@@ -34,6 +34,14 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
                 "베팅 화면을 열었지만 결제를 취소하고 도움을 요청했어",
                 0, 1, 1, 1, 0, 0.90
         );
+
+        assertSignal(
+                "다시 베팅했지만 바로 차단하고 상담을 요청했어",
+                0, 0, 1, 1, 1, 0.90
+        );
+
+        assertHold("차단하지 않았어", "NO_SUPPORTED_SIGNAL");
+        assertHold("상담을 요청하지 않았어", "NO_SUPPORTED_SIGNAL");
     }
 
     @Test
