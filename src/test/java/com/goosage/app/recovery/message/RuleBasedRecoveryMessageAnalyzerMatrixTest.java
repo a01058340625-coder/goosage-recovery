@@ -49,6 +49,7 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
     @Test
     void respectsExplicitNegationPatterns() {
         assertHold("베팅을 시도하지 않았어", "NO_SUPPORTED_SIGNAL");
+        assertHold("베팅을 시도하려던 건 아니고 사이트만 확인했어", "NO_SUPPORTED_SIGNAL");
         assertHold("사이트에 들어가지 않았어", "NO_SUPPORTED_SIGNAL");
         assertHold("결제하지 않았어", "NO_SUPPORTED_SIGNAL");
         assertHold("재발하지 않았어", "NO_SUPPORTED_SIGNAL");

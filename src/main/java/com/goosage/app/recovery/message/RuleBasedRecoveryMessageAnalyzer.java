@@ -132,7 +132,14 @@ public class RuleBasedRecoveryMessageAnalyzer {
     }
 
     private boolean containsAffirmedAttempt(String text) {
-        if (containsAny(text, "시도하지 않았", "들어가지 않았", "결제하지 않았")) {
+        if (containsAny(
+                text,
+                "시도하지 않았",
+                "들어가지 않았",
+                "결제하지 않았",
+                "시도하려던 건 아니",
+                "시도하려던 것은 아니"
+        )) {
             return false;
         }
 
