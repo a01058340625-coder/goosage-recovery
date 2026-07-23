@@ -55,6 +55,24 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
     }
 
     @Test
+    void separatesThirdPartyAndExplicitSelfSubjectContexts() {
+        assertSignal(
+                "친구가 다시 베팅했다는 얘기를 듣고 나는 충동이 왔지만 앱을 닫았어",
+                1, 0, 1, 0, 0, 0.80
+        );
+
+        assertSignal(
+                "지인이 재발했다는 말을 듣고 내가 산책했어",
+                0, 0, 0, 1, 0, 0.70
+        );
+
+        assertHold(
+                "나는 친구가 다시 베팅했다고 들었어",
+                "THIRD_PARTY_CONTEXT"
+        );
+    }
+
+    @Test
     void respectsExplicitNegationPatterns() {
         assertHold("베팅을 시도하지 않았어", "NO_SUPPORTED_SIGNAL");
         assertHold("베팅을 시도하려던 건 아니고 사이트만 확인했어", "NO_SUPPORTED_SIGNAL");

@@ -18,19 +18,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return hold(message, "MESSAGE_TOO_SHORT");
         }
 
+        String analysisText = normalized;
+
         if (looksLikeThirdPartyContext(normalized)) {
-            return hold(message, "THIRD_PARTY_CONTEXT");
+            int selfSubjectIndex =
+                    findExplicitSelfSubjectAfterThirdParty(normalized);
+
+            if (selfSubjectIndex < 0) {
+                return hold(message, "THIRD_PARTY_CONTEXT");
+            }
+
+            analysisText = normalized.substring(selfSubjectIndex);
         }
 
-        if (looksHypothetical(normalized)) {
+        if (looksHypothetical(analysisText)) {
             return hold(message, "HYPOTHETICAL_CONTEXT");
         }
 
-        int urgeLogDelta = containsAffirmedUrge(normalized) ? 1 : 0;
-        int betAttemptDelta = containsAffirmedAttempt(normalized) ? 1 : 0;
-        int betBlockedDelta = containsProtectiveBlock(normalized) ? 1 : 0;
-        int recoveryActionDelta = containsRecoveryAction(normalized) ? 1 : 0;
-        int relapseSignalDelta = containsRelapseSignal(normalized) ? 1 : 0;
+        int urgeLogDelta = containsAffirmedUrge(analysisText) ? 1 : 0;
+        int betAttemptDelta = containsAffirmedAttempt(analysisText) ? 1 : 0;
+        int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
+        int recoveryActionDelta = containsRecoveryAction(analysisText) ? 1 : 0;
+        int relapseSignalDelta = containsRelapseSignal(analysisText) ? 1 : 0;
 
         int totalSignals =
                 urgeLogDelta
@@ -102,6 +111,58 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "아내가",
                 "그 사람이"
         );
+    }
+
+    private int findExplicitSelfSubjectAfterThirdParty(String text) {
+        int thirdPartyIndex = firstIndexOfAny(
+                text,
+                "친구가",
+                "지인이",
+                "동생이",
+                "형이",
+                "누나가",
+                "언니가",
+                "오빠가",
+                "남편이",
+                "아내가",
+                "그 사람이"
+        );
+
+        int selfSubjectIndex = firstIndexOfAny(
+                text,
+                "나는",
+                "내가"
+        );
+
+        if (
+                thirdPartyIndex < 0
+                || selfSubjectIndex < 0
+                || selfSubjectIndex <= thirdPartyIndex
+        ) {
+            return -1;
+        }
+
+        return selfSubjectIndex;
+    }
+
+    private int firstIndexOfAny(String text, String... candidates) {
+        int firstIndex = -1;
+
+        for (String candidate : candidates) {
+            int index = text.indexOf(candidate);
+
+            if (
+                    index >= 0
+                    && (
+                        firstIndex < 0
+                        || index < firstIndex
+                    )
+            ) {
+                firstIndex = index;
+            }
+        }
+
+        return firstIndex;
     }
 
     private boolean looksHypothetical(String text) {
