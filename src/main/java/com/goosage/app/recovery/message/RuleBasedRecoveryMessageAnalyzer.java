@@ -19,6 +19,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         String analysisText = normalized;
+        boolean selfContextExtracted = false;
+        boolean currentContextExtracted = false;
 
         if (looksLikeThirdPartyContext(normalized)) {
             int selfSubjectIndex =
@@ -29,6 +31,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
             }
 
             analysisText = normalized.substring(selfSubjectIndex);
+            selfContextExtracted = true;
+        }
+
+        String currentContext =
+                extractCurrentContextAfterLongPast(
+                        analysisText
+                );
+
+        if (currentContext != null) {
+            analysisText = currentContext;
+            currentContextExtracted = true;
         }
 
         if (looksHypothetical(analysisText)) {
@@ -49,7 +62,14 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 + relapseSignalDelta;
 
         if (totalSignals == 0) {
-            return hold(message, "NO_SUPPORTED_SIGNAL");
+            return hold(
+                    message,
+                    currentContextExtracted
+                            ? "NO_CURRENT_SUPPORTED_SIGNAL"
+                            : selfContextExtracted
+                                    ? "NO_SUPPORTED_SELF_SIGNAL"
+                                    : "NO_SUPPORTED_SIGNAL"
+            );
         }
 
         double confidence = resolveConfidence(totalSignals);
@@ -131,7 +151,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int selfSubjectIndex = firstIndexOfAny(
                 text,
                 "나는",
-                "내가"
+                "내가",
+                "나도"
         );
 
         if (
@@ -165,6 +186,41 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return firstIndex;
     }
 
+    private String extractCurrentContextAfterLongPast(
+            String text
+    ) {
+        int longPastIndex = firstIndexOfAny(
+                text,
+                "예전에는",
+                "과거에는",
+                "한때는",
+                "오래전에는"
+        );
+
+        if (longPastIndex < 0) {
+            return null;
+        }
+
+        int currentIndex = firstIndexOfAny(
+                text,
+                "이번 주에는",
+                "이번주에는",
+                "지금은",
+                "현재는",
+                "요즘은",
+                "오늘은"
+        );
+
+        if (
+                currentIndex < 0
+                || currentIndex <= longPastIndex
+        ) {
+            return null;
+        }
+
+        return text.substring(currentIndex);
+    }
+
     private boolean looksHypothetical(String text) {
         return containsAny(
                 text,
@@ -178,6 +234,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
     }
 
     private boolean containsAffirmedUrge(String text) {
+        if (containsAny(
+                text,
+                "충동이 없었던 건 아니",
+                "충동이 없었던 것은 아니",
+                "충동은 없었던 건 아니",
+                "충동은 없었던 것은 아니"
+        )) {
+            return true;
+        }
+
         if (containsAny(text, "충동은 없", "충동이 없", "충동 없")) {
             return false;
         }
@@ -188,7 +254,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "충동이 생겼",
                 "충동을 느꼈",
                 "하고 싶었",
-                "베팅하고 싶"
+                "하고 싶은 마음",
+                "베팅하고 싶",
+                "결제 버튼 쪽으로 가",
+                "마음이 흔들",
+                "흔들렸"
         );
     }
 
@@ -209,7 +279,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "베팅을 시도",
                 "결제를 시도",
                 "사이트에 들어갔",
+                "베팅 사이트까지 들어갔",
                 "베팅 화면을 열었",
+                "결제 직전",
                 "구매를 시도"
         );
     }
@@ -228,12 +300,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "사이트를 닫",
                 "앱을 닫",
+                "창을 닫",
+                "계정을 잠",
+                "앱을 지",
+                "휴대폰을 내려놓",
+                "마지막에 멈췄",
                 "결제를 멈췄",
                 "결제를 취소",
+                "시도했지만 취소",
                 "차단했",
                 "차단하고",
                 "막았",
-                "중단했"
+                "중단했",
+                "중단하고"
         );
     }
 
@@ -249,8 +328,12 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsAny(
                 text,
                 "산책했",
+                "산책을 나갔",
+                "밖으로 나갔",
                 "운동했",
                 "전화했",
+                "도움을 받았",
+                "이야기했",
                 "상담했",
                 "상담을 요청",
                 "도움을 요청",
@@ -268,6 +351,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsAny(
                 text,
                 "다시 베팅했",
+                "또 베팅했",
+                "돈을 넣어버렸",
                 "재발했",
                 "무너졌",
                 "결국 결제했",

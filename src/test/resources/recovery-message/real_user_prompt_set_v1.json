@@ -1,0 +1,270 @@
+﻿[
+  {
+    "id": "RUP-001",
+    "category": "DIRECT_EXPRESSION",
+    "message": "오늘 갑자기 베팅하고 싶은 마음이 강하게 들었어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 1,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-002",
+    "category": "DIRECT_EXPRESSION",
+    "message": "결제 직전까지 갔다가 마지막에 멈췄어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 1,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-003",
+    "category": "DIRECT_EXPRESSION",
+    "message": "결국 돈을 걸었고 또 무너졌어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 1
+    }
+  },
+  {
+    "id": "RUP-004",
+    "category": "DIRECT_EXPRESSION",
+    "message": "상담센터에 전화해서 도움을 받았어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-005",
+    "category": "COLLOQUIAL_INDIRECT",
+    "message": "손이 자꾸 결제 버튼 쪽으로 가더라",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 1,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-006",
+    "category": "COLLOQUIAL_INDIRECT",
+    "message": "오늘도 참지 못하고 돈을 넣어버렸어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 1
+    }
+  },
+  {
+    "id": "RUP-007",
+    "category": "COLLOQUIAL_INDIRECT",
+    "message": "위험할 것 같아서 휴대폰을 내려놓고 밖으로 나갔어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-008",
+    "category": "COLLOQUIAL_INDIRECT",
+    "message": "마음이 흔들려서 형에게 연락하고 한참 이야기했어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 1,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-009",
+    "category": "MIXED_RISK_PROTECTION",
+    "message": "베팅 사이트까지 들어갔지만 바로 창을 닫았어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 1,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-010",
+    "category": "MIXED_RISK_PROTECTION",
+    "message": "하고 싶은 마음은 컸지만 계정을 잠그고 산책을 나갔어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 1,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-011",
+    "category": "MIXED_RISK_PROTECTION",
+    "message": "결제를 시도했지만 취소한 뒤 상담사에게 전화했어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 1,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-012",
+    "category": "MIXED_RISK_PROTECTION",
+    "message": "또 베팅했지만 더 커지기 전에 중단하고 도움을 요청했어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 1
+    }
+  },
+  {
+    "id": "RUP-013",
+    "category": "TEMPORAL_MIXED",
+    "message": "어제는 재발했지만 오늘은 앱을 지우고 운동했어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 1
+    }
+  },
+  {
+    "id": "RUP-014",
+    "category": "TEMPORAL_MIXED",
+    "message": "예전에는 자주 무너졌지만 이번 주에는 계속 잘 버티고 있어",
+    "expectedAnalyzable": false,
+    "expectedHoldReason": "NO_CURRENT_SUPPORTED_SIGNAL",
+    "expectedSignal": null
+  },
+  {
+    "id": "RUP-015",
+    "category": "TEMPORAL_MIXED",
+    "message": "아침에는 충동이 왔는데 지금은 진정돼서 일기를 썼어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 1,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-016",
+    "category": "NEGATION_BOUNDARY",
+    "message": "베팅하지 않으려고 사이트를 아예 차단했어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-017",
+    "category": "NEGATION_BOUNDARY",
+    "message": "충동이 없었던 건 아니지만 베팅은 하지 않았어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 1,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-018",
+    "category": "NEGATION_BOUNDARY",
+    "message": "상담을 요청하지는 않았지만 혼자 산책했어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 0,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 0,
+      "recoveryActionDelta": 1,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-019",
+    "category": "THIRD_PARTY_SELF_MIXED",
+    "message": "친구가 재발했다는 말을 듣고 나도 흔들렸지만 앱을 닫았어",
+    "expectedAnalyzable": true,
+    "expectedHoldReason": null,
+    "expectedSignal": {
+      "urgeLogDelta": 1,
+      "betAttemptDelta": 0,
+      "betBlockedDelta": 1,
+      "recoveryActionDelta": 0,
+      "relapseSignalDelta": 0
+    }
+  },
+  {
+    "id": "RUP-020",
+    "category": "THIRD_PARTY_SELF_MIXED",
+    "message": "형이 베팅했다는 얘기만 들었고 나는 아무 행동도 하지 않았어",
+    "expectedAnalyzable": false,
+    "expectedHoldReason": "NO_SUPPORTED_SELF_SIGNAL",
+    "expectedSignal": null
+  }
+]
