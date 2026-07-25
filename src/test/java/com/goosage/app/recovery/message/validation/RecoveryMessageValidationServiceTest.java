@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationCommand;
+import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationItem;
+import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationQuery;
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationPort;
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationResult;
 
@@ -194,6 +197,96 @@ class RecoveryMessageValidationServiceTest {
                 )
                 .hasMessage(
                         "unsupported mismatchType"
+                );
+    }
+
+    @Test
+    void findsRecentValidationsWithNormalizedQuery() {
+        RecoveryMessageValidationQuery query =
+                new RecoveryMessageValidationQuery(
+                        22L,
+                        " mismatch ",
+                        true,
+                        false,
+                        20
+                );
+
+        List<RecoveryMessageValidationItem> saved =
+                List.of();
+
+        when(validationPort.findRecent(any()))
+                .thenReturn(saved);
+
+        List<RecoveryMessageValidationItem> result =
+                service.findRecent(query);
+
+        ArgumentCaptor<RecoveryMessageValidationQuery> captor =
+                ArgumentCaptor.forClass(
+                        RecoveryMessageValidationQuery.class
+                );
+
+        verify(validationPort).findRecent(
+                captor.capture()
+        );
+
+        RecoveryMessageValidationQuery normalized =
+                captor.getValue();
+
+        assertThat(normalized.userId())
+                .isEqualTo(22L);
+        assertThat(normalized.validationResult())
+                .isEqualTo("MISMATCH");
+        assertThat(normalized.realScenarioCandidate())
+                .isTrue();
+        assertThat(normalized.virtualUserCandidate())
+                .isFalse();
+        assertThat(normalized.limit())
+                .isEqualTo(20);
+        assertThat(result)
+                .isSameAs(saved);
+    }
+
+    @Test
+    void rejectsUnsupportedValidationResultForQuery() {
+        RecoveryMessageValidationQuery query =
+                new RecoveryMessageValidationQuery(
+                        22L,
+                        "UNKNOWN",
+                        null,
+                        null,
+                        20
+                );
+
+        assertThatThrownBy(
+                () -> service.findRecent(query)
+        )
+                .isInstanceOf(
+                        IllegalArgumentException.class
+                )
+                .hasMessage(
+                        "unsupported validationResult"
+                );
+    }
+
+    @Test
+    void rejectsQueryLimitOutsideAllowedRange() {
+        RecoveryMessageValidationQuery query =
+                new RecoveryMessageValidationQuery(
+                        22L,
+                        null,
+                        null,
+                        null,
+                        101
+                );
+
+        assertThatThrownBy(
+                () -> service.findRecent(query)
+        )
+                .isInstanceOf(
+                        IllegalArgumentException.class
+                )
+                .hasMessage(
+                        "limit must be between 1 and 100"
                 );
     }
 

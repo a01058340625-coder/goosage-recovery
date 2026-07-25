@@ -1,10 +1,13 @@
 package com.goosage.app.recovery.message.validation;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationCommand;
+import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationItem;
+import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationQuery;
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationPort;
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationResult;
 
@@ -137,6 +140,52 @@ public class RecoveryMessageValidationService {
                 );
 
         return validationPort.save(normalized);
+    }
+
+    public List<RecoveryMessageValidationItem> findRecent(
+            RecoveryMessageValidationQuery query
+    ) {
+        if (query == null) {
+            throw new IllegalArgumentException(
+                    "validation query is required"
+            );
+        }
+
+        String validationResult =
+                normalizeOptionalUppercase(
+                        query.validationResult()
+                );
+
+        if (
+                validationResult != null
+                && !VALIDATION_RESULTS.contains(
+                        validationResult
+                )
+        ) {
+            throw new IllegalArgumentException(
+                    "unsupported validationResult"
+            );
+        }
+
+        if (
+                query.limit() < 1
+                || query.limit() > 100
+        ) {
+            throw new IllegalArgumentException(
+                    "limit must be between 1 and 100"
+            );
+        }
+
+        RecoveryMessageValidationQuery normalized =
+                new RecoveryMessageValidationQuery(
+                        query.userId(),
+                        validationResult,
+                        query.realScenarioCandidate(),
+                        query.virtualUserCandidate(),
+                        query.limit()
+                );
+
+        return validationPort.findRecent(normalized);
     }
 
     private String normalizeRequired(

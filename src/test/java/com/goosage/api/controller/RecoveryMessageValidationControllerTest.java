@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,11 +16,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.goosage.api.view.recovery.message.validation.RecoveryMessageValidationListItemResponse;
 import com.goosage.api.view.recovery.message.validation.RecoveryMessageValidationSaveRequest;
 import com.goosage.api.view.recovery.message.validation.RecoveryMessageValidationSaveResponse;
 import com.goosage.app.recovery.message.validation.RecoveryMessageValidationService;
 import com.goosage.auth.SessionConst;
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationCommand;
+import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationItem;
+import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationQuery;
 import com.goosage.domain.recovery.message.validation.RecoveryMessageValidationResult;
 import com.goosage.support.web.ApiResponse;
 
@@ -198,6 +202,125 @@ class RecoveryMessageValidationControllerTest {
         assertThatThrownBy(
                 () -> controller.save(
                         request,
+                        session
+                )
+        )
+                .isInstanceOf(
+                        IllegalArgumentException.class
+                )
+                .hasMessage("UNAUTHORIZED");
+    }
+
+    @Test
+    void findsRecentValidationsForSessionUser() {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(
+                SessionConst.LOGIN_USER_ID,
+                10035L
+        );
+
+        RecoveryMessageValidationItem item =
+                new RecoveryMessageValidationItem(
+                        91L,
+                        10035L,
+                        "충동이 왔지만 앱을 닫았어",
+
+                        true,
+                        null,
+                        "{\"urgeLogDelta\":1}",
+                        "RECOVERY_DRIVEN",
+                        "REINFORCE_RECOVERY",
+
+                        true,
+                        null,
+                        "{\"urgeLogDelta\":1}",
+                        "RECOVERY_DRIVEN",
+                        "REINFORCE_RECOVERY",
+                        "RECOVERY_DO_RECOVERY_ACTION",
+
+                        "MISMATCH",
+                        "SIGNAL",
+                        "검토 필요",
+
+                        true,
+                        false,
+
+                        LocalDateTime.of(
+                                2026,
+                                7,
+                                26,
+                                3,
+                                0
+                        )
+                );
+
+        when(validationService.findRecent(any()))
+                .thenReturn(List.of(item));
+
+        ApiResponse<
+                List<RecoveryMessageValidationListItemResponse>
+        > response =
+                controller.findRecent(
+                        " mismatch ",
+                        true,
+                        false,
+                        20,
+                        session
+                );
+
+        ArgumentCaptor<RecoveryMessageValidationQuery> captor =
+                ArgumentCaptor.forClass(
+                        RecoveryMessageValidationQuery.class
+                );
+
+        verify(validationService).findRecent(
+                captor.capture()
+        );
+
+        RecoveryMessageValidationQuery query =
+                captor.getValue();
+
+        assertThat(query.userId())
+                .isEqualTo(10035L);
+        assertThat(query.validationResult())
+                .isEqualTo(" mismatch ");
+        assertThat(query.realScenarioCandidate())
+                .isTrue();
+        assertThat(query.virtualUserCandidate())
+                .isFalse();
+        assertThat(query.limit())
+                .isEqualTo(20);
+
+        assertThat(response.isSuccess()).isTrue();
+        assertThat(response.getData())
+                .hasSize(1);
+
+        RecoveryMessageValidationListItemResponse data =
+                response.getData().get(0);
+
+        assertThat(data.id())
+                .isEqualTo(91L);
+        assertThat(data.validationResult())
+                .isEqualTo("MISMATCH");
+        assertThat(data.expectedSignal())
+                .isInstanceOf(Map.class);
+        assertThat(
+                ((Map<?, ?>) data.expectedSignal())
+                        .get("urgeLogDelta")
+        )
+                .isEqualTo(1);
+    }
+
+    @Test
+    void rejectsUnauthenticatedValidationQuery() {
+        MockHttpSession session = new MockHttpSession();
+
+        assertThatThrownBy(
+                () -> controller.findRecent(
+                        null,
+                        null,
+                        null,
+                        20,
                         session
                 )
         )
