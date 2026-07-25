@@ -344,8 +344,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
     }
 
     private boolean containsRelapseSignal(String text) {
-        if (containsAny(text, "재발하지 않았", "무너지지 않았")) {
+        if (containsAny(
+                text,
+                "재발하지 않았",
+                "무너지지 않았",
+                "다시 들어가지 않았"
+        )) {
             return false;
+        }
+
+        if (
+                containsAny(
+                        text,
+                        "참으려고 했",
+                        "참으려 했",
+                        "버티려고 했",
+                        "막으려고 했"
+                )
+                && containsAny(
+                        text,
+                        "결국 다시 들어갔",
+                        "또다시 들어갔",
+                        "다시 들어가버렸"
+                )
+                && containsAny(
+                        text,
+                        "후회",
+                        "무너졌",
+                        "통제하지 못했",
+                        "또 해버렸"
+                )
+        ) {
+            return true;
         }
 
         return containsAny(

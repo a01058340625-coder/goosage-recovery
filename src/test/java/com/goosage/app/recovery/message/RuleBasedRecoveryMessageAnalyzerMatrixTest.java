@@ -82,6 +82,23 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
         assertHold("무너지지 않았어", "NO_SUPPORTED_SIGNAL");
     }
 
+    @Test
+    void distinguishesIndirectRelapseReentryFromNegatedAndNeutralReentry() {
+        assertSignal(
+                "오늘은 참으려고 했는데 결국 다시 들어갔고, 지금은 너무 후회돼.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertHold(
+                "오늘은 참으려고 했고 사이트에 다시 들어가지 않았어",
+                "NO_SUPPORTED_SIGNAL"
+        );
+
+        assertHold(
+                "비가 와서 집에 다시 들어갔어",
+                "NO_SUPPORTED_SIGNAL"
+        );
+    }
     private void assertSignal(
             String message,
             int urge,
