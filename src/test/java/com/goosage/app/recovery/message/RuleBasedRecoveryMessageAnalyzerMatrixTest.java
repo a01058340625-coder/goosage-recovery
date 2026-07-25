@@ -99,6 +99,70 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
                 "NO_SUPPORTED_SIGNAL"
         );
     }
+    @Test
+    void auditsIndirectRelapseExpressionCoverageWithoutNeutralOvermatch() {
+        // 명확한 간접 재발·재진입 표현
+        assertSignal(
+                "참으려고 했는데 결국 다시 들어갔고 너무 후회돼.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertSignal(
+                "버티려고 했지만 또다시 들어갔고 완전히 무너졌어.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertSignal(
+                "막으려고 했는데 다시 들어가버렸고 통제하지 못했어.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertSignal(
+                "안 하려고 했는데 결국 또 들어갔고 지금 후회하고 있어.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertSignal(
+                "끊으려고 했지만 결국 사이트에 다시 접속했고 후회돼.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertSignal(
+                "버티다가 결국 그 화면으로 돌아갔고 또 해버렸어.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        // 부정 또는 일상적인 중립 재진입 표현
+        assertHold(
+                "오늘은 참으려고 했고 사이트에 다시 들어가지 않았어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+
+        assertHold(
+                "결국 다시 들어가지는 않았고 그냥 잠들었어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+
+        assertHold(
+                "비가 와서 집에 다시 들어갔어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+
+        assertHold(
+                "지갑을 두고 와서 카페에 다시 들어갔어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+
+        assertHold(
+                "회의가 있어서 방으로 다시 들어갔어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+
+        assertHold(
+                "사이트에 들어가려다가 멈추고 다시 나오기로 했어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+    }
     private void assertSignal(
             String message,
             int urge,
