@@ -163,6 +163,30 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
                 "NO_SUPPORTED_SIGNAL"
         );
     }
+
+    @Test
+    void capturesCompletedRelapseAfterReentryWithoutResistancePhrase() {
+        assertSignal(
+                "결국 다시 들어가서 또 돈을 걸었어.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertSignal(
+                "오늘 결국 그 사이트로 돌아가서 또 해버렸어.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertSignal(
+                "다시 들어가서 또 해버렸고 지금 도움을 요청하고 싶어.",
+                0, 0, 0, 1, 1, 0.80
+        );
+
+        assertSignal(
+                "친구가 다시 했다는 말을 들었고 나도 결국 들어가서 또 해버렸어.",
+                0, 0, 0, 0, 1, 0.70
+        );
+    }
+
     private void assertSignal(
             String message,
             int urge,

@@ -385,6 +385,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsCompletedRelapseAfterReentry(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -395,6 +399,31 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "결국 결제했",
                 "통제하지 못했"
         );
+    }
+
+    private boolean containsCompletedRelapseAfterReentry(
+            String text
+    ) {
+        boolean containsReentry = containsAny(
+                text,
+                "결국 다시 들어가서",
+                "결국 들어가서",
+                "다시 들어가서",
+                "그 사이트로 돌아가서",
+                "사이트로 돌아가서",
+                "그 화면으로 돌아가서"
+        );
+
+        boolean containsCompletedAction = containsAny(
+                text,
+                "또 돈을 걸었",
+                "돈을 걸었",
+                "또 해버렸",
+                "결국 결제했",
+                "돈을 넣어버렸"
+        );
+
+        return containsReentry && containsCompletedAction;
     }
 
     private boolean containsAny(String text, String... candidates) {
