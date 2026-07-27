@@ -302,6 +302,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "앱을 닫",
                 "창을 닫",
                 "계정을 잠",
+                "계정을 막",
                 "앱을 지",
                 "휴대폰을 내려놓",
                 "마지막에 멈췄",
@@ -389,6 +390,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsBypassRelapseAfterProtectiveBlock(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -424,6 +429,48 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
 
         return containsReentry && containsCompletedAction;
+    }
+
+    private boolean containsBypassRelapseAfterProtectiveBlock(
+            String text
+    ) {
+        if (containsAny(
+                text,
+                "돈은 넣지 않았",
+                "돈을 넣지 않았",
+                "돈을 넣지는 않았",
+                "결제하지 않았"
+        )) {
+            return false;
+        }
+
+        boolean containsProtectiveBlock = containsAny(
+                text,
+                "계정까지 막았",
+                "계정을 막았",
+                "계정을 차단했",
+                "계정을 잠권"
+        );
+
+        boolean containsBypassSearch = containsAny(
+                text,
+                "다른 곳을 찾아서",
+                "다른 곳을 찾았",
+                "다른 사이트를 찾아서",
+                "다른 경로를 찾아서"
+        );
+
+        boolean containsCompletedMoneyInput = containsAny(
+                text,
+                "또 돈을 넣었",
+                "돈을 넣었",
+                "또 결제했",
+                "결국 돈을 넣었"
+        );
+
+        return containsProtectiveBlock
+                && containsBypassSearch
+                && containsCompletedMoneyInput;
     }
 
     private boolean containsAny(String text, String... candidates) {

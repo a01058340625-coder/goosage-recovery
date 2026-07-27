@@ -187,6 +187,25 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
         );
     }
 
+
+    @Test
+    void capturesBypassRelapseAfterProtectiveBlock() {
+        assertSignal(
+                "다시는 안 하려고 계정까지 막았는데, 결국 다른 곳을 찾아서 또 돈을 넣었어.",
+                0, 0, 1, 0, 1, 0.80
+        );
+
+        assertSignal(
+                "계정을 막은 뒤 다른 곳을 찾아보기만 했고 돈은 넣지 않았어.",
+                0, 0, 1, 0, 0, 0.70
+        );
+
+        assertSignal(
+                "다시는 안 하려고 계정을 막았고, 다른 곳을 찾았지만 돈을 넣지는 않았어.",
+                0, 0, 1, 0, 0, 0.70
+        );
+    }
+
     private void assertSignal(
             String message,
             int urge,
