@@ -206,6 +206,25 @@ class RuleBasedRecoveryMessageAnalyzerMatrixTest {
         );
     }
 
+    @Test
+    void capturesRelapseMinimizationAfterCompletedMoneyInput() {
+        assertSignal(
+                "돈을 넣긴 했지만 조금만 했으니까 재발이라고까지는 생각하지 않아.",
+                0, 0, 0, 0, 1, 0.70
+        );
+
+        assertHold(
+                "돈을 넣을까 생각했지만 실제로 넣지는 않았어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+
+        assertHold(
+                "저금통에 돈을 넣긴 했지만 조금만 넣었어.",
+                "NO_SUPPORTED_SIGNAL"
+        );
+    }
+
+
     private void assertSignal(
             String message,
             int urge,

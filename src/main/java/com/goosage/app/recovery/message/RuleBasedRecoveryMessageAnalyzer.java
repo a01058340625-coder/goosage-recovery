@@ -394,6 +394,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsRelapseMinimizationAfterMoneyInput(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -471,6 +475,23 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsProtectiveBlock
                 && containsBypassSearch
                 && containsCompletedMoneyInput;
+    }
+
+    private boolean containsRelapseMinimizationAfterMoneyInput(
+            String text
+    ) {
+        boolean containsCompletedMoneyInput = containsAny(
+                text,
+                "돈을 넣긴 했"
+        );
+
+        boolean containsRelapseMinimization = containsAny(
+                text,
+                "재발이라고까지는 생각하지 않"
+        );
+
+        return containsCompletedMoneyInput
+                && containsRelapseMinimization;
     }
 
     private boolean containsAny(String text, String... candidates) {
