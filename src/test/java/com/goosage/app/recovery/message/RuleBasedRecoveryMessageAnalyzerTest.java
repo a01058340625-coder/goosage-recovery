@@ -83,4 +83,71 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal()).isNull();
         assertThat(result.holdReason()).isEqualTo("HYPOTHETICAL_CONTEXT");
     }
+
+@Test
+    void detectsFundingCompletedWithBetNegationAsShadowMetadata() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ubca0\ud305\uc740 \ud558\uc9c0 \uc54a\uc558\uc9c0\ub9cc "
+                        + "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud574 \ub450\uc5c8\uc5b4. "
+                        + "\uc544\uc9c1 \uc0ac\uc6a9\ud558\uc9c0 \uc54a\uc558\uc73c\ub2c8 "
+                        + "\uc7ac\ubc1c\uc740 \uc544\ub2c8\ub77c\uace0 \uc0dd\uac01\ud574."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "FUNDING_COMPLETED_BET_NEGATED"
+                );
+    }
+
+    @Test
+    void detectsFundingCompletedWithFutureIntentAsShadowMetadata() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ubca0\ud305\uc740 \uc544\uc9c1 \ud558\uc9c0 \uc54a\uc558\uc9c0\ub9cc "
+                        + "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ub123\uc5b4\ub450\uace0 "
+                        + "\uc624\ub298 \ubc24\uc5d0 \uc0ac\uc6a9\ud560 \uc0dd\uac01\uc774\uc57c."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "FUNDING_COMPLETED_FUTURE_INTENT_PRESENT"
+                );
+    }
+
+    @Test
+    void detectsFundingStartedThenCancelledAsShadowMetadata() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ub123\uc73c\ub824\ub2e4\uac00 "
+                        + "\uc911\uac04\uc5d0 \uba48\ucd94\uace0 "
+                        + "\ucda9\uc804\uc744 \ucde8\uc18c\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "FUNDING_STARTED_THEN_CANCELLED"
+                );
+    }
 }

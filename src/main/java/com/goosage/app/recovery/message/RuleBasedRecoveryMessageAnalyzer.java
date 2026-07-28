@@ -3,6 +3,7 @@ package com.goosage.app.recovery.message;
 import org.springframework.stereotype.Component;
 
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
+import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 @Component
 public class RuleBasedRecoveryMessageAnalyzer {
@@ -48,6 +49,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return hold(message, "HYPOTHETICAL_CONTEXT");
         }
 
+        RecoveryRiskPreparationMetadata riskPreparationMetadata =
+                resolveRiskPreparationMetadata(analysisText);
+
         int urgeLogDelta = containsAffirmedUrge(analysisText) ? 1 : 0;
         int betAttemptDelta = containsAffirmedAttempt(analysisText) ? 1 : 0;
         int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
@@ -68,7 +72,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                             ? "NO_CURRENT_SUPPORTED_SIGNAL"
                             : selfContextExtracted
                                     ? "NO_SUPPORTED_SELF_SIGNAL"
-                                    : "NO_SUPPORTED_SIGNAL"
+                                    : "NO_SUPPORTED_SIGNAL",
+                    riskPreparationMetadata
             );
         }
 
@@ -98,12 +103,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
     }
 
-    private RecoveryMessageAnalysis hold(String message, String holdReason) {
+    private RecoveryMessageAnalysis hold(
+            String message,
+            String holdReason
+    ) {
+        return hold(
+                message,
+                holdReason,
+                RecoveryRiskPreparationMetadata.none()
+        );
+    }
+
+    private RecoveryMessageAnalysis hold(
+            String message,
+            String holdReason,
+            RecoveryRiskPreparationMetadata riskPreparationMetadata
+    ) {
         return new RecoveryMessageAnalysis(
                 message,
                 false,
                 null,
-                holdReason
+                holdReason,
+                riskPreparationMetadata
         );
     }
 
@@ -492,6 +513,100 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         return containsCompletedMoneyInput
                 && containsRelapseMinimization;
+    }
+
+    private RecoveryRiskPreparationMetadata
+            resolveRiskPreparationMetadata(String text) {
+
+        if (containsFundingStartedThenCancelled(text)) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "FUNDING_STARTED_THEN_CANCELLED",
+                    0.85,
+                    "funding attempt was stopped and cancelled before completion"
+            );
+        }
+
+        if (containsFundingCompletedWithFutureIntent(text)) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "FUNDING_COMPLETED_FUTURE_INTENT_PRESENT",
+                    0.90,
+                    "funding was completed with explicit near-future use intent"
+            );
+        }
+
+        if (containsFundingCompletedWithBetNegation(text)) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "FUNDING_COMPLETED_BET_NEGATED",
+                    0.85,
+                    "funding was completed while actual betting or relapse was denied"
+            );
+        }
+
+        return RecoveryRiskPreparationMetadata.none();
+    }
+
+    private boolean containsFundingCompletedWithBetNegation(
+            String text
+    ) {
+        boolean fundingCompleted = containsAny(
+                text,
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud574 \ub450\uc5c8",
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud588",
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ub123\uc5b4\ub450\uc5c8"
+        );
+
+        boolean actualBetNegated = containsAny(
+                text,
+                "\ubca0\ud305\uc740 \ud558\uc9c0 \uc54a\uc558",
+                "\uc544\uc9c1 \uc0ac\uc6a9\ud558\uc9c0 \uc54a\uc558",
+                "\uc7ac\ubc1c\uc740 \uc544\ub2c8\ub77c\uace0",
+                "\uc7ac\ubc1c\uc774 \uc544\ub2c8\ub77c\uace0"
+        );
+
+        return fundingCompleted && actualBetNegated;
+    }
+
+    private boolean containsFundingCompletedWithFutureIntent(
+            String text
+    ) {
+        boolean fundingCompleted = containsAny(
+                text,
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ub123\uc5b4\ub450\uace0",
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud574 \ub450\uace0",
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud558\uace0"
+        );
+
+        boolean futureIntent = containsAny(
+                text,
+                "\uc624\ub298 \ubc24\uc5d0 \uc0ac\uc6a9\ud560",
+                "\uc774\ub530\uac00 \uc0ac\uc6a9\ud560",
+                "\ub098\uc911\uc5d0 \uc0ac\uc6a9\ud560",
+                "\uc4f8 \uc0dd\uac01",
+                "\uc0ac\uc6a9\ud560 \uc0dd\uac01"
+        );
+
+        return fundingCompleted && futureIntent;
+    }
+
+    private boolean containsFundingStartedThenCancelled(
+            String text
+    ) {
+        boolean fundingStarted = containsAny(
+                text,
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ub123\uc73c\ub824\ub2e4\uac00",
+                "\ucda9\uc804\ud558\ub824\ub2e4\uac00",
+                "\ucda9\uc804\uc744 \ud558\ub824\ub2e4\uac00"
+        );
+
+        boolean fundingCancelled = containsAny(
+                text,
+                "\ucda9\uc804\uc744 \ucde8\uc18c\ud588",
+                "\ucda9\uc804\uc744 \ucde8\uc18c\ud558\uace0",
+                "\ucda9\uc804 \uc804\uc5d0 \uba48\ucd84",
+                "\uc911\uac04\uc5d0 \uba48\ucd94\uace0"
+        );
+
+        return fundingStarted && fundingCancelled;
     }
 
     private boolean containsAny(String text, String... candidates) {

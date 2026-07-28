@@ -6,12 +6,14 @@ import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResult;
 import com.goosage.domain.recovery.RecoverySnapshot;
 import com.goosage.domain.recovery.RecoveryState;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
+import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 public record RecoveryMessageAnalyzeResponse(
         boolean analyzable,
         String holdReason,
         String originalMessage,
         SignalResponse signal,
+        RiskPreparationResponse riskPreparation,
         SnapshotResponse baseSnapshot,
         SnapshotResponse projectedSnapshot,
         BrainResponse brain
@@ -39,6 +41,12 @@ public record RecoveryMessageAnalyzeResponse(
                         ? null
                         : projection.analysis().originalMessage(),
                 SignalResponse.from(signal),
+                RiskPreparationResponse.from(
+                        projection.analysis() == null
+                                ? null
+                                : projection.analysis()
+                                        .riskPreparationMetadata()
+                ),
                 SnapshotResponse.from(projection.baseSnapshot()),
                 SnapshotResponse.from(projection.projectedSnapshot()),
                 BrainResponse.from(projection.brainResult())
@@ -68,6 +76,30 @@ public record RecoveryMessageAnalyzeResponse(
                     signal.relapseSignalDelta(),
                     signal.confidence(),
                     signal.reason()
+            );
+        }
+    }
+
+    public record RiskPreparationResponse(
+            boolean detected,
+            String type,
+            double confidence,
+            String reason
+    ) {
+
+        public static RiskPreparationResponse from(
+                RecoveryRiskPreparationMetadata metadata
+        ) {
+            RecoveryRiskPreparationMetadata safeMetadata =
+                    metadata == null
+                            ? RecoveryRiskPreparationMetadata.none()
+                            : metadata;
+
+            return new RiskPreparationResponse(
+                    safeMetadata.detected(),
+                    safeMetadata.type(),
+                    safeMetadata.confidence(),
+                    safeMetadata.reason()
             );
         }
     }
