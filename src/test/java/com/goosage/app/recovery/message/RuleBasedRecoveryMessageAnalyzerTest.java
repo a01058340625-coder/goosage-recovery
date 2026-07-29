@@ -150,4 +150,39 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                         "FUNDING_STARTED_THEN_CANCELLED"
                 );
     }
+
+    @Test
+    void detectsCurrentCounselingContinuationAsRecoveryAction() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc9c0\ub09c\uc8fc\uc5d0\ub294 \ub2e4\uc2dc "
+                        + "\ubca0\ud305\ud588\uc9c0\ub9cc \uc9c0\uae08\uc740 "
+                        + "\uc571\uc744 \uc9c0\uc6b0\uace0 "
+                        + "\uc0c1\ub2f4\uc744 \uacc4\uc18d \ubc1b\uace0 \uc788\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
+    @Test
+    void doesNotTreatNegatedCounselingContinuationAsRecoveryAction() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc9c0\ub09c\uc8fc\uc5d0\ub294 \ub2e4\uc2dc "
+                        + "\ubca0\ud305\ud588\uc9c0\ub9cc \uc9c0\uae08\uc740 "
+                        + "\uc0c1\ub2f4\uc744 \uacc4\uc18d \ubc1b\uc9c0 \uc54a\uace0 \uc788\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
 }

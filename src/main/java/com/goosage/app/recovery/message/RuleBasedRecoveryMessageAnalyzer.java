@@ -342,7 +342,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (containsAny(
                 text,
                 "상담을 요청하지 않았",
-                "도움을 요청하지 않았"
+                "도움을 요청하지 않았",
+                "상담을 계속 받지 않",
+                "상담을 받고 있지 않"
         )) {
             return false;
         }
@@ -358,6 +360,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "이야기했",
                 "상담했",
                 "상담을 요청",
+                "상담을 계속 받",
+                "상담을 받고 있",
                 "도움을 요청",
                 "회복 행동",
                 "일기를 썼",
