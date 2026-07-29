@@ -360,7 +360,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "이야기했",
                 "상담했",
                 "상담을 요청",
-                "상담을 계속 받",
+                "상담을 계속 받고 있",
                 "상담을 받고 있",
                 "도움을 요청",
                 "회복 행동",
