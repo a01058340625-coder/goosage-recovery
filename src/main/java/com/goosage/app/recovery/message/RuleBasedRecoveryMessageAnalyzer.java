@@ -169,22 +169,94 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "그 사람이"
         );
 
-        int selfSubjectIndex = firstIndexOfAny(
+        if (thirdPartyIndex < 0) {
+            return -1;
+        }
+
+        int selfSubjectIndex = firstSelfSubjectOutsideQuote(
                 text,
-                "나는",
-                "내가",
-                "나도"
+                thirdPartyIndex + 1
         );
 
-        if (
-                thirdPartyIndex < 0
-                || selfSubjectIndex < 0
-                || selfSubjectIndex <= thirdPartyIndex
-        ) {
+        if (selfSubjectIndex <= thirdPartyIndex) {
             return -1;
         }
 
         return selfSubjectIndex;
+    }
+
+    private int firstSelfSubjectOutsideQuote(
+            String text,
+            int startIndex
+    ) {
+        int firstIndex = -1;
+
+        for (String candidate : new String[]{
+                "나는",
+                "내가",
+                "나도"
+        }) {
+            int searchIndex = Math.max(0, startIndex);
+
+            while (searchIndex < text.length()) {
+                int index = text.indexOf(
+                        candidate,
+                        searchIndex
+                );
+
+                if (index < 0) {
+                    break;
+                }
+
+                if (!isInsideQuote(text, index)) {
+                    if (
+                            firstIndex < 0
+                            || index < firstIndex
+                    ) {
+                        firstIndex = index;
+                    }
+
+                    break;
+                }
+
+                searchIndex = index + candidate.length();
+            }
+        }
+
+        return firstIndex;
+    }
+
+    private boolean isInsideQuote(
+            String text,
+            int index
+    ) {
+        return isInsideQuotePair(text, index, '‘', '’')
+                || isInsideQuotePair(text, index, '“', '”')
+                || isInsideQuotePair(text, index, '\'', '\'')
+                || isInsideQuotePair(text, index, '"', '"');
+    }
+
+    private boolean isInsideQuotePair(
+            String text,
+            int index,
+            char openingQuote,
+            char closingQuote
+    ) {
+        int openingIndex = text.lastIndexOf(
+                openingQuote,
+                index
+        );
+
+        if (openingIndex < 0) {
+            return false;
+        }
+
+        int closingIndex = text.indexOf(
+                closingQuote,
+                openingIndex + 1
+        );
+
+        return closingIndex >= index;
     }
 
     private int firstIndexOfAny(String text, String... candidates) {
@@ -427,6 +499,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "다시 베팅했",
                 "또 베팅했",
+                "다시 돈을 걸었",
                 "돈을 넣어버렸",
                 "재발했",
                 "무너졌",

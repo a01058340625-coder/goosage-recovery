@@ -185,4 +185,60 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().recoveryActionDelta()).isZero();
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
+
+    @Test
+    void detectsSelfRelapseAfterThirdPartyContextSwitch() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 \ub2e4\uc2dc "
+                        + "\ubca0\ud305\ud588\ub2e4\ub294 \uc598\uae30\ub97c "
+                        + "\ub4e4\uc5c8\ub294\ub370, \uc0ac\uc2e4 \ub098\ub3c4 "
+                        + "\uc5b4\uc82f\ubc24\uc5d0 \ub2e4\uc2dc "
+                        + "\ub3c8\uc744 \uac78\uc5c8\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
+    @Test
+    void doesNotTreatNegatedSelfBetAfterThirdPartyContextAsRelapse() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 \ub2e4\uc2dc "
+                        + "\ubca0\ud305\ud588\ub2e4\ub294 \uc598\uae30\ub97c "
+                        + "\ub4e4\uc5c8\uc9c0\ub9cc, \uc0ac\uc2e4 \ub098\ub294 "
+                        + "\uc5b4\uc82f\ubc24\uc5d0 \ub3c8\uc744 "
+                        + "\uac78\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SELF_SIGNAL");
+    }
+
+
+    @Test
+    void doesNotTreatQuotedSelfSubjectInThirdPartySpeechAsUserRelapse() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 \u2018\ub098\ub3c4 "
+                        + "\ub2e4\uc2dc \ub3c8\uc744 "
+                        + "\uac78\uc5c8\uc5b4\u2019\ub77c\uace0 "
+                        + "\ub9d0\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+    }
+
 }
