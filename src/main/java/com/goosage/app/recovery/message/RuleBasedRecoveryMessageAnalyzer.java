@@ -99,7 +99,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 message,
                 true,
                 signal,
-                null
+                null,
+                riskPreparationMetadata
         );
     }
 
@@ -652,7 +653,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ub123\uc5b4\ub450\uace0",
                 "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud574 \ub450\uace0",
-                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud558\uace0"
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ucda9\uc804\ud558\uace0",
+                "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \uc62e\uaca8\ub480"
         );
 
         boolean futureIntent = containsAny(
@@ -661,7 +663,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc774\ub530\uac00 \uc0ac\uc6a9\ud560",
                 "\ub098\uc911\uc5d0 \uc0ac\uc6a9\ud560",
                 "\uc4f8 \uc0dd\uac01",
-                "\uc0ac\uc6a9\ud560 \uc0dd\uac01"
+                "\uc0ac\uc6a9\ud560 \uc0dd\uac01",
+                "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\ub824\uace0"
         );
 
         return fundingCompleted && futureIntent;

@@ -130,6 +130,56 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
     @Test
+    void detectsFundingFutureIntentAfterCompletedRecoveryAction() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc624\ub298 \uc0c1\ub2f4\uc740 \ubc1b\uace0 "
+                        + "\uc654\uc9c0\ub9cc, \ubc24\uc5d0 \ub2e4\uc2dc "
+                        + "\ub4e4\uc5b4\uac00\ub824\uace0 \uacc4\uc88c\uc5d0 "
+                        + "\ub3c8\uc744 \uc62e\uaca8\ub480\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "FUNDING_COMPLETED_FUTURE_INTENT_PRESENT"
+                );
+    }
+
+
+    @Test
+    void keepsRiskPreparationNoneForCompletedRecoveryWithoutFundingIntent() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc624\ub298 \uc0c1\ub2f4\uc740 \ubc1b\uace0 "
+                        + "\uc654\uace0 \uacc4\uc815\ub3c4 \ub9c9\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+        assertThat(result.riskPreparationMetadata().type())
+                .isNull();
+    }
+
+
+    @Test
     void detectsFundingStartedThenCancelledAsShadowMetadata() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(
