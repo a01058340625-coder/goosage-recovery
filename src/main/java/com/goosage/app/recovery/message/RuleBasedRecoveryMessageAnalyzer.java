@@ -390,6 +390,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return false;
         }
 
+        if (containsFundingSelfReversal(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "사이트를 닫",
@@ -420,6 +424,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "상담을 받고 있지 않"
         )) {
             return false;
+        }
+
+        if (containsFundingSelfReversal(text)) {
+            return true;
         }
 
         return containsAny(
@@ -501,6 +509,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsAny(
                 text,
                 "다시 베팅했",
+                "다시 베팅한 뒤",
                 "또 베팅했",
                 "다시 돈을 걸었",
                 "돈을 넣어버렸",
@@ -668,6 +677,43 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
 
         return fundingCompleted && futureIntent;
+    }
+
+    private boolean containsFundingSelfReversal(
+            String text
+    ) {
+        boolean fundingCompleted = containsAny(
+                text,
+                "계좌에 돈을 넣어두고",
+                "계좌에 돈을 충전해 두고",
+                "계좌에 돈을 충전하고",
+                "계좌에 돈을 옮겨뒀"
+        );
+
+        boolean gamblingContext = containsAny(
+                text,
+                "오늘 밤에 사용할",
+                "이따가 사용할",
+                "나중에 사용할",
+                "쓸 생각",
+                "사용할 생각",
+                "다시 들어가려고",
+                "다시 베팅했",
+                "다시 베팅한 뒤",
+                "또 베팅했",
+                "다시 돈을 걸었"
+        );
+
+        boolean withdrawalCompleted = containsAny(
+                text,
+                "바로 다시 빼냈",
+                "남은 돈을 바로 다시 빼냈",
+                "다시 빼냈"
+        );
+
+        return fundingCompleted
+                && gamblingContext
+                && withdrawalCompleted;
     }
 
     private boolean containsFundingStartedThenCancelled(

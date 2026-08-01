@@ -396,4 +396,121 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 .isEqualTo("THIRD_PARTY_CONTEXT");
     }
 
+
+    @Test
+    void detectsFundingWithdrawalAsBlockAndRecoveryAfterRiskPreparation() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ubc24\uc5d0 \ub2e4\uc2dc "
+                        + "\ub4e4\uc5b4\uac00\ub824\uace0 "
+                        + "\uacc4\uc88c\uc5d0 \ub3c8\uc744 "
+                        + "\uc62e\uaca8\ub480\uc9c0\ub9cc, "
+                        + "\uc0dd\uac01\uc744 \ubc14\uafb8\uace0 "
+                        + "\ubc14\ub85c \ub2e4\uc2dc "
+                        + "\ube7c\ub0c8\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "FUNDING_COMPLETED_FUTURE_INTENT_PRESENT"
+                );
+    }
+
+    @Test
+    void doesNotTreatUncompletedFundingWithdrawalAsBlockOrRecovery() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc88c\uc758 \ub3c8\uc744 "
+                        + "\ub2e4\uc2dc \ube7c\ub0b4\ub824\uace0 "
+                        + "\ud588\uc9c0\ub9cc \ubabb\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatNegatedFundingWithdrawalAsBlockOrRecovery() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc88c\uc5d0 \ub3c8\uc744 "
+                        + "\uc62e\uaca8\ub450\uace0 "
+                        + "\ub2e4\uc2dc \ube7c\ub0b4\uc9c0 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatQuotedThirdPartyFundingWithdrawalAsUserRecovery() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 "
+                        + "\u2018\uacc4\uc88c\uc5d0 \ub123\uc5b4\ub454 "
+                        + "\ub3c8\uc744 \ubc14\ub85c \ub2e4\uc2dc "
+                        + "\ube7c\ub0c8\uc5b4\u2019\ub77c\uace0 "
+                        + "\ub9d0\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+    }
+
+
+    @Test
+    void doesNotTreatOrdinaryWithdrawalAsRecoverySignal() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc0dd\ud65c\ube44\uac00 "
+                        + "\ud544\uc694\ud574\uc11c "
+                        + "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uc744 "
+                        + "\ubc14\ub85c \ub2e4\uc2dc "
+                        + "\ube7c\ub0c8\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void preservesRelapseWhenFundingIsWithdrawnAfterCompletedBet() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc88c\uc5d0 \ub3c8\uc744 "
+                        + "\uc62e\uaca8\ub480\uace0 "
+                        + "\uc2e4\uc81c\ub85c \ub2e4\uc2dc "
+                        + "\ubca0\ud305\ud55c \ub4a4 "
+                        + "\ub0a8\uc740 \ub3c8\uc744 "
+                        + "\ubc14\ub85c \ub2e4\uc2dc "
+                        + "\ube7c\ub0c8\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
 }
