@@ -282,6 +282,55 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
     @Test
+    void detectsCompletedCounselingParticleVariantWithNegatedBlocking() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc0c1\ub2f4\uc740 \ubc1b\uace0 \uc654\uc9c0\ub9cc "
+                        + "\uacc4\uc815\uc740 \uc544\uc9c1 \ub9c9\uc9c0 \uc54a\uc558\uace0, "
+                        + "\uc624\ub298 \ubc24 \ub2e4\uc2dc \ub4e4\uc5b4\uac08\uae4c "
+                        + "\uacc4\uc18d \uace0\ubbfc \uc911\uc774\uc57c."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+    }
+
+
+    @Test
+    void doesNotTreatNegatedCounselingReturnAsRecoveryAction() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc0c1\ub2f4\uc740 \ubc1b\uace0 \uc624\uc9c0 "
+                        + "\uc54a\uc558\uace0 \uacc4\uc815\ub3c4 "
+                        + "\ub9c9\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatNegatedCounselingParticleVariantAsRecoveryAction() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc0c1\ub2f4\uc740 \ubc1b\uace0 \uc788\uc9c0 "
+                        + "\uc54a\uc544."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+
+    @Test
     void doesNotTreatQuotedThirdPartyCounselingAsUserRecovery() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(

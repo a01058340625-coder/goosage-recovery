@@ -435,6 +435,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "상담을 계속 받고 있",
                 "상담을 받고 있",
                 "상담을 받고",
+                "상담은 받고 왔",
                 "도움을 요청",
                 "회복 행동",
                 "일기를 썼",
