@@ -130,6 +130,72 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
     @Test
+    void detectsConditionalFutureReentryDecisionAfterCompletedFunding() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc88c\uc5d0 \ub3c8\uc744 "
+                        + "\uc62e\uaca8\ub450\uae34 \ud588\uace0, "
+                        + "\ub0b4\uc77c \uc0c1\ud669\uc744 \ubcf4\uace0 "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac08\uc9c0 "
+                        + "\uacb0\uc815\ud560 \uac70\uc57c."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.signal()).isNull();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "FUNDING_COMPLETED_FUTURE_INTENT_PRESENT"
+                );
+    }
+
+    @Test
+    void doesNotDetectRiskPreparationForUndecidedFundingUse() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc0c1\ub2f4\uc740 \ubc1b\uace0 \uc654\uc9c0\ub9cc, "
+                        + "\uacc4\uc88c\uc5d0 \ub3c8\uc744 "
+                        + "\uc62e\uaca8\ub450\uace0\ub3c4 "
+                        + "\uc544\uc9c1 \uc0ac\uc6a9\ud560\uc9c0\ub294 "
+                        + "\uacb0\uc815\ud558\uc9c0 \ubabb\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal().recoveryActionDelta())
+                .isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+        assertThat(result.riskPreparationMetadata().type())
+                .isNull();
+    }
+
+    @Test
+    void doesNotDetectRiskPreparationWhenReentryIntentIsNegated() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc88c\uc5d0 \ub3c8\uc744 "
+                        + "\uc62e\uaca8\ub450\uae34 \ud588\uc9c0\ub9cc, "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac08 "
+                        + "\uc0dd\uac01\uc740 \uc5c6\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.signal()).isNull();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+        assertThat(result.riskPreparationMetadata().type())
+                .isNull();
+    }
+
+    @Test
     void detectsFundingFutureIntentAfterCompletedRecoveryAction() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(
