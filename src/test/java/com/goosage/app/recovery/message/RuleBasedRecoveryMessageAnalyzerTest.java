@@ -933,4 +933,77 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
 
+    @Test
+    void detectsCompletedWagerAfterAccountUnblockAndSiteReentry() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계정을 다시 풀고 실제로 사이트에 "
+                        + "들어가서 돈을 걸었어."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void detectsDirectCompletedMoneyWagerAsRelapse() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze("돈을 걸었어.");
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
+    @Test
+    void doesNotTreatSiteReentryWithoutWagerAsRelapse() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계정을 다시 풀고 사이트에는 "
+                        + "들어갔지만 돈은 걸지 않았어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatNegatedMoneyWagerAsRelapse() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze("돈을 걸지 않았어.");
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatThirdPartyCompletedWagerAsUserRelapse() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "친구가 계정을 다시 풀고 사이트에 "
+                        + "들어가서 돈을 걸었다고 말했어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+    }
+
+
 }

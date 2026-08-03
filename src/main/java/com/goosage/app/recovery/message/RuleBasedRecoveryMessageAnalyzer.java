@@ -553,7 +553,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "재발하지 않았",
                 "무너지지 않았",
-                "다시 들어가지 않았"
+                "다시 들어가지 않았",
+                "돈을 걸지 않았",
+                "돈은 걸지 않았",
+                "베팅하지 않았",
+                "베팅은 하지 않았"
         )) {
             return false;
         }
@@ -608,6 +612,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "다시 베팅한 뒤",
                 "또 베팅했",
                 "다시 돈을 걸었",
+                "돈을 걸었",
                 "돈을 넣어버렸",
                 "재발했",
                 "무너졌",
@@ -624,6 +629,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "결국 다시 들어가서",
                 "결국 들어가서",
                 "다시 들어가서",
+                "사이트에 들어가서",
+                "사이트로 들어가서",
+                "그 사이트에 들어가서",
                 "그 사이트로 돌아가서",
                 "사이트로 돌아가서",
                 "그 화면으로 돌아가서"
