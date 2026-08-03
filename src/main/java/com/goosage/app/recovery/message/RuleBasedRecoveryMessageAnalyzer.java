@@ -390,7 +390,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return false;
         }
 
-        if (containsFundingSelfReversal(text)) {
+        if (
+                containsFundingSelfReversal(text)
+                || containsAbortedFundingSelfBlock(text)
+        ) {
             return true;
         }
 
@@ -426,7 +429,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return false;
         }
 
-        if (containsFundingSelfReversal(text)) {
+        if (
+                containsFundingSelfReversal(text)
+                || containsAbortedFundingSelfBlock(text)
+        ) {
             return true;
         }
 
@@ -450,6 +456,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "일기를 썼",
                 "자리를 피했"
         );
+    }
+
+    private boolean containsAbortedFundingSelfBlock(
+            String text
+    ) {
+        boolean fundingInitiated = containsAny(
+                text,
+                "계좌에 돈을 옮기려다가",
+                "계좌로 돈을 옮기려다가",
+                "이체하려다가",
+                "송금하려다가",
+                "충전하려다가"
+        );
+
+        boolean selfReversal = containsAny(
+                text,
+                "마음을 바꿔서",
+                "생각을 바꿔서",
+                "마음을 바꾸고",
+                "생각을 바꾸고"
+        );
+
+        boolean fundingNotCompleted = containsAny(
+                text,
+                "이체하지 않았",
+                "옮기지 않았",
+                "송금하지 않았",
+                "충전하지 않았",
+                "돈을 넣지 않았"
+        );
+
+        return fundingInitiated
+                && selfReversal
+                && fundingNotCompleted;
     }
 
     private boolean containsRelapseSignal(String text) {

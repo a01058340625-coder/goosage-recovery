@@ -579,4 +579,83 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
 
+
+    @Test
+    void detectsAbortedFundingAsBlockAndRecovery() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려다가 "
+                        + "마음을 바꿔서 이체하지 않았고, "
+                        + "내일 다시 생각해볼 거야."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatExternalTransferFailureAsSelfBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려 했지만 "
+                        + "오류가 나서 이체하지 못했어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatFundingConsiderationAsSelfBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮길까 생각했지만 "
+                        + "아직 아무것도 하지 않았어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatExternalReasonAsSelfReversal() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려다가 "
+                        + "시간이 없어서 이체하지 않았어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void doesNotTreatThirdPartyAbortedFundingAsUserRecovery() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "친구가 계좌에 돈을 옮기려다가 "
+                        + "마음을 바꿔서 이체하지 않았다고 말했어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+    }
+
+
 }
