@@ -381,6 +381,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
     }
 
     private boolean containsProtectiveBlock(String text) {
+        if (
+                containsAny(
+                        text,
+                        "계정을 막을지",
+                        "계정을 차단할지",
+                        "계정을 잠글지",
+                        "계정을 막을까",
+                        "계정을 차단할까"
+                )
+                && containsAny(
+                        text,
+                        "생각해볼",
+                        "고민 중",
+                        "고민하고",
+                        "결정할"
+                )
+        ) {
+            return false;
+        }
+
         if (containsAny(
                 text,
                 "차단하지 않았",
@@ -684,6 +704,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
             resolveRiskPreparationMetadata(String text) {
 
         if (
+                containsProtectiveBlockReversalPossibility(
+                        text
+                )
+        ) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "PROTECTIVE_BLOCK_REVERSAL_"
+                    + "POSSIBILITY_PRESENT",
+                    0.85,
+                    "a completed protective block may be reversed later"
+            );
+        }
+
+        if (
                 containsExternalInterventionWithRetryIntent(
                         text
                 )
@@ -722,6 +755,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         return RecoveryRiskPreparationMetadata.none();
+    }
+
+    private boolean containsProtectiveBlockReversalPossibility(
+            String text
+    ) {
+        boolean protectiveBlockCompleted = containsAny(
+                text,
+                "계정을 막았",
+                "계정을 차단했",
+                "계정을 잠갔",
+                "계정을 막고",
+                "계정을 차단하고"
+        );
+
+        boolean reversalPossibility = containsAny(
+                text,
+                "내일 다시 풀 수도",
+                "다시 풀 수도",
+                "나중에 다시 풀 수도",
+                "다시 해제할 수도",
+                "내일 다시 해제할 수도"
+        );
+
+        boolean reversalNegated = containsAny(
+                text,
+                "다시 풀 생각은 없",
+                "다시는 풀지 않을",
+                "다시 해제하지 않을",
+                "계속 막아둘"
+        );
+
+        return protectiveBlockCompleted
+                && reversalPossibility
+                && !reversalNegated;
     }
 
     private boolean containsExternalInterventionWithRetryIntent(

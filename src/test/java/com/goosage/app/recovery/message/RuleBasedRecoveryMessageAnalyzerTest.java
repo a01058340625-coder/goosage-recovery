@@ -842,4 +842,95 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
 
+
+    @Test
+    void detectsProtectiveBlockReversalPossibility() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려 했는데 가족이 "
+                        + "휴대폰을 가져가서 이체하지 못했고, "
+                        + "이후 내가 계정을 막았지만 내일 "
+                        + "다시 풀 수도 있을 것 같아."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_"
+                        + "POSSIBILITY_PRESENT"
+                );
+    }
+
+    @Test
+    void doesNotDetectBlockReversalWithoutPossibility() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "이후 내가 계정을 막고 "
+                        + "다시 접속하지 못하게 했어."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotDetectExplicitlyNegatedBlockReversal() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계정을 막았고 다시 풀 생각은 없어."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotDetectBlockReversalWithoutCompletedBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "내일 계정을 막을지 다시 풀지 "
+                        + "생각해볼 거야."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatThirdPartyBlockReversalAsUserRisk() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "친구가 계정을 막았지만 내일 "
+                        + "다시 풀 수도 있다고 말했어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+
 }
