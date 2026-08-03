@@ -393,6 +393,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (
                 containsFundingSelfReversal(text)
                 || containsAbortedFundingSelfBlock(text)
+                || containsAnxietyStoppedFundingBlock(text)
         ) {
             return true;
         }
@@ -490,6 +491,41 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return fundingInitiated
                 && selfReversal
                 && fundingNotCompleted;
+    }
+
+    private boolean containsAnxietyStoppedFundingBlock(
+            String text
+    ) {
+        boolean fundingInitiated = containsAny(
+                text,
+                "계좌에 돈을 옮기려다가",
+                "계좌로 돈을 옮기려다가",
+                "이체하려다가",
+                "송금하려다가",
+                "충전하려다가"
+        );
+
+        boolean anxietyTriggered = containsAny(
+                text,
+                "불안해져서",
+                "불안해서",
+                "겁이 나서",
+                "무서워져서"
+        );
+
+        boolean fundingStopped = containsAny(
+                text,
+                "이체를 멈췄",
+                "이체를 중단했",
+                "송금을 멈췄",
+                "송금을 중단했",
+                "충전을 멈췄",
+                "충전을 중단했"
+        );
+
+        return fundingInitiated
+                && anxietyTriggered
+                && fundingStopped;
     }
 
     private boolean containsRelapseSignal(String text) {
@@ -764,16 +800,36 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean fundingStarted = containsAny(
                 text,
                 "\uacc4\uc88c\uc5d0 \ub3c8\uc744 \ub123\uc73c\ub824\ub2e4\uac00",
+                "계좌에 돈을 옮기려다가",
+                "계좌로 돈을 옮기려다가",
+                "이체하려다가",
                 "\ucda9\uc804\ud558\ub824\ub2e4\uac00",
                 "\ucda9\uc804\uc744 \ud558\ub824\ub2e4\uac00"
         );
+
+        boolean externallyStopped = containsAny(
+                text,
+                "오류가 나서",
+                "오류 때문에",
+                "시간이 없어서",
+                "한도가 걸려서",
+                "은행 점검 때문에"
+        );
+
+        if (externallyStopped) {
+            return false;
+        }
 
         boolean fundingCancelled = containsAny(
                 text,
                 "\ucda9\uc804\uc744 \ucde8\uc18c\ud588",
                 "\ucda9\uc804\uc744 \ucde8\uc18c\ud558\uace0",
                 "\ucda9\uc804 \uc804\uc5d0 \uba48\ucd84",
-                "\uc911\uac04\uc5d0 \uba48\ucd94\uace0"
+                "\uc911\uac04\uc5d0 \uba48\ucd94\uace0",
+                "이체를 멈췄",
+                "이체를 중단했",
+                "송금을 멈췄",
+                "송금을 중단했"
         );
 
         return fundingStarted && fundingCancelled;

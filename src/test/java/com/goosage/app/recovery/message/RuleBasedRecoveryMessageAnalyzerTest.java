@@ -658,4 +658,93 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
 
+
+    @Test
+    void detectsAnxietyStoppedFundingAsBlockOnly() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려다가 불안해져서 "
+                        + "이체를 멈췄지만, 내일은 다시 "
+                        + "옮길 수도 있을 것 같아."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo("FUNDING_STARTED_THEN_CANCELLED");
+    }
+
+    @Test
+    void doesNotTreatTransferErrorAsFundingCancellation() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려 했지만 "
+                        + "오류가 나서 이체가 중단됐어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatTimeLimitAsFundingCancellation() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려다가 "
+                        + "시간이 없어서 이체를 멈췄어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotPromoteAnxietyStopToRecoveryAction() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "이체하려다가 불안해서 "
+                        + "이체를 중단했어."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+    }
+
+    @Test
+    void doesNotTreatThirdPartyAnxietyStopAsUserSignal() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "친구가 계좌에 돈을 옮기려다가 "
+                        + "불안해서 이체를 멈췄다고 말했어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+
 }
