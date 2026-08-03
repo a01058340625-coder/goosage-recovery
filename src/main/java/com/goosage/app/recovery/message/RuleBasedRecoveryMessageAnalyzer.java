@@ -683,6 +683,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
     private RecoveryRiskPreparationMetadata
             resolveRiskPreparationMetadata(String text) {
 
+        if (
+                containsExternalInterventionWithRetryIntent(
+                        text
+                )
+        ) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "FUNDING_INTERRUPTED_BY_EXTERNAL_"
+                    + "INTERVENTION_WITH_RETRY_INTENT",
+                    0.90,
+                    "funding was interrupted by external intervention "
+                    + "while explicit retry intent remained"
+            );
+        }
+
         if (containsFundingStartedThenCancelled(text)) {
             return RecoveryRiskPreparationMetadata.detected(
                     "FUNDING_STARTED_THEN_CANCELLED",
@@ -708,6 +722,59 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         return RecoveryRiskPreparationMetadata.none();
+    }
+
+    private boolean containsExternalInterventionWithRetryIntent(
+            String text
+    ) {
+        boolean fundingIntent = containsAny(
+                text,
+                "계좌에 돈을 옮기려 했",
+                "계좌로 돈을 옮기려 했",
+                "이체하려 했",
+                "송금하려 했",
+                "충전하려 했"
+        );
+
+        boolean externalIntervention = containsAny(
+                text,
+                "가족이 휴대폰을 가져가서",
+                "가족이 휴대폰을 빼앗아서",
+                "휴대폰을 가져가서",
+                "휴대폰을 빼앗아서",
+                "가족이 막아서"
+        );
+
+        boolean fundingNotCompleted = containsAny(
+                text,
+                "이체하지 못했",
+                "송금하지 못했",
+                "충전하지 못했",
+                "돈을 옮기지 못했"
+        );
+
+        boolean retryIntent = containsAny(
+                text,
+                "내일 다시 시도할 생각",
+                "다시 시도할 생각",
+                "나중에 다시 시도할 생각",
+                "내일 다시 옮길 생각",
+                "다시 옮길 생각"
+        );
+
+        boolean retryNegated = containsAny(
+                text,
+                "다시 시도하지 않을",
+                "다시는 시도하지 않을",
+                "다시 옮기지 않을",
+                "이제 그만둘"
+        );
+
+        return fundingIntent
+                && externalIntervention
+                && fundingNotCompleted
+                && retryIntent
+                && !retryNegated;
     }
 
     private boolean containsFundingCompletedWithBetNegation(

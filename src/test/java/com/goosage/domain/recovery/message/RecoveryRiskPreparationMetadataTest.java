@@ -23,7 +23,8 @@ class RecoveryRiskPreparationMetadataTest {
         for (String type : new String[] {
                 "FUNDING_COMPLETED_BET_NEGATED",
                 "FUNDING_COMPLETED_FUTURE_INTENT_PRESENT",
-                "FUNDING_STARTED_THEN_CANCELLED"
+                "FUNDING_STARTED_THEN_CANCELLED",
+                "FUNDING_INTERRUPTED_BY_EXTERNAL_INTERVENTION_WITH_RETRY_INTENT"
         }) {
             RecoveryRiskPreparationMetadata metadata =
                     RecoveryRiskPreparationMetadata.detected(

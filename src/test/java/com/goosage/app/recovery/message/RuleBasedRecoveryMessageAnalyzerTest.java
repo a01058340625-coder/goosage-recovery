@@ -747,4 +747,99 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
 
+
+    @Test
+    void detectsExternalInterventionRetryIntentRiskPreparation() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려 했는데 "
+                        + "가족이 휴대폰을 가져가서 "
+                        + "이체하지 못했고, 내일 다시 "
+                        + "시도할 생각이야."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "FUNDING_INTERRUPTED_BY_EXTERNAL_"
+                        + "INTERVENTION_WITH_RETRY_INTENT"
+                );
+    }
+
+    @Test
+    void doesNotDetectExternalInterventionWithoutRetryIntent() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "가족이 휴대폰을 가져가서 "
+                        + "이체하지 못했어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotDetectExternalInterventionAfterAbandonment() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "가족이 휴대폰을 가져가서 "
+                        + "이체하지 못했고, 이제 다시 "
+                        + "시도하지 않을 거야."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void preservesSelfCancelledFundingSubtype() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "계좌에 돈을 옮기려다가 "
+                        + "불안해져서 이체를 멈췄어."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo("FUNDING_STARTED_THEN_CANCELLED");
+    }
+
+    @Test
+    void doesNotTreatThirdPartyExternalInterventionAsUserRisk() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "친구가 가족에게 휴대폰을 빼앗겨 "
+                        + "이체하지 못했고 내일 다시 "
+                        + "시도할 생각이라고 말했어."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+
 }
