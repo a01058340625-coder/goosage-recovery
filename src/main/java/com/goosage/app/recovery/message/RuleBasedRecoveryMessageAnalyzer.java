@@ -280,6 +280,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return firstIndex;
     }
 
+    private int lastIndexOfAny(String text, String... candidates) {
+        int lastIndex = -1;
+
+        for (String candidate : candidates) {
+            int index = text.lastIndexOf(candidate);
+
+            if (index > lastIndex) {
+                lastIndex = index;
+            }
+        }
+
+        return lastIndex;
+    }
+
     private String extractCurrentContextAfterLongPast(
             String text
     ) {
@@ -802,6 +816,36 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsRelapseMinimization;
     }
 
+    private boolean isSelfExitLaterThanProtectiveBlock(
+            String text
+    ) {
+        int protectiveBlockIndex = lastIndexOfAny(
+                text,
+                "\uacc4\uc815\uc744 \ub9c9\uc558",
+                "\uacc4\uc815\uc744 \ucc28\ub2e8\ud588",
+                "\uacc4\uc815\uc744 \uc7a0\uac00",
+                "\uacc4\uc815\uc744 \ub9c9\uace0",
+                "\uacc4\uc815\uc744 \ucc28\ub2e8\ud558\uace0"
+        );
+
+        int selfExitIndex = lastIndexOfAny(
+                text,
+                "\ubb34\uc11c\uc6cc\uc838\uc11c \uadf8\ub0e5 \ub098\uc654",
+                "\ubb34\uc11c\uc6cc\uc838\uc11c \ub098\uc654",
+                "\ubb34\uc11c\uc6cc\uc11c \uadf8\ub0e5 \ub098\uc654",
+                "\ubb34\uc11c\uc6cc\uc11c \ub098\uc654",
+                "\uac81\uc774 \ub098\uc11c \uadf8\ub0e5 \ub098\uc654",
+                "\uac81\uc774 \ub098\uc11c \ub098\uc654",
+                "\ubd88\uc548\ud574\uc838\uc11c \uadf8\ub0e5 \ub098\uc654",
+                "\ubd88\uc548\ud574\uc838\uc11c \ub098\uc654",
+                "\uc2a4\uc2a4\ub85c \ub098\uc654",
+                "\uadf8\ub0e5 \ub098\uc654"
+        );
+
+        return protectiveBlockIndex >= 0
+                && selfExitIndex > protectiveBlockIndex;
+    }
+
     private RecoveryRiskPreparationMetadata
             resolveRiskPreparationMetadata(String text) {
 
@@ -814,11 +858,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
             );
         }
 
-        if (
+        boolean protectiveBlockReversal =
                 containsProtectiveBlockReversalPossibility(
                         text
-                )
+                );
+
+        boolean selfExitBeforeWager =
+                containsReentrySelfExitBeforeWager(text);
+
+        if (
+                protectiveBlockReversal
+                && selfExitBeforeWager
+                && isSelfExitLaterThanProtectiveBlock(text)
         ) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "REENTRY_COMPLETED_THEN_"
+                    + "SELF_EXIT_BEFORE_WAGER",
+                    0.85,
+                    "site reentry and self-exit occurred after "
+                    + "the earlier protective block reversal risk"
+            );
+        }
+
+        if (protectiveBlockReversal) {
             return RecoveryRiskPreparationMetadata.detected(
                     "PROTECTIVE_BLOCK_REVERSAL_"
                     + "POSSIBILITY_PRESENT",
@@ -827,7 +889,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
             );
         }
 
-        if (containsReentrySelfExitBeforeWager(text)) {
+        if (selfExitBeforeWager) {
             return RecoveryRiskPreparationMetadata.detected(
                     "REENTRY_COMPLETED_THEN_"
                     + "SELF_EXIT_BEFORE_WAGER",

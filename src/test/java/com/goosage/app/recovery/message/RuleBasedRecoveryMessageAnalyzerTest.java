@@ -1459,4 +1459,35 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void prioritizesLaterSelfExitRiskAfterEarlierBlockReversal() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc624\ub298 \uacc4\uc815\uc744 \ub9c9\uc558\uc9c0\ub9cc "
+                        + "\ub0b4\uc77c \ub2e4\uc2dc \ud480 \uc218\ub3c4 "
+                        + "\uc788\uc744 \uac83 \uac19\uc558\uc5b4. "
+                        + "\uadf8\ub7f0\ub370 \uacb0\uad6d \uacc4\uc815\uc744 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc0ac\uc774\ud2b8\uc5d0 "
+                        + "\ub4e4\uc5b4\uac14\ub2e4\uac00 \ub3c8\uc744 \uac78\uae30 "
+                        + "\uc9c1\uc804\uc5d0 \ubb34\uc11c\uc6cc\uc11c \ub098\uc654\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "REENTRY_COMPLETED_THEN_"
+                        + "SELF_EXIT_BEFORE_WAGER"
+                );
+    }
+
 }
