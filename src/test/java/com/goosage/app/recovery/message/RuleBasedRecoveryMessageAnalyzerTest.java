@@ -1305,4 +1305,127 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void preservesSelfExitBlockWhenAccountReblockIsNegated() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\ub2e4\uac00 "
+                        + "\ub3c8\uc744 \uac78\uae30 \uc9c1\uc804\uc5d0 "
+                        + "\ubb34\uc11c\uc6cc\uc11c \ub098\uc654\uace0, "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uc9c0\ub294 \uc54a\uae30\ub85c \ud588\uc9c0\ub9cc "
+                        + "\uacc4\uc815\uc740 \uc544\uc9c1 \ub9c9\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "REENTRY_COMPLETED_THEN_"
+                        + "SELF_EXIT_BEFORE_WAGER"
+                );
+    }
+
+    @Test
+    void keepsAccountNotBlockedAloneAsUnsupported() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc740 \uc544\uc9c1 \ub9c9\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+    }
+
+    @Test
+    void preservesSelfExitBlockWithoutAccountNegation() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\ub2e4\uac00 "
+                        + "\ub3c8\uc744 \uac78\uae30 \uc9c1\uc804\uc5d0 "
+                        + "\ubb34\uc11c\uc6cc\uc11c \ub098\uc654\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+    }
+
+    @Test
+    void preservesCompletedWagerWhenAccountReblockIsNegated() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc740 \uc544\uc9c1 \ub9c9\uc9c0 \uc54a\uc558\uc9c0\ub9cc "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00\uc11c "
+                        + "\ub3c8\uc744 \uac78\uc5c8\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
+    @Test
+    void doesNotTreatExternalExitWithAccountNegationAsBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\uc9c0\ub9cc "
+                        + "\uac00\uc871\uc774 \ud734\ub300\ud3f0\uc744 \uac00\uc838\uac00\uc11c "
+                        + "\ub098\uc654\uace0 \uacc4\uc815\uc740 \uc544\uc9c1 "
+                        + "\ub9c9\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+    }
+
+    @Test
+    void doesNotTreatThirdPartySelfExitAccountNegationAsUserBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 \uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\ub2e4\uac00 "
+                        + "\ub3c8\uc744 \uac78\uae30 \uc9c1\uc804\uc5d0 "
+                        + "\ubb34\uc11c\uc6cc\uc11c \ub098\uc654\uace0 "
+                        + "\uacc4\uc815\uc740 \uc544\uc9c1 \ub9c9\uc9c0 "
+                        + "\uc54a\uc558\ub2e4\uace0 \ub9d0\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+    }
+
+    @Test
+    void preservesCompletedAccountBlockOnly() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub9c9\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+    }
+
 }

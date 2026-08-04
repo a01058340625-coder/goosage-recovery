@@ -401,12 +401,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return false;
         }
 
-        if (containsAny(
-                text,
-                "차단하지 않았",
-                "막지 않았",
-                "중단하지 않았"
-        )) {
+        boolean reentrySelfExitBeforeWager =
+                containsReentrySelfExitBeforeWager(text);
+
+        if (
+                containsAny(
+                        text,
+                        "???? ??",
+                        "?? ??",
+                        "???? ??"
+                )
+                && !reentrySelfExitBeforeWager
+        ) {
             return false;
         }
 
@@ -414,7 +420,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 containsFundingSelfReversal(text)
                 || containsAbortedFundingSelfBlock(text)
                 || containsAnxietyStoppedFundingBlock(text)
-                || containsReentrySelfExitBeforeWager(text)
+                || reentrySelfExitBeforeWager
         ) {
             return true;
         }
