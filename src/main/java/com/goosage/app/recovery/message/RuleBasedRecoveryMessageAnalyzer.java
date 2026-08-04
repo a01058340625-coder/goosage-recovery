@@ -556,8 +556,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "사이트에 들어가긴 했지만",
                 "사이트에 들어갔지만",
+                "사이트에 들어갔다가",
                 "사이트로 들어가긴 했지만",
-                "사이트로 들어갔지만"
+                "사이트로 들어갔지만",
+                "사이트로 들어갔다가"
         );
 
         boolean wagerImminent = containsAny(
@@ -572,6 +574,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "무서워져서 그냥 나왔",
                 "무서워져서 나왔",
+                "무서워서 그냥 나왔",
+                "무서워서 나왔",
                 "겁이 나서 그냥 나왔",
                 "겁이 나서 나왔",
                 "불안해져서 그냥 나왔",
@@ -602,6 +606,34 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && selfExitTriggered
                 && !externalInterruption
                 && !wagerCompleted;
+    }
+
+    private boolean containsReentrySelfExitWithRetryIntent(
+            String text
+    ) {
+        boolean retryIntent = containsAny(
+                text,
+                "조금 진정되면 다시 들어갈 생각",
+                "진정되면 다시 들어갈 생각",
+                "조금 후에 다시 들어갈 생각",
+                "나중에 다시 들어갈 생각",
+                "다시 들어갈 생각이야",
+                "다시 들어갈 생각이 있어",
+                "다시 접속할 생각"
+        );
+
+        boolean retryNegated = containsAny(
+                text,
+                "다시 들어갈 생각은 없어",
+                "다시는 들어가지 않을",
+                "다시 접속할 생각은 없어",
+                "이제 다시 하지 않을",
+                "다시 들어가지 않기로"
+        );
+
+        return containsReentrySelfExitBeforeWager(text)
+                && retryIntent
+                && !retryNegated;
     }
 
     private boolean containsRelapseSignal(String text) {
@@ -766,6 +798,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
     private RecoveryRiskPreparationMetadata
             resolveRiskPreparationMetadata(String text) {
+
+        if (containsReentrySelfExitWithRetryIntent(text)) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "REENTRY_SELF_EXIT_WITH_RETRY_INTENT",
+                    0.90,
+                    "the user self-exited before wagering "
+                    + "but retained explicit retry intent"
+            );
+        }
 
         if (containsReentrySelfExitBeforeWager(text)) {
             return RecoveryRiskPreparationMetadata.detected(

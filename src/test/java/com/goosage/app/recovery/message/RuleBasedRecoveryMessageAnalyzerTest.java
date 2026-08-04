@@ -1151,4 +1151,158 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsSelfExitWithRetryIntentAsAttemptAndBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\ub2e4\uac00 "
+                        + "\ub3c8\uc744 \uac78\uae30 \uc9c1\uc804\uc5d0 "
+                        + "\ubb34\uc11c\uc6cc\uc11c \ub098\uc654\uc9c0\ub9cc, "
+                        + "\uc870\uae08 \uc9c4\uc815\ub418\uba74 "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac08 \uc0dd\uac01\uc774\uc57c."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "REENTRY_SELF_EXIT_WITH_RETRY_INTENT"
+                );
+    }
+
+    @Test
+    void preservesSelfExitWithoutRetryIntentBoundary() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00\uae34 \ud588\uc9c0\ub9cc, "
+                        + "\ub3c8\uc744 \uac78\uae30 \uc9c1\uc804\uc5d0 "
+                        + "\ubb34\uc11c\uc6cc\uc838\uc11c \uadf8\ub0e5 \ub098\uc654\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "REENTRY_COMPLETED_THEN_"
+                        + "SELF_EXIT_BEFORE_WAGER"
+                );
+    }
+
+    @Test
+    void doesNotTreatRetryIntentWithoutFearSelfExitAsBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\uc9c0\ub9cc "
+                        + "\uc7a0\uc2dc \ub098\uc654\uace0, "
+                        + "\uc870\uae08 \ud6c4\uc5d0 \ub2e4\uc2dc "
+                        + "\ub4e4\uc5b4\uac08 \uc0dd\uac01\uc774\uc57c."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void preservesCompletedWagerBoundaryWithRetryContext() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00\uc11c "
+                        + "\ub3c8\uc744 \uac78\uc5c8\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatExternalInterruptionWithRetryAsSelfBlock() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\uc9c0\ub9cc "
+                        + "\uac00\uc871\uc774 \ud734\ub300\ud3f0\uc744 \uac00\uc838\uac00\uc11c "
+                        + "\ub098\uc654\uace0, \uc870\uae08 \ud6c4\uc5d0 "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac08 \uc0dd\uac01\uc774\uc57c."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatThirdPartySelfExitRetryAsUserSignal() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 \uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\ub2e4\uac00 "
+                        + "\ub3c8\uc744 \uac78\uae30 \uc9c1\uc804\uc5d0 "
+                        + "\ubb34\uc11c\uc6cc\uc11c \ub098\uc654\uc9c0\ub9cc "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac08 \uc0dd\uac01\uc774\ub77c\uace0 "
+                        + "\ub9d0\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void preservesExplicitNoRetryAsSelfExitOnlyBoundary() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub2e4\uc2dc \ud480\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\ub2e4\uac00 "
+                        + "\ub3c8\uc744 \uac78\uae30 \uc9c1\uc804\uc5d0 "
+                        + "\ubb34\uc11c\uc6cc\uc11c \ub098\uc654\uace0, "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac08 \uc0dd\uac01\uc740 \uc5c6\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "REENTRY_COMPLETED_THEN_"
+                        + "SELF_EXIT_BEFORE_WAGER"
+                );
+    }
+
 }
