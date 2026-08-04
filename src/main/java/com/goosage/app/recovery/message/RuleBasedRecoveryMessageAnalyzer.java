@@ -414,6 +414,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 containsFundingSelfReversal(text)
                 || containsAbortedFundingSelfBlock(text)
                 || containsAnxietyStoppedFundingBlock(text)
+                || containsReentrySelfExitBeforeWager(text)
         ) {
             return true;
         }
@@ -546,6 +547,61 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return fundingInitiated
                 && anxietyTriggered
                 && fundingStopped;
+    }
+
+    private boolean containsReentrySelfExitBeforeWager(
+            String text
+    ) {
+        boolean siteReentryCompleted = containsAny(
+                text,
+                "사이트에 들어가긴 했지만",
+                "사이트에 들어갔지만",
+                "사이트로 들어가긴 했지만",
+                "사이트로 들어갔지만"
+        );
+
+        boolean wagerImminent = containsAny(
+                text,
+                "돈을 걸기 직전에",
+                "베팅하기 직전에",
+                "베팅을 하기 직전에",
+                "결제하기 직전에"
+        );
+
+        boolean selfExitTriggered = containsAny(
+                text,
+                "무서워져서 그냥 나왔",
+                "무서워져서 나왔",
+                "겁이 나서 그냥 나왔",
+                "겁이 나서 나왔",
+                "불안해져서 그냥 나왔",
+                "불안해져서 나왔",
+                "스스로 나왔",
+                "그냥 나왔"
+        );
+
+        boolean externalInterruption = containsAny(
+                text,
+                "가족이 휴대폰을 가져가",
+                "휴대폰을 빼앗",
+                "오류가 나서",
+                "접속이 끊겨",
+                "시간이 없어서",
+                "강제로 나가"
+        );
+
+        boolean wagerCompleted = containsAny(
+                text,
+                "돈을 걸었",
+                "베팅했",
+                "결제했"
+        );
+
+        return siteReentryCompleted
+                && wagerImminent
+                && selfExitTriggered
+                && !externalInterruption
+                && !wagerCompleted;
     }
 
     private boolean containsRelapseSignal(String text) {
@@ -710,6 +766,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
     private RecoveryRiskPreparationMetadata
             resolveRiskPreparationMetadata(String text) {
+
+        if (containsReentrySelfExitBeforeWager(text)) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "REENTRY_COMPLETED_THEN_"
+                    + "SELF_EXIT_BEFORE_WAGER",
+                    0.85,
+                    "site reentry was completed but the user "
+                    + "self-exited before placing a wager"
+            );
+        }
 
         if (
                 containsProtectiveBlockReversalPossibility(
