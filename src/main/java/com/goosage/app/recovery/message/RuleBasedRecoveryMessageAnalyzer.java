@@ -814,16 +814,6 @@ public class RuleBasedRecoveryMessageAnalyzer {
             );
         }
 
-        if (containsReentrySelfExitBeforeWager(text)) {
-            return RecoveryRiskPreparationMetadata.detected(
-                    "REENTRY_COMPLETED_THEN_"
-                    + "SELF_EXIT_BEFORE_WAGER",
-                    0.85,
-                    "site reentry was completed but the user "
-                    + "self-exited before placing a wager"
-            );
-        }
-
         if (
                 containsProtectiveBlockReversalPossibility(
                         text
@@ -834,6 +824,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
                     + "POSSIBILITY_PRESENT",
                     0.85,
                     "a completed protective block may be reversed later"
+            );
+        }
+
+        if (containsReentrySelfExitBeforeWager(text)) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "REENTRY_COMPLETED_THEN_"
+                    + "SELF_EXIT_BEFORE_WAGER",
+                    0.85,
+                    "site reentry was completed but the user "
+                    + "self-exited before placing a wager"
             );
         }
 
