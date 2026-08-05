@@ -872,6 +872,118 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
     @Test
+    void detectsProtectiveBlockReversalPreparationFromContactLookup() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub9c9\uc544\ub193\uc740 "
+                        + "\ub4a4\uc5d0\ub294 \ub2e4\uc2dc "
+                        + "\ub4e4\uc5b4\uac08 \uc0dd\uac01\uc774 "
+                        + "\uc5c6\uc5c8\ub294\ub370, \uc624\ub298 "
+                        + "\uac11\uc790\uae30 \ud574\uc81c\ud558\uace0 "
+                        + "\uc2f6\ub2e4\ub294 \uc0dd\uac01\uc774 "
+                        + "\ub4e4\uc5b4\uc11c \uace0\uac1d\uc13c\ud130 "
+                        + "\ubc88\ud638\uae4c\uc9c0 "
+                        + "\ucc3e\uc544\ubd24\uc9c0\ub9cc "
+                        + "\uc2e4\uc81c\ub85c \ud574\uc81c "
+                        + "\uc694\uccad\uc740 \ud558\uc9c0 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_"
+                        + "PREPARATION_PRESENT"
+                );
+    }
+
+    @Test
+    void doesNotDetectBlockReversalPreparationWhenLookupIsNegated() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub9c9\uc558\uace0 "
+                        + "\ud574\uc81c\ud560 \uc0dd\uac01\ub3c4 "
+                        + "\uc5c6\uc5b4\uc11c \uace0\uac1d\uc13c\ud130 "
+                        + "\ubc88\ud638\ub97c \ucc3e\uc544\ubcf4\uc9c0 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatProtectiveContactLookupAsReversalPreparation() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815\uc744 "
+                        + "\ub9c9\uc73c\ub824\uace0 "
+                        + "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub97c "
+                        + "\ucc3e\uc544\uc11c \ucc28\ub2e8 "
+                        + "\uc694\uccad\uc744 \uc644\ub8cc\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatThirdPartyContactLookupAsUserRisk() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 \uacc4\uc815\uc744 "
+                        + "\ub9c9\uc544\ub193\uace0\ub3c4 "
+                        + "\ud574\uc81c\ud558\uace0 \uc2f6\uc5b4\uc11c "
+                        + "\uace0\uac1d\uc13c\ud130 "
+                        + "\ubc88\ud638\uae4c\uc9c0 "
+                        + "\ucc3e\uc544\ubd24\ub2e4\uace0 "
+                        + "\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatUnrelatedCustomerCenterLookupAsRecoveryRisk() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ud1b5\uc2e0 \uc694\uae08\uc81c\ub97c "
+                        + "\ubc14\uafb8\ub824\uace0 "
+                        + "\uace0\uac1d\uc13c\ud130 "
+                        + "\ubc88\ud638\ub97c "
+                        + "\ucc3e\uc544\ubd24\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
     void doesNotDetectBlockReversalWithoutPossibility() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(

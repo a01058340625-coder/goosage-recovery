@@ -858,6 +858,21 @@ public class RuleBasedRecoveryMessageAnalyzer {
             );
         }
 
+        boolean protectiveBlockReversalPreparation =
+                containsProtectiveBlockReversalPreparation(
+                        text
+                );
+
+        if (protectiveBlockReversalPreparation) {
+            return RecoveryRiskPreparationMetadata.detected(
+                    "PROTECTIVE_BLOCK_REVERSAL_"
+                    + "PREPARATION_PRESENT",
+                    0.85,
+                    "a completed protective block was followed "
+                    + "by concrete account-unblock contact lookup"
+            );
+        }
+
         boolean protectiveBlockReversal =
                 containsProtectiveBlockReversalPossibility(
                         text
@@ -938,6 +953,67 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         return RecoveryRiskPreparationMetadata.none();
+    }
+
+    private boolean containsProtectiveBlockReversalPreparation(
+            String text
+    ) {
+        boolean protectiveBlockCompleted = containsAny(
+                text,
+                "\uacc4\uc815\uc744 \ub9c9\uc558",
+                "\uacc4\uc815\uc744 \ucc28\ub2e8\ud588",
+                "\uacc4\uc815\uc744 \uc7a0\uac40",
+                "\uacc4\uc815\uc744 \ub9c9\uace0",
+                "\uacc4\uc815\uc744 \ucc28\ub2e8\ud558\uace0",
+                "\uacc4\uc815\uc744 \ub9c9\uc544\ub193"
+        );
+
+        boolean reversalIntent = containsAny(
+                text,
+                "\ud574\uc81c\ud558\uace0 \uc2f6",
+                "\ub2e4\uc2dc \ud480\uace0 \uc2f6",
+                "\ub2e4\uc2dc \ud574\uc81c\ud558\uace0 \uc2f6",
+                "\ud480 \uc0dd\uac01\uc774 \ub4e4",
+                "\ud574\uc81c\ud560 \uc0dd\uac01\uc774 \ub4e4"
+        );
+
+        boolean contactLookupCompleted = containsAny(
+                text,
+                "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\uae4c\uc9c0 "
+                        + "\ucc3e\uc544\ubd24",
+                "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub97c "
+                        + "\ucc3e\uc544\ubd24",
+                "\uace0\uac1d\uc13c\ud130 \uc5f0\ub77d\ucc98\ub97c "
+                        + "\ucc3e\uc544\ubd24",
+                "\ud574\uc81c \ubb38\uc758\ud560 \ubc88\ud638\ub97c "
+                        + "\ucc3e\uc544\ubd24"
+        );
+
+        boolean lookupNegated = containsAny(
+                text,
+                "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub97c "
+                        + "\ucc3e\uc544\ubcf4\uc9c0 \uc54a",
+                "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub294 "
+                        + "\ucc3e\uc9c0 \uc54a",
+                "\uc5f0\ub77d\ucc98\ub97c \ucc3e\uc9c0 \uc54a"
+        );
+
+        boolean protectivePurpose = containsAny(
+                text,
+                "\ub9c9\uc73c\ub824\uace0 "
+                        + "\uace0\uac1d\uc13c\ud130",
+                "\ucc28\ub2e8\ud558\ub824\uace0 "
+                        + "\uace0\uac1d\uc13c\ud130",
+                "\ucc28\ub2e8 \uc694\uccad\uc744 \uc644\ub8cc",
+                "\uacc4\uc815\uc744 \ub9c9\uc544\ub2ec\ub77c\uace0 "
+                        + "\uc694\uccad"
+        );
+
+        return protectiveBlockCompleted
+                && reversalIntent
+                && contactLookupCompleted
+                && !lookupNegated
+                && !protectivePurpose;
     }
 
     private boolean containsProtectiveBlockReversalPossibility(
