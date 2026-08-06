@@ -446,6 +446,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "창을 닫",
                 "계정을 잠",
                 "계정을 막",
+                "계정은 이미 막아놓",
                 "앱을 지",
                 "휴대폰을 내려놓",
                 "마지막에 멈췄",
@@ -965,7 +966,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uacc4\uc815\uc744 \uc7a0\uac40",
                 "\uacc4\uc815\uc744 \ub9c9\uace0",
                 "\uacc4\uc815\uc744 \ucc28\ub2e8\ud558\uace0",
-                "\uacc4\uc815\uc744 \ub9c9\uc544\ub193"
+                "\uacc4\uc815\uc744 \ub9c9\uc544\ub193",
+                "\uacc4\uc815\uc740 \uc774\ubbf8 \ub9c9\uc544\ub193"
         );
 
         boolean reversalIntent = containsAny(
@@ -986,7 +988,13 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uace0\uac1d\uc13c\ud130 \uc5f0\ub77d\ucc98\ub97c "
                         + "\ucc3e\uc544\ubd24",
                 "\ud574\uc81c \ubb38\uc758\ud560 \ubc88\ud638\ub97c "
-                        + "\ucc3e\uc544\ubd24"
+                        + "\ucc3e\uc544\ubd24",
+                "\ud574\uc81c\ud558\ub294 \ubc29\ubc95\uae4c\uc9c0 "
+                        + "\uac80\uc0c9\ud574\ubd24",
+                "\ud574\uc81c \ubc29\ubc95\uc744 "
+                        + "\uac80\uc0c9\ud574\ubd24",
+                "\ud574\uc81c \ubc29\ubc95\uae4c\uc9c0 "
+                        + "\uac80\uc0c9\ud574\ubd24"
         );
 
         boolean lookupNegated = containsAny(
@@ -995,7 +1003,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         + "\ucc3e\uc544\ubcf4\uc9c0 \uc54a",
                 "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub294 "
                         + "\ucc3e\uc9c0 \uc54a",
-                "\uc5f0\ub77d\ucc98\ub97c \ucc3e\uc9c0 \uc54a"
+                "\uc5f0\ub77d\ucc98\ub97c \ucc3e\uc9c0 \uc54a",
+                "\ud574\uc81c \ubc29\ubc95\uc744 \uac80\uc0c9\ud558\uc9c0 \uc54a",
+                "\ud574\uc81c\ud558\ub294 \ubc29\ubc95\uc744 "
+                        + "\uac80\uc0c9\ud558\uc9c0 \uc54a"
         );
 
         boolean protectivePurpose = containsAny(
@@ -1006,7 +1017,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         + "\uace0\uac1d\uc13c\ud130",
                 "\ucc28\ub2e8 \uc694\uccad\uc744 \uc644\ub8cc",
                 "\uacc4\uc815\uc744 \ub9c9\uc544\ub2ec\ub77c\uace0 "
-                        + "\uc694\uccad"
+                        + "\uc694\uccad",
+                "\ub3c4\ubc15\uc744 \ub9c9\ub294 \ubc29\ubc95\uc744 \uac80\uc0c9",
+                "\uacc4\uc815\uc744 \ucc28\ub2e8\ud558\ub294 \ubc29\ubc95\uc744 "
+                        + "\uac80\uc0c9",
+                "\ucc28\ub2e8 \ubc29\ubc95\uc744 \uac80\uc0c9"
         );
 
         return protectiveBlockCompleted

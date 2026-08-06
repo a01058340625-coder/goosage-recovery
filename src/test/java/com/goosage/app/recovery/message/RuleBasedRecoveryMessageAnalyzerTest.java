@@ -1602,4 +1602,127 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsCompletedProtectiveBlockExpressionForValidation42() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815\uc740 \uc774\ubbf8 "
+                        + "\ub9c9\uc544\ub193\uc558\ub294\ub370 \uc624\ub298 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 "
+                        + "\ub4e4\uc5b4\uc11c \ud574\uc81c\ud558\ub294 "
+                        + "\ubc29\ubc95\uae4c\uc9c0 \uac80\uc0c9\ud574\ubd24\uc5b4. "
+                        + "\uadf8\ub798\ub3c4 \uc2e4\uc81c\ub85c \ud574\uc81c "
+                        + "\uc694\uccad\uc744 \ud558\uac70\ub098 \uc0ac\uc774\ud2b8\uc5d0 "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uc9c0\ub294 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+    }
+
+    @Test
+    void detectsUnblockMethodSearchAsReversalPreparationForValidation42() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815\uc740 \uc774\ubbf8 "
+                        + "\ub9c9\uc544\ub193\uc558\ub294\ub370 \uc624\ub298 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 "
+                        + "\ub4e4\uc5b4\uc11c \ud574\uc81c\ud558\ub294 "
+                        + "\ubc29\ubc95\uae4c\uc9c0 \uac80\uc0c9\ud574\ubd24\uc5b4. "
+                        + "\uadf8\ub798\ub3c4 \uc2e4\uc81c\ub85c \ud574\uc81c "
+                        + "\uc694\uccad\uc744 \ud558\uac70\ub098 \uc0ac\uc774\ud2b8\uc5d0 "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uc9c0\ub294 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_"
+                        + "PREPARATION_PRESENT"
+                );
+    }
+
+
+    @Test
+    void doesNotDetectNegatedUnblockMethodSearchForValidation42() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uacc4\uc815\uc744 \ub9c9\uc558\uace0 "
+                        + "\ub2e4\uc2dc \ud480 \uc0dd\uac01\ub3c4 "
+                        + "\uc5c6\uc5b4\uc11c \ud574\uc81c "
+                        + "\ubc29\ubc95\uc744 \uac80\uc0c9\ud558\uc9c0 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatProtectiveMethodSearchAsReversalForValidation42() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15\uc744 \ub9c9\ub294 "
+                        + "\ubc29\ubc95\uc744 \uac80\uc0c9\ud55c "
+                        + "\ub4a4 \uacc4\uc815\uc744 "
+                        + "\ub9c9\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatThirdPartyMethodSearchAsUserRiskForValidation42() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uce5c\uad6c\uac00 \ub3c4\ubc15 "
+                        + "\uacc4\uc815\uc744 \ub9c9\uc544\ub193\uace0\ub3c4 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc2f6\uc5b4\uc11c "
+                        + "\ud574\uc81c \ubc29\ubc95\uc744 "
+                        + "\uac80\uc0c9\ud588\ub2e4\uace0 \ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("THIRD_PARTY_CONTEXT");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
+    @Test
+    void doesNotTreatUnrelatedServiceMethodSearchAsRecoveryRiskForValidation42() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ud734\ub300\ud3f0 "
+                        + "\ubd80\uac00\uc11c\ube44\uc2a4\ub97c "
+                        + "\ud574\uc81c\ud558\ub294 \ubc29\ubc95\uc744 "
+                        + "\uac80\uc0c9\ud574\ubd24\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isFalse();
+        assertThat(result.signal()).isNull();
+        assertThat(result.holdReason())
+                .isEqualTo("NO_SUPPORTED_SIGNAL");
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
 }
