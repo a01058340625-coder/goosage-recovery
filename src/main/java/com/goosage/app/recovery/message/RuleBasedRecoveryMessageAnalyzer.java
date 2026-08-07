@@ -994,7 +994,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ud574\uc81c \ubc29\ubc95\uc744 "
                         + "\uac80\uc0c9\ud574\ubd24",
                 "\ud574\uc81c \ubc29\ubc95\uae4c\uc9c0 "
-                        + "\uac80\uc0c9\ud574\ubd24"
+                        + "\uac80\uc0c9\ud574\ubd24",
+                "\ud574\uc81c \ubb38\uc758 \ud654\uba74\uae4c\uc9c0 "
+                        + "\uc5f4\uc5b4\ubd24"
         );
 
         boolean lookupNegated = containsAny(
