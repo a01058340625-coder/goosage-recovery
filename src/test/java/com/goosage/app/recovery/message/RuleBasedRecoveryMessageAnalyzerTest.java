@@ -1679,6 +1679,31 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
     @Test
+    void detectsUnblockApplicationFormCompletionAsPreparationForValidation44() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815\uc744 "
+                        + "\ub9c9\uc544\ub193\uc740 \ub4a4 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc2f6\uc5b4\uc11c "
+                        + "\ud574\uc81c \uc2e0\uccad\uc11c\uae4c\uc9c0 "
+                        + "\uc791\uc131\ud588\uc9c0\ub9cc "
+                        + "\uc2e4\uc81c\ub85c \uc81c\ucd9c\ud558\uc9c0\ub294 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_"
+                        + "PREPARATION_PRESENT"
+                );
+    }
+
+    @Test
     void doesNotDetectNegatedInquiryScreenEntryForValidation43() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(
