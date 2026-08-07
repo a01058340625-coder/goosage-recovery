@@ -479,13 +479,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
-        return containsAny(
+        boolean recoveryPhoneCall =
+                containsAny(text, "전화했")
+                && !containsAny(text, "고객센터");
+
+        return recoveryPhoneCall
+                || containsAny(
                 text,
                 "산책했",
                 "산책을 나갔",
                 "밖으로 나갔",
                 "운동했",
-                "전화했",
                 "도움을 받았",
                 "이야기했",
                 "상담했",
@@ -998,7 +1002,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ud574\uc81c \ubb38\uc758 \ud654\uba74\uae4c\uc9c0 "
                         + "\uc5f4\uc5b4\ubd24",
                 "\ud574\uc81c \uc2e0\uccad\uc11c\uae4c\uc9c0 "
-                        + "\uc791\uc131\ud588"
+                        + "\uc791\uc131\ud588",
+                "\uace0\uac1d\uc13c\ud130\uc5d0 \uc804\ud654\ud588"
         );
 
         boolean lookupNegated = containsAny(

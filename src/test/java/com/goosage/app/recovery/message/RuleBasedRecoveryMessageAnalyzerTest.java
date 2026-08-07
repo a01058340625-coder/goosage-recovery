@@ -1679,6 +1679,43 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
     @Test
+    void doesNotTreatUnblockCallAttemptAsRecoveryActionForValidation45() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815\uc744 "
+                        + "\ub9c9\uc544\ub193\uc740 \ub4a4 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc2f6\uc5b4\uc11c "
+                        + "\uace0\uac1d\uc13c\ud130\uc5d0 \uc804\ud654\ud588\uc9c0\ub9cc "
+                        + "\uc5f0\uacb0\ub418\uae30 \uc804\uc5d0 \ub04a\uc5c8\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+    }
+
+    @Test
+    void detectsUnblockCallAttemptAsPreparationForValidation45() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815\uc744 "
+                        + "\ub9c9\uc544\ub193\uc740 \ub4a4 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc2f6\uc5b4\uc11c "
+                        + "\uace0\uac1d\uc13c\ud130\uc5d0 \uc804\ud654\ud588\uc9c0\ub9cc "
+                        + "\uc5f0\uacb0\ub418\uae30 \uc804\uc5d0 \ub04a\uc5c8\uc5b4."
+                );
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_"
+                        + "PREPARATION_PRESENT"
+                );
+    }
+
+    @Test
     void detectsUnblockApplicationFormCompletionAsPreparationForValidation44() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(
