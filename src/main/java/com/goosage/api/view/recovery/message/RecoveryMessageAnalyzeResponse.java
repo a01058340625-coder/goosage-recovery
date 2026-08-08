@@ -7,6 +7,7 @@ import com.goosage.domain.recovery.RecoverySnapshot;
 import com.goosage.domain.recovery.RecoveryState;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
 import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
+import com.goosage.domain.recovery.message.RecoveryReentryPreparationMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 public record RecoveryMessageAnalyzeResponse(
@@ -16,6 +17,7 @@ public record RecoveryMessageAnalyzeResponse(
         SignalResponse signal,
         RiskPreparationResponse riskPreparation,
         PostBlockStateResponse postBlockState,
+        ReentryPreparationResponse reentryPreparation,
         SnapshotResponse baseSnapshot,
         SnapshotResponse projectedSnapshot,
         BrainResponse brain
@@ -54,6 +56,12 @@ public record RecoveryMessageAnalyzeResponse(
                                 ? null
                                 : projection.analysis()
                                         .postBlockStateMetadata()
+                ),
+                ReentryPreparationResponse.from(
+                        projection.analysis() == null
+                                ? null
+                                : projection.analysis()
+                                        .reentryPreparationMetadata()
                 ),
                 SnapshotResponse.from(projection.baseSnapshot()),
                 SnapshotResponse.from(projection.projectedSnapshot()),
@@ -135,6 +143,30 @@ public record RecoveryMessageAnalyzeResponse(
             );
         }
     }
+    public record ReentryPreparationResponse(
+            boolean detected,
+            String type,
+            double confidence,
+            String reason
+    ) {
+
+        public static ReentryPreparationResponse from(
+                RecoveryReentryPreparationMetadata metadata
+        ) {
+            RecoveryReentryPreparationMetadata safeMetadata =
+                    metadata == null
+                            ? RecoveryReentryPreparationMetadata.none()
+                            : metadata;
+
+            return new ReentryPreparationResponse(
+                    safeMetadata.detected(),
+                    safeMetadata.type(),
+                    safeMetadata.confidence(),
+                    safeMetadata.reason()
+            );
+        }
+    }
+
     public record SnapshotResponse(
             int urgeLogs,
             int betAttempts,

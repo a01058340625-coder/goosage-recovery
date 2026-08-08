@@ -2,6 +2,7 @@ package com.goosage.app.recovery.message;
 
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
 import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
+import com.goosage.domain.recovery.message.RecoveryReentryPreparationMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 public record RecoveryMessageAnalysis(
@@ -10,7 +11,8 @@ public record RecoveryMessageAnalysis(
         RecoveryMessageSignal signal,
         String holdReason,
         RecoveryRiskPreparationMetadata riskPreparationMetadata,
-        RecoveryPostBlockStateMetadata postBlockStateMetadata
+        RecoveryPostBlockStateMetadata postBlockStateMetadata,
+        RecoveryReentryPreparationMetadata reentryPreparationMetadata
 ) {
 
     public RecoveryMessageAnalysis(
@@ -25,7 +27,8 @@ public record RecoveryMessageAnalysis(
                 signal,
                 holdReason,
                 RecoveryRiskPreparationMetadata.none(),
-                RecoveryPostBlockStateMetadata.none()
+                RecoveryPostBlockStateMetadata.none(),
+                RecoveryReentryPreparationMetadata.none()
         );
     }
 
@@ -42,7 +45,27 @@ public record RecoveryMessageAnalysis(
                 signal,
                 holdReason,
                 riskPreparationMetadata,
-                RecoveryPostBlockStateMetadata.none()
+                RecoveryPostBlockStateMetadata.none(),
+                RecoveryReentryPreparationMetadata.none()
+        );
+    }
+
+    public RecoveryMessageAnalysis(
+            String originalMessage,
+            boolean analyzable,
+            RecoveryMessageSignal signal,
+            String holdReason,
+            RecoveryRiskPreparationMetadata riskPreparationMetadata,
+            RecoveryPostBlockStateMetadata postBlockStateMetadata
+    ) {
+        this(
+                originalMessage,
+                analyzable,
+                signal,
+                holdReason,
+                riskPreparationMetadata,
+                postBlockStateMetadata,
+                RecoveryReentryPreparationMetadata.none()
         );
     }
 
@@ -55,6 +78,11 @@ public record RecoveryMessageAnalysis(
         if (postBlockStateMetadata == null) {
             postBlockStateMetadata =
                     RecoveryPostBlockStateMetadata.none();
+        }
+
+        if (reentryPreparationMetadata == null) {
+            reentryPreparationMetadata =
+                    RecoveryReentryPreparationMetadata.none();
         }
     }
 }

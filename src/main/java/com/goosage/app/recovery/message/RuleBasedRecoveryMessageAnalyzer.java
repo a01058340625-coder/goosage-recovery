@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
 import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
+import com.goosage.domain.recovery.message.RecoveryReentryPreparationMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 @Component
@@ -56,6 +57,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         RecoveryPostBlockStateMetadata postBlockStateMetadata =
                 resolvePostBlockStateMetadata(analysisText);
 
+        RecoveryReentryPreparationMetadata reentryPreparationMetadata =
+                resolveReentryPreparationMetadata(analysisText);
+
         int urgeLogDelta = containsAffirmedUrge(analysisText) ? 1 : 0;
         int betAttemptDelta = containsAffirmedAttempt(analysisText) ? 1 : 0;
         int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
@@ -72,6 +76,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (
                 totalSignals == 0
                 && !postBlockStateMetadata.detected()
+                && !reentryPreparationMetadata.detected()
         ) {
             return hold(
                     message,
@@ -108,7 +113,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 signal,
                 null,
                 riskPreparationMetadata,
-                postBlockStateMetadata
+                postBlockStateMetadata,
+                reentryPreparationMetadata
         );
     }
 
@@ -924,7 +930,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "계정 차단을 실제로 해제했",
                 "계정 차단을 해제했",
-                "차단된 계정을 실제로 해제했"
+                "차단된 계정을 실제로 해제했",
+                "계정 차단은 이미 해제했"
         );
 
         boolean reentryOrWagerCompleted = containsAny(
@@ -937,6 +944,51 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         return unblockCompleted
                 && !reentryOrWagerCompleted;
+    }
+
+    private RecoveryReentryPreparationMetadata
+            resolveReentryPreparationMetadata(String text) {
+
+        if (containsPostBlockReentryInterfaceReached(text)) {
+            return RecoveryReentryPreparationMetadata.detected(
+                    "POST_BLOCK_REENTRY_INTERFACE_REACHED",
+                    0.90,
+                    "account unblock was completed and the user reached "
+                    + "the gambling site login interface without logging in or wagering"
+            );
+        }
+
+        return RecoveryReentryPreparationMetadata.none();
+    }
+
+    private boolean containsPostBlockReentryInterfaceReached(
+            String text
+    ) {
+        boolean unblockCompleted = containsAny(
+                text,
+                "계정 차단은 이미 해제했고",
+                "계정 차단을 이미 해제했고",
+                "계정 차단을 해제했고"
+        );
+
+        boolean reentryInterfaceReached = containsAny(
+                text,
+                "사이트 로그인 화면까지 들어갔",
+                "로그인 화면까지 들어갔",
+                "사이트 로그인 화면을 열었"
+        );
+
+        boolean loginOrWagerCompleted = containsAny(
+                text,
+                "실제로 로그인했",
+                "로그인해서",
+                "돈을 걸었",
+                "베팅했"
+        );
+
+        return unblockCompleted
+                && reentryInterfaceReached
+                && !loginOrWagerCompleted;
     }
 
     private RecoveryRiskPreparationMetadata
