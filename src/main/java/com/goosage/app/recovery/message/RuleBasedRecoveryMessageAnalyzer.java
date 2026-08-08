@@ -415,9 +415,12 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return false;
         }
 
-        if (containsUnblockRequestSubmittedThenCancelled(text)) {
-        return true;
-    }
+        if (
+                containsUnblockRequestSubmittedThenCancelled(text)
+                || containsUnblockFinalConfirmationSubmitted(text)
+        ) {
+            return true;
+        }
 
     boolean reentrySelfExitBeforeWager =
                 containsReentrySelfExitBeforeWager(text);
@@ -465,6 +468,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
     }
 
+    private boolean containsUnblockFinalConfirmationSubmitted(
+            String text
+    ) {
+        boolean finalConfirmationPressed = containsAny(
+                text,
+                "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uae4c\uc9c0 \ub20c\ub800",
+                "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uc744 \ub20c\ub800"
+        );
+
+        boolean actualUnblockNotCompleted = containsAny(
+                text,
+                "\uc544\uc9c1 \uacc4\uc815\uc774 \uc2e4\uc81c\ub85c "
+                        + "\ud574\uc81c\ub418\uc9c0\ub294 \uc54a",
+                "\uc544\uc9c1 \uacc4\uc815\uc740 \ud574\uc81c\ub418\uc9c0 \uc54a"
+        );
+
+        return finalConfirmationPressed
+                && actualUnblockNotCompleted;
+    }
     private boolean containsUnblockRequestSubmittedThenCancelled(
             String text
     ) {
@@ -988,6 +1010,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
     ) {
         boolean protectiveBlockCompleted =
             containsUnblockRequestSubmittedThenCancelled(text)
+            || containsUnblockFinalConfirmationSubmitted(text)
             || containsAny(
                 text,
                 "\uacc4\uc815\uc744 \ub9c9\uc558",
@@ -1010,6 +1033,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         boolean contactLookupCompleted =
             containsUnblockRequestSubmittedThenCancelled(text)
+            || containsUnblockFinalConfirmationSubmitted(text)
             || containsAny(
                 text,
                 "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\uae4c\uc9c0 "
@@ -1074,6 +1098,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
     ) {
         boolean protectiveBlockCompleted =
             containsUnblockRequestSubmittedThenCancelled(text)
+            || containsUnblockFinalConfirmationSubmitted(text)
             || containsAny(
                 text,
                 "계정을 막았",

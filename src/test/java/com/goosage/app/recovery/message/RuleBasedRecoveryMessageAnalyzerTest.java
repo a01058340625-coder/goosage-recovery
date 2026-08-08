@@ -1921,4 +1921,29 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                         "PROTECTIVE_BLOCK_REVERSAL_PREPARATION_PRESENT"
                 );
     }
+
+    @Test
+    void detectsFinalConfirmationSubmittedBeforeActualUnblockForValidation48() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815\uc744 "
+                        + "\ub2e4\uc2dc \ud480\uace0 \uc2f6\uc5b4\uc11c "
+                        + "\ud574\uc81c \uc694\uccad \ubc84\ud2bc\uc744 \ub204\ub974\uace0 "
+                        + "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uae4c\uc9c0 \ub20c\ub800\ub294\ub370, "
+                        + "\uc544\uc9c1 \uacc4\uc815\uc774 \uc2e4\uc81c\ub85c "
+                        + "\ud574\uc81c\ub418\uc9c0\ub294 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_PREPARATION_PRESENT"
+                );
+    }
 }
