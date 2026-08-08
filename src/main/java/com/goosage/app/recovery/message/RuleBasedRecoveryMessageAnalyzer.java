@@ -3,6 +3,7 @@ package com.goosage.app.recovery.message;
 import org.springframework.stereotype.Component;
 
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
+import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 @Component
@@ -52,6 +53,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         RecoveryRiskPreparationMetadata riskPreparationMetadata =
                 resolveRiskPreparationMetadata(analysisText);
 
+        RecoveryPostBlockStateMetadata postBlockStateMetadata =
+                resolvePostBlockStateMetadata(analysisText);
+
         int urgeLogDelta = containsAffirmedUrge(analysisText) ? 1 : 0;
         int betAttemptDelta = containsAffirmedAttempt(analysisText) ? 1 : 0;
         int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
@@ -65,7 +69,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 + recoveryActionDelta
                 + relapseSignalDelta;
 
-        if (totalSignals == 0) {
+        if (
+                totalSignals == 0
+                && !postBlockStateMetadata.detected()
+        ) {
             return hold(
                     message,
                     currentContextExtracted
@@ -100,7 +107,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 true,
                 signal,
                 null,
-                riskPreparationMetadata
+                riskPreparationMetadata,
+                postBlockStateMetadata
         );
     }
 
@@ -894,6 +902,41 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         return protectiveBlockIndex >= 0
                 && selfExitIndex > protectiveBlockIndex;
+    }
+
+    private RecoveryPostBlockStateMetadata
+            resolvePostBlockStateMetadata(String text) {
+
+        if (containsActualUnblockCompleted(text)) {
+            return RecoveryPostBlockStateMetadata.detected(
+                    "PROTECTIVE_BLOCK_REVERSAL_COMPLETED",
+                    0.90,
+                    "protective gambling account block was actually removed "
+                    + "without confirmed site reentry or wagering"
+            );
+        }
+
+        return RecoveryPostBlockStateMetadata.none();
+    }
+
+    private boolean containsActualUnblockCompleted(String text) {
+        boolean unblockCompleted = containsAny(
+                text,
+                "계정 차단을 실제로 해제했",
+                "계정 차단을 해제했",
+                "차단된 계정을 실제로 해제했"
+        );
+
+        boolean reentryOrWagerCompleted = containsAny(
+                text,
+                "사이트에 다시 들어갔",
+                "사이트에 접속했",
+                "돈을 걸었",
+                "베팅했"
+        );
+
+        return unblockCompleted
+                && !reentryOrWagerCompleted;
     }
 
     private RecoveryRiskPreparationMetadata

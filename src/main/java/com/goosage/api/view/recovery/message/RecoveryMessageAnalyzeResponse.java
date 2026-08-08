@@ -6,6 +6,7 @@ import com.goosage.app.recovery.message.brain.BrainRecoveryDryRunResult;
 import com.goosage.domain.recovery.RecoverySnapshot;
 import com.goosage.domain.recovery.RecoveryState;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
+import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 public record RecoveryMessageAnalyzeResponse(
@@ -14,6 +15,7 @@ public record RecoveryMessageAnalyzeResponse(
         String originalMessage,
         SignalResponse signal,
         RiskPreparationResponse riskPreparation,
+        PostBlockStateResponse postBlockState,
         SnapshotResponse baseSnapshot,
         SnapshotResponse projectedSnapshot,
         BrainResponse brain
@@ -46,6 +48,12 @@ public record RecoveryMessageAnalyzeResponse(
                                 ? null
                                 : projection.analysis()
                                         .riskPreparationMetadata()
+                ),
+                PostBlockStateResponse.from(
+                        projection.analysis() == null
+                                ? null
+                                : projection.analysis()
+                                        .postBlockStateMetadata()
                 ),
                 SnapshotResponse.from(projection.baseSnapshot()),
                 SnapshotResponse.from(projection.projectedSnapshot()),
@@ -104,6 +112,29 @@ public record RecoveryMessageAnalyzeResponse(
         }
     }
 
+    public record PostBlockStateResponse(
+            boolean detected,
+            String type,
+            double confidence,
+            String reason
+    ) {
+
+        public static PostBlockStateResponse from(
+                RecoveryPostBlockStateMetadata metadata
+        ) {
+            RecoveryPostBlockStateMetadata safeMetadata =
+                    metadata == null
+                            ? RecoveryPostBlockStateMetadata.none()
+                            : metadata;
+
+            return new PostBlockStateResponse(
+                    safeMetadata.detected(),
+                    safeMetadata.type(),
+                    safeMetadata.confidence(),
+                    safeMetadata.reason()
+            );
+        }
+    }
     public record SnapshotResponse(
             int urgeLogs,
             int betAttempts,

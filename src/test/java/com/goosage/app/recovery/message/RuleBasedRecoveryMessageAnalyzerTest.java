@@ -1946,4 +1946,36 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                         "PROTECTIVE_BLOCK_REVERSAL_PREPARATION_PRESENT"
                 );
     }
+
+    @Test
+    void detectsActualUnblockCompletedAsPostBlockStateForValidation49() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "도박 계정 차단을 실제로 해제했지만 "
+                        + "아직 사이트에 다시 들어가거나 "
+                        + "돈을 걸지는 않았어."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(0);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(0);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(0);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+        assertThat(result.riskPreparationMetadata().type())
+                .isNull();
+
+        assertThat(result.postBlockStateMetadata().detected())
+                .isTrue();
+        assertThat(result.postBlockStateMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_COMPLETED"
+                );
+    }
 }

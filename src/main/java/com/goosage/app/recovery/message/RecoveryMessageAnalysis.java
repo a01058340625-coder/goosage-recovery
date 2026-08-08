@@ -1,6 +1,7 @@
 package com.goosage.app.recovery.message;
 
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
+import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 public record RecoveryMessageAnalysis(
@@ -8,7 +9,8 @@ public record RecoveryMessageAnalysis(
         boolean analyzable,
         RecoveryMessageSignal signal,
         String holdReason,
-        RecoveryRiskPreparationMetadata riskPreparationMetadata
+        RecoveryRiskPreparationMetadata riskPreparationMetadata,
+        RecoveryPostBlockStateMetadata postBlockStateMetadata
 ) {
 
     public RecoveryMessageAnalysis(
@@ -22,7 +24,25 @@ public record RecoveryMessageAnalysis(
                 analyzable,
                 signal,
                 holdReason,
-                RecoveryRiskPreparationMetadata.none()
+                RecoveryRiskPreparationMetadata.none(),
+                RecoveryPostBlockStateMetadata.none()
+        );
+    }
+
+    public RecoveryMessageAnalysis(
+            String originalMessage,
+            boolean analyzable,
+            RecoveryMessageSignal signal,
+            String holdReason,
+            RecoveryRiskPreparationMetadata riskPreparationMetadata
+    ) {
+        this(
+                originalMessage,
+                analyzable,
+                signal,
+                holdReason,
+                riskPreparationMetadata,
+                RecoveryPostBlockStateMetadata.none()
         );
     }
 
@@ -30,6 +50,11 @@ public record RecoveryMessageAnalysis(
         if (riskPreparationMetadata == null) {
             riskPreparationMetadata =
                     RecoveryRiskPreparationMetadata.none();
+        }
+
+        if (postBlockStateMetadata == null) {
+            postBlockStateMetadata =
+                    RecoveryPostBlockStateMetadata.none();
         }
     }
 }
