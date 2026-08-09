@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
 import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryReentryPreparationMetadata;
+import com.goosage.domain.recovery.message.RecoveryReentryStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 @Component
@@ -60,6 +61,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         RecoveryReentryPreparationMetadata reentryPreparationMetadata =
                 resolveReentryPreparationMetadata(analysisText);
 
+        RecoveryReentryStateMetadata reentryStateMetadata =
+                resolveReentryStateMetadata(analysisText);
+
         int urgeLogDelta = containsAffirmedUrge(analysisText) ? 1 : 0;
         int betAttemptDelta = containsAffirmedAttempt(analysisText) ? 1 : 0;
         int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
@@ -77,6 +81,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 totalSignals == 0
                 && !postBlockStateMetadata.detected()
                 && !reentryPreparationMetadata.detected()
+                && !reentryStateMetadata.detected()
         ) {
             return hold(
                     message,
@@ -114,7 +119,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 null,
                 riskPreparationMetadata,
                 postBlockStateMetadata,
-                reentryPreparationMetadata
+                reentryPreparationMetadata,
+                reentryStateMetadata
         );
     }
 
@@ -913,7 +919,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
     private RecoveryPostBlockStateMetadata
             resolvePostBlockStateMetadata(String text) {
 
-        if (containsActualUnblockCompleted(text)) {
+        if (
+                containsActualUnblockCompleted(text)
+                || containsPostBlockReentryLoginCompleted(text)
+        ) {
             return RecoveryPostBlockStateMetadata.detected(
                     "PROTECTIVE_BLOCK_REVERSAL_COMPLETED",
                     0.90,
@@ -931,7 +940,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "계정 차단을 실제로 해제했",
                 "계정 차단을 해제했",
                 "차단된 계정을 실제로 해제했",
-                "계정 차단은 이미 해제했"
+                "계정 차단은 이미 해제했",
+                "\uacc4\uc815 \ucc28\ub2e8\uc740 \ud574\uc81c\ud588\uace0"
         );
 
         boolean reentryOrWagerCompleted = containsAny(
@@ -939,7 +949,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "사이트에 다시 들어갔",
                 "사이트에 접속했",
                 "돈을 걸었",
-                "베팅했"
+                "베팅했",
+                "\uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\ud55c"
         );
 
         return unblockCompleted
@@ -968,7 +979,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "계정 차단은 이미 해제했고",
                 "계정 차단을 이미 해제했고",
-                "계정 차단을 해제했고"
+                "계정 차단을 해제했고",
+                "\uacc4\uc815 \ucc28\ub2e8\uc740 \ud574\uc81c\ud588\uace0"
         );
 
         boolean reentryInterfaceReached = containsAny(
@@ -989,6 +1001,43 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return unblockCompleted
                 && reentryInterfaceReached
                 && !loginOrWagerCompleted;
+    }
+
+    private RecoveryReentryStateMetadata
+            resolveReentryStateMetadata(String text) {
+
+        if (containsPostBlockReentryLoginCompleted(text)) {
+            return RecoveryReentryStateMetadata.detected(
+                    "POST_BLOCK_REENTRY_LOGIN_COMPLETED",
+                    0.92,
+                    "account unblock was completed and the user "
+                    + "completed gambling-site login"
+            );
+        }
+
+        return RecoveryReentryStateMetadata.none();
+    }
+
+    private boolean containsPostBlockReentryLoginCompleted(
+            String text
+    ) {
+        boolean unblockCompleted = containsAny(
+                text,
+                "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud55c \ub4a4",
+                "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud588\uace0",
+                "\uacc4\uc815 \ucc28\ub2e8\uc740 \uc774\ubbf8 \ud574\uc81c\ud588\uace0",
+                "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud558\uace0"
+        );
+
+        boolean loginCompleted = containsAny(
+                text,
+                "\uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\uae4c\uc9c0 \ud588",
+                "\uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\ud588",
+                "\uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\ud55c",
+                "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+        );
+
+        return unblockCompleted && loginCompleted;
     }
 
     private RecoveryRiskPreparationMetadata

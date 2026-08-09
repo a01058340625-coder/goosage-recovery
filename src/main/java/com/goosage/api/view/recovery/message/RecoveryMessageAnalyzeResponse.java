@@ -8,6 +8,7 @@ import com.goosage.domain.recovery.RecoveryState;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
 import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryReentryPreparationMetadata;
+import com.goosage.domain.recovery.message.RecoveryReentryStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 public record RecoveryMessageAnalyzeResponse(
@@ -18,6 +19,7 @@ public record RecoveryMessageAnalyzeResponse(
         RiskPreparationResponse riskPreparation,
         PostBlockStateResponse postBlockState,
         ReentryPreparationResponse reentryPreparation,
+        ReentryStateResponse reentryState,
         SnapshotResponse baseSnapshot,
         SnapshotResponse projectedSnapshot,
         BrainResponse brain
@@ -62,6 +64,12 @@ public record RecoveryMessageAnalyzeResponse(
                                 ? null
                                 : projection.analysis()
                                         .reentryPreparationMetadata()
+                ),
+                ReentryStateResponse.from(
+                        projection.analysis() == null
+                                ? null
+                                : projection.analysis()
+                                        .reentryStateMetadata()
                 ),
                 SnapshotResponse.from(projection.baseSnapshot()),
                 SnapshotResponse.from(projection.projectedSnapshot()),
@@ -159,6 +167,30 @@ public record RecoveryMessageAnalyzeResponse(
                             : metadata;
 
             return new ReentryPreparationResponse(
+                    safeMetadata.detected(),
+                    safeMetadata.type(),
+                    safeMetadata.confidence(),
+                    safeMetadata.reason()
+            );
+        }
+    }
+
+    public record ReentryStateResponse(
+            boolean detected,
+            String type,
+            double confidence,
+            String reason
+    ) {
+
+        public static ReentryStateResponse from(
+                RecoveryReentryStateMetadata metadata
+        ) {
+            RecoveryReentryStateMetadata safeMetadata =
+                    metadata == null
+                            ? RecoveryReentryStateMetadata.none()
+                            : metadata;
+
+            return new ReentryStateResponse(
                     safeMetadata.detected(),
                     safeMetadata.type(),
                     safeMetadata.confidence(),

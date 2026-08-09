@@ -3,6 +3,7 @@ package com.goosage.app.recovery.message;
 import com.goosage.domain.recovery.message.RecoveryMessageSignal;
 import com.goosage.domain.recovery.message.RecoveryPostBlockStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryReentryPreparationMetadata;
+import com.goosage.domain.recovery.message.RecoveryReentryStateMetadata;
 import com.goosage.domain.recovery.message.RecoveryRiskPreparationMetadata;
 
 public record RecoveryMessageAnalysis(
@@ -12,7 +13,8 @@ public record RecoveryMessageAnalysis(
         String holdReason,
         RecoveryRiskPreparationMetadata riskPreparationMetadata,
         RecoveryPostBlockStateMetadata postBlockStateMetadata,
-        RecoveryReentryPreparationMetadata reentryPreparationMetadata
+        RecoveryReentryPreparationMetadata reentryPreparationMetadata,
+        RecoveryReentryStateMetadata reentryStateMetadata
 ) {
 
     public RecoveryMessageAnalysis(
@@ -28,7 +30,8 @@ public record RecoveryMessageAnalysis(
                 holdReason,
                 RecoveryRiskPreparationMetadata.none(),
                 RecoveryPostBlockStateMetadata.none(),
-                RecoveryReentryPreparationMetadata.none()
+                RecoveryReentryPreparationMetadata.none(),
+                RecoveryReentryStateMetadata.none()
         );
     }
 
@@ -46,7 +49,8 @@ public record RecoveryMessageAnalysis(
                 holdReason,
                 riskPreparationMetadata,
                 RecoveryPostBlockStateMetadata.none(),
-                RecoveryReentryPreparationMetadata.none()
+                RecoveryReentryPreparationMetadata.none(),
+                RecoveryReentryStateMetadata.none()
         );
     }
 
@@ -65,7 +69,29 @@ public record RecoveryMessageAnalysis(
                 holdReason,
                 riskPreparationMetadata,
                 postBlockStateMetadata,
-                RecoveryReentryPreparationMetadata.none()
+                RecoveryReentryPreparationMetadata.none(),
+                RecoveryReentryStateMetadata.none()
+        );
+    }
+
+    public RecoveryMessageAnalysis(
+            String originalMessage,
+            boolean analyzable,
+            RecoveryMessageSignal signal,
+            String holdReason,
+            RecoveryRiskPreparationMetadata riskPreparationMetadata,
+            RecoveryPostBlockStateMetadata postBlockStateMetadata,
+            RecoveryReentryPreparationMetadata reentryPreparationMetadata
+    ) {
+        this(
+                originalMessage,
+                analyzable,
+                signal,
+                holdReason,
+                riskPreparationMetadata,
+                postBlockStateMetadata,
+                reentryPreparationMetadata,
+                RecoveryReentryStateMetadata.none()
         );
     }
 
@@ -83,6 +109,11 @@ public record RecoveryMessageAnalysis(
         if (reentryPreparationMetadata == null) {
             reentryPreparationMetadata =
                     RecoveryReentryPreparationMetadata.none();
+        }
+
+        if (reentryStateMetadata == null) {
+            reentryStateMetadata =
+                    RecoveryReentryStateMetadata.none();
         }
     }
 }
