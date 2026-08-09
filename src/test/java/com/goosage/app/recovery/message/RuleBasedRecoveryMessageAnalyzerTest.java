@@ -2067,4 +2067,46 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsPostBlockFundingCompletionAsReentryStateForValidation52() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815 \ucc28\ub2e8\uc744 "
+                        + "\ud574\uc81c\ud55c \ub4a4 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \uc2e4\uc81c\ub85c "
+                        + "\ub85c\uadf8\uc778\ud588\uace0, "
+                        + "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 "
+                        + "\uc785\uae08\ud588\uc5b4. "
+                        + "\uadf8\ub798\ub3c4 \uc544\uc9c1 \uc2e4\uc81c "
+                        + "\ubca0\ud305\uc740 \ud558\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.postBlockStateMetadata().detected())
+                .isTrue();
+        assertThat(result.postBlockStateMetadata().type())
+                .isEqualTo("PROTECTIVE_BLOCK_REVERSAL_COMPLETED");
+
+        assertThat(result.reentryPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.reentryStateMetadata().detected())
+                .isTrue();
+        assertThat(result.reentryStateMetadata().type())
+                .isEqualTo(
+                        "POST_BLOCK_REENTRY_FUNDING_COMPLETED"
+                );
+    }
+
 }

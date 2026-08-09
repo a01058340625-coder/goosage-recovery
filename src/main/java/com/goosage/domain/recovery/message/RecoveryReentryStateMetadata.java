@@ -10,7 +10,8 @@ public record RecoveryReentryStateMetadata(
 ) {
 
     private static final Set<String> ALLOWED_TYPES = Set.of(
-            "POST_BLOCK_REENTRY_LOGIN_COMPLETED"
+            "POST_BLOCK_REENTRY_LOGIN_COMPLETED",
+        "POST_BLOCK_REENTRY_FUNDING_COMPLETED"
     );
 
     public RecoveryReentryStateMetadata {

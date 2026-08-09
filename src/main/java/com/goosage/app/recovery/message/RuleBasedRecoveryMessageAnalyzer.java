@@ -787,6 +787,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsAny(
                 text,
                 "다시 베팅했",
+                "실제로 베팅했",
                 "다시 베팅한 뒤",
                 "또 베팅했",
                 "다시 돈을 걸었",
@@ -1006,6 +1007,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
     private RecoveryReentryStateMetadata
             resolveReentryStateMetadata(String text) {
 
+        if (containsPostBlockReentryFundingCompleted(text)) {
+            return RecoveryReentryStateMetadata.detected(
+                    "POST_BLOCK_REENTRY_FUNDING_COMPLETED",
+                    0.94,
+                    "account unblock and gambling-site login were completed "
+                    + "and the user completed funding before wagering"
+            );
+        }
+
         if (containsPostBlockReentryLoginCompleted(text)) {
             return RecoveryReentryStateMetadata.detected(
                     "POST_BLOCK_REENTRY_LOGIN_COMPLETED",
@@ -1016,6 +1026,23 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         return RecoveryReentryStateMetadata.none();
+    }
+
+    private boolean containsPostBlockReentryFundingCompleted(
+            String text
+    ) {
+        boolean loginCompleted =
+                containsPostBlockReentryLoginCompleted(text);
+
+        boolean fundingCompleted = containsAny(
+                text,
+                "\ub3c8\uae4c\uc9c0 \uc785\uae08\ud588",
+                "\ub3c8\uc744 \uc785\uae08\ud588",
+                "\uc2e4\uc81c\ub85c \uc785\uae08\ud588",
+                "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 \uc785\uae08\ud588"
+        );
+
+        return loginCompleted && fundingCompleted;
     }
 
     private boolean containsPostBlockReentryLoginCompleted(
@@ -1034,6 +1061,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\uae4c\uc9c0 \ud588",
                 "\uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\ud588",
                 "\uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\ud55c",
+                "\ub85c\uadf8\uc778\ud55c \ub4a4",
                 "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
         );
 
