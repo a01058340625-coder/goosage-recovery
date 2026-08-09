@@ -790,6 +790,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "다시 베팅했",
                 "실제로 베팅했",
+                "실제 베팅이 성립됐",
+                "베팅이 실제로 성립된",
                 "베팅 버튼을 눌렀고 주문까지 정상 처리됐",
                 "다시 베팅한 뒤",
                 "또 베팅했",
@@ -1010,6 +1012,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
     private RecoveryReentryStateMetadata
             resolveReentryStateMetadata(String text) {
 
+        if (containsAny(
+                text,
+                "\uc2e4\uc81c \ubca0\ud305\uc774 \uc131\ub9bd\ub410",
+                "\ubca0\ud305\uc774 \uc131\ub9bd\ub410",
+                "\uc8fc\ubb38\uae4c\uc9c0 \uc815\uc0c1 \ucc98\ub9ac\ub410"
+        )) {
+            return RecoveryReentryStateMetadata.none();
+        }
+
         if (containsPostBlockWagerAttemptFailed(text)) {
             return RecoveryReentryStateMetadata.detected(
                     "POST_BLOCK_WAGER_ATTEMPT_FAILED",
@@ -1065,9 +1076,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ubca0\ud305\uc774 \uc131\ub9bd\ub418\uc9c0 \uc54a"
         );
 
+        boolean wagerCompleted = containsAny(
+                text,
+                "\uc2e4\uc81c \ubca0\ud305\uc774 \uc131\ub9bd\ub410",
+                "\ubca0\ud305\uc774 \uc131\ub9bd\ub410",
+                "\uc8fc\ubb38\uae4c\uc9c0 \uc815\uc0c1 \ucc98\ub9ac\ub410"
+        );
+
         return fundingCompleted
                 && wagerAttempted
-                && orderFailed;
+                && orderFailed
+                && !wagerCompleted;
     }
 
     private boolean containsPostBlockReentryFundingCompleted(
