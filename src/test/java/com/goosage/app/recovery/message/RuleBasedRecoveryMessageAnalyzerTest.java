@@ -2185,4 +2185,31 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 .isFalse();
     }
 
+
+    @Test
+    void preservesRelapseAndImmediateReblockForValidation55() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815 \ucc28\ub2e8\uc744 "
+                        + "\ud574\uc81c\ud558\uace0 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00 "
+                        + "\uc2e4\uc81c \ubca0\ud305\uae4c\uc9c0 "
+                        + "\ud55c \ubc88 \uc131\ub9bd\ub410\uc5b4. "
+                        + "\uadf8 \ub4a4 \ub354 \ud558\uc9c0\ub294 \uc54a\uace0 "
+                        + "\ubc14\ub85c \uacc4\uc815\uc744 \ub2e4\uc2dc "
+                        + "\ucc28\ub2e8\ud588\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+    }
+
 }
