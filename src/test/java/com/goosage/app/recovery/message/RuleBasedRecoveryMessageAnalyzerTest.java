@@ -2109,4 +2109,47 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsPostBlockWagerAttemptFailureForValidation53() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c4\ubc15 \uacc4\uc815 \ucc28\ub2e8\uc744 "
+                        + "\ud574\uc81c\ud55c \ub4a4 "
+                        + "\uc0ac\uc774\ud2b8\uc5d0 \ub85c\uadf8\uc778\ud588\uace0 "
+                        + "\ub3c8\uae4c\uc9c0 \uc785\uae08\ud588\uc5b4. "
+                        + "\uc2e4\uc81c\ub85c \ubca0\ud305 \ubc84\ud2bc\uae4c\uc9c0 "
+                        + "\ub20c\ub800\ub294\ub370 \uc8fc\ubb38\uc774 "
+                        + "\ucc98\ub9ac\ub418\uc9c0 \uc54a\uc544\uc11c "
+                        + "\uc544\uc9c1 \ubca0\ud305\uc740 "
+                        + "\uc131\ub9bd\ub418\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+
+        assertThat(result.signal().urgeLogDelta()).isZero();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isZero();
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isZero();
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.postBlockStateMetadata().detected())
+                .isTrue();
+        assertThat(result.postBlockStateMetadata().type())
+                .isEqualTo("PROTECTIVE_BLOCK_REVERSAL_COMPLETED");
+
+        assertThat(result.reentryPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.reentryStateMetadata().detected())
+                .isTrue();
+        assertThat(result.reentryStateMetadata().type())
+                .isEqualTo(
+                        "POST_BLOCK_WAGER_ATTEMPT_FAILED"
+                );
+    }
+
 }
