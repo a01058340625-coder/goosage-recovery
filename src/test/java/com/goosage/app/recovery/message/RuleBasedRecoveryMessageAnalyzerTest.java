@@ -1994,6 +1994,39 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
     @Test
+    void detectsFinalConfirmationSubmittedAfterRelapseReblockForValidation61() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc2e4\uc81c \ubca0\ud305\uc774 \ud55c \ubc88 "
+                        + "\uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 "
+                        + "\ub2e4\uc2dc \ucc28\ub2e8\ud588\uc5b4. "
+                        + "\uadf8\ub7f0\ub370 \ub2e4\uc74c \ub0a0 "
+                        + "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 "
+                        + "\uc0dd\uac01\uc774 \ub4e4\uc5b4\uc11c "
+                        + "\ucc28\ub2e8 \ud574\uc81c \uc2e0\uccad\uc11c\ub97c "
+                        + "\uc791\uc131\ud558\uace0 \uc81c\ucd9c \ubc84\ud2bc\uae4c\uc9c0 "
+                        + "\ub204\ub978 \ub4a4 \ucd5c\uc885 \ud655\uc778\uae4c\uc9c0 "
+                        + "\ud588\uc9c0\ub9cc, \uc544\uc9c1 \uacc4\uc815\uc774 "
+                        + "\uc2e4\uc81c\ub85c \ud574\uc81c\ub418\uc9c0\ub294 "
+                        + "\uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(0);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+        assertThat(result.riskPreparationMetadata().detected()).isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_"
+                        + "PREPARATION_PRESENT"
+                );
+    }
+
+    @Test
     void detectsFinalConfirmationSubmittedBeforeActualUnblockForValidation48() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(

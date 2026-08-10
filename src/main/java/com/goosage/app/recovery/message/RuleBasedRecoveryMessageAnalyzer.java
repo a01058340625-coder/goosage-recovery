@@ -505,7 +505,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean finalConfirmationPressed = containsAny(
                 text,
                 "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uae4c\uc9c0 \ub20c\ub800",
-                "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uc744 \ub20c\ub800"
+                "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uc744 \ub20c\ub800",
+                "\ucd5c\uc885 \ud655\uc778\uae4c\uc9c0 \ud588",
+                "\ucd5c\uc885 \ud655\uc778\uc744 \ud588"
         );
 
         boolean actualUnblockNotCompleted = containsAny(
@@ -1305,6 +1307,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         boolean reversalIntent =
             containsUnblockRequestSubmittedBeforeFinalConfirmation(text)
+            || containsUnblockFinalConfirmationSubmitted(text)
             || containsAny(
                 text,
                 "\ud574\uc81c\ud558\uace0 \uc2f6",
