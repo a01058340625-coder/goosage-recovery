@@ -992,7 +992,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "계정 차단을 해제했",
                 "차단된 계정을 실제로 해제했",
                 "계정 차단은 이미 해제했",
-                "\uacc4\uc815 \ucc28\ub2e8\uc740 \ud574\uc81c\ud588\uace0"
+                "\uacc4\uc815 \ucc28\ub2e8\uc740 \ud574\uc81c\ud588\uace0",
+                "\uacc4\uc815 \ucc28\ub2e8\uc774 \uc2e4\uc81c\ub85c \ud574\uc81c\ub410"
         );
 
         boolean reentryOrWagerCompleted = containsAny(
