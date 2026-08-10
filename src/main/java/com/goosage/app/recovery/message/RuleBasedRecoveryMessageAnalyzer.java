@@ -372,7 +372,14 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
-        if (containsAny(text, "충동은 없", "충동이 없", "충동 없")) {
+        if (containsAny(
+                text,
+                "충동은 없",
+                "충동이 없",
+                "충동 없",
+                "하고 싶은 생각은 들지 않",
+                "하고 싶은 생각은 전혀 들지 않"
+        )) {
             return false;
         }
 
@@ -383,6 +390,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "충동을 느꼈",
                 "하고 싶었",
                 "하고 싶은 마음",
+                "다시 하고 싶은 생각",
                 "베팅하고 싶",
                 "결제 버튼 쪽으로 가",
                 "마음이 흔들",
@@ -406,6 +414,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "베팅을 시도",
                 "베팅 버튼을 눌렀",
+                "베팅 버튼은 눌렀",
                 "베팅 버튼까지 눌렀",
                 "결제를 시도",
                 "사이트에 들어갔",
@@ -792,6 +801,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "실제로 베팅했",
                 "실제 베팅이 성립됐",
                 "실제 베팅이 성립된 뒤",
+                "실제 베팅이 한 번 성립된 뒤",
                 "실제 베팅까지 한 번 성립됐",
                 "베팅이 실제로 성립된",
                 "베팅 버튼을 눌렀고 주문까지 정상 처리됐",
@@ -901,6 +911,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uacc4\uc815\uc744 \ub9c9\uc558",
                 "\uacc4\uc815\uc744 \ucc28\ub2e8\ud588",
+                "\uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588",
                 "\uacc4\uc815\uc744 \uc7a0\uac00",
                 "\uacc4\uc815\uc744 \ub9c9\uace0",
                 "\uacc4\uc815\uc744 \ucc28\ub2e8\ud558\uace0"
@@ -1253,6 +1264,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uacc4\uc815\uc744 \ub9c9\uc558",
                 "\uacc4\uc815\uc744 \ucc28\ub2e8\ud588",
+                "\uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588",
                 "\uacc4\uc815\uc744 \uc7a0\uac40",
                 "\uacc4\uc815\uc744 \ub9c9\uace0",
                 "\uacc4\uc815\uc744 \ucc28\ub2e8\ud558\uace0",
@@ -1266,7 +1278,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub2e4\uc2dc \ud480\uace0 \uc2f6",
                 "\ub2e4\uc2dc \ud574\uc81c\ud558\uace0 \uc2f6",
                 "\ud480 \uc0dd\uac01\uc774 \ub4e4",
-                "\ud574\uc81c\ud560 \uc0dd\uac01\uc774 \ub4e4"
+                "\ud574\uc81c\ud560 \uc0dd\uac01\uc774 \ub4e4",
+            "\ucc28\ub2e8 \ud574\uc81c \ubc29\ubc95"
         );
 
         boolean contactLookupCompleted =

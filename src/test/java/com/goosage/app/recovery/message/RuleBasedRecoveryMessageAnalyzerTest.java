@@ -2212,4 +2212,35 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 .isFalse();
     }
 
+
+    @Test
+    void preservesRelapseReblockAndNewUrgeForValidation56() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc2e4\uc81c \ubca0\ud305\uc774 \ud55c \ubc88 "
+                        + "\uc131\ub9bd\ub41c \ub4a4 \ubc14\ub85c "
+                        + "\uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588\uc5b4. "
+                        + "\uadf8\ub7f0\ub370 \uba87 \uc2dc\uac04 \uc9c0\ub098\ub2c8\uae4c "
+                        + "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 "
+                        + "\ub4e4\uc5b4\uc11c \ucc28\ub2e8\uc744 \ud480\uae4c "
+                        + "\uace0\ubbfc\ud588\uc9c0\ub9cc, \uc544\uc9c1 "
+                        + "\ud574\uc81c \ubc29\ubc95\uc744 \ucc3e\uc544\ubcf4\uac70\ub098 "
+                        + "\uc2e4\uc81c\ub85c \ud480\uc9c0\ub294 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+        assertThat(result.riskPreparationMetadata().type())
+                .isNull();
+    }
 }
