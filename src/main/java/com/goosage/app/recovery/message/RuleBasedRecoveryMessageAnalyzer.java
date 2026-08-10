@@ -1279,7 +1279,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub2e4\uc2dc \ud574\uc81c\ud558\uace0 \uc2f6",
                 "\ud480 \uc0dd\uac01\uc774 \ub4e4",
                 "\ud574\uc81c\ud560 \uc0dd\uac01\uc774 \ub4e4",
-            "\ucc28\ub2e8 \ud574\uc81c \ubc29\ubc95"
+            "\ucc28\ub2e8 \ud574\uc81c \ubc29\ubc95",
+            "\ud574\uc81c \uc2e0\uccad\uc11c\uae4c\uc9c0 "
+                    + "\uc791\uc131\ud588"
         );
 
         boolean contactLookupCompleted =
