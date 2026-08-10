@@ -518,6 +518,36 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return finalConfirmationPressed
                 && actualUnblockNotCompleted;
     }
+    private boolean containsUnblockRequestSubmittedBeforeFinalConfirmation(
+            String text
+    ) {
+        boolean requestSubmitted = containsAny(
+                text,
+                "\uc81c\ucd9c \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800",
+                "\uc81c\ucd9c \ubc84\ud2bc\uc744 \ub20c\ub800",
+                "\ud574\uc81c \uc694\uccad \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800",
+                "\ud574\uc81c \uc694\uccad \ubc84\ud2bc\uc744 \ub20c\ub800"
+        );
+
+        boolean finalConfirmationNotCompleted = containsAny(
+                text,
+                "\uc544\uc9c1 \ucd5c\uc885 \ud655\uc778\uc740 \ud558\uc9c0 \uc54a",
+                "\ucd5c\uc885 \ud655\uc778\uc740 \ud558\uc9c0 \uc54a",
+                "\ucd5c\uc885 \ud655\uc778 \uc804",
+                "\ub9c8\uc9c0\ub9c9 \ud655\uc778 \uc804"
+        );
+
+        boolean actualUnblockNotCompleted = containsAny(
+                text,
+                "\uacc4\uc815\ub3c4 \uc2e4\uc81c\ub85c \ud480\ub9ac\uc9c0\ub294 \uc54a",
+                "\uacc4\uc815\uc774 \uc2e4\uc81c\ub85c \ud574\uc81c\ub418\uc9c0 \uc54a"
+        );
+
+        return requestSubmitted
+                && finalConfirmationNotCompleted
+                && actualUnblockNotCompleted;
+    }
+
     private boolean containsUnblockRequestSubmittedThenCancelled(
             String text
     ) {
@@ -1258,7 +1288,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
             String text
     ) {
         boolean protectiveBlockCompleted =
-            containsUnblockRequestSubmittedThenCancelled(text)
+            containsUnblockRequestSubmittedBeforeFinalConfirmation(text)
+            || containsUnblockRequestSubmittedThenCancelled(text)
             || containsUnblockFinalConfirmationSubmitted(text)
             || containsAny(
                 text,
@@ -1272,7 +1303,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uacc4\uc815\uc740 \uc774\ubbf8 \ub9c9\uc544\ub193"
         );
 
-        boolean reversalIntent = containsAny(
+        boolean reversalIntent =
+            containsUnblockRequestSubmittedBeforeFinalConfirmation(text)
+            || containsAny(
                 text,
                 "\ud574\uc81c\ud558\uace0 \uc2f6",
                 "\ub2e4\uc2dc \ud480\uace0 \uc2f6",
@@ -1285,7 +1318,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
 
         boolean contactLookupCompleted =
-            containsUnblockRequestSubmittedThenCancelled(text)
+            containsUnblockRequestSubmittedBeforeFinalConfirmation(text)
+            || containsUnblockRequestSubmittedThenCancelled(text)
             || containsUnblockFinalConfirmationSubmitted(text)
             || containsAny(
                 text,
@@ -1350,7 +1384,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
             String text
     ) {
         boolean protectiveBlockCompleted =
-            containsUnblockRequestSubmittedThenCancelled(text)
+            containsUnblockRequestSubmittedBeforeFinalConfirmation(text)
+            || containsUnblockRequestSubmittedThenCancelled(text)
             || containsUnblockFinalConfirmationSubmitted(text)
             || containsAny(
                 text,
