@@ -1146,6 +1146,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean fundingCompleted = containsAny(
                 text,
                 "\ub3c8\uae4c\uc9c0 \uc785\uae08\ud588",
+            "\ub3c8\uae4c\uc9c0 \uc785\uae08\ud55c \ub4a4",
                 "\ub3c8\uc744 \uc785\uae08\ud588",
                 "\ub3c8\uc744 \uc785\uae08\ud55c \ub4a4",
                 "\uc2e4\uc81c\ub85c \uc785\uae08\ud588",

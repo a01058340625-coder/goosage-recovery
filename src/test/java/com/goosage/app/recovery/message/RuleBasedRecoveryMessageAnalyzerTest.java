@@ -2365,6 +2365,41 @@ class RuleBasedRecoveryMessageAnalyzerTest {
 
 
     @Test
+    void detectsSecondPostBlockWagerAttemptFailureForValidation66() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc2e4\uc81c \ubca0\ud305\uc774 \ud55c \ubc88 \uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588\uc5b4. \uadf8\ub7f0\ub370 \ub2e4\uc74c \ub0a0 \ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \ub4e4\uc5b4\uc11c \ucc28\ub2e8\uc744 \ub2e4\uc2dc \ud574\uc81c\ud588\uace0, \uc0ac\uc774\ud2b8\uc5d0 \ub85c\uadf8\uc778\ud574\uc11c \ub3c8\uae4c\uc9c0 \uc785\uae08\ud55c \ub4a4 \ubca0\ud305 \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800\uc9c0\ub9cc \uc8fc\ubb38\uc774 \uc2e4\ud328\ud574\uc11c \ucd94\uac00 \ubca0\ud305\uc740 \uc2e4\uc81c\ub85c \uc131\ub9bd\ub418\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.postBlockStateMetadata().detected())
+                .isTrue();
+        assertThat(result.postBlockStateMetadata().type())
+                .isEqualTo("PROTECTIVE_BLOCK_REVERSAL_COMPLETED");
+
+        assertThat(result.reentryPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.reentryStateMetadata().detected())
+                .isTrue();
+        assertThat(result.reentryStateMetadata().type())
+                .isEqualTo(
+                        "POST_BLOCK_WAGER_ATTEMPT_FAILED"
+                );
+    }
+
+
+    @Test
     void detectsPostBlockWagerCompletionAsRelapseForValidation54() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(
