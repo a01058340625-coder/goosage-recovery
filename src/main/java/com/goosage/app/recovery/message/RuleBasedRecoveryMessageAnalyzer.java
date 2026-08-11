@@ -1162,6 +1162,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud55c \ub4a4",
                 "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud588\uace0",
+                "차단을 다시 해제했고",
                 "\uacc4\uc815 \ucc28\ub2e8\uc740 \uc774\ubbf8 \ud574\uc81c\ud588\uace0",
                 "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud558\uace0"
         );

@@ -2243,6 +2243,43 @@ class RuleBasedRecoveryMessageAnalyzerTest {
 
 
     @Test
+    void detectsSecondPostBlockLoginCompletionAsReentryStateForValidation64() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "실제 베팅이 한 번 성립된 뒤 계정을 다시 차단했어. "
+                        + "그런데 다음 날 다시 하고 싶은 생각이 들어서 "
+                        + "차단을 다시 해제했고, 사이트 로그인 화면까지 "
+                        + "들어간 뒤 이번에는 실제로 로그인까지 했지만 "
+                        + "아직 돈을 입금하거나 추가로 베팅하지는 않았어."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(0);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.postBlockStateMetadata().detected())
+                .isTrue();
+
+        assertThat(result.reentryPreparationMetadata().detected())
+                .isFalse();
+
+        assertThat(result.reentryStateMetadata().detected())
+                .isTrue();
+        assertThat(result.reentryStateMetadata().type())
+                .isEqualTo(
+                        "POST_BLOCK_REENTRY_LOGIN_COMPLETED"
+                );
+    }
+    @Test
     void detectsPostBlockFundingCompletionAsReentryStateForValidation52() {
         RecoveryMessageAnalysis result =
                 analyzer.analyze(
