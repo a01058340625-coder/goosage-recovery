@@ -507,6 +507,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean finalConfirmationPressed = containsAny(
                 text,
                 "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uae4c\uc9c0 \ub20c\ub800",
+                "\ub9c8\uc9c0\ub9c9 \ucd5c\uc885 \ud655\uc778\uae4c\uc9c0 \ub20c\ub800",
                 "\ub9c8\uc9c0\ub9c9 \ud655\uc778\uc744 \ub20c\ub800",
                 "\ucd5c\uc885 \ud655\uc778\uae4c\uc9c0 \ud588",
                 "\ucd5c\uc885 \ud655\uc778\uc744 \ud588"
@@ -517,6 +518,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc544\uc9c1 \uacc4\uc815\uc774 \uc2e4\uc81c\ub85c "
                         + "\ud574\uc81c\ub418\uc9c0\ub294 \uc54a",
                 "\uc544\uc9c1 \uacc4\uc815\uc740 \ud574\uc81c\ub418\uc9c0 \uc54a"
+,
+            "\uc544\uc9c1 \uacc4\uc815\uc740 \uc2e4\uc81c\ub85c \ud574\uc81c\ub418\uc9c0 \uc54a"
         );
 
         return finalConfirmationPressed
