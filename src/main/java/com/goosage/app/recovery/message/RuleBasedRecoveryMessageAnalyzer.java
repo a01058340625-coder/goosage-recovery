@@ -392,6 +392,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "하고 싶은 마음",
                 "다시 하고 싶은 생각",
                 "또 풀고 싶은 생각",
+                "또 계정을 풀고 싶은 생각",
                 "베팅하고 싶",
                 "결제 버튼 쪽으로 가",
                 "마음이 흔들",
