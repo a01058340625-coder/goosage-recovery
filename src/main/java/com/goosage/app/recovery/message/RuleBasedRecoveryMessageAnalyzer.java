@@ -1320,6 +1320,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\ud574\uc81c\ud558\uace0 \uc2f6",
                 "\ub2e4\uc2dc \ud480\uace0 \uc2f6",
+                "\ub610 \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01",
                 "\ub2e4\uc2dc \ud574\uc81c\ud558\uace0 \uc2f6",
                 "\ud480 \uc0dd\uac01\uc774 \ub4e4",
                 "\ud574\uc81c\ud560 \uc0dd\uac01\uc774 \ub4e4",
@@ -1337,6 +1338,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\uae4c\uc9c0 "
                         + "\ucc3e\uc544\ubd24",
                 "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub97c "
+                        + "\ucc3e\uc544\ubd24",
+                "\uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub97c \ub2e4\uc2dc "
                         + "\ucc3e\uc544\ubd24",
                 "\uace0\uac1d\uc13c\ud130 \uc5f0\ub77d\ucc98\ub97c "
                         + "\ucc3e\uc544\ubd24",
