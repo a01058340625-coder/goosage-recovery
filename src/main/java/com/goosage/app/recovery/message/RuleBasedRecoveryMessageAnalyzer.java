@@ -531,6 +531,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc81c\ucd9c \ubc84\ud2bc\uc744 \ub20c\ub800",
                 "\ud574\uc81c \uc694\uccad \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800",
                 "\ud574\uc81c \uc694\uccad \ubc84\ud2bc\uc744 \ub20c\ub800"
+,
+                "\ud574\uc81c \uc2e0\uccad\uc11c\ub97c \ub2e4\uc2dc \uc81c\ucd9c\ud588",
+                "\ud574\uc81c \uc694\uccad\ub3c4 \uc2e4\ud589\ud588"
         );
 
         boolean finalConfirmationNotCompleted = containsAny(
@@ -539,12 +542,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ucd5c\uc885 \ud655\uc778\uc740 \ud558\uc9c0 \uc54a",
                 "\ucd5c\uc885 \ud655\uc778 \uc804",
                 "\ub9c8\uc9c0\ub9c9 \ud655\uc778 \uc804"
+,
+                "\ub9c8\uc9c0\ub9c9 \ucd5c\uc885 \ud655\uc778\uc740 \ub204\ub974\uc9c0 \uc54a"
         );
 
         boolean actualUnblockNotCompleted = containsAny(
                 text,
                 "\uacc4\uc815\ub3c4 \uc2e4\uc81c\ub85c \ud480\ub9ac\uc9c0\ub294 \uc54a",
                 "\uacc4\uc815\uc774 \uc2e4\uc81c\ub85c \ud574\uc81c\ub418\uc9c0 \uc54a"
+,
+            "\ub9c8\uc9c0\ub9c9 \ucd5c\uc885 \ud655\uc778\uc740 \ub204\ub974\uc9c0 \uc54a"
         );
 
         return requestSubmitted
