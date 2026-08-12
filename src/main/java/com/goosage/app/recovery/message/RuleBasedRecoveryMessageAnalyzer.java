@@ -391,6 +391,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "하고 싶었",
                 "하고 싶은 마음",
                 "다시 하고 싶은 생각",
+                "또 풀고 싶은 생각",
                 "베팅하고 싶",
                 "결제 버튼 쪽으로 가",
                 "마음이 흔들",
@@ -833,6 +834,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "실제로 베팅했",
                 "실제 베팅이 성립됐",
                 "실제 베팅이 성립된 뒤",
+                "다시 베팅이 성립된 뒤",
                 "실제 베팅이 한 번 성립된 뒤",
                 "실제 베팅까지 한 번 성립됐",
                 "베팅이 실제로 성립된",
@@ -1343,6 +1345,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         + "\uac80\uc0c9\ud574\ubd24",
                 "\ud574\uc81c \ubc29\ubc95\uc744 "
                         + "\uac80\uc0c9\ud574\ubd24",
+                "\ud574\uc81c \ubc29\ubc95\uc744 \ub2e4\uc2dc "
+                        + "\ucc3e\uc544\ubd24",
                 "\ud574\uc81c \ubc29\ubc95\uae4c\uc9c0 "
                         + "\uac80\uc0c9\ud574\ubd24",
                 "\ud574\uc81c \ubb38\uc758 \ud654\uba74\uae4c\uc9c0 "
