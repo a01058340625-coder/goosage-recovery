@@ -2587,4 +2587,29 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsPostRelapseReblockApplicationFormRewrittenForValidation73() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub2e4\uc2dc \ubca0\ud305\uc774 \uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 \ucc28\ub2e8\ud588\uc5b4. \ub2e4\uc74c \ub0a0 \ub610 \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \ub4e4\uc5b4 \ud574\uc81c \uc2e0\uccad\uc11c\uae4c\uc9c0 \ub2e4\uc2dc \uc791\uc131\ud588\uc9c0\ub9cc, \uc544\uc9c1 \uc81c\ucd9c \ubc84\ud2bc\uc740 \ub204\ub974\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isZero();
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isZero();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_PREPARATION_PRESENT"
+                );
+    }
+
 }
