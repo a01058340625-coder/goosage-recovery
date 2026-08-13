@@ -2737,4 +2737,25 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsPostRelapseReblockFundingCompletedForValidation79() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub2e4\uc2dc \ubca0\ud305\uc774 \uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 \ucc28\ub2e8\ud588\uc5b4. \ub2e4\uc74c \ub0a0 \ub610 \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \ub4e4\uc5b4 \ud574\uc81c \uc2e0\uccad\uc11c\ub97c \ub2e4\uc2dc \uc81c\ucd9c\ud558\uace0 \ud574\uc81c \uc694\uccad\uacfc \ub9c8\uc9c0\ub9c9 \ucd5c\uc885 \ud655\uc778\uae4c\uc9c0 \uc2e4\ud589\ud574\uc11c \uc2e4\uc81c\ub85c \uacc4\uc815 \ucc28\ub2e8\ub3c4 \ud574\uc81c\ud588\uc5b4. \uadf8 \ub4a4 \ub3c4\ubc15 \uc0ac\uc774\ud2b8\uc5d0 \uc2e4\uc81c \ub85c\uadf8\uc778\uae4c\uc9c0 \ud558\uace0 \uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 \uc785\uae08\ud588\uc9c0\ub9cc \uc544\uc9c1 \ubca0\ud305 \ubc84\ud2bc\uc744 \ub204\ub974\uc9c0\ub294 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.postBlockStateMetadata().detected()).isTrue();
+
+        assertThat(result.reentryStateMetadata().detected())
+                .isTrue();
+        assertThat(result.reentryStateMetadata().type())
+                .isEqualTo(
+                        "POST_BLOCK_REENTRY_FUNDING_COMPLETED"
+                );
+
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(0);
+    }
+
 }
