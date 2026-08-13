@@ -1181,7 +1181,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud588\uace0",
                 "차단을 다시 해제했고",
                 "\uacc4\uc815 \ucc28\ub2e8\uc740 \uc774\ubbf8 \ud574\uc81c\ud588\uace0",
-                "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud558\uace0"
+                "\uacc4\uc815 \ucc28\ub2e8\uc744 \ud574\uc81c\ud558\uace0",
+                "\uc2e4\uc81c\ub85c \uacc4\uc815 \ucc28\ub2e8\ub3c4 \ud574\uc81c\ud588"
         );
 
         boolean loginCompleted = containsAny(
@@ -1192,7 +1193,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub85c\uadf8\uc778\ud55c \ub4a4",
                 "\ub85c\uadf8\uc778\ud588\uace0",
                 "\ub85c\uadf8\uc778\ud574\uc11c",
-                "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+                "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588",
+                "\uc2e4\uc81c \ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
         );
 
         return unblockCompleted && loginCompleted;
