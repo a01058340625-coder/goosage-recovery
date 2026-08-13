@@ -2860,4 +2860,25 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 .isEqualTo("PROTECTIVE_BLOCK_REVERSAL_PREPARATION_PRESENT");
     }
 
+
+    @Test
+    void detectsPostRelapseReblockUnblockCompletedReentryInterfaceForValidation92() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub2e4\uc2dc \ubca0\ud305\uc774 \uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588\uc5b4. \ub2e4\uc74c \ub0a0 \ub2e4\uc2dc \uacc4\uc815\uc744 \ud480\uc5b4\uc11c \uc2e4\uc81c\ub85c \ucc28\ub2e8 \ud574\uc81c\uae4c\uc9c0 \uc644\ub8cc\ud588\uc5b4. \uadf8 \ub4a4 \uc0ac\uc774\ud2b8 \ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac14\uc9c0\ub9cc \uc544\uc9c1 \uc2e4\uc81c\ub85c \ub85c\uadf8\uc778\ud558\uac70\ub098 \ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud558\uc9c0\ub294 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+
+        assertThat(result.postBlockStateMetadata().detected()).isTrue();
+        assertThat(result.postBlockStateMetadata().type())
+                .isEqualTo("PROTECTIVE_BLOCK_REVERSAL_COMPLETED");
+
+        assertThat(result.reentryPreparationMetadata().detected()).isTrue();
+        assertThat(result.reentryPreparationMetadata().type())
+                .isEqualTo("POST_BLOCK_REENTRY_INTERFACE_REACHED");
+
+        assertThat(result.reentryStateMetadata().detected()).isFalse();
+    }
+
 }

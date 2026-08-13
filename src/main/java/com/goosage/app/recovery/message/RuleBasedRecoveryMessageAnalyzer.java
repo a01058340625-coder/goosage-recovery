@@ -1010,7 +1010,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uacc4\uc815 \ucc28\ub2e8\uc740 \ud574\uc81c\ud588\uace0",
                 "\uacc4\uc815 \ucc28\ub2e8\uc774 \uc2e4\uc81c\ub85c \ud574\uc81c\ub410",
                 "\uc2e4\uc81c\ub85c \uacc4\uc815 \ucc28\ub2e8\ub3c4 \ud574\uc81c\ub410",
-                "\uc2e4\uc81c\ub85c \uacc4\uc815 \ucc28\ub2e8\ub3c4 \ud574\uc81c\ud588"
+                "\uc2e4\uc81c\ub85c \uacc4\uc815 \ucc28\ub2e8\ub3c4 \ud574\uc81c\ud588",
+                "\uc2e4\uc81c\ub85c \ucc28\ub2e8 \ud574\uc81c\uae4c\uc9c0 \uc644\ub8cc\ud588"
         );
 
         boolean reentryOrWagerCompleted = containsAny(
@@ -1051,7 +1052,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "계정 차단을 해제했고",
                 "차단을 다시 해제했고",
                 "\uacc4\uc815 \ucc28\ub2e8\uc740 \ud574\uc81c\ud588\uace0",
-                "\uc2e4\uc81c\ub85c \uacc4\uc815 \ucc28\ub2e8\ub3c4 \ud574\uc81c\ud588"
+                "\uc2e4\uc81c\ub85c \uacc4\uc815 \ucc28\ub2e8\ub3c4 \ud574\uc81c\ud588",
+                "\uc2e4\uc81c\ub85c \ucc28\ub2e8 \ud574\uc81c\uae4c\uc9c0 \uc644\ub8cc\ud588"
         );
 
         boolean reentryInterfaceReached = containsAny(
