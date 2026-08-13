@@ -2842,4 +2842,22 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsPostRelapseReblockUnblockRequestCommunicatedForValidation88() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub2e4\uc2dc \ubca0\ud305\uc774 \uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588\uc5b4. \ub2e4\uc74c \ub0a0 \ub610 \uacc4\uc815\uc744 \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \ub4e4\uc5b4 \uace0\uac1d\uc13c\ud130 \ubc88\ud638\ub97c \ub2e4\uc2dc \ucc3e\uc544 \uc2e4\uc81c\ub85c \uc804\ud654\ud588\uace0 \uc0c1\ub2f4\uc6d0\uacfc \uc5f0\uacb0\ub410\uc5b4. \uc774\ubc88\uc5d0\ub294 \uc0c1\ub2f4\uc6d0\uc5d0\uac8c \uc2e4\uc81c\ub85c \uacc4\uc815 \ud574\uc81c\ub97c \uc694\uccad\ud588\uc9c0\ub9cc \uc544\uc9c1 \ucd5c\uc885 \ud655\uc778\uc744 \ud558\uac70\ub098 \uacc4\uc815\uc774 \uc2e4\uc81c\ub85c \ud574\uc81c\ub418\uc9c0\ub294 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected()).isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo("PROTECTIVE_BLOCK_REVERSAL_PREPARATION_PRESENT");
+    }
+
 }

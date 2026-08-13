@@ -392,6 +392,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "하고 싶은 마음",
                 "다시 하고 싶은 생각",
                 "또 풀고 싶은 생각",
+                "계정을 풀고 싶은 생각",
                 "또 계정을 풀고 싶은 생각",
                 "베팅하고 싶",
                 "결제 버튼 쪽으로 가",
@@ -1337,6 +1338,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ud574\uc81c\ud558\uace0 \uc2f6",
                 "\ub2e4\uc2dc \ud480\uace0 \uc2f6",
                 "\ub610 \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01",
+                "\uacc4\uc815\uc744 \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01",
                 "\ub2e4\uc2dc \ud574\uc81c\ud558\uace0 \uc2f6",
                 "\ud480 \uc0dd\uac01\uc774 \ub4e4",
                 "\ud574\uc81c\ud560 \uc0dd\uac01\uc774 \ub4e4",
@@ -1384,6 +1386,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uace0\uac1d\uc13c\ud130\uc5d0 \uc804\ud654\ud588",
                 "\uace0\uac1d\uc13c\ud130\uc5d0 \uc2e4\uc81c\ub85c \uc804\ud654\uae4c\uc9c0 \ud588",
                 "\uc0c1\ub2f4\uc6d0\uacfc \uc5f0\uacb0\uae4c\uc9c0 \ub410",
+                "\uacc4\uc815 \ud574\uc81c\ub97c \uc694\uccad\ud588",
             "\ud574\uc81c \uc694\uccad \ubc84\ud2bc\uc744 "
                     + "\ub204\ub974\uae30 \uc9c1\uc804\uae4c\uc9c0 \uac14"
         );
