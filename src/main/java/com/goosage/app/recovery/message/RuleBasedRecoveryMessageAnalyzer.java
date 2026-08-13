@@ -417,6 +417,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "베팅을 시도",
                 "베팅 버튼을 눌렀",
+                "베팅 버튼을 실제로 눌렀",
                 "베팅 버튼은 눌렀",
                 "베팅 버튼까지 눌렀",
                 "베팅 버튼까지 실제로 눌렀",
