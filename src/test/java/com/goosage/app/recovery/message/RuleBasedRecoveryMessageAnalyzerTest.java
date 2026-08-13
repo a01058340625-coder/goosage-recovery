@@ -2800,4 +2800,25 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 );
     }
 
+
+    @Test
+    void detectsPostRelapseReblockCustomerCenterCallForValidation86() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub2e4\uc2dc \ubca0\ud305\uc774 \uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588\uc5b4. \ub2e4\uc74c \ub0a0 \ub610 \ud480\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \ub4e4\uc5b4 \ucc28\ub2e8 \ud574\uc81c \ubc29\ubc95\uc744 \ub2e4\uc2dc \uac80\uc0c9\ud558\uace0 \uace0\uac1d\uc13c\ud130 \ubc88\ud638\uae4c\uc9c0 \ub2e4\uc2dc \ucc3e\uc544\ubcf8 \ub4a4 \uc2e4\uc81c\ub85c \uc804\ud654\uae4c\uc9c0 \ud588\uc9c0\ub9cc \uc0c1\ub2f4\uc6d0\uacfc \uc5f0\uacb0\ub418\uae30 \uc804\uc5d0 \ub04a\uc5c8\uace0 \ud574\uc81c \uc694\uccad\uc740 \ud558\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+
+        assertThat(result.riskPreparationMetadata().detected())
+                .isTrue();
+        assertThat(result.riskPreparationMetadata().type())
+                .isEqualTo(
+                        "PROTECTIVE_BLOCK_REVERSAL_PREPARATION_PRESENT"
+                );
+    }
+
 }
