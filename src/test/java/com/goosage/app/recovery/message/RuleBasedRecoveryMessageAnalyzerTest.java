@@ -2900,4 +2900,22 @@ class RuleBasedRecoveryMessageAnalyzerTest {
                 .isEqualTo("POST_BLOCK_REENTRY_LOGIN_COMPLETED");
     }
 
+
+    @Test
+    void detectsPostRelapseReblockWagerAttemptFailedForValidation95() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub2e4\uc2dc \ubca0\ud305\uc774 \uc131\ub9bd\ub41c \ub4a4 \uacc4\uc815\uc744 \ub2e4\uc2dc \ucc28\ub2e8\ud588\uc5b4. \ub2e4\uc74c \ub0a0 \ub2e4\uc2dc \uacc4\uc815\uc744 \ud480\uc5b4\uc11c \uc2e4\uc81c\ub85c \ucc28\ub2e8 \ud574\uc81c\uae4c\uc9c0 \uc644\ub8cc\ud588\uace0 \uc0ac\uc774\ud2b8\uc5d0 \ub85c\uadf8\uc778\ud55c \ub4a4 \ub3c8\uae4c\uc9c0 \uc785\uae08\ud588\uc5b4. \uadf8 \ub4a4 \ubca0\ud305 \ubc84\ud2bc\uae4c\uc9c0 \uc2e4\uc81c\ub85c \ub20c\ub800\uc9c0\ub9cc \uc624\ub958\uac00 \ub098\uc11c \uc8fc\ubb38\uc774 \uc2e4\ud328\ud588\uace0 \uc2e4\uc81c \ubca0\ud305\uc740 \uc131\ub9bd\ub418\uc9c0 \uc54a\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+
+        assertThat(result.postBlockStateMetadata().detected()).isTrue();
+
+        assertThat(result.reentryStateMetadata().detected()).isTrue();
+        assertThat(result.reentryStateMetadata().type())
+                .isEqualTo("POST_BLOCK_WAGER_ATTEMPT_FAILED");
+    }
+
 }

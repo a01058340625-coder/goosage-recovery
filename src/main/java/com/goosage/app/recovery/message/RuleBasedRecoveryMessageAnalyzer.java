@@ -419,6 +419,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "베팅 버튼을 눌렀",
                 "베팅 버튼은 눌렀",
                 "베팅 버튼까지 눌렀",
+                "베팅 버튼까지 실제로 눌렀",
                 "결제를 시도",
                 "사이트에 들어갔",
                 "베팅 사이트까지 들어갔",
@@ -1127,6 +1128,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean wagerAttempted = containsAny(
                 text,
                 "\ubca0\ud305 \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800",
+                "\ubca0\ud305 \ubc84\ud2bc\uae4c\uc9c0 \uc2e4\uc81c\ub85c \ub20c\ub800",
                 "\ubca0\ud305 \ubc84\ud2bc\uc744 \ub20c\ub800"
         );
 
