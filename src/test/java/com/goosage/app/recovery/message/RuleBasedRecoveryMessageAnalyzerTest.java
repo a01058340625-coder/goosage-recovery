@@ -2951,4 +2951,24 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
 
+
+    @Test
+    void detectsRepeatedRelapseExpressionForValidation99() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc544\ubb34\ub9ac \uc548 \ud558\ub824\uace0 \ubc84\ud168\ub3c4 "
+                        + "\ub2e4\uc74c \ub0a0 \uc544\uce68\uc5d0 \uc815\uc2e0\uc774 \ub9d1\uc544\uc9c0\uba74 "
+                        + "\ub610 \ubca0\ud305\ud558\uac8c \ub3fc. "
+                        + "\ubca0\ud305\uc744 \uc2dc\uc791\ud558\uba74 \uc220\uae4c\uc9c0 \ucc3e\uac8c \ub418\uace0, "
+                        + "\uc774\ub7f0 \uc0dd\ud65c\uc774 \uacc4\uc18d \ubc18\ubcf5\ub418\ub2e4\uac00 "
+                        + "\ub3c8\ub3c4 \uac74\uac15\ub3c4 \ub2e4 \uc783\uac8c \ub420\uae4c \ubd10 \ubb34\uc11c\uc6cc."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
+
 }
