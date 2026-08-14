@@ -2932,4 +2932,23 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.reentryStateMetadata().detected()).isFalse();
     }
 
+
+    @Test
+    void detectsCompletedRelapseAfterAccountReopenForValidation98() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc5b4\uc81c \uc800\ub141\ubd80\ud130 \uc548\ud560\ub824\uace0 "
+                        + "\uacc4\uc88c\uae4c\uc9c0 \ud2c0\uc5b4\ub9c9\uace0 \ub178\ub825\ud588\ub294\ub370 "
+                        + "\uc544\uce68\uc5d0 \ucc28\ud2b8\ub97c \ubcf4\uace0\uc120 \ub610 \uc7ac\ubc1c\ud574\uc11c "
+                        + "\uace0\uac1d\uc13c\ud130\uc5d0 \uc804\ud654\ud574\uc11c \uacc4\uc88c\ub97c \ub2e4\uc2dc \uc5f4\uace0 "
+                        + "\ubca0\ud305\uc744 \ud574\ubc84\ub838\uc5b4"
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
+
 }
