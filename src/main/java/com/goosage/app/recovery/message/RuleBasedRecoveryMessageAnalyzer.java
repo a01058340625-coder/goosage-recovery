@@ -899,6 +899,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsGamblingRestartCompleted(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -994,6 +998,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsProtectiveBlock
                 && containsBypassSearch
                 && containsCompletedMoneyInput;
+    }
+
+    private boolean containsGamblingRestartCompleted(
+            String text
+    ) {
+        boolean gamblingContext = containsAny(
+                text,
+                "\ub3c4\ubc15",
+                "\ubca0\ud305",
+                "\uce74\uc9c0\ub178"
+        );
+
+        boolean restartCompleted = containsAny(
+                text,
+                "\ub2e4\uc2dc \uc2dc\uc791\ud588",
+                "\ub2e4\uc2dc \uc2dc\uc791\ud588\ub2e4\uac00"
+        );
+
+        return gamblingContext && restartCompleted;
     }
 
     private boolean containsGamblingRestartByReengagement(
