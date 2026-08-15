@@ -383,6 +383,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return false;
         }
 
+
+        if (containsCurrentGamblingGameUrge(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "충동이 왔",
@@ -399,6 +404,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "마음이 흔들",
                 "흔들렸"
         );
+    }
+
+    private boolean containsCurrentGamblingGameUrge(
+            String text
+    ) {
+        boolean gamblingContext = containsAny(
+                text,
+                "\ub3c4\ubc15",
+                "\ubca0\ud305",
+                "\uce74\uc9c0\ub178",
+                "\uac8c\uc784"
+        );
+
+        boolean currentUrge = containsAny(
+                text,
+                "\ub2e4\uc2dc \ud558\uace0 \uc2f6",
+                "\ub610 \ud558\uace0 \uc2f6"
+        );
+
+        return gamblingContext && currentUrge;
     }
 
     private boolean containsAffirmedAttempt(String text) {
