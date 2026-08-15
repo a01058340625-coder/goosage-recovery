@@ -413,6 +413,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return false;
         }
 
+
+        if (containsGamblingSiteReentryAttempt(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "베팅을 시도",
@@ -428,6 +433,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "결제 직전",
                 "구매를 시도"
         );
+    }
+
+    private boolean containsGamblingSiteReentryAttempt(
+            String text
+    ) {
+        boolean gamblingSiteContext = containsAny(
+                text,
+                "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
+                "\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+        );
+
+        boolean reentryCompleted = containsAny(
+                text,
+                "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub410",
+                "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub418"
+        );
+
+        return gamblingSiteContext && reentryCompleted;
     }
 
     private boolean containsProtectiveBlock(String text) {
