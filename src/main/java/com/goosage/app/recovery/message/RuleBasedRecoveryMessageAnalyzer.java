@@ -856,6 +856,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "다시 베팅한 뒤",
                 "또 베팅했",
                 "또 베팅하게 돼",
+                "다시 도박을 시작하게 돼",
                 "다시 돈을 걸었",
                 "돈을 걸었",
                 "돈을 넣어버렸",
