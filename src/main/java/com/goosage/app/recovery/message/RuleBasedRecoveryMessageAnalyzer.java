@@ -1354,6 +1354,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
             );
         }
 
+        if (containsGeneralReentryFundingCompleted(text)) {
+            return RecoveryReentryStateMetadata.detected(
+                    "REENTRY_FUNDING_COMPLETED",
+                    0.92,
+                    "the user completed login and moved money into a previously "
+                    + "used gambling-related site before wagering"
+            );
+        }
+
         if (containsGeneralReentryLoginCompleted(text)) {
             return RecoveryReentryStateMetadata.detected(
                     "REENTRY_LOGIN_COMPLETED",
@@ -1364,6 +1373,48 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         return RecoveryReentryStateMetadata.none();
+    }
+
+    private boolean containsGeneralReentryFundingCompleted(
+            String text
+    ) {
+        boolean priorSiteContext = containsAny(
+                text,
+                "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8",
+                "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8",
+                "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
+                "\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+        );
+
+        boolean loginCompleted = containsAny(
+                text,
+                "\ub85c\uadf8\uc778\ud558\uace0",
+                "\ub85c\uadf8\uc778\ud588\uace0",
+                "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+        );
+
+        boolean fundingCompleted = containsAny(
+                text,
+                "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 \uc62e\uaca8\ub194",
+                "\ub3c8\uae4c\uc9c0 \uc62e\uaca8\ub194",
+                "\ub3c8\uc744 \uc62e\uaca8\ub194",
+                "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 \uc62e\uaca8\ub1a8",
+                "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 \uc62e\uaca8\ub1a8\uc5b4",
+                "\ub3c8\uc744 \ub123\uc5c8",
+                "\uc785\uae08\ud588"
+        );
+
+        boolean wagerCompleted = containsAny(
+                text,
+                "\ubca0\ud305\ud588",
+                "\ub3c8\uc744 \uac78\uc5c8"
+        );
+
+        return priorSiteContext
+                && loginCompleted
+                && fundingCompleted
+                && !wagerCompleted;
     }
 
     private boolean containsGeneralReentryLoginCompleted(
