@@ -1065,6 +1065,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsCompletedWagerWithNormalOrder(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -1090,6 +1094,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "결국 결제했",
                 "통제하지 못했"
         );
+    }
+
+    private boolean containsCompletedWagerWithNormalOrder(
+            String text
+    ) {
+        boolean wagerCompleted = containsAny(
+                text,
+                "\ubca0\ud305\ud588\uace0",
+                "\ud55c \ubc88 \ubca0\ud305\ud588\uace0"
+        );
+
+        boolean orderCompleted = containsAny(
+                text,
+                "\uc8fc\ubb38\ub3c4 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub410",
+                "\uc8fc\ubb38\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub410",
+                "\uc8fc\ubb38\ub3c4 \uc815\uc0c1 \ucc98\ub9ac\ub410"
+        );
+
+        return wagerCompleted && orderCompleted;
     }
 
     private boolean containsCompletedRelapseAfterReentry(
