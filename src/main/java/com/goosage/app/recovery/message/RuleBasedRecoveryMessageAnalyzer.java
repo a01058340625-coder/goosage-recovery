@@ -507,6 +507,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsRetryBetScreenAttempt(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "베팅을 시도",
@@ -522,6 +526,47 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "결제 직전",
                 "구매를 시도"
         );
+    }
+
+    private boolean containsRetryBetScreenAttempt(
+            String text
+    ) {
+        boolean retryIntent = containsAny(
+                text,
+                "\ub2e4\uc2dc \ud55c \ubc88 \ud574\ubcf4\ub824\uace0",
+                "\ub2e4\uc2dc \ud574\ubcf4\ub824\uace0"
+        );
+
+        boolean betScreenReopened = containsAny(
+                text,
+                "\ubca0\ud305 \ud654\uba74\uc744 \ub2e4\uc2dc \uc5f4\uc5c8",
+                "\ubca0\ud305 \ud654\uba74\uc744 \uc5f4\uc5c8"
+        );
+
+        return retryIntent && betScreenReopened;
+    }
+
+    private boolean containsRetryBetScreenSelfExit(
+            String text
+    ) {
+        boolean attemptPresent =
+                containsRetryBetScreenAttempt(text);
+
+        boolean stoppedBeforeSecondPress = containsAny(
+                text,
+                "\ub450 \ubc88\uc9f8\ub85c \ub204\ub974\uae30 \uc9c1\uc804",
+                "\ub204\ub974\uae30 \uc9c1\uc804"
+        );
+
+        boolean selfExit = containsAny(
+                text,
+                "\uc571\uc744 \uaed0",
+                "\uc571\uc744 \ub2eb"
+        );
+
+        return attemptPresent
+                && stoppedBeforeSecondPress
+                && selfExit;
     }
 
     private boolean containsGamblingSiteReentryAttempt(
@@ -643,6 +688,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 || containsAbortedFundingSelfBlock(text)
                 || containsAnxietyStoppedFundingBlock(text)
                 || reentrySelfExitBeforeWager
+                || containsRetryBetScreenSelfExit(text)
         ) {
             return true;
         }
