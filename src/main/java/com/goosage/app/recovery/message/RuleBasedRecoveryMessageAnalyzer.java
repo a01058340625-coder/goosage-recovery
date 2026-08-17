@@ -499,13 +499,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
                 "\ubca0\ud305 \uc0ac\uc774\ud2b8",
-                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8",
+                "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8"
         );
 
         boolean reentryCompleted = containsAny(
                 text,
                 "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub410",
-                "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub418"
+                "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub418",
+                "\ub2e4\uc2dc \ucc3e\uc544\ubd24",
+                "\uc8fc\uc18c\ub97c \uac80\uc0c9\ud558\uace0 \ud654\uba74\uc744"
         );
 
         return gamblingSiteContext && reentryCompleted;
