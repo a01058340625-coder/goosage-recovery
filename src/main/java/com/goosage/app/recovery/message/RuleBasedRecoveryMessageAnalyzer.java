@@ -1354,7 +1354,48 @@ public class RuleBasedRecoveryMessageAnalyzer {
             );
         }
 
+        if (containsGeneralReentryLoginCompleted(text)) {
+            return RecoveryReentryStateMetadata.detected(
+                    "REENTRY_LOGIN_COMPLETED",
+                    0.90,
+                    "the user completed login to a previously used "
+                    + "gambling-related site without confirmed funding or wagering"
+            );
+        }
+
         return RecoveryReentryStateMetadata.none();
+    }
+
+    private boolean containsGeneralReentryLoginCompleted(
+            String text
+    ) {
+        boolean priorSiteContext = containsAny(
+                text,
+                "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8",
+                "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8",
+                "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
+                "\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+        );
+
+        boolean loginCompleted = containsAny(
+                text,
+                "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588",
+                "\ub85c\uadf8\uc778\ud588\uace0",
+                "\ub85c\uadf8\uc778\ud574\uc11c"
+        );
+
+        boolean fundingOrWagerCompleted = containsAny(
+                text,
+                "\ub3c8\uc744 \ub123\uc5c8",
+                "\uc785\uae08\ud588",
+                "\ub3c8\uc744 \uac78\uc5c8",
+                "\ubca0\ud305\ud588"
+        );
+
+        return priorSiteContext
+                && loginCompleted
+                && !fundingOrWagerCompleted;
     }
 
     private boolean containsPostBlockWagerAttemptFailed(
