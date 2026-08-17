@@ -449,7 +449,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean plannedMoneyInput = containsAny(
                 text,
                 "\uc5bc\ub9c8\ub97c \ub123\uc744\uc9c0",
-                "\uc5bc\ub9c8 \ub123\uc744\uc9c0"
+                "\uc5bc\ub9c8 \ub123\uc744\uc9c0",
+                "\uc870\uae08\ub9cc \ud574\ubcfc\uae4c"
         );
 
         return gamblingContext
