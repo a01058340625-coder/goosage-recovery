@@ -392,6 +392,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsLossRecoveryGamblingUrge(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "충동이 왔",
@@ -450,12 +454,32 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uc5bc\ub9c8\ub97c \ub123\uc744\uc9c0",
                 "\uc5bc\ub9c8 \ub123\uc744\uc9c0",
-                "\uc870\uae08\ub9cc \ud574\ubcfc\uae4c"
+                "\uc870\uae08\ub9cc \ud574\ubcfc\uae4c",
+                "\uc870\uae08\ub9cc \ud558\uba74 \uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c"
         );
 
         return gamblingContext
                 && moneyDepositContext
                 && plannedMoneyInput;
+    }
+
+    private boolean containsLossRecoveryGamblingUrge(
+            String text
+    ) {
+        boolean gamblingContext = containsAny(
+                text,
+                "\ub3c4\ubc15",
+                "\ubca0\ud305",
+                "\uce74\uc9c0\ub178"
+        );
+
+        boolean lossRecoveryThought = containsAny(
+                text,
+                "\uc870\uae08\ub9cc \ud558\uba74 \uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c",
+                "\uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c"
+        );
+
+        return gamblingContext && lossRecoveryThought;
     }
 
     private boolean containsAffirmedAttempt(String text) {
