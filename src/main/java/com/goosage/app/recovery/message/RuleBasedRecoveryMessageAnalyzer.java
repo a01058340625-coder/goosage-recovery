@@ -503,6 +503,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsLoginScreenEntryAttempt(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "베팅을 시도",
@@ -562,6 +566,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
 
         return siteSearch && gamblingBoundaryContext;
+    }
+
+    private boolean containsLoginScreenEntryAttempt(
+            String text
+    ) {
+        boolean accountContext = containsAny(
+                text,
+                "\uacc4\uc815",
+                "\uc0ac\uc774\ud2b8"
+        );
+
+        boolean loginScreenEntered = containsAny(
+                text,
+                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac00",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac00"
+        );
+
+        boolean loginNotCompleted = containsAny(
+                text,
+                "\uc544\uc774\ub514\ub791 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
+                "\uc544\uc774\ub514\uc640 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
+                "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558"
+        );
+
+        return accountContext
+                && loginScreenEntered
+                && loginNotCompleted;
     }
 
     private boolean containsProtectiveBlock(String text) {
