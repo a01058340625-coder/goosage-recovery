@@ -1354,6 +1354,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
             );
         }
 
+        if (containsGeneralReentryWagerAttemptFailed(text)) {
+            return RecoveryReentryStateMetadata.detected(
+                    "REENTRY_WAGER_ATTEMPT_FAILED",
+                    0.94,
+                    "the user funded a gambling-related session and attempted "
+                    + "a wager, but the wager failed before completion"
+            );
+        }
+
         if (containsGeneralReentryFundingCompleted(text)) {
             return RecoveryReentryStateMetadata.detected(
                     "REENTRY_FUNDING_COMPLETED",
@@ -1373,6 +1382,42 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         return RecoveryReentryStateMetadata.none();
+    }
+
+    private boolean containsGeneralReentryWagerAttemptFailed(
+            String text
+    ) {
+        boolean fundingCompleted = containsAny(
+                text,
+                "\ub3c8\uae4c\uc9c0 \ub123\uc5b4\ub193",
+                "\ub3c8\uc744 \ub123\uc5b4\ub193",
+                "\ub3c8\uc744 \ub123\uc5c8",
+                "\uc785\uae08\ud588"
+        );
+
+        boolean wagerAttempted = containsAny(
+                text,
+                "\ubca0\ud305 \ubc84\ud2bc\uc744 \ub20c\ub800",
+                "\ubca0\ud305 \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800"
+        );
+
+        boolean orderFailed = containsAny(
+                text,
+                "\uc8fc\ubb38 \uc624\ub958",
+                "\uc8fc\ubb38\uc774 \uc2e4\ud328",
+                "\uc8fc\ubb38 \uc2e4\ud328"
+        );
+
+        boolean wagerNotCompleted = containsAny(
+                text,
+                "\ubca0\ud305\uc740 \uc131\ub9bd\ub418\uc9c0 \uc54a",
+                "\ubca0\ud305\uc774 \uc131\ub9bd\ub418\uc9c0 \uc54a"
+        );
+
+        return fundingCompleted
+                && wagerAttempted
+                && orderFailed
+                && wagerNotCompleted;
     }
 
     private boolean containsGeneralReentryFundingCompleted(
