@@ -548,14 +548,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean siteSearch = containsAny(
                 text,
                 "\uad00\ub828 \uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uac80\uc0c9",
-                "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uac80\uc0c9"
+                "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uac80\uc0c9",
+                "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\uae4c\uc9c0 \uac80\uc0c9",
+                "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uac80\uc0c9"
         );
 
         boolean gamblingBoundaryContext = containsAny(
                 text,
                 "\ub3c8\uc744 \uac78\uc9c0\ub294 \uc54a\uc558",
                 "\ub3c8\uc744 \uac78\uc9c0 \uc54a\uc558",
-                "\ubca0\ud305\uc740 \ud558\uc9c0 \uc54a\uc558"
+                "\ubca0\ud305\uc740 \ud558\uc9c0 \uc54a\uc558",
+                "\uc811\uc18d \ubc84\ud2bc\uc740 \ub204\ub974\uc9c0 \uc54a\uc558"
         );
 
         return siteSearch && gamblingBoundaryContext;
