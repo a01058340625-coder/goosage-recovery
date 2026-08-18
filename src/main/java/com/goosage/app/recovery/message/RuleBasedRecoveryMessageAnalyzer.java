@@ -396,6 +396,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsSleepAnxietyRepeatedGambling(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "충동이 왔",
@@ -523,6 +527,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         if (containsGamblingEscalationAfterLossRecovery(text)) {
+            return true;
+        }
+
+        if (containsSleepAnxietyRepeatedGambling(text)) {
             return true;
         }
 
@@ -1103,6 +1111,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsSleepAnxietyRepeatedGambling(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -1235,6 +1247,53 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsProtectiveBlock
                 && containsBypassSearch
                 && containsCompletedMoneyInput;
+    }
+
+    private boolean containsSleepAnxietyRepeatedGambling(
+            String text
+    ) {
+        boolean sleepTrigger = containsAny(
+                text,
+                "\ubc24\uc5d0 \uc7a0\uc774 \uc548 \uc640",
+                "\uc7a0\uc774 \uc548 \uc640\uc11c"
+        );
+
+        boolean anxietyWithoutGambling = containsAny(
+                text,
+                "\uc548 \ud558\uba74 \ub354 \ubd88\uc548",
+                "\uc548 \ud558\uba74 \ubd88\uc548"
+        );
+
+        boolean repeatedOutcomeChecking = containsAny(
+                text,
+                "\ud558\ub8e8 \uc885\uc77c \uacb0\uacfc \ud655\uc778",
+                "\uacb0\uacfc \ud655\uc778\ud558\uace0"
+        );
+
+        boolean concealment = containsAny(
+                text,
+                "\uac00\uc871\ud55c\ud14c\ub294 \uadf8\ub0e5 \uac8c\uc784",
+                "\uac00\uc871\uc5d0\uac8c\ub294 \uadf8\ub0e5 \uac8c\uc784"
+        );
+
+        boolean moneyInput = containsAny(
+                text,
+                "\ub3c8\ub3c4 \uaf64 \ub9ce\uc774 \ub4e4\uc5b4\uac14",
+                "\ub3c8\uc774 \uaf64 \ub9ce\uc774 \ub4e4\uc5b4\uac14"
+        );
+
+        boolean siteOpened = containsAny(
+                text,
+                "\uc0ac\uc774\ud2b8\ub97c \ucf1c\uac8c \ub418",
+                "\uc0ac\uc774\ud2b8\ub97c \ucf30"
+        );
+
+        return sleepTrigger
+                && anxietyWithoutGambling
+                && repeatedOutcomeChecking
+                && concealment
+                && moneyInput
+                && siteOpened;
     }
 
     private boolean containsGamblingEscalationAfterLossRecovery(
