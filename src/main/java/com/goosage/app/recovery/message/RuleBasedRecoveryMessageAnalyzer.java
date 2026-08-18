@@ -413,6 +413,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (containsBigWinMemoryCasinoContinuation(text)) {
             return true;
         }
+        if (containsDebtDrivenLossRecoveryRepeatedGambling(text)) {
+            return true;
+        }
 
         return containsAny(
                 text,
@@ -579,6 +582,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsDebtDrivenLossRecoveryRepeatedGambling(text)) {
             return true;
         }
         if (containsBigWinMemoryCasinoContinuation(text)) {
@@ -1175,6 +1181,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsDebtDrivenLossRecoveryRepeatedGambling(text)) {
             return true;
         }
         if (containsBigWinMemoryCasinoContinuation(text)) {
@@ -2474,6 +2483,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && bigWinMemoryPresent
                 && repeatWinExpectationPresent
                 && casinoContinuationPresent;
+    }
+
+
+    private boolean containsDebtDrivenLossRecoveryRepeatedGambling(
+            String text
+    ) {
+        boolean debtPresent = containsAny(
+                text,
+                "\ube5a\uc774 \uc0dd\uae30\uba74\uc11c",
+                "\ube5a\uc774 \uc0dd\uae30"
+        );
+
+        boolean gamblingIncreasePresent = containsAny(
+                text,
+                "\uc624\ud788\ub824 \ub354 \ub3c4\ubc15\uc744 \ud558\uac8c \ub410",
+                "\ub354 \ub3c4\ubc15\uc744 \ud558\uac8c \ub410"
+        );
+
+        boolean lossRecoveryExpectationPresent = containsAny(
+                text,
+                "\uc774\ubc88 \ud55c \ubc88\ub9cc \ub530\uba74 \ud574\uacb0\ud560 \uc218 \uc788",
+                "\ud55c \ubc88\ub9cc \ub530\uba74 \ud574\uacb0\ud560 \uc218 \uc788"
+        );
+
+        boolean repeatedLossPresent = containsAny(
+                text,
+                "\uacb0\uad6d \ub2e4\uc2dc \ub2e4 \uc783",
+                "\ub2e4\uc2dc \ub2e4 \uc783"
+        );
+
+        return debtPresent
+                && gamblingIncreasePresent
+                && lossRecoveryExpectationPresent
+                && repeatedLossPresent;
     }
 
 }
