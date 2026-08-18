@@ -3178,4 +3178,27 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
 
+
+
+    @Test
+    void detectsBigWinMemoryCasinoContinuationForValidation131() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00 \ud070 \uae08\uc561\uc774 \ud55c \ubc88 \ub098\uc628 \ub4a4\ub85c \ubb38\uc81c\uac00 \uc2dc\uc791\ub410\uc2b5\ub2c8\ub2e4. "
+                        + "\uadf8\ub54c\uc758 \uae30\uc5b5 \ub54c\ubb38\uc5d0 \uc870\uae08\ub9cc \ud558\uba74 \ub2e4\uc2dc \ub098\uc62c \uac83 \uac19\ub2e4\ub294 \uc0dd\uac01\uc744 \uacc4\uc18d\ud588\uc2b5\ub2c8\ub2e4. "
+                        + "\uce74\uc9c0\ub178 \uac8c\uc784\ub3c4 \ubcd1\ud589\ud558\uba74\uc11c \uc783\uc740 \ub0a0\uc5d0\ub294 \uc7a0\ub3c4 \uc81c\ub300\ub85c \ubabb \uc794\uc2b5\ub2c8\ub2e4. "
+                        + "\uac00\uc871\uc5d0\uac8c\ub294 \uc544\uc9c1 \ub4e4\ud0a4\uc9c0 \uc54a\uc558\uc9c0\ub9cc \ud1b5\uc7a5 \uc794\uc561\uc744 \ubcfc \ub54c\ub9c8\ub2e4 \ubd88\uc548\ud558\uace0, "
+                        + "\ud63c\uc790\uc11c\ub294 \ub04a\uae30 \uc5b4\ub835\ub2e4\ub294 \uc0dd\uac01\uc774 \ub4ed\ub2c8\ub2e4"
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(0);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
 }

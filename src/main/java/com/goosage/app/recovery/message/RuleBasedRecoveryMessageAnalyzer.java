@@ -410,6 +410,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (containsAbstinenceRelapseBettingEscalation(text)) {
             return true;
         }
+        if (containsBigWinMemoryCasinoContinuation(text)) {
+            return true;
+        }
 
         return containsAny(
                 text,
@@ -576,6 +579,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsBigWinMemoryCasinoContinuation(text)) {
             return true;
         }
 
@@ -1169,6 +1175,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsBigWinMemoryCasinoContinuation(text)) {
             return true;
         }
 
@@ -2431,6 +2440,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && actualRelapsePresent
                 && smallRestartIntentPresent
                 && escalationPresent;
+    }
+
+
+    private boolean containsBigWinMemoryCasinoContinuation(
+            String text
+    ) {
+        boolean slotPresent = containsAny(
+                text,
+                "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00",
+                "\uc2ac\ub86f"
+        );
+
+        boolean bigWinMemoryPresent = containsAny(
+                text,
+                "\ud070 \uae08\uc561\uc774 \ud55c \ubc88 \ub098\uc628",
+                "\uadf8\ub54c\uc758 \uae30\uc5b5"
+        );
+
+        boolean repeatWinExpectationPresent = containsAny(
+                text,
+                "\uc870\uae08\ub9cc \ud558\uba74 \ub2e4\uc2dc \ub098\uc62c \uac83 \uac19\ub2e4",
+                "\ub2e4\uc2dc \ub098\uc62c \uac83 \uac19\ub2e4"
+        );
+
+        boolean casinoContinuationPresent = containsAny(
+                text,
+                "\uce74\uc9c0\ub178 \uac8c\uc784\ub3c4 \ubcd1\ud589\ud558\uba74\uc11c",
+                "\uce74\uc9c0\ub178 \uac8c\uc784\ub3c4 \ubcd1\ud589"
+        );
+
+        return slotPresent
+                && bigWinMemoryPresent
+                && repeatWinExpectationPresent
+                && casinoContinuationPresent;
     }
 
 }
