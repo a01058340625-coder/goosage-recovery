@@ -2971,4 +2971,36 @@ class RuleBasedRecoveryMessageAnalyzerTest {
     }
 
 
+
+    @Test
+    void detectsTimeTransitionReentryUrgeAttemptForValidation121() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ud55c \ub2ec \uc804\uc5d0 \ub2e4\uc2dc \ub3c4\ubc15\uc744 \ud588\ub2e4\uac00 "
+                        + "\ub3c8\uc744 \uc783\uace0 \ubc14\ub85c \uc0ac\uc774\ud2b8\ub97c \ucc28\ub2e8\ud55c \ub4a4\uc5d0\ub294 "
+                        + "\ud55c\ub3d9\uc548 \ubcc4\ub2e4\ub978 \uc0dd\uac01 \uc5c6\uc774 \uc9c0\ub0c8\uc5b4. "
+                        + "\uc9c0\ub09c\uc8fc\uc5d0 \uc6d4\uae09\uc774 \ub4e4\uc5b4\uc654\uc744 \ub54c "
+                        + "\uc7a0\uae50 \ub2e4\uc2dc \ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01\uc774 \ub4e4\uc5c8\uc9c0\ub9cc "
+                        + "\uadf8\ub0e5 \ub118\uacbc\uace0, \uc5b4\uc81c\uae4c\uc9c0\ub3c4 \uc0ac\uc774\ud2b8\ub97c "
+                        + "\ucc3e\uc544\ubcf4\uc9c0\ub294 \uc54a\uc558\uc5b4. "
+                        + "\uadf8\ub7f0\ub370 \uc624\ub298 \uc0dd\ud65c\ube44\uac00 \ubd80\uc871\ud55c \uac78 \ud655\uc778\ud558\ub2c8\uae4c "
+                        + "\uc608\uc804\uc5d0 \uc783\uc5c8\ub358 \ub3c8\uc744 \uc870\uae08\uc774\ub77c\ub3c4 "
+                        + "\uba54\uc6b0\uace0 \uc2f6\ub2e4\ub294 \uc0dd\uac01\uc774 \ub2e4\uc2dc \ub4e4\uc5c8\uace0, "
+                        + "\uacb0\uad6d \uc608\uc804\uc5d0 \uc774\uc6a9\ud558\ub358 \uc0ac\uc774\ud2b8 \uc774\ub984\uacfc \uc8fc\uc18c\ub97c "
+                        + "\uac80\uc0c9\ud574\uc11c \ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac14\uc5b4. "
+                        + "\uadf8\ub798\ub3c4 \uc544\uc774\ub514\ub098 \ube44\ubc00\ubc88\ud638\ub97c "
+                        + "\uc785\ub825\ud558\uac70\ub098 \ub3c8\uc744 \ub123\uc9c0\ub294 \uc54a\uace0 "
+                        + "\uc2a4\uc2a4\ub85c \ud654\uba74\uc744 \ub2eb\uc558\uc5b4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
+    }
+
 }

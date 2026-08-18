@@ -476,7 +476,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean lossRecoveryThought = containsAny(
                 text,
                 "\uc870\uae08\ub9cc \ud558\uba74 \uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c",
-                "\uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c"
+                "\uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c",
+                "\uba54\uc6b0\uace0 \uc2f6"
         );
 
         return gamblingContext && lossRecoveryThought;
@@ -631,13 +632,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean loginScreenEntered = containsAny(
                 text,
                 "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac00",
-                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac00"
+                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac14",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac00",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac14"
         );
 
         boolean loginNotCompleted = containsAny(
                 text,
                 "\uc544\uc774\ub514\ub791 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
                 "\uc544\uc774\ub514\uc640 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
+                "\uc544\uc774\ub514\ub098 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uac70\ub098 \ub3c8\uc744 \ub123\uc9c0\ub294 \uc54a",
                 "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558"
         );
 
@@ -704,6 +708,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "사이트를 닫",
                 "앱을 닫",
                 "창을 닫",
+                "\uc2a4\uc2a4\ub85c \ud654\uba74\uc744 \ub2eb",
                 "계정을 잠",
                 "계정을 막",
                 "계정은 이미 막아놓",
