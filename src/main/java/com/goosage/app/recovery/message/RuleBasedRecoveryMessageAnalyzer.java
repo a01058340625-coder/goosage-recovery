@@ -416,6 +416,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (containsDebtDrivenLossRecoveryRepeatedGambling(text)) {
             return true;
         }
+        if (containsHabitualBettingSearchAndPersistence(text)) {
+            return true;
+        }
 
         return containsAny(
                 text,
@@ -582,6 +585,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsHabitualBettingSearchAndPersistence(text)) {
             return true;
         }
         if (containsDebtDrivenLossRecoveryRepeatedGambling(text)) {
@@ -1181,6 +1187,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsHabitualBettingSearchAndPersistence(text)) {
             return true;
         }
         if (containsDebtDrivenLossRecoveryRepeatedGambling(text)) {
@@ -2517,6 +2526,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && gamblingIncreasePresent
                 && lossRecoveryExpectationPresent
                 && repeatedLossPresent;
+    }
+
+
+    private boolean containsHabitualBettingSearchAndPersistence(
+            String text
+    ) {
+        boolean repeatedThoughtPresent = containsAny(
+                text,
+                "\ud558\ub8e8\ub77c\ub3c4 \uc548 \ud558\uba74 \uacc4\uc18d \uc0dd\uac01\ub098",
+                "\uacc4\uc18d \uc0dd\uac01\ub098\ub294 \uac8c \ubb38\uc81c"
+        );
+
+        boolean bettingPlaceSearchPresent = containsAny(
+                text,
+                "\ubc30\ud305\ud560 \uacf3\ubd80\ud130 \ucc3e\uace0",
+                "\ubc30\ud305\ud560 \uacf3"
+        );
+
+        boolean habitualPersistencePresent = containsAny(
+                text,
+                "\uc0dd\ud65c\uc758 \uc77c\ubd80\uac00 \ub41c",
+                "\uc810\uc810 \uc0dd\ud65c\uc758 \uc77c\ubd80"
+        );
+
+        return repeatedThoughtPresent
+                && bettingPlaceSearchPresent
+                && habitualPersistencePresent;
     }
 
 }

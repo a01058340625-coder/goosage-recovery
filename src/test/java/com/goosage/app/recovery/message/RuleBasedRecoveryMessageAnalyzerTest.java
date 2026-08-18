@@ -3223,4 +3223,27 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
 
+
+
+    @Test
+    void detectsHabitualBettingSearchAndPersistenceForValidation134() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3c8\ubcf4\ub2e4 \uc2b5\uad00\uc774 \ubb34\uc11c\uc6cc\uc694. "
+                        + "\ucd5c\uadfc\uc5d0\ub294 \ud06c\uac8c \uc783\uc9c0\ub294 \uc54a\uc558\ub294\ub370 \ud558\ub8e8\ub77c\ub3c4 \uc548 \ud558\uba74 \uacc4\uc18d \uc0dd\uac01\ub098\ub294 \uac8c \ubb38\uc81c\uc778 \uac83 \uac19\uc2b5\ub2c8\ub2e4. "
+                        + "\uacbd\uae30 \uc788\uc73c\uba74 \uc790\uc5f0\uc2a4\ub7fd\uac8c \ubc30\ud305\ud560 \uacf3\ubd80\ud130 \ucc3e\uace0 \uc788\uace0\uc694. "
+                        + "\uc774\uac8c \uadf8\ub0e5 \uc7ac\ubbf8\ub77c\uace0 \uc0dd\uac01\ud588\ub294\ub370 \uc810\uc810 \uc0dd\ud65c\uc758 \uc77c\ubd80\uac00 \ub41c \uac83 \uac19\uc544\uc11c \ubb34\uc12d\uc2b5\ub2c8\ub2e4. "
+                        + "\uc9c0\uae08\uc774\ub77c\ub3c4 \ub04a\uc744 \uc218 \uc788\uc744\uae4c\uc694."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(0);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
 }
