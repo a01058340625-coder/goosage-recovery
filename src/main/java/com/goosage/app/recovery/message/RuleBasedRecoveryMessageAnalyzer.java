@@ -478,7 +478,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uc870\uae08\ub9cc \ud558\uba74 \uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c",
                 "\uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c",
-                "\uba54\uc6b0\uace0 \uc2f6"
+                "\uba54\uc6b0\uace0 \uc2f6",
+                "\ub418\ucc3e\uace0 \uc2f6"
         );
 
         return gamblingContext && lossRecoveryThought;
@@ -518,6 +519,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         if (containsOngoingRepeatedGamblingCycle(text)) {
+            return true;
+        }
+
+        if (containsGamblingEscalationAfterLossRecovery(text)) {
             return true;
         }
 
@@ -1094,6 +1099,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsGamblingEscalationAfterLossRecovery(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -1226,6 +1235,34 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsProtectiveBlock
                 && containsBypassSearch
                 && containsCompletedMoneyInput;
+    }
+
+    private boolean containsGamblingEscalationAfterLossRecovery(
+            String text
+    ) {
+        boolean gamblingContext = containsAny(
+                text,
+                "\uc628\ub77c\uc778 \uce74\uc9c0\ub178",
+                "\uc2ac\ub86f",
+                "\uc2a4\ud3ec\uce20\ubca0\ud305"
+        );
+
+        boolean lossRecoveryUrge = containsAny(
+                text,
+                "\uc783\uc740 \ub3c8\uc744 \ub418\ucc3e\uace0 \uc2f6",
+                "\ub418\ucc3e\uace0 \uc2f6\ub2e4\ub294 \ub9c8\uc74c"
+        );
+
+        boolean gamblingExpansion = containsAny(
+                text,
+                "\uc2a4\ud3ec\uce20\ubca0\ud305\uae4c\uc9c0 \uc190\ub300",
+                "\ubca0\ud305\uc561\uc774 \ucee4\uc84c",
+                "\ubca0\ud305 \uae08\uc561\uc774 \ucee4\uc84c"
+        );
+
+        return gamblingContext
+                && lossRecoveryUrge
+                && gamblingExpansion;
     }
 
     private boolean containsOngoingRepeatedGamblingCycle(

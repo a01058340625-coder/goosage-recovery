@@ -3027,4 +3027,34 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
 
+
+    @Test
+    void detectsGamblingEscalationAfterLossRecoveryForValidation124() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc628\ub77c\uc778 \uce74\uc9c0\ub178\uc5d0\uc11c \ucc98\uc74c\uc5d4 "
+                        + "\uc7ac\ubbf8\ub85c \uba87 \ubc88 \ud574\ubd24\uc2b5\ub2c8\ub2e4. "
+                        + "\uc2ac\ub86f\uc740 \uae08\uc561\uc774 \uc791\uc544\uc11c \ubd80\ub2f4\uc774 "
+                        + "\uc5c6\ub2e4\uace0 \uc0dd\uac01\ud588\ub294\ub370, "
+                        + "\uc783\uc740 \ub3c8\uc744 \ub418\ucc3e\uace0 \uc2f6\ub2e4\ub294 "
+                        + "\ub9c8\uc74c\uc774 \uc0dd\uae30\uba74\uc11c \uc810\uc810 "
+                        + "\ubca0\ud305\uc561\uc774 \ucee4\uc84c\uc2b5\ub2c8\ub2e4. "
+                        + "\uc2a4\ud3ec\uce20\ubca0\ud305\uae4c\uc9c0 \uc190\ub300\uace0 \ub098\ub2c8 "
+                        + "\ud558\ub8e8 \uc885\uc77c \uacbd\uae30 \uacb0\uacfc\ub9cc "
+                        + "\ud655\uc778\ud558\uac8c \ub410\uace0, "
+                        + "\uac00\uc871\uc5d0\uac8c\ub3c4 \uc228\uae30\uac8c \ub410\uc2b5\ub2c8\ub2e4. "
+                        + "\uc774\uc81c\ub294 \uc2a4\uc2a4\ub85c \uba48\ucd9c \uc218 "
+                        + "\uc788\uc744\uc9c0 \uac71\uc815\ub429\ub2c8\ub2e4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(0);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
+
 }
