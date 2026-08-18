@@ -400,6 +400,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsAbstinenceReentryUrge(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "충동이 왔",
@@ -418,6 +422,32 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
     }
 
+    private boolean containsAbstinenceReentryUrge(
+            String text
+    ) {
+        boolean abstinencePresent = containsAny(
+                text,
+                "\uc77c\uc8fc\uc77c \uc815\ub3c4 \uc548 \ud558\uace0",
+                "\uba70\uce60\uc740 \uad1c\ucc2e\uc558"
+        );
+
+        boolean reentryUrgePresent = containsAny(
+                text,
+                "\uc0ac\uc774\ud2b8 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c",
+                "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c"
+        );
+
+        boolean relapsePreventionAwareness = containsAny(
+                text,
+                "\ub2e4\uc2dc \ud558\uba74 \uc548 \ub41c\ub2e4",
+                "\ub2e4\uc2dc \ud558\uba74 \uc548 \ub418"
+        );
+
+        return abstinencePresent
+                && reentryUrgePresent
+                && relapsePreventionAwareness;
+    }
+
     private boolean containsCurrentGamblingGameUrge(
             String text
     ) {
@@ -433,7 +463,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\ub2e4\uc2dc \ud558\uace0 \uc2f6",
                 "\ub610 \ud558\uace0 \uc2f6",
-                "\ub354 \ud558\uace0 \uc2f6\uc5b4\uc9c0"
+                "\ub354 \ud558\uace0 \uc2f6\uc5b4\uc9c0",
+                "\uc0ac\uc774\ud2b8 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c"
         );
 
         return gamblingContext && currentUrge;

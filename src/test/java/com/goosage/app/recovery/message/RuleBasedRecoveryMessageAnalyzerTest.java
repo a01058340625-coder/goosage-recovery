@@ -3083,4 +3083,30 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
 
+
+    @Test
+    void detectsAbstinenceTimeTransitionReentryUrgeForValidation126() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc77c\uc8fc\uc77c \uc815\ub3c4 \uc548 \ud558\uace0 \uc788\uc2b5\ub2c8\ub2e4. "
+                        + "\ucc98\uc74c \uba70\uce60\uc740 \uad1c\ucc2e\uc558\ub294\ub370 "
+                        + "\uc694\uc998 \uc790\uafb8 \uc0dd\uac01\ub098\uc694. "
+                        + "\ud2b9\ud788 \ubc24\uc5d0 \ud63c\uc790 \uc788\uc73c\uba74 "
+                        + "\uc0ac\uc774\ud2b8 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 "
+                        + "\ud655 \uc62c\ub77c\uc635\ub2c8\ub2e4. "
+                        + "\ub2e4\uc2dc \ud558\uba74 \uc548 \ub41c\ub2e4\ub294 \uac74 \uc544\ub294\ub370 "
+                        + "\uacc4\uc18d \uba38\ub9bf\uc18d\uc5d0\uc11c \ub5a0\ub098\uc9c8 \uc54a\ub124\uc694. "
+                        + "\uc5b4\ub5bb\uac8c \ubc84\ud168\uc57c \ud560\uae4c\uc694."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(1);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(0);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(0);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
+    }
+
 }
