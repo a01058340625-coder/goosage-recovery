@@ -400,6 +400,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsSportsBettingEscalationLossRecoveryHelpSeeking(text)) {
+            return true;
+        }
+
         if (containsAbstinenceReentryUrge(text)) {
             return true;
         }
@@ -563,6 +567,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         if (containsSleepAnxietyRepeatedGambling(text)) {
+            return true;
+        }
+        if (containsSportsBettingEscalationLossRecoveryHelpSeeking(text)) {
             return true;
         }
 
@@ -875,6 +882,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsSportsBettingEscalationLossRecoveryHelpSeeking(text)) {
+            return true;
+        }
+
         boolean recoveryPhoneCall =
                 containsAny(text, "전화했")
                 && !containsAny(text, "고객센터");
@@ -1146,6 +1157,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         if (containsSleepAnxietyRepeatedGambling(text)) {
+            return true;
+        }
+        if (containsSportsBettingEscalationLossRecoveryHelpSeeking(text)) {
             return true;
         }
 
@@ -2336,4 +2350,44 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         relapseSignalDelta
                 );
     }
+
+    private boolean containsSportsBettingEscalationLossRecoveryHelpSeeking(
+            String text
+    ) {
+        boolean sportsBettingPresent = containsAny(
+                text,
+                "\uc2a4\ud3ec\uce20 \uacbd\uae30"
+        );
+
+        boolean actualBettingPresent = containsAny(
+                text,
+                "\ubca0\ud305\ud588\uc2b5\ub2c8\ub2e4",
+                "\ubca0\ud305\ud588"
+        );
+
+        boolean amountEscalationPresent = containsAny(
+                text,
+                "\uae08\uc561\uc774 \ub108\ubb34 \ucee4\uc84c",
+                "\ub354 \ud06c\uac8c \uac78\uac8c \ub429"
+        );
+
+        boolean lossRecoveryPresent = containsAny(
+                text,
+                "\uc783\uace0 \ub098\uba74",
+                "\ub9cc\ud68c\ud558\ub824\uace0"
+        );
+
+        boolean helpSeekingPresent = containsAny(
+                text,
+                "\ucc3d\ud53c\ud574\uc11c \uc5ec\uae30\uae4c\uc9c0 \uc654",
+                "\uc5ec\uae30\uae4c\uc9c0 \uc654\uc2b5\ub2c8\ub2e4"
+        );
+
+        return sportsBettingPresent
+                && actualBettingPresent
+                && amountEscalationPresent
+                && lossRecoveryPresent
+                && helpSeekingPresent;
+    }
+
 }
