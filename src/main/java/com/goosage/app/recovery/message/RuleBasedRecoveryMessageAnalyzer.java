@@ -26,7 +26,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean selfContextExtracted = false;
         boolean currentContextExtracted = false;
 
-        if (looksLikeThirdPartyContext(normalized)) {
+        if (
+                looksLikeThirdPartyContext(normalized)
+                && !containsSelfGamblingAfterFriendIntroduction(normalized)
+        ) {
             int selfSubjectIndex =
                     findExplicitSelfSubjectAfterThirdParty(normalized);
 
@@ -423,6 +426,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsSelfGamblingAfterFriendIntroduction(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "충동이 왔",
@@ -600,6 +607,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsBigWinMemoryCasinoContinuation(text)) {
+            return true;
+        }
+
+        if (containsSelfGamblingAfterFriendIntroduction(text)) {
             return true;
         }
 
@@ -1209,6 +1220,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsBigWinMemoryCasinoContinuation(text)) {
+            return true;
+        }
+
+        if (containsSelfGamblingAfterFriendIntroduction(text)) {
             return true;
         }
 
@@ -2607,6 +2622,61 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && crossGamblingCyclePresent
                 && persistentThoughtPresent
                 && helpSeekingPresent;
+    }
+
+
+    private boolean containsSelfGamblingAfterFriendIntroduction(
+            String text
+    ) {
+        boolean selfContextPresent = containsAny(
+                text,
+                "\uc800\ub294 \uc6d0\ub798 \ub3c4\ubc15",
+                "\uc800\ub294"
+        );
+
+        boolean friendIntroductionPresent = containsAny(
+                text,
+                "\uce5c\uad6c\uac00 \uc54c\ub824\uc918\uc11c",
+                "\uce5c\uad6c\uac00 \uc54c\ub824"
+        );
+
+        boolean selfGamblingStarted = containsAny(
+                text,
+                "\uc7ac\ubbf8\uc0bc\uc544 \ud574\ubd24",
+                "\ud574\ubd24\ub294\ub370"
+        );
+
+        boolean initialBigWinPresent = containsAny(
+                text,
+                "\ucc98\uc74c\uc5d0 \ud06c\uac8c \ub530\uace0",
+                "\ud06c\uac8c \ub530\uace0 \ub098\uc11c"
+        );
+
+        boolean lossRecoveryUrgePresent = containsAny(
+                text,
+                "\ubcf8\uc804 \uc0dd\uac01 \ub54c\ubb38\uc5d0",
+                "\ubcf8\uc804 \uc0dd\uac01"
+        );
+
+        boolean continuedGamblingPresent = containsAny(
+                text,
+                "\uacc4\uc18d \ud558\uac8c \ub410",
+                "\uacc4\uc18d \ud558\uac8c"
+        );
+
+        boolean accumulatedLossPresent = containsAny(
+                text,
+                "\ud6e8\uc52c \ub9ce\uc774 \uc783\uc5c8",
+                "\ub9ce\uc774 \uc783\uc5c8"
+        );
+
+        return selfContextPresent
+                && friendIntroductionPresent
+                && selfGamblingStarted
+                && initialBigWinPresent
+                && lossRecoveryUrgePresent
+                && continuedGamblingPresent
+                && accumulatedLossPresent;
     }
 
 }
