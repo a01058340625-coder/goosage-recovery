@@ -407,6 +407,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (containsAbstinenceReentryUrge(text)) {
             return true;
         }
+        if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
 
         return containsAny(
                 text,
@@ -570,6 +573,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsSportsBettingEscalationLossRecoveryHelpSeeking(text)) {
+            return true;
+        }
+        if (containsAbstinenceRelapseBettingEscalation(text)) {
             return true;
         }
 
@@ -1160,6 +1166,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsSportsBettingEscalationLossRecoveryHelpSeeking(text)) {
+            return true;
+        }
+        if (containsAbstinenceRelapseBettingEscalation(text)) {
             return true;
         }
 
@@ -2388,6 +2397,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && amountEscalationPresent
                 && lossRecoveryPresent
                 && helpSeekingPresent;
+    }
+
+
+    private boolean containsAbstinenceRelapseBettingEscalation(
+            String text
+    ) {
+        boolean abstinencePresent = containsAny(
+                text,
+                "3\uac1c\uc6d4 \uc815\ub3c4 \ub04a\uc5c8",
+                "\ud55c\ub3d9\uc548 3\uac1c\uc6d4"
+        );
+
+        boolean actualRelapsePresent = containsAny(
+                text,
+                "\uacb0\uad6d \ub2e4\uc2dc \ud588",
+                "\ub2e4\uc2dc \uc2dc\uc791\ud55c"
+        );
+
+        boolean smallRestartIntentPresent = containsAny(
+                text,
+                "\uc18c\uc561\uc73c\ub85c \ud55c \ubc88\ub9cc \ud574\ubcf4\uc790",
+                "\ud55c \ubc88\ub9cc \ud574\ubcf4\uc790"
+        );
+
+        boolean escalationPresent = containsAny(
+                text,
+                "\uae08\uc561\uc774 \uc810\uc810 \ucee4\uc84c",
+                "\uc608\uc804\ucc98\ub7fc \uae08\uc561\uc774 \uc810\uc810 \ucee4\uc84c"
+        );
+
+        return abstinencePresent
+                && actualRelapsePresent
+                && smallRestartIntentPresent
+                && escalationPresent;
     }
 
 }
