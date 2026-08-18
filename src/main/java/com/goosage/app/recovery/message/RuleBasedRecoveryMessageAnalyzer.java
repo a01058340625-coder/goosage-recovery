@@ -514,7 +514,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc870\uae08\ub9cc \ud558\uba74 \uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c",
                 "\uba54\uc6b8 \uc218 \uc788\uc9c0 \uc54a\uc744\uae4c",
                 "\uba54\uc6b0\uace0 \uc2f6",
-                "\ub418\ucc3e\uace0 \uc2f6"
+                "\ub418\ucc3e\uace0 \uc2f6",
+                "\ud55c \ubc88\uc5d0 \ub9cc\ud68c\ud558\ub824\ub294 \uc0dd\uac01"
         );
 
         return gamblingContext && lossRecoveryThought;
@@ -568,6 +569,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsAny(
                 text,
                 "베팅을 시도",
+                "스포츠베팅을 시작했",
                 "베팅 버튼을 눌렀",
                 "베팅 버튼을 실제로 눌렀",
                 "베팅 버튼은 눌렀",
@@ -893,6 +895,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "상담을 받고",
                 "상담은 받고 왔",
                 "\uc0c1\ub2f4\uc744 \ubc1b\uc544\ubcf4\ub824\uace0 \uae00 \ub0a8",
+                "\uc0c1\ub2f4\uc744 \ubc1b\uc544\uc57c \ud560 \uac83 \uac19\uc544 \uae00\uc744 \ub0a8",
                 "도움을 요청",
                 "회복 행동",
                 "일기를 썼",
@@ -1340,14 +1343,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean lossRecoveryUrge = containsAny(
                 text,
                 "\uc783\uc740 \ub3c8\uc744 \ub418\ucc3e\uace0 \uc2f6",
-                "\ub418\ucc3e\uace0 \uc2f6\ub2e4\ub294 \ub9c8\uc74c"
+                "\ub418\ucc3e\uace0 \uc2f6\ub2e4\ub294 \ub9c8\uc74c",
+                "\ud55c \ubc88\uc5d0 \ub9cc\ud68c\ud558\ub824\ub294 \uc0dd\uac01"
         );
 
         boolean gamblingExpansion = containsAny(
                 text,
                 "\uc2a4\ud3ec\uce20\ubca0\ud305\uae4c\uc9c0 \uc190\ub300",
                 "\ubca0\ud305\uc561\uc774 \ucee4\uc84c",
-                "\ubca0\ud305 \uae08\uc561\uc774 \ucee4\uc84c"
+                "\ubca0\ud305 \uae08\uc561\uc774 \ucee4\uc84c",
+                "\uc628\ub77c\uc778 \uce74\uc9c0\ub178\uc640 \uc2ac\ub86f\uae4c\uc9c0 \uac19\uc774 \ud558\uac8c \ub410"
         );
 
         return gamblingContext
