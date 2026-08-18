@@ -419,6 +419,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (containsHabitualBettingSearchAndPersistence(text)) {
             return true;
         }
+        if (containsStressTriggeredCrossGamblingCycleHelpSeeking(text)) {
+            return true;
+        }
 
         return containsAny(
                 text,
@@ -585,6 +588,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsStressTriggeredCrossGamblingCycleHelpSeeking(text)) {
             return true;
         }
         if (containsHabitualBettingSearchAndPersistence(text)) {
@@ -910,6 +916,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsStressTriggeredCrossGamblingCycleHelpSeeking(text)) {
+            return true;
+        }
+
         boolean recoveryPhoneCall =
                 containsAny(text, "전화했")
                 && !containsAny(text, "고객센터");
@@ -1187,6 +1197,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
         if (containsAbstinenceRelapseBettingEscalation(text)) {
+            return true;
+        }
+        if (containsStressTriggeredCrossGamblingCycleHelpSeeking(text)) {
             return true;
         }
         if (containsHabitualBettingSearchAndPersistence(text)) {
@@ -2553,6 +2566,47 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return repeatedThoughtPresent
                 && bettingPlaceSearchPresent
                 && habitualPersistencePresent;
+    }
+
+
+    private boolean containsStressTriggeredCrossGamblingCycleHelpSeeking(
+            String text
+    ) {
+        boolean stressTriggerPresent = containsAny(
+                text,
+                "\uc57c\uadfc \ud6c4 \uc2a4\ud2b8\ub808\uc2a4",
+                "\uc2a4\ud2b8\ub808\uc2a4\ub97c \ud480\ub824\uace0"
+        );
+
+        boolean mobileCasinoStarted = containsAny(
+                text,
+                "\ubaa8\ubc14\uc77c \uce74\uc9c0\ub178\ub97c \uc2dc\uc791\ud588",
+                "\ubaa8\ubc14\uc77c \uce74\uc9c0\ub178"
+        );
+
+        boolean crossGamblingCyclePresent = containsAny(
+                text,
+                "\uc2a4\ud3ec\uce20\ubca0\ud305\uc73c\ub85c \ub3cc\ub824\ub193\uc73c\ub824\uace0",
+                "\uce74\uc9c0\ub178\ub97c \ucc3e\ub294 \uc2dd\uc73c\ub85c \ubc18\ubcf5"
+        );
+
+        boolean persistentThoughtPresent = containsAny(
+                text,
+                "\ub3c4\ubc15 \uc0dd\uac01\ub9cc \uc790\uafb8 \ub098",
+                "\ub3c4\ubc15 \uc0dd\uac01\ub9cc"
+        );
+
+        boolean helpSeekingPresent = containsAny(
+                text,
+                "\uc0c1\ub2f4\uc744 \uc2e0\uccad\ud569\ub2c8\ub2e4",
+                "\uc0c1\ub2f4\uc744 \uc2e0\uccad"
+        );
+
+        return stressTriggerPresent
+                && mobileCasinoStarted
+                && crossGamblingCyclePresent
+                && persistentThoughtPresent
+                && helpSeekingPresent;
     }
 
 }
