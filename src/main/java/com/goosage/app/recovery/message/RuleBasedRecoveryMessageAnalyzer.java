@@ -428,7 +428,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean currentUrge = containsAny(
                 text,
                 "\ub2e4\uc2dc \ud558\uace0 \uc2f6",
-                "\ub610 \ud558\uace0 \uc2f6"
+                "\ub610 \ud558\uace0 \uc2f6",
+                "\ub354 \ud558\uace0 \uc2f6\uc5b4\uc9c0"
         );
 
         return gamblingContext && currentUrge;
@@ -513,6 +514,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         if (containsRepeatedWagerAfterSiteReentry(text)) {
+            return true;
+        }
+
+        if (containsOngoingRepeatedGamblingCycle(text)) {
             return true;
         }
 
@@ -843,6 +848,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "상담을 받고 있",
                 "상담을 받고",
                 "상담은 받고 왔",
+                "\uc0c1\ub2f4\uc744 \ubc1b\uc544\ubcf4\ub824\uace0 \uae00 \ub0a8",
                 "도움을 요청",
                 "회복 행동",
                 "일기를 썼",
@@ -1084,6 +1090,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsOngoingRepeatedGamblingCycle(text)) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "다시 베팅했",
@@ -1216,6 +1226,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return containsProtectiveBlock
                 && containsBypassSearch
                 && containsCompletedMoneyInput;
+    }
+
+    private boolean containsOngoingRepeatedGamblingCycle(
+            String text
+    ) {
+        boolean gamblingContext = containsAny(
+                text,
+                "\ub3c4\ubc15",
+                "\ubca0\ud305",
+                "\uce74\uc9c0\ub178"
+        );
+
+        boolean ongoingGambling = containsAny(
+                text,
+                "\uc544\uc9c1 \ub3c4\ubc15\uc744 \ud558\uace0 \uc788\ub294 \uc0c1\ud0dc",
+                "\ub3c4\ubc15\uc744 \ud558\uace0 \uc788\ub294 \uc0c1\ud0dc"
+        );
+
+        boolean repeatedEntry = containsAny(
+                text,
+                "\ub610 \ub4e4\uc5b4\uac00\uac8c \ub418",
+                "\ub610 \ub4e4\uc5b4\uac00\uac8c \ub418\ub124"
+        );
+
+        boolean repeatedLoss = containsAny(
+                text,
+                "\ub610 \uc783\uace0 \ubc18\ubcf5",
+                "\ub610 \uc783\uace0"
+        );
+
+        return gamblingContext
+                && ongoingGambling
+                && repeatedEntry
+                && repeatedLoss;
     }
 
     private boolean containsGamblingRestartCompleted(
