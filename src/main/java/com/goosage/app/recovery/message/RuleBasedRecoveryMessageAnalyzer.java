@@ -722,16 +722,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 containsAny(text, "\uacc4\uc815 \ub9c9\uc544\ub193", "\uacc4\uc815\uc744 \ub9c9\uc544\ub193")
                 && containsAny(text, "\uc785\uae08 \ubc84\ud2bc");
 
+        boolean repeatedFundingReentryContext =
+                containsAny(
+                        text,
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac14",
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac14\uc5b4\uc694"
+                )
+                && containsAny(
+                        text,
+                        "\uc785\uae08\ud558\uace0",
+                        "\uc785\uae08\ud558\uace0 \ub098\ub2c8\uae4c"
+                )
+                && containsAny(
+                        text,
+                        "\ub610 \ub85c\uadf8\uc778",
+                        "\ub2e4\uc74c \ub0a0 \ub610 \ub85c\uadf8\uc778"
+                );
+
         boolean reentryCompleted = containsAny(
                 text,
                 "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub410",
                 "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub418",
                 "\ub2e4\uc2dc \ucc3e\uc544\ubd24",
                 "\uc8fc\uc18c\ub97c \uac80\uc0c9\ud558\uace0 \ud654\uba74\uc744",
+                "\ub2e4\uc2dc \ub4e4\uc5b4\uac14",
                 "\uac80\uc0c9\ud558\ub2e4\uac00 \uacb0\uad6d \ub4e4\uc5b4\uac14"
         );
 
-        return (gamblingSiteContext || blockedAccountFundingContext)
+        return (
+                gamblingSiteContext
+                || blockedAccountFundingContext
+                || repeatedFundingReentryContext
+        )
                 && reentryCompleted;
     }
 
@@ -1887,11 +1909,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
         );
 
+        boolean repeatedReentryContext =
+                containsAny(
+                        text,
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac14",
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac14\uc5b4\uc694"
+                )
+                && containsAny(
+                        text,
+                        "\ub610 \ub85c\uadf8\uc778",
+                        "\ub2e4\uc74c \ub0a0 \ub610 \ub85c\uadf8\uc778"
+                );
+
         boolean loginCompleted = containsAny(
                 text,
                 "\ub85c\uadf8\uc778\ud558\uace0",
                 "\ub85c\uadf8\uc778\ud588\uace0",
-                "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+                "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588",
+                "\ub610 \ub85c\uadf8\uc778",
+                "\ub85c\uadf8\uc778\ud588\uc2b5\ub2c8\ub2e4"
         );
 
         boolean fundingCompleted = containsAny(
@@ -1902,7 +1938,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 \uc62e\uaca8\ub1a8",
                 "\uacc4\uc88c\uc5d0\uc11c \ub3c8\uae4c\uc9c0 \uc62e\uaca8\ub1a8\uc5b4",
                 "\ub3c8\uc744 \ub123\uc5c8",
-                "\uc785\uae08\ud588"
+                "\uc785\uae08\ud588",
+                "\uc785\uae08\ud558\uace0",
+                "\uc785\uae08\ud558\uace0 \ub098\ub2c8\uae4c"
         );
 
         boolean wagerCompleted = containsAny(
@@ -1911,7 +1949,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub3c8\uc744 \uac78\uc5c8"
         );
 
-        return priorSiteContext
+        return (priorSiteContext || repeatedReentryContext)
                 && loginCompleted
                 && fundingCompleted
                 && !wagerCompleted;
