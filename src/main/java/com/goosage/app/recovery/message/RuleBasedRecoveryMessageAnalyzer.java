@@ -459,6 +459,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (
+                containsIndirectGamblingSiteSearchAttempt(text)
+                && containsAny(
+                        text,
+                        "\ud558\uace0 \uc2f6\uc5b4\uc84c",
+                        "\ub610 \uc0dd\uac01\ub0ac",
+                        "\uadf8\ub0a0 \ubc24 \ub610 \uc0dd\uac01\ub0ac"
+                )
+        ) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "충동이 왔",
@@ -825,6 +837,21 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc608\uc804 \ubc29\uc2dd\uacfc \ube44\uc2b7"
                 );
 
+        boolean priorPlaceSearchWithLogin =
+                containsAny(
+                        text,
+                        "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacf3"
+                )
+                && containsAny(
+                        text,
+                        "\uac80\uc0c9\ud588\uc2b5\ub2c8\ub2e4",
+                        "\uac80\uc0c9\ud588"
+                )
+                && containsAny(
+                        text,
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+                );
+
         boolean gamblingBoundaryContext = containsAny(
                 text,
                 "\ub3c8\uc744 \uac78\uc9c0\ub294 \uc54a\uc558",
@@ -837,7 +864,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         return (siteSearch && gamblingBoundaryContext)
                 || typedThenDeletedSearch
                 || gamblingAppSearchAborted
-                || sportsOddsPreBettingSearch;
+                || sportsOddsPreBettingSearch
+                || priorPlaceSearchWithLogin;
     }
 
     private boolean containsLoginScreenEntryAttempt(
@@ -1964,7 +1992,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8",
                 "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
                 "\ubca0\ud305 \uc0ac\uc774\ud2b8",
-                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8",
+                "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacf3"
         );
 
         boolean blockedAccountFundingContext =
