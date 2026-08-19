@@ -511,7 +511,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub3c4\ubc15",
                 "\ubca0\ud305",
                 "\uce74\uc9c0\ub178",
-                "\uac8c\uc784"
+                "\uac8c\uc784",
+                "\uc2ac\ub86f"
         );
 
         boolean currentUrge = containsAny(
@@ -519,7 +520,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub2e4\uc2dc \ud558\uace0 \uc2f6",
                 "\ub610 \ud558\uace0 \uc2f6",
                 "\ub354 \ud558\uace0 \uc2f6\uc5b4\uc9c0",
-                "\uc0ac\uc774\ud2b8 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c"
+                "\uc0ac\uc774\ud2b8 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c",
+                "\ud55c\ubc88\ub9cc \ud574\ubcfc\uae4c",
+                "\ud55c \ubc88\ub9cc \ud574\ubcfc\uae4c"
         );
 
         return gamblingContext && currentUrge;
@@ -762,6 +765,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ad\uc81c\ud588"
                 );
 
+        boolean gamblingAppSearchAborted =
+                containsAny(
+                        text,
+                        "\uc2ac\ub86f",
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178"
+                )
+                && containsAny(
+                        text,
+                        "\uc571\uc744 \ucc3e\ub2e4\uac00",
+                        "\uc571\uc744 \ucc3e\uc558"
+                )
+                && containsAny(
+                        text,
+                        "\uc124\uce58\ub294 \uc548",
+                        "\uc124\uce58\ud558\uc9c0 \uc54a"
+                );
+
         boolean gamblingBoundaryContext = containsAny(
                 text,
                 "\ub3c8\uc744 \uac78\uc9c0\ub294 \uc54a\uc558",
@@ -772,7 +794,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
 
         return (siteSearch && gamblingBoundaryContext)
-                || typedThenDeletedSearch;
+                || typedThenDeletedSearch
+                || gamblingAppSearchAborted;
     }
 
     private boolean containsLoginScreenEntryAttempt(
