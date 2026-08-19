@@ -786,6 +786,23 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc124\uce58\ud558\uc9c0 \uc54a"
                 );
 
+        boolean sportsOddsPreBettingSearch =
+                containsAny(
+                        text,
+                        "\uacbd\uae30 \uc77c\uc815",
+                        "\uc5b4\ub5a4 \ud300\uc774 \uc774\uae38\uc9c0"
+                )
+                && containsAny(
+                        text,
+                        "\ubc30\ub2f9\ub3c4 \ubcf4",
+                        "\ubc30\ub2f9\uc744 \ubcf4"
+                )
+                && containsAny(
+                        text,
+                        "\uc608\uc804\uc5d0 \ud588\ub358 \ubc29\uc2dd",
+                        "\uc608\uc804 \ubc29\uc2dd\uacfc \ube44\uc2b7"
+                );
+
         boolean gamblingBoundaryContext = containsAny(
                 text,
                 "\ub3c8\uc744 \uac78\uc9c0\ub294 \uc54a\uc558",
@@ -797,7 +814,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         return (siteSearch && gamblingBoundaryContext)
                 || typedThenDeletedSearch
-                || gamblingAppSearchAborted;
+                || gamblingAppSearchAborted
+                || sportsOddsPreBettingSearch;
     }
 
     private boolean containsLoginScreenEntryAttempt(
