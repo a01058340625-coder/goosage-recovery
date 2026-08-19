@@ -332,6 +332,22 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return null;
         }
 
+        int recentContextIndex = firstIndexOfAny(
+                text,
+                "\uc5b4\uc81c",
+                "\uc624\ub298",
+                "\ucd5c\uadfc",
+                "\uc774\ubc88 \uc8fc",
+                "\uc774\ubc88\uc8fc"
+        );
+
+        if (
+                recentContextIndex >= 0
+                && recentContextIndex < longPastIndex
+        ) {
+            return null;
+        }
+
         int currentIndex = firstIndexOfAny(
                 text,
                 "이번 주에는",
@@ -427,6 +443,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         if (containsSelfGamblingAfterFriendIntroduction(text)) {
+            return true;
+        }
+
+        if (
+                containsGamblingSiteReentryAttempt(text)
+                && containsAny(
+                        text,
+                        "\uc790\uc8fc \ub5a0\uc624\ub985",
+                        "\uc790\uc8fc \ub5a0\uc62c\ub77c",
+                        "\uacc4\uc18d \ub5a0\uc624\ub985"
+                )
+        ) {
             return true;
         }
 
@@ -684,15 +712,21 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8"
         );
 
+        boolean blockedAccountFundingContext =
+                containsAny(text, "\uacc4\uc815 \ub9c9\uc544\ub193", "\uacc4\uc815\uc744 \ub9c9\uc544\ub193")
+                && containsAny(text, "\uc785\uae08 \ubc84\ud2bc");
+
         boolean reentryCompleted = containsAny(
                 text,
                 "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub410",
                 "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uac8c \ub418",
                 "\ub2e4\uc2dc \ucc3e\uc544\ubd24",
-                "\uc8fc\uc18c\ub97c \uac80\uc0c9\ud558\uace0 \ud654\uba74\uc744"
+                "\uc8fc\uc18c\ub97c \uac80\uc0c9\ud558\uace0 \ud654\uba74\uc744",
+                "\uac80\uc0c9\ud558\ub2e4\uac00 \uacb0\uad6d \ub4e4\uc5b4\uac14"
         );
 
-        return gamblingSiteContext && reentryCompleted;
+        return (gamblingSiteContext || blockedAccountFundingContext)
+                && reentryCompleted;
     }
 
     private boolean containsIndirectGamblingSiteSearchAttempt(
@@ -1830,11 +1864,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
         );
 
+        boolean blockedAccountFundingContext =
+                containsAny(text, "\uacc4\uc815 \ub9c9\uc544\ub193", "\uacc4\uc815\uc744 \ub9c9\uc544\ub193")
+                && containsAny(text, "\uc785\uae08 \ubc84\ud2bc");
+
         boolean loginCompleted = containsAny(
                 text,
                 "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588",
                 "\ub85c\uadf8\uc778\ud588\uace0",
-                "\ub85c\uadf8\uc778\ud574\uc11c"
+                "\ub85c\uadf8\uc778\ud574\uc11c",
+                "\ub85c\uadf8\uc778\ud588\uc5b4\uc694",
+                "\ub610 \ub85c\uadf8\uc778\ud588"
         );
 
         boolean fundingOrWagerCompleted = containsAny(
@@ -1845,7 +1885,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ubca0\ud305\ud588"
         );
 
-        return priorSiteContext
+        return (priorSiteContext || blockedAccountFundingContext)
                 && loginCompleted
                 && !fundingOrWagerCompleted;
     }
@@ -2346,7 +2386,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "계좌로 돈을 옮기려다가",
                 "이체하려다가",
                 "\ucda9\uc804\ud558\ub824\ub2e4\uac00",
-                "\ucda9\uc804\uc744 \ud558\ub824\ub2e4\uac00"
+                "\ucda9\uc804\uc744 \ud558\ub824\ub2e4\uac00",
+                "\uc785\uae08 \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800\ub2e4\uac00",
+                "\uc785\uae08 \ubc84\ud2bc\uc744 \ub20c\ub800\ub2e4\uac00"
         );
 
         boolean externallyStopped = containsAny(
@@ -2368,10 +2410,12 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ucda9\uc804\uc744 \ucde8\uc18c\ud558\uace0",
                 "\ucda9\uc804 \uc804\uc5d0 \uba48\ucd84",
                 "\uc911\uac04\uc5d0 \uba48\ucd94\uace0",
-                "이체를 멈췄",
-                "이체를 중단했",
-                "송금을 멈췄",
-                "송금을 중단했"
+                "\uc774\uccb4\ub97c \uba48\ucdc4",
+                "\uc774\uccb4\ub97c \uc911\ub2e8\ud588",
+                "\uc1a1\uae08\uc744 \uba48\ucdc4",
+                "\uc1a1\uae08\uc744 \uc911\ub2e8\ud588",
+                "\uadf8\ub0e5 \ub098\uc654",
+                "\uadf8\ub300\ub85c \ub098\uc654"
         );
 
         return fundingStarted && fundingCancelled;
