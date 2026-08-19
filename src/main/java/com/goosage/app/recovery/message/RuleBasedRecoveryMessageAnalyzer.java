@@ -218,7 +218,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         for (String candidate : new String[]{
                 "나는",
                 "내가",
-                "나도"
+                "나도",
+                "저는"
         }) {
             int searchIndex = Math.max(0, startIndex);
 
@@ -741,6 +742,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ub2e4\uc2dc \uac80\uc0c9"
         );
 
+        boolean typedThenDeletedSearch =
+                containsAny(
+                        text,
+                        "\uac80\uc0c9\ucc3d\uc5d0"
+                )
+                && containsAny(
+                        text,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984"
+                )
+                && containsAny(
+                        text,
+                        "\uce58\ub824\ub2e4\uac00",
+                        "\uc785\ub825\ud558\ub824\ub2e4\uac00"
+                )
+                && containsAny(
+                        text,
+                        "\uc9c0\uc6e0",
+                        "\uc0ad\uc81c\ud588"
+                );
+
         boolean gamblingBoundaryContext = containsAny(
                 text,
                 "\ub3c8\uc744 \uac78\uc9c0\ub294 \uc54a\uc558",
@@ -750,7 +771,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc544\uc9c1 \ub85c\uadf8\uc778\ud558\uac70\ub098 \ub3c8\uc744 \ub123\uc9c0\ub294 \uc54a\uc558"
         );
 
-        return siteSearch && gamblingBoundaryContext;
+        return (siteSearch && gamblingBoundaryContext)
+                || typedThenDeletedSearch;
     }
 
     private boolean containsLoginScreenEntryAttempt(
