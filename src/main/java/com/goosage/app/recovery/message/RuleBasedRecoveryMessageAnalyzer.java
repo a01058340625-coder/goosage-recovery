@@ -1050,6 +1050,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "시도했지만 취소",
                 "차단했",
                 "차단하고",
+                "\ucc28\ub2e8\ud574 \ub193",
                 "막았",
                 "중단했",
                 "중단하고"
