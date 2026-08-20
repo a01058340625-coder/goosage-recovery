@@ -577,6 +577,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (
+                containsLoginScreenEntryAttempt(text)
+                && containsAny(
+                        text,
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c \uc2f6\uc5c8",
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01",
+                        "\ube44\uc2b7\ud55c \uc0dd\uac01\uc774 \ub0ac"
+                )
+        ) {
+            return true;
+        }
+
         if (containsAny(
                 text,
                 "\ub3c4\ubc15 \uc0dd\uac01\uc740 \ub0ac",
@@ -1031,7 +1043,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac00",
                 "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac14",
                 "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac00",
-                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac14"
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac14",
+                "\uc0ac\uc774\ud2b8 \ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14"
         );
 
         boolean loginNotCompleted = containsAny(
@@ -1039,7 +1053,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc544\uc774\ub514\ub791 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
                 "\uc544\uc774\ub514\uc640 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
                 "\uc544\uc774\ub514\ub098 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uac70\ub098 \ub3c8\uc744 \ub123\uc9c0\ub294 \uc54a",
-                "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558"
+                "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558",
+                "\uc2e4\uc81c \ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558"
         );
 
         return accountContext
