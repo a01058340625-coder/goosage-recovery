@@ -570,7 +570,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         text,
                         "\ud558\uace0 \uc2f6\uc5b4\uc84c",
                         "\ub610 \uc0dd\uac01\ub0ac",
-                        "\uadf8\ub0a0 \ubc24 \ub610 \uc0dd\uac01\ub0ac"
+                        "\uadf8\ub0a0 \ubc24 \ub610 \uc0dd\uac01\ub0ac",
+                        "\uc608\uc804 \uc0dd\uac01\uc774 \uacc4\uc18d \ub0ac"
                 )
         ) {
             return true;
@@ -909,6 +910,24 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uce74\uc9c0\ub178"
                 );
 
+        boolean relatedSiteAccessAfterSportsContext =
+                containsAny(
+                        text,
+                        "\uc2a4\ud3ec\uce20 \uacbd\uae30",
+                        "\uacbd\uae30 \uacb0\uacfc"
+                )
+                && containsAny(
+                        text,
+                        "\ubca0\ud305\uc740 \ud558\uc9c0 \uc54a",
+                        "\ub3c8\uc744 \uac78\uc9c0 \uc54a"
+                )
+                && containsAny(
+                        text,
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \uba87 \uad70\ub370 \ub20c\ub7ec",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ub20c\ub7ec",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ub20c\ub7ec\ubcf4"
+                );
+
         boolean typedThenDeletedSearch =
                 containsAny(
                         text,
@@ -991,6 +1010,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         return (siteSearch && gamblingBoundaryContext)
                 || genericGamblingSiteSearch
+                || relatedSiteAccessAfterSportsContext
                 || typedThenDeletedSearch
                 || gamblingAppSearchAborted
                 || sportsOddsPreBettingSearch
@@ -1090,6 +1110,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "계정을 막",
                 "계정은 이미 막아놓",
                 "앱을 지",
+                "\uc571\uc744 \ub2e4\uc2dc \uc9c0",
                 "휴대폰을 내려놓",
                 "마지막에 멈췄",
                 "결제를 멈췄",
