@@ -183,6 +183,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01\uc740"
                 );
 
+        boolean fundingScreenReachedThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\ubca0\ud305",
+                        "\ub3c4\ubc15",
+                        "\uc2ac\ub86f",
+                        "\uce74\uc9c0\ub178"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uae4c\uc9c0\ub294 \uac14",
+                        "\uc785\uae08 \ud654\uba74\uae4c\uc9c0 \uac14",
+                        "\uc785\uae08 \ud654\uba74\uc5d0 \uac14"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c \uc785\uae08\uc740 \uc548 \ud588",
+                        "\uc2e4\uc81c \uc785\uae08\uc740 \ud558\uc9c0 \uc54a",
+                        "\uc785\uae08\uc740 \uc548 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac70\uae30\uc11c \uba48\ucdc4",
+                        "\uac70\uae30\uc11c \uba48\ucd94",
+                        "\uadf8\ub0e5 \uaed0"
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -200,6 +232,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfUrgeAfterThirdPartyTrigger
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
+                        || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
                         : 0;
@@ -208,10 +241,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsAffirmedAttempt(analysisText)
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
+                        || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
                         : 0;
-        int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
+        int betBlockedDelta =
+                (
+                        containsProtectiveBlock(analysisText)
+                        || fundingScreenReachedThenSelfStopped
+                )
+                        ? 1
+                        : 0;
         int recoveryActionDelta = containsRecoveryAction(analysisText) ? 1 : 0;
         int relapseSignalDelta = containsRelapseSignal(analysisText) ? 1 : 0;
 
