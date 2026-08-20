@@ -46,15 +46,32 @@ public class RuleBasedRecoveryMessageAnalyzer {
             if (selfSubjectIndex < 0) {
                 boolean implicitSelfAfterThirdPartyTrigger =
                         thirdPartyGamblingContextForSelfUrge
-                        && containsAny(
-                                normalized,
-                                "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
-                                "\uc783\uc740 \ub3c8 \uc0dd\uac01"
-                        )
-                        && containsAny(
-                                normalized,
-                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
-                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                        && (
+                                (
+                                        containsAny(
+                                                normalized,
+                                                "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
+                                                "\uc783\uc740 \ub3c8 \uc0dd\uac01"
+                                        )
+                                        && containsAny(
+                                                normalized,
+                                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                                        )
+                                )
+                                || (
+                                        containsAny(
+                                                normalized,
+                                                "\uc7a0\uae50 \ud754\ub4e4\ub838",
+                                                "\ud754\ub4e4\ub838"
+                                        )
+                                        && containsAny(
+                                                normalized,
+                                                "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
+                                                "\uc571\uc744 \ucc3e\uc544\ubcf4",
+                                                "\uc571\uc744 \ucc3e"
+                                        )
+                                )
                         );
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
@@ -65,7 +82,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         normalized,
                         "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc783\uc740 \ub3c8 \uc0dd\uac01",
-                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588"
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                        "\uc7a0\uae50 \ud754\ub4e4\ub838",
+                        "\ud754\ub4e4\ub838",
+                        "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30"
                 );
 
                 if (selfSubjectIndex < 0) {
@@ -138,6 +158,21 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
                 );
 
+        boolean selfUrgeSearchAfterThirdPartyTrigger =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uc7a0\uae50 \ud754\ub4e4\ub838",
+                        "\ud754\ub4e4\ub838"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
+                        "\uc571\uc744 \ucc3e\uc544\ubcf4",
+                        "\uc571\uc744 \ucc3e"
+                );
+
         boolean selfUrgeAfterThirdPartyTrigger =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -164,6 +199,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || currentOccasionalGamblingThought
                         || selfUrgeAfterThirdPartyTrigger
                         || selfLossThoughtAfterThirdPartyTrigger
+                        || selfUrgeSearchAfterThirdPartyTrigger
                 )
                         ? 1
                         : 0;
@@ -171,6 +207,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsAffirmedAttempt(analysisText)
                         || selfLossThoughtAfterThirdPartyTrigger
+                        || selfUrgeSearchAfterThirdPartyTrigger
                 )
                         ? 1
                         : 0;
