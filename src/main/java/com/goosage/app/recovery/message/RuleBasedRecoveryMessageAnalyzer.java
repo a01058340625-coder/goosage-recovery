@@ -44,7 +44,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
                     findExplicitSelfSubjectAfterThirdParty(normalized);
 
             if (selfSubjectIndex < 0) {
-                return hold(message, "THIRD_PARTY_CONTEXT");
+                boolean implicitSelfAfterThirdPartyTrigger =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
+                                "\uc783\uc740 \ub3c8 \uc0dd\uac01"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                        );
+
+                if (!implicitSelfAfterThirdPartyTrigger) {
+                    return hold(message, "THIRD_PARTY_CONTEXT");
+                }
+
+                selfSubjectIndex = firstIndexOfAny(
+                        normalized,
+                        "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
+                        "\uc783\uc740 \ub3c8 \uc0dd\uac01",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588"
+                );
+
+                if (selfSubjectIndex < 0) {
+                    return hold(message, "THIRD_PARTY_CONTEXT");
+                }
             }
 
             analysisText = normalized.substring(selfSubjectIndex);
@@ -98,6 +124,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
         RecoveryReentryStateMetadata reentryStateMetadata =
                 resolveReentryStateMetadata(analysisText);
 
+        boolean selfLossThoughtAfterThirdPartyTrigger =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
+                        "\uc783\uc740 \ub3c8 \uc0dd\uac01"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                );
+
         boolean selfUrgeAfterThirdPartyTrigger =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -123,10 +163,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsAffirmedUrge(analysisText)
                         || currentOccasionalGamblingThought
                         || selfUrgeAfterThirdPartyTrigger
+                        || selfLossThoughtAfterThirdPartyTrigger
                 )
                         ? 1
                         : 0;
-        int betAttemptDelta = containsAffirmedAttempt(analysisText) ? 1 : 0;
+        int betAttemptDelta =
+                (
+                        containsAffirmedAttempt(analysisText)
+                        || selfLossThoughtAfterThirdPartyTrigger
+                )
+                        ? 1
+                        : 0;
         int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
         int recoveryActionDelta = containsRecoveryAction(analysisText) ? 1 : 0;
         int relapseSignalDelta = containsRelapseSignal(analysisText) ? 1 : 0;
