@@ -793,7 +793,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 containsAny(
                         text,
                         "\uc0ac\uc774\ud2b8\ub9cc \uac80\uc0c9",
-                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                        "\uac80\uc0c9\uc740 \ud588"
                 )
                 && containsAny(
                         text,
