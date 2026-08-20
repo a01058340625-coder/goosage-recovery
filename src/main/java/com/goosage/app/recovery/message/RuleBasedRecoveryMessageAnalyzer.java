@@ -471,6 +471,14 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        if (containsAny(
+                text,
+                "\ub3c4\ubc15 \uc0dd\uac01\uc740 \ub0ac",
+                "\ub3c4\ubc15 \uc0dd\uac01\uc774 \ub0ac"
+        )) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "충동이 왔",
@@ -781,6 +789,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ub2e4\uc2dc \uac80\uc0c9"
         );
 
+        boolean genericGamblingSiteSearch =
+                containsAny(
+                        text,
+                        "\uc0ac\uc774\ud2b8\ub9cc \uac80\uc0c9",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                )
+                && containsAny(
+                        text,
+                        "\ub3c4\ubc15 \uc0dd\uac01",
+                        "\ubca0\ud305 \uc0dd\uac01",
+                        "\uc2ac\ub86f",
+                        "\uce74\uc9c0\ub178"
+                );
+
         boolean typedThenDeletedSearch =
                 containsAny(
                         text,
@@ -862,6 +884,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         );
 
         return (siteSearch && gamblingBoundaryContext)
+                || genericGamblingSiteSearch
                 || typedThenDeletedSearch
                 || gamblingAppSearchAborted
                 || sportsOddsPreBettingSearch
