@@ -41,6 +41,27 @@ public class RuleBasedRecoveryMessageAnalyzer {
             selfContextExtracted = true;
         }
 
+        boolean priorGamblingContextForCurrentThought =
+                containsAny(
+                        analysisText,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                )
+                || (
+                        containsAny(
+                                analysisText,
+                                "\uc2a4\ud3ec\uce20 \uacbd\uae30",
+                                "\uacbd\uae30\uc5d0 \ub3c8\uc744"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub3c8\uc744 \uc790\uc8fc \uac78",
+                                "\ub3c8\uc744 \uac78\uc5c8"
+                        )
+                );
+
         String currentContext =
                 extractCurrentContextAfterLongPast(
                         analysisText
@@ -67,7 +88,23 @@ public class RuleBasedRecoveryMessageAnalyzer {
         RecoveryReentryStateMetadata reentryStateMetadata =
                 resolveReentryStateMetadata(analysisText);
 
-        int urgeLogDelta = containsAffirmedUrge(analysisText) ? 1 : 0;
+        boolean currentOccasionalGamblingThought =
+                currentContextExtracted
+                && priorGamblingContextForCurrentThought
+                && containsAny(
+                        analysisText,
+                        "\uc0dd\uac01\uc774 \uac00\ub054 \ub09c",
+                        "\uac00\ub054 \uc0dd\uac01\uc774 \ub09c",
+                        "\uc0dd\uac01\uc774 \uac00\ub054 \ub098"
+                );
+
+        int urgeLogDelta =
+                (
+                        containsAffirmedUrge(analysisText)
+                        || currentOccasionalGamblingThought
+                )
+                        ? 1
+                        : 0;
         int betAttemptDelta = containsAffirmedAttempt(analysisText) ? 1 : 0;
         int betBlockedDelta = containsProtectiveBlock(analysisText) ? 1 : 0;
         int recoveryActionDelta = containsRecoveryAction(analysisText) ? 1 : 0;
