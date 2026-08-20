@@ -1029,6 +1029,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         text,
                         "\uce58\ub824\ub2e4\uac00",
+                        "\ucce4\ub2e4\uac00",
                         "\uc785\ub825\ud558\ub824\ub2e4\uac00"
                 )
                 && containsAny(
@@ -1163,6 +1164,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (
                 containsUnblockRequestSubmittedThenCancelled(text)
                 || containsUnblockFinalConfirmationSubmitted(text)
+        ) {
+            return true;
+        }
+
+        if (
+                containsAny(
+                        text,
+                        "\uac80\uc0c9\ucc3d\uc5d0"
+                )
+                && containsAny(
+                        text,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984"
+                )
+                && containsAny(
+                        text,
+                        "\ucce4\ub2e4\uac00",
+                        "\uc785\ub825\ud588\ub2e4\uac00"
+                )
+                && containsAny(
+                        text,
+                        "\uc9c0\uc6e0",
+                        "\uc0ad\uc81c\ud588"
+                )
         ) {
             return true;
         }
