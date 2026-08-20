@@ -26,6 +26,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean selfContextExtracted = false;
         boolean currentContextExtracted = false;
 
+        boolean thirdPartyGamblingContextForSelfUrge =
+                looksLikeThirdPartyContext(normalized)
+                && containsAny(
+                        normalized,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                );
+
         if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
@@ -88,6 +98,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
         RecoveryReentryStateMetadata reentryStateMetadata =
                 resolveReentryStateMetadata(analysisText);
 
+        boolean selfUrgeAfterThirdPartyTrigger =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\ub098\ub3c4 \ud574\ubcfc\uae4c",
+                        "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01",
+                        "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01\uc740"
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -102,6 +122,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsAffirmedUrge(analysisText)
                         || currentOccasionalGamblingThought
+                        || selfUrgeAfterThirdPartyTrigger
                 )
                         ? 1
                         : 0;
