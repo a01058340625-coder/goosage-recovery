@@ -1113,24 +1113,44 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 );
 
         boolean typedThenDeletedSearch =
-                containsAny(
-                        text,
-                        "\uac80\uc0c9\ucc3d\uc5d0"
+                (
+                        containsAny(
+                                text,
+                                "\uac80\uc0c9\ucc3d\uc5d0"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc0ac\uc774\ud2b8 \uc774\ub984"
+                        )
+                        && containsAny(
+                                text,
+                                "\uce58\ub824\ub2e4\uac00",
+                                "\ucce4\ub2e4\uac00",
+                                "\uc785\ub825\ud558\ub824\ub2e4\uac00"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc9c0\uc6e0",
+                                "\uc0ad\uc81c\ud588"
+                        )
                 )
-                && containsAny(
-                        text,
-                        "\uc0ac\uc774\ud2b8 \uc774\ub984"
-                )
-                && containsAny(
-                        text,
-                        "\uce58\ub824\ub2e4\uac00",
-                        "\ucce4\ub2e4\uac00",
-                        "\uc785\ub825\ud558\ub824\ub2e4\uac00"
-                )
-                && containsAny(
-                        text,
-                        "\uc9c0\uc6e0",
-                        "\uc0ad\uc81c\ud588"
+                || (
+                        containsAny(
+                                text,
+                                "\uac80\uc0c9\uc5b4\ub97c \ud558\ub098 \uc785\ub825\ud558\uae34 \ud588",
+                                "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uae34 \ud588",
+                                "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud588"
+                        )
+                        && containsAny(
+                                text,
+                                "\uacb0\uacfc\uac00 \ub728\uae30 \uc804\uc5d0 \uc9c0\uc6e0",
+                                "\uac80\uc0c9 \uacb0\uacfc\uac00 \ub728\uae30 \uc804\uc5d0 \uc9c0\uc6e0"
+                        )
+                        && containsAny(
+                                text,
+                                "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac74 \uc544\ub2c8",
+                                "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac83\uc740 \uc544\ub2c8"
+                        )
                 );
 
         boolean gamblingAppSearchAborted =
@@ -1264,23 +1284,43 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         if (
-                containsAny(
-                        text,
-                        "\uac80\uc0c9\ucc3d\uc5d0"
+                (
+                        containsAny(
+                                text,
+                                "\uac80\uc0c9\ucc3d\uc5d0"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc0ac\uc774\ud2b8 \uc774\ub984"
+                        )
+                        && containsAny(
+                                text,
+                                "\ucce4\ub2e4\uac00",
+                                "\uc785\ub825\ud588\ub2e4\uac00"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc9c0\uc6e0",
+                                "\uc0ad\uc81c\ud588"
+                        )
                 )
-                && containsAny(
-                        text,
-                        "\uc0ac\uc774\ud2b8 \uc774\ub984"
-                )
-                && containsAny(
-                        text,
-                        "\ucce4\ub2e4\uac00",
-                        "\uc785\ub825\ud588\ub2e4\uac00"
-                )
-                && containsAny(
-                        text,
-                        "\uc9c0\uc6e0",
-                        "\uc0ad\uc81c\ud588"
+                || (
+                        containsAny(
+                                text,
+                                "\uac80\uc0c9\uc5b4\ub97c \ud558\ub098 \uc785\ub825\ud558\uae34 \ud588",
+                                "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uae34 \ud588",
+                                "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud588"
+                        )
+                        && containsAny(
+                                text,
+                                "\uacb0\uacfc\uac00 \ub728\uae30 \uc804\uc5d0 \uc9c0\uc6e0",
+                                "\uac80\uc0c9 \uacb0\uacfc\uac00 \ub728\uae30 \uc804\uc5d0 \uc9c0\uc6e0"
+                        )
+                        && containsAny(
+                                text,
+                                "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac74 \uc544\ub2c8",
+                                "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac83\uc740 \uc544\ub2c8"
+                        )
                 )
         ) {
             return true;
