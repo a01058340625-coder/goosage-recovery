@@ -276,6 +276,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         )
                 );
 
+        boolean partialSearchInputThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ucc3d\uc5d0 \ub4e4\uc5b4\uac00\uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uba87 \uae00\uc790\ub97c \uc37c\ub2e4\uac00",
+                        "\uba87 \uae00\uc790\ub97c \uc37c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc9c0\uc6e0"
+                );
+
         boolean fundingScreenReachedThenSelfStopped =
                 containsAny(
                         analysisText,
@@ -327,6 +346,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSearchInputAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
+                        || partialSearchInputThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
@@ -1151,6 +1171,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac74 \uc544\ub2c8",
                                 "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac83\uc740 \uc544\ub2c8"
                         )
+                )
+                || (
+                        containsAny(
+                                text,
+                                "\uac80\uc0c9\ucc3d\uc5d0 \ub4e4\uc5b4\uac00\uc11c"
+                        )
+                        && containsAny(
+                                text,
+                                "\uba87 \uae00\uc790\ub97c \uc37c\ub2e4\uac00",
+                                "\uba87 \uae00\uc790\ub97c \uc37c"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc9c0\uc6e0"
+                        )
+                        && containsAny(
+                                text,
+                                "\ub2e4\uc2dc \uc4f0\uc9c0\ub294 \uc54a\uc558",
+                                "\ub85c\uadf8\uc778 \uc815\ubcf4\ub3c4 \uc785\ub825\ud558\uc9c0 \uc54a\uc558"
+                        )
                 );
 
         boolean gamblingAppSearchAborted =
@@ -1320,6 +1360,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 text,
                                 "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac74 \uc544\ub2c8",
                                 "\ubca0\ud305\uae4c\uc9c0 \uac04 \uac83\uc740 \uc544\ub2c8"
+                        )
+                )
+                || (
+                        containsAny(
+                                text,
+                                "\uac80\uc0c9\ucc3d\uc5d0 \ub4e4\uc5b4\uac00\uc11c"
+                        )
+                        && containsAny(
+                                text,
+                                "\uba87 \uae00\uc790\ub97c \uc37c\ub2e4\uac00",
+                                "\uba87 \uae00\uc790\ub97c \uc37c"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc9c0\uc6e0"
+                        )
+                        && containsAny(
+                                text,
+                                "\ub2e4\uc2dc \uc4f0\uc9c0\ub294 \uc54a\uc558",
+                                "\ub85c\uadf8\uc778 \uc815\ubcf4\ub3c4 \uc785\ub825\ud558\uc9c0 \uc54a\uc558"
                         )
                 )
         ) {
