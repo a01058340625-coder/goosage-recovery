@@ -111,6 +111,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac74 \uc544\ub2c8",
                                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac83\uc740 \uc544\ub2c8"
                                 )
+                        )
+                        || (
+                                containsAny(
+                                        normalized,
+                                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4\ub824\ub2e4\uac00 \ub9d0\uc558"
+                                )
+                                && containsAny(
+                                        normalized,
+                                        "\uac80\uc0c9\ub3c4 \uc548 \ud588"
+                                )
                         );
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
@@ -124,6 +134,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uae4c\uc9c0 \ub5a0\uc62c\ub790",
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790",
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4\ub824\ub2e4\uac00 \ub9d0\uc558",
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30"
@@ -273,6 +284,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 analysisText,
                                 "\uc544\ubb34\uac83\ub3c4 \uc785\ub825\ud558\uc9c0 \uc54a\uace0",
                                 "\uc785\ub825\ud558\uc9c0 \uc54a\uace0"
+                        )
+                )
+                || (
+                        containsAny(
+                                analysisText,
+                                "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4\ub824\ub2e4\uac00 \ub9d0\uc558"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uac80\uc0c9\ub3c4 \uc548 \ud588"
                         )
                 );
 
@@ -1546,7 +1567,22 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 containsAny(text, "전화했")
                 && !containsAny(text, "고객센터");
 
+        boolean triggerAvoidanceMessage =
+                containsAny(
+                        text,
+                        "\uce5c\uad6c\ud55c\ud14c"
+                )
+                && containsAny(
+                        text,
+                        "\ub2f9\ubd84\uac04 \uadf8\ub7f0 \uc598\uae30\ub294 \ud558\uc9c0 \ub9d0\ub77c\uace0"
+                )
+                && containsAny(
+                        text,
+                        "\uba54\uc2dc\uc9c0\ub97c \ubcf4\ub0c8"
+                );
+
         return recoveryPhoneCall
+                || triggerAvoidanceMessage
                 || containsAny(
                 text,
                 "산책했",
