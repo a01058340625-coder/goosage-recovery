@@ -239,18 +239,41 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 );
 
         boolean searchThoughtWithoutAttempt =
-                containsAny(
-                        analysisText,
-                        "\uc61b\ub0a0 \uc2b5\uad00\uc774 \uc790\uafb8 \ub5a0\uc624\ub978",
-                        "\uc61b\ub0a0 \uc2b5\uad00\uc774 \ub5a0\uc624\ub978"
+                (
+                        containsAny(
+                                analysisText,
+                                "\uc61b\ub0a0 \uc2b5\uad00\uc774 \uc790\uafb8 \ub5a0\uc624\ub978",
+                                "\uc61b\ub0a0 \uc2b5\uad00\uc774 \ub5a0\uc624\ub978"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcfc\uae4c"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uac80\uc0c9\uc740 \ud558\uc9c0 \uc54a\uc558"
+                        )
                 )
-                && containsAny(
-                        analysisText,
-                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcfc\uae4c"
-                )
-                && containsAny(
-                        analysisText,
-                        "\uac80\uc0c9\uc740 \ud558\uc9c0 \uc54a\uc558"
+                || (
+                        containsAny(
+                                analysisText,
+                                "\ub2e4\uc2dc \ube44\uc2b7\ud55c \uae30\ubd84\uc774 \uc62c\ub77c\uc654\ub2e4",
+                                "\ube44\uc2b7\ud55c \uae30\ubd84\uc774 \uc62c\ub77c\uc654\ub2e4"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uad00\ub828 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790\ub2e4",
+                                "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790\ub2e4"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uac80\uc0c9\ucc3d\uc744 \uc5f4\uc5c8\ub2e4\uac00"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc544\ubb34\uac83\ub3c4 \uc785\ub825\ud558\uc9c0 \uc54a\uace0",
+                                "\uc785\ub825\ud558\uc9c0 \uc54a\uace0"
+                        )
                 );
 
         boolean fundingScreenReachedThenSelfStopped =
