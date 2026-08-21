@@ -316,6 +316,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc9c0\uc6e0"
                 );
 
+        boolean relatedAppViewedThenDeleted =
+                containsAny(
+                        analysisText,
+                        "\uc608\uc804 \uc2b5\uad00\uc73c\ub85c \ub3cc\uc544\uac08\uae4c \ubd10 \uac71\uc815",
+                        "\uc608\uc804 \uc2b5\uad00\uc73c\ub85c \ub3cc\uc544\uac08\uae4c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uad00\ub828 \uc571\uc744 \ucc3e\uc544\uc11c",
+                        "\uad00\ub828 \uc571\uc744 \ucc3e\uc558"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud654\uba74\ub9cc \uc7a0\uae50 \ubd24",
+                        "\ud654\uba74\uc744 \uc7a0\uae50 \ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ad\uc81c\ud588",
+                        "\uc571\uc744 \uc9c0\uc6e0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud55c \uc801\uc740 \uc5c6",
+                        "\ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud55c \uc801\uc740 \uc5c6"
+                );
+
         boolean fundingScreenReachedThenSelfStopped =
                 containsAny(
                         analysisText,
@@ -368,6 +395,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfSearchInputAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
+                        || relatedAppViewedThenDeleted
                         || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
@@ -377,6 +405,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsAffirmedAttempt(analysisText)
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
+                        || relatedAppViewedThenDeleted
                         || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
@@ -384,6 +413,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betBlockedDelta =
                 (
                         containsProtectiveBlock(analysisText)
+                        || relatedAppViewedThenDeleted
                         || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
