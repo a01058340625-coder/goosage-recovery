@@ -43,6 +43,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
             int selfSubjectIndex =
                     findExplicitSelfSubjectAfterThirdParty(normalized);
 
+            int implicitSelfSearchThoughtIndex = firstIndexOfAny(
+                    normalized,
+                    "\uc61b\ub0a0 \uc2b5\uad00\uc774 \uc790\uafb8 \ub5a0\uc624\ub978",
+                    "\uc61b\ub0a0 \uc2b5\uad00\uc774 \ub5a0\uc624\ub978"
+            );
+
+            if (
+                    implicitSelfSearchThoughtIndex >= 0
+                    && containsAny(
+                            normalized,
+                            "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcfc\uae4c"
+                    )
+                    && containsAny(
+                            normalized,
+                            "\uac80\uc0c9\uc740 \ud558\uc9c0 \uc54a\uc558"
+                    )
+                    && (
+                            selfSubjectIndex < 0
+                            || implicitSelfSearchThoughtIndex < selfSubjectIndex
+                    )
+            ) {
+                selfSubjectIndex = implicitSelfSearchThoughtIndex;
+            }
+
             if (selfSubjectIndex < 0) {
                 boolean implicitSelfAfterThirdPartyTrigger =
                         (
@@ -214,6 +238,21 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac83\uc740 \uc544\ub2c8"
                 );
 
+        boolean searchThoughtWithoutAttempt =
+                containsAny(
+                        analysisText,
+                        "\uc61b\ub0a0 \uc2b5\uad00\uc774 \uc790\uafb8 \ub5a0\uc624\ub978",
+                        "\uc61b\ub0a0 \uc2b5\uad00\uc774 \ub5a0\uc624\ub978"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcfc\uae4c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\uc740 \ud558\uc9c0 \uc54a\uc558"
+                );
+
         boolean fundingScreenReachedThenSelfStopped =
                 containsAny(
                         analysisText,
@@ -264,6 +303,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSearchInputAfterThirdPartyTrigger
+                        || searchThoughtWithoutAttempt
                         || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
