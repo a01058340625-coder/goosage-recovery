@@ -45,32 +45,47 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
             if (selfSubjectIndex < 0) {
                 boolean implicitSelfAfterThirdPartyTrigger =
-                        thirdPartyGamblingContextForSelfUrge
-                        && (
-                                (
-                                        containsAny(
-                                                normalized,
-                                                "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
-                                                "\uc783\uc740 \ub3c8 \uc0dd\uac01"
+                        (
+                                thirdPartyGamblingContextForSelfUrge
+                                && (
+                                        (
+                                                containsAny(
+                                                        normalized,
+                                                        "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
+                                                        "\uc783\uc740 \ub3c8 \uc0dd\uac01"
+                                                )
+                                                && containsAny(
+                                                        normalized,
+                                                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                                                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                                                )
                                         )
-                                        && containsAny(
-                                                normalized,
-                                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
-                                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                                        || (
+                                                containsAny(
+                                                        normalized,
+                                                        "\uc7a0\uae50 \ud754\ub4e4\ub838",
+                                                        "\ud754\ub4e4\ub838"
+                                                )
+                                                && containsAny(
+                                                        normalized,
+                                                        "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
+                                                        "\uc571\uc744 \ucc3e\uc544\ubcf4",
+                                                        "\uc571\uc744 \ucc3e"
+                                                )
                                         )
                                 )
-                                || (
-                                        containsAny(
-                                                normalized,
-                                                "\uc7a0\uae50 \ud754\ub4e4\ub838",
-                                                "\ud754\ub4e4\ub838"
-                                        )
-                                        && containsAny(
-                                                normalized,
-                                                "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
-                                                "\uc571\uc744 \ucc3e\uc544\ubcf4",
-                                                "\uc571\uc744 \ucc3e"
-                                        )
+                        )
+                        || (
+                                containsAny(
+                                        normalized,
+                                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uae4c\uc9c0 \ub5a0\uc62c\ub790",
+                                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790"
+                                )
+                                && containsIndirectGamblingSiteSearchAttempt(normalized)
+                                && containsAny(
+                                        normalized,
+                                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac74 \uc544\ub2c8",
+                                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac83\uc740 \uc544\ub2c8"
                                 )
                         );
 
@@ -83,6 +98,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uae4c\uc9c0 \ub5a0\uc62c\ub790",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790",
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30"
@@ -183,6 +200,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01\uc740"
                 );
 
+        boolean selfSearchInputAfterThirdPartyTrigger =
+                selfContextExtracted
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uae4c\uc9c0 \ub5a0\uc62c\ub790",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790"
+                )
+                && containsIndirectGamblingSiteSearchAttempt(analysisText)
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac74 \uc544\ub2c8",
+                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac83\uc740 \uc544\ub2c8"
+                );
+
         boolean fundingScreenReachedThenSelfStopped =
                 containsAny(
                         analysisText,
@@ -232,6 +263,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfUrgeAfterThirdPartyTrigger
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
+                        || selfSearchInputAfterThirdPartyTrigger
                         || fundingScreenReachedThenSelfStopped
                 )
                         ? 1
