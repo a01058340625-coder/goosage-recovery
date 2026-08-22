@@ -343,6 +343,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud55c \uc801\uc740 \uc5c6"
                 );
 
+        boolean relatedAppPresenceSearchThenSelfStopped =
+
+                containsAny(
+
+                        analysisText,
+
+                        "\uc608\uc804 \uc77c\uc774 \uc7a0\uae50 \uc0dd\uac01\ub0ac"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uad00\ub828 \uc571\uc774 \uc544\uc9c1 \ub0a8\uc544 \uc788\ub294\uc9c0\ub3c4 \ucc3e\uc544\ubd24"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\ud654\uba74\uc5d0 \ubcf4\uc774\ub294 \uc774\ub984\ub9cc \ud655\uc778"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc5f4\uc5b4\ubcf4\uc9c0\ub294 \uc54a\uc558"
+
+                );
+
         boolean relatedInterfaceReachedThenSelfStopped =
                 containsAny(
                         analysisText,
@@ -416,6 +450,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
                         || relatedAppViewedThenDeleted
+                        || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -427,6 +462,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || relatedAppViewedThenDeleted
+                        || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -436,6 +472,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsProtectiveBlock(analysisText)
                         || relatedAppViewedThenDeleted
+                        || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
