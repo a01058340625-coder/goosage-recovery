@@ -572,6 +572,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean wagerCompletedThenNextDayAppDeletedRecovery =
+
+                containsAny(
+
+                        analysisText,
+
+                        "\uc608\uc804 \uacc4\uc815\uc73c\ub85c \ub85c\uadf8\uc778\ud588\uace0"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc18c\uc561\uc73c\ub85c \ud55c \ubc88 \uac78\uc5c8"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\ub2e4\uc74c \ub0a0 \uc571\uc740 \uc9c0\uc6e0",
+                        "\ub2e4\uc74c \ub0a0 \uc571\uc744 \uc9c0\uc6e0"
+
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -611,6 +638,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
+                        || wagerCompletedThenNextDayAppDeletedRecovery
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -627,8 +655,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 )
                         ? 1
                         : 0;
-        int recoveryActionDelta = containsRecoveryAction(analysisText) ? 1 : 0;
-        int relapseSignalDelta = containsRelapseSignal(analysisText) ? 1 : 0;
+        int recoveryActionDelta =
+                (
+                        containsRecoveryAction(analysisText)
+                        || wagerCompletedThenNextDayAppDeletedRecovery
+                )
+                        ? 1
+                        : 0;
+        int relapseSignalDelta =
+                (
+                        containsRelapseSignal(analysisText)
+                        || wagerCompletedThenNextDayAppDeletedRecovery
+                )
+                        ? 1
+                        : 0;
 
         int totalSignals =
                 urgeLogDelta
