@@ -712,6 +712,51 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean wagerAmountInputDeletedThenDeviceHandoffRecovery =
+
+                containsAny(
+
+                        analysisText,
+
+                        "\ubca0\ud305\ud558\ub824\uace0"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uae08\uc561\uc744 \uc870\uae08 \uc801\uc5b4\ub1a8\ub2e4\uac00",
+                        "\uae08\uc561\uc744 \uc801\uc5b4\ub1a8\ub2e4\uac00"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc9c0\uc6e0\uc5b4\uc694",
+                        "\uc9c0\uc6e0"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uacc4\uc18d \uc190\uc774 \uac00\uc11c"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uac00\uc871\ud55c\ud14c \ud734\ub300\ud3f0\uc744 \uc7a0\uae50 \ub9e1\uacbc\uc2b5\ub2c8\ub2e4",
+                        "\uac00\uc871\ud55c\ud14c \ud734\ub300\ud3f0\uc744 \uc7a0\uae50 \ub9e1\uacbc"
+
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -738,6 +783,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
+                        || wagerAmountInputDeletedThenDeviceHandoffRecovery
                 )
                         ? 1
                         : 0;
@@ -755,6 +801,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
+                        || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -769,6 +816,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
+                        || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -778,6 +826,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsRecoveryAction(analysisText)
                         || wagerCompletedThenNextDayAppDeletedRecovery
+                        || wagerAmountInputDeletedThenDeviceHandoffRecovery
                 )
                         ? 1
                         : 0;
