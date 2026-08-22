@@ -627,6 +627,43 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean bettingAmountViewedThenSelfStopped =
+
+                containsAny(
+
+                        analysisText,
+
+                        "\uacbd\uae30 \ud558\ub098 \ubcf4\uace0"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\ubca0\ud305 \uae08\uc561\ub3c4 \ud655\uc778",
+                        "\ubca0\ud305 \uae08\uc561\uc744 \ud655\uc778"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \uac78\uc9c0\ub294 \uc54a\uc558",
+                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \uac78\uc9c0 \uc54a\uc558"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uacb0\uacfc\ub9cc \ubcf4\uace0 \ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8",
+                        "\uacb0\uacfc\ub9cc \ubcf4\uace0 \ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8\uc5b4\uc694"
+
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -668,6 +705,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || gamblingSiteResultViewThenSelfExited
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || sportsBettingSearchAutocompleteThenSelfStopped
+                        || bettingAmountViewedThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -680,6 +718,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
                         || sportsBettingSearchAutocompleteThenSelfStopped
+                        || bettingAmountViewedThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
