@@ -121,6 +121,27 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                         normalized,
                                         "\uac80\uc0c9\ub3c4 \uc548 \ud588"
                                 )
+                        )
+                        || (
+
+                                thirdPartyGamblingContextForSelfUrge
+
+                                && containsAny(
+
+                                        normalized,
+
+                                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8\uac00 \ub5a0\uc62c\ub790"
+
+                                )
+
+                                && containsAny(
+
+                                        normalized,
+
+                                        "\uac80\uc0c9\ud574\uc11c \uc774\ub984\ub9cc \ud655\uc778"
+
+                                )
+
                         );
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
@@ -135,6 +156,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uae4c\uc9c0 \ub5a0\uc62c\ub790",
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790",
                         "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4\ub824\ub2e4\uac00 \ub9d0\uc558",
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8\uac00 \ub5a0\uc62c\ub790",
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30"
@@ -247,6 +269,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac74 \uc544\ub2c8",
                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac83\uc740 \uc544\ub2c8"
+                );
+
+        boolean selfSiteSearchAfterThirdPartyTrigger =
+
+                selfContextExtracted
+
+                && thirdPartyGamblingContextForSelfUrge
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8\uac00 \ub5a0\uc62c\ub790"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uac80\uc0c9\ud574\uc11c \uc774\ub984\ub9cc \ud655\uc778"
+
                 );
 
         boolean searchThoughtWithoutAttempt =
@@ -447,6 +491,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSearchInputAfterThirdPartyTrigger
+                        || selfSiteSearchAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
                         || relatedAppViewedThenDeleted
@@ -461,6 +506,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsAffirmedAttempt(analysisText)
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
+                        || selfSiteSearchAfterThirdPartyTrigger
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
