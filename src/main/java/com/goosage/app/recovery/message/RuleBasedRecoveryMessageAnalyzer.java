@@ -664,6 +664,54 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean appReinstallLoginFundingScreenThenSelfStopped =
+
+                containsAny(
+
+                        analysisText,
+
+                        "\uc608\uc804 \uc571\uc744 \ub2e4\uc2dc \uc124\uce58\ud588",
+                        "\uc608\uc804 \uc571\uc744 \ub2e4\uc2dc \uc124\uce58"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud558\uace0",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc785\uae08 \ud654\uba74\ub3c4 \ubd24",
+                        "\uc785\uae08 \ud654\uba74\uc744 \ubd24"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\uc9c0\ub294 \uc54a\uc558",
+                        "\uae08\uc561\uc740 \uc785\ub825\ud558\uc9c0 \uc54a\uc558"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uadf8\ub0e5 \ud654\uba74 \ub2eb\uace0",
+                        "\ud654\uba74\uc744 \ub2eb\uace0",
+                        "\ud654\uba74 \ub2eb\uace0"
+
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -706,6 +754,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
+                        || appReinstallLoginFundingScreenThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -719,6 +768,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || gamblingSiteResultViewThenSelfExited
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
+                        || appReinstallLoginFundingScreenThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
