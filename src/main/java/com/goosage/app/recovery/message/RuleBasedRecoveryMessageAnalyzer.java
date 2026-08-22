@@ -527,6 +527,51 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uadf8\ub0e5 \uaed0"
                 );
 
+        boolean gamblingSiteResultViewThenSelfExited =
+
+                containsAny(
+
+                        analysisText,
+
+                        "\ubca0\ud305\uc744 \ud558\ub824\uace0 \ub4e4\uc5b4\uac04 \uac74 \uc544\ub2c8"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uacbd\uae30 \uacb0\uacfc\uac00 \uad81\uae08\ud574\uc11c \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d\ud588",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d\ud588"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\ubc30\ub2f9\uc774 \uac19\uc774 \ubcf4\uc774"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\ud55c\ucc38 \uc804\uc5d0\ub294 \uac70\uae30\uc5d0 \ub3c8\uc744 \uac78",
+                        "\uac70\uae30\uc5d0 \ub3c8\uc744 \uac78\uae30\ub3c4 \ud588"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uacb0\uacfc\ub9cc \ubcf4\uace0 \ub098\uc654",
+                        "\uacb0\uacfc\ub9cc \ubcf4\uace0 \ub098\uc624"
+
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -565,6 +610,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfAppSearchAfterThirdPartyTrigger
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
+                        || gamblingSiteResultViewThenSelfExited
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -575,6 +621,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsProtectiveBlock(analysisText)
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
+                        || gamblingSiteResultViewThenSelfExited
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
