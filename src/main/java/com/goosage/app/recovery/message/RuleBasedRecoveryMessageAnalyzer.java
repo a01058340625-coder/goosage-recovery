@@ -757,6 +757,35 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean wagerScreenReachedMotivationDropThenSelfExited =
+
+                containsAny(
+
+                        analysisText,
+
+                        "\ubca0\ud305 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac14",
+                        "\ubca0\ud305 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac00"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\ud558\uae30 \uc2eb\uc5b4\uc84c",
+                        "\ud558\uae30 \uc2eb\uc5b4\uc838"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uadf8\ub0e5 \uc885\ub8cc\ud558\uace0 \ub098\uc654",
+                        "\uc885\ub8cc\ud558\uace0 \ub098\uc654"
+
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -801,6 +830,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
+                        || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
@@ -816,6 +846,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
+                        || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
