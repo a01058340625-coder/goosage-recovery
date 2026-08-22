@@ -142,6 +142,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                                 )
 
+                        )
+                        || (
+
+                                thirdPartyGamblingContextForSelfUrge
+
+                                && containsAny(
+
+                                        normalized,
+
+                                        "\uc800\ub3c4 \uc571\uc774 \uc788\ub294\uc9c0 \ucc3e\uc544\ubd24"
+
+                                )
+
+                                && containsAny(
+
+                                        normalized,
+
+                                        "\uac80\uc0c9 \uacb0\uacfc \uba87 \uac1c \ub098\uc628 \uac83\ub9cc \ubcf4\uace0",
+                                        "\uc5b4\ub5a4 \uac74\uc9c0\ub294 \ud655\uc778\ud588"
+
+                                )
+
                         );
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
@@ -157,6 +179,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790",
                         "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4\ub824\ub2e4\uac00 \ub9d0\uc558",
                         "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8\uac00 \ub5a0\uc62c\ub790",
+                        "\uc800\ub3c4 \uc571\uc774 \uc788\ub294\uc9c0 \ucc3e\uc544\ubd24",
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30"
@@ -290,6 +313,37 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
 
                         "\uac80\uc0c9\ud574\uc11c \uc774\ub984\ub9cc \ud655\uc778"
+
+                );
+
+        boolean selfAppSearchAfterThirdPartyTrigger =
+
+                selfContextExtracted
+
+                && thirdPartyGamblingContextForSelfUrge
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc800\ub3c4 \uc571\uc774 \uc788\ub294\uc9c0 \ucc3e\uc544\ubd24"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uac80\uc0c9 \uacb0\uacfc \uba87 \uac1c \ub098\uc628 \uac83\ub9cc \ubcf4\uace0",
+                        "\uc5b4\ub5a4 \uac74\uc9c0\ub294 \ud655\uc778\ud588"
+
+                )
+
+                && containsAny(
+
+                        analysisText,
+
+                        "\uc2e4\ud589\uae4c\uc9c0 \ud558\uc9c0\ub294 \uc54a\uc558"
 
                 );
 
@@ -492,6 +546,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSearchInputAfterThirdPartyTrigger
                         || selfSiteSearchAfterThirdPartyTrigger
+                        || selfAppSearchAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
                         || relatedAppViewedThenDeleted
@@ -507,6 +562,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSiteSearchAfterThirdPartyTrigger
+                        || selfAppSearchAfterThirdPartyTrigger
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
