@@ -2039,6 +2039,45 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean gamblingFamilyDisclosureSupportSeeking =
+
+                containsAny(
+
+                        text,
+
+                        "\ub3c4\ubc15 \ub54c\ubb38\uc5d0 \ud06c\uac8c \uc2f8\uc6b4",
+                        "\ub3c4\ubc15 \ub54c\ubb38\uc5d0"
+
+                )
+
+                && containsAny(
+
+                        text,
+
+                        "\uad00\ub828 \uc5f0\ub77d\ucc98\ub97c \ucc3e\uc544\ubd24",
+                        "\uc5f0\ub77d\ucc98\ub97c \ucc3e\uc544\ubd24"
+
+                )
+
+                && containsAny(
+
+                        text,
+
+                        "\ud63c\uc790 \uace0\ubbfc\ud558\uc9c0 \ub9d0\uc790",
+                        "\ud63c\uc790 \uace0\ubbfc\ud558\uc9c0 \ub9d0"
+
+                )
+
+                && containsAny(
+
+                        text,
+
+                        "\ub204\ub098\ud55c\ud14c \uba3c\uc800 \uc598\uae30\ud588\uc2b5\ub2c8\ub2e4",
+                        "\ub204\ub098\ud55c\ud14c \uba3c\uc800 \uc598\uae30\ud588",
+                        "\ub204\ub098\uc5d0\uac8c \uba3c\uc800 \uc598\uae30\ud588"
+
+                );
+
         boolean recoveryPhoneCall =
                 containsAny(text, "전화했")
                 && !containsAny(text, "고객센터");
@@ -2058,6 +2097,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 );
 
         return gamblingCounselingAppointmentBooked
+                || gamblingFamilyDisclosureSupportSeeking
                 || recoveryPhoneCall
                 || triggerAvoidanceMessage
                 || containsAny(
