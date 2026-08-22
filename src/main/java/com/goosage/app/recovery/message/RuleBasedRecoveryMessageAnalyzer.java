@@ -1911,6 +1911,35 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
+        boolean gamblingCounselingAppointmentBooked =
+
+                containsAny(
+
+                        text,
+
+                        "\uc2e4\uc81c\ub85c \uc5f0\ub77d\ud55c \uac74 \uc774\ubc88\uc774 \ucc98\uc74c",
+                        "\uc2e4\uc81c\ub85c \uc5f0\ub77d\ud55c \uac83\uc740 \uc774\ubc88\uc774 \ucc98\uc74c"
+
+                )
+
+                && containsAny(
+
+                        text,
+
+                        "\ub3c4\ubc15 \ub54c\ubb38\uc5d0 \ubb38\uc81c\uac00 \uc0dd\uacbc\ub2e4\uace0 \ub9d0",
+                        "\ub3c4\ubc15 \ubb38\uc81c\uac00 \uc0dd\uacbc\ub2e4\uace0 \ub9d0"
+
+                )
+
+                && containsAny(
+
+                        text,
+
+                        "\uc608\uc57d\uc744 \uc7a1\uc558",
+                        "\uc0c1\ub2f4 \uc608\uc57d\uc744 \uc7a1\uc558"
+
+                );
+
         boolean recoveryPhoneCall =
                 containsAny(text, "전화했")
                 && !containsAny(text, "고객센터");
@@ -1929,7 +1958,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uba54\uc2dc\uc9c0\ub97c \ubcf4\ub0c8"
                 );
 
-        return recoveryPhoneCall
+        return gamblingCounselingAppointmentBooked
+                || recoveryPhoneCall
                 || triggerAvoidanceMessage
                 || containsAny(
                 text,
