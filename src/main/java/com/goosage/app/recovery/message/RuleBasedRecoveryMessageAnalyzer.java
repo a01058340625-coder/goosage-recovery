@@ -1480,7 +1480,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub354 \ud558\uace0 \uc2f6\uc5b4\uc9c0",
                 "\uc0ac\uc774\ud2b8 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c",
                 "\ud55c\ubc88\ub9cc \ud574\ubcfc\uae4c",
-                "\ud55c \ubc88\ub9cc \ud574\ubcfc\uae4c"
+                "\ud55c \ubc88\ub9cc \ud574\ubcfc\uae4c",
+                "\ud574\ubcfc\uae4c \uc2f6\uc5b4\uc11c"
         );
 
         return gamblingContext && currentUrge;
@@ -1940,7 +1941,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558",
                 "\uc2e4\uc81c \ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558",
                 "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
-                "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8"
+                "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8",
+                "\uc804\ud654\uac00 \uc640\uc11c \uadf8 \ub4a4\ub85c\ub294 \ubabb \ud588"
         );
 
         return accountContext
