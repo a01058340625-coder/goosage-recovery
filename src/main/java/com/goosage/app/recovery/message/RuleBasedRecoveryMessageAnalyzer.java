@@ -962,6 +962,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "오늘은 아무것도 안 하고"
                 );
 
+        boolean appReinstalledAndExecutedWithUrgeNegation =
+                containsAny(
+                        analysisText,
+                        "앱을 찾았습니다",
+                        "앱을 찾았"
+                )
+                && containsAny(
+                        analysisText,
+                        "재설치까지 하고",
+                        "재설치했",
+                        "다시 설치했"
+                )
+                && containsAny(
+                        analysisText,
+                        "실행했는데",
+                        "실행까지 했",
+                        "실행했"
+                )
+                && containsAny(
+                        analysisText,
+                        "별로 하고 싶은 마음은 안 들어"
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -1013,6 +1036,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerAmountInputDeletedThenSelfExited
                         || wagerCompletedRelapseThenNextDayNoAction
+                        || appReinstalledAndExecutedWithUrgeNegation
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -1381,7 +1405,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "충동이 없",
                 "충동 없",
                 "하고 싶은 생각은 들지 않",
-                "하고 싶은 생각은 전혀 들지 않"
+                "하고 싶은 생각은 전혀 들지 않",
+                "별로 하고 싶은 마음은 안 들어"
         )) {
             return false;
         }
