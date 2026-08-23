@@ -187,6 +187,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 )
                         );
 
+
+                boolean thirdPartyLinkSelfCasinoAccess =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\ub9c1\ud06c\ub97c \ud558\ub098 \ubcf4\ub0b4\uc918\uc11c",
+                                "\ub9c1\ud06c\ub97c \ubcf4\ub0b4\uc918\uc11c"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub20c\ub800\ub294\ub370",
+                                "\ub20c\ub800"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uce74\uc9c0\ub178 \ud654\uba74\uc774 \ub098\uc624",
+                                "\uce74\uc9c0\ub178 \ud654\uba74"
+                        );
+
+                implicitSelfAfterThirdPartyTrigger =
+                        implicitSelfAfterThirdPartyTrigger
+                        || thirdPartyLinkSelfCasinoAccess;
+
                 if (!implicitSelfAfterThirdPartyTrigger) {
                     return hold(message, "THIRD_PARTY_CONTEXT");
                 }
@@ -204,7 +227,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \uac11\uc790\uae30 \uc0dd\uac01\ub098",
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
-                        "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30"
+                        "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
+                        "\ub20c\ub800\ub294\ub370"
                 );
 
                 if (selfSubjectIndex < 0) {
@@ -486,6 +510,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
                         "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
                         "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8"
+                );
+
+        boolean thirdPartyLinkCasinoAccessThenSelfStopped =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\ub20c\ub800\ub294\ub370",
+                        "\ub20c\ub800"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178 \ud654\uba74\uc774 \ub098\uc624",
+                        "\uce74\uc9c0\ub178 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc7a0\uae50 \ub458\ub7ec\ubcf4\ub2e4\uac00",
+                        "\uc7a0\uae50 \ub458\ub7ec\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc14\ub85c \uaed0",
+                        "\uaed0\uc2b5\ub2c8\ub2e4"
                 );
 
         boolean relatedAppViewedThenDeleted =
@@ -898,6 +946,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfSiteSearchAfterThirdPartyTrigger
                         || selfAppSearchAfterThirdPartyTrigger
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
+                        || thirdPartyLinkCasinoAccessThenSelfStopped
                         || siteNameInputCompleteThenOtherTaskSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
@@ -918,6 +967,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsProtectiveBlock(analysisText)
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
+                        || thirdPartyLinkCasinoAccessThenSelfStopped
                         || siteNameInputCompleteThenOtherTaskSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
