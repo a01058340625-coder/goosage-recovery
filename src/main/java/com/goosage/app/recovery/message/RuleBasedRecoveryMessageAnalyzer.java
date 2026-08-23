@@ -1746,15 +1746,35 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ubca0\ud305",
                         "\uce74\uc9c0\ub178"
                 )
-                && containsAny(
-                        text,
-                        "\uc571\uc744 \ucc3e\ub2e4\uac00",
-                        "\uc571\uc744 \ucc3e\uc558"
-                )
-                && containsAny(
-                        text,
-                        "\uc124\uce58\ub294 \uc548",
-                        "\uc124\uce58\ud558\uc9c0 \uc54a"
+                && (
+                        (
+                                containsAny(
+                                        text,
+                                        "\uc571\uc744 \ucc3e\ub2e4\uac00",
+                                        "\uc571\uc744 \ucc3e\uc558"
+                                )
+                                && containsAny(
+                                        text,
+                                        "\uc124\uce58\ub294 \uc548",
+                                        "\uc124\uce58\ud558\uc9c0 \uc54a"
+                                )
+                        )
+                        || (
+                                containsAny(
+                                        text,
+                                        "\uc571\uc774 \uc544\uc9c1\ub3c4 \uc788\ub294\uc9c0 \ucc3e\uc544\ubd24",
+                                        "\uc571\uc774 \uc544\uc9c1\ub3c4 \uc788\ub294\uc9c0 \ucc3e"
+                                )
+                                && containsAny(
+                                        text,
+                                        "\uac80\uc0c9 \uacb0\uacfc\uc5d0\uc11c \uc571 \uc774\ub984\uc774 \ubcf4\uc774"
+                                )
+                                && containsAny(
+                                        text,
+                                        "\ub20c\ub7ec\uc11c \uc815\ubcf4\ub9cc \uc870\uae08 \ubcf4\uace0 \ub098\uc654",
+                                        "\uc815\ubcf4\ub9cc \uc870\uae08 \ubcf4\uace0 \ub098\uc654"
+                                )
+                        )
                 );
 
         boolean sportsOddsPreBettingSearch =
