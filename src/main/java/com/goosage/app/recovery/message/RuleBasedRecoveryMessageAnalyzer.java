@@ -879,6 +879,32 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean wagerAmountInputDeletedThenSelfExited =
+                containsAny(
+                        analysisText,
+                        "베팅 화면까지 넘어가",
+                        "베팅 화면까지 들어갔",
+                        "베팅 화면까지 들어가"
+                )
+                && containsAny(
+                        analysisText,
+                        "금액 칸에 숫자를 조금 적었다가",
+                        "금액 칸에 숫자를 적었다가",
+                        "금액을 조금 적었다가",
+                        "금액을 적었다가"
+                )
+                && containsAny(
+                        analysisText,
+                        "지우고",
+                        "지웠"
+                )
+                && containsAny(
+                        analysisText,
+                        "그냥 화면을 닫았",
+                        "화면을 닫았",
+                        "화면을 닫고"
+                );
+
         boolean wagerScreenReachedMotivationDropThenSelfExited =
 
                 containsAny(
@@ -957,6 +983,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
+                        || wagerAmountInputDeletedThenSelfExited
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -977,6 +1004,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
+                        || wagerAmountInputDeletedThenSelfExited
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
