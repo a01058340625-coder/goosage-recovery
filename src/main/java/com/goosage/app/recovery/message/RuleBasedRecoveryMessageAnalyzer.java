@@ -164,6 +164,27 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                                 )
 
+                        )
+                        || (
+                                thirdPartyGamblingContextForSelfUrge
+                                && containsAny(
+                                        normalized,
+                                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \uac11\uc790\uae30 \uc0dd\uac01\ub098"
+                                )
+                                && containsAny(
+                                        normalized,
+                                        "\uac80\uc0c9\ucc3d\uc744 \uc5f4"
+                                )
+                                && containsAny(
+                                        normalized,
+                                        "\uba87 \uae00\uc790 \uce58\ub2e4\uac00",
+                                        "\uba87 \uae00\uc790 \uce58"
+                                )
+                                && containsAny(
+                                        normalized,
+                                        "\uadf8\ub0e5 \ub2eb\uc558",
+                                        "\ub2eb\uc558"
+                                )
                         );
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
@@ -180,6 +201,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4\ub824\ub2e4\uac00 \ub9d0\uc558",
                         "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8\uac00 \ub5a0\uc62c\ub790",
                         "\uc800\ub3c4 \uc571\uc774 \uc788\ub294\uc9c0 \ucc3e\uc544\ubd24",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \uac11\uc790\uae30 \uc0dd\uac01\ub098",
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30"
@@ -412,6 +434,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         analysisText,
                         "\uc9c0\uc6e0"
+                );
+
+        boolean thirdPartyTriggerSelfPartialSearchInputThenSelfStopped =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \uac11\uc790\uae30 \uc0dd\uac01\ub098"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ucc3d\uc744 \uc5f4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uba87 \uae00\uc790 \uce58\ub2e4\uac00",
+                        "\uba87 \uae00\uc790 \uce58"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub2eb\uc558",
+                        "\ub2eb\uc558"
                 );
 
         boolean relatedAppViewedThenDeleted =
@@ -823,6 +867,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSiteSearchAfterThirdPartyTrigger
                         || selfAppSearchAfterThirdPartyTrigger
+                        || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
@@ -840,6 +885,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betBlockedDelta =
                 (
                         containsProtectiveBlock(analysisText)
+                        || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
