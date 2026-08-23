@@ -458,6 +458,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2eb\uc558"
                 );
 
+        boolean siteNameInputCompleteThenOtherTaskSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\ucd95\uad6c \uacb0\uacfc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804 \uc0dd\uac01\uc774 \ub098"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \ud558\uc9c0\ub294 \uc54a\uc558"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ucc3d\uc5d0 \uc0ac\uc774\ud2b8 \uc774\ub984\ub9cc \uc801\uc5b4\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\ub978 \uc77c\uc744 \ud588"
+                );
+
         boolean relatedAppViewedThenDeleted =
                 containsAny(
                         analysisText,
@@ -868,6 +890,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfSiteSearchAfterThirdPartyTrigger
                         || selfAppSearchAfterThirdPartyTrigger
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
+                        || siteNameInputCompleteThenOtherTaskSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
@@ -886,6 +909,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsProtectiveBlock(analysisText)
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
+                        || siteNameInputCompleteThenOtherTaskSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
