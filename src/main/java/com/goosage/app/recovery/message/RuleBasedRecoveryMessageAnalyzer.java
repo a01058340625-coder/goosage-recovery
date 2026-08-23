@@ -934,6 +934,34 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean wagerCompletedRelapseThenNextDayNoAction =
+                containsAny(
+                        analysisText,
+                        "다시 해버렸습니다",
+                        "다시 해버렸"
+                )
+                && containsAny(
+                        analysisText,
+                        "베팅 금액 넣고",
+                        "베팅 금액을 넣고",
+                        "금액 넣고"
+                )
+                && containsAny(
+                        analysisText,
+                        "버튼까지 눌렀는데",
+                        "버튼까지 눌렀"
+                )
+                && containsAny(
+                        analysisText,
+                        "끝나고 나니까 후회",
+                        "끝나고 나니 후회"
+                )
+                && containsAny(
+                        analysisText,
+                        "오늘은 아직 아무것도 안 하고",
+                        "오늘은 아무것도 안 하고"
+                );
+
         boolean currentOccasionalGamblingThought =
                 currentContextExtracted
                 && priorGamblingContextForCurrentThought
@@ -984,6 +1012,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerAmountInputDeletedThenSelfExited
+                        || wagerCompletedRelapseThenNextDayNoAction
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                 )
@@ -1022,6 +1051,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsRelapseSignal(analysisText)
                         || wagerCompletedThenNextDayAppDeletedRecovery
+                        || wagerCompletedRelapseThenNextDayNoAction
                 )
                         ? 1
                         : 0;
