@@ -480,6 +480,14 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2e4\ub978 \uc77c\uc744 \ud588"
                 );
 
+        boolean loginScreenReachedThenPhonePutDown =
+                containsLoginScreenEntryAttempt(analysisText)
+                && containsAny(
+                        analysisText,
+                        "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
+                        "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8"
+                );
+
         boolean relatedAppViewedThenDeleted =
                 containsAny(
                         analysisText,
@@ -908,6 +916,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betBlockedDelta =
                 (
                         containsProtectiveBlock(analysisText)
+                        || loginScreenReachedThenPhonePutDown
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || siteNameInputCompleteThenOtherTaskSelfStopped
                         || relatedAppViewedThenDeleted
@@ -1854,10 +1863,12 @@ public class RuleBasedRecoveryMessageAnalyzer {
     private boolean containsLoginScreenEntryAttempt(
             String text
     ) {
+
         boolean accountContext = containsAny(
                 text,
                 "\uacc4\uc815",
-                "\uc0ac\uc774\ud2b8"
+                "\uc0ac\uc774\ud2b8",
+                "\ub3c4\ubc15 \uc571"
         );
 
         boolean loginScreenEntered = containsAny(
@@ -1867,7 +1878,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac00",
                 "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac14",
                 "\uc0ac\uc774\ud2b8 \ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14",
-                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14"
+                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \ud55c\ucc38 \uc788"
         );
 
         boolean loginNotCompleted = containsAny(
@@ -1876,12 +1888,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc544\uc774\ub514\uc640 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
                 "\uc544\uc774\ub514\ub098 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uac70\ub098 \ub3c8\uc744 \ub123\uc9c0\ub294 \uc54a",
                 "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558",
-                "\uc2e4\uc81c \ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558"
+                "\uc2e4\uc81c \ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558",
+                "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
+                "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8"
         );
 
         return accountContext
                 && loginScreenEntered
                 && loginNotCompleted;
+
     }
 
     private boolean containsProtectiveBlock(String text) {
