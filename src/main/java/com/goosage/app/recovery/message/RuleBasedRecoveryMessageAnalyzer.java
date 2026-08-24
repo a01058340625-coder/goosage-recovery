@@ -1032,6 +1032,32 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0dd\uac01\uc774 \uac00\ub054 \ub098"
                 );
 
+        boolean fundingAmountInputErrorRetryExternalFailure =
+                containsAny(
+                        analysisText,
+                        "\ubca0\ud305\uc744 \ud558\ub824\uace0",
+                        "\ubca0\ud305 \ud558\ub824\uace0",
+                        "\ubca0\ud305\uc744 \ud574\ubcf4\ub824\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc785\ub825\ud588",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\uace0",
+                        "\uae08\uc561 \uc785\ub825\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ub2e8\uacc4\uc5d0\uc11c \uc624\ub958",
+                        "\uc785\uae08 \ub2e8\uacc4\uc5d0 \uc624\ub958",
+                        "\uc624\ub958\uac00 \ub098\uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uba87 \ubc88 \ub2e4\uc2dc \ub20c\ub7ec",
+                        "\ub2e4\uc2dc \ub20c\ub7ec",
+                        "\ub2e4\uc2dc \ub20c\ub800"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -1049,6 +1075,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
+                        || fundingAmountInputErrorRetryExternalFailure
                 )
                         ? 1
                         : 0;
@@ -1091,6 +1118,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingScreenReachedThenSelfStopped
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
                         || wagerAmountInputThenWagerCompleted
+                        || fundingAmountInputErrorRetryExternalFailure
                 )
                         ? 1
                         : 0;
