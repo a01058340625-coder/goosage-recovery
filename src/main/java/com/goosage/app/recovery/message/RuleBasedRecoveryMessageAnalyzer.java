@@ -746,30 +746,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 );
 
         boolean wagerCompletedThenNextDayAppDeletedRecovery =
-
-                containsAny(
-
-                        analysisText,
-
-                        "\uc608\uc804 \uacc4\uc815\uc73c\ub85c \ub85c\uadf8\uc778\ud588\uace0"
-
+                (
+                        containsAny(
+                                analysisText,
+                                "\uc608\uc804 \uacc4\uc815\uc73c\ub85c \ub85c\uadf8\uc778\ud588\uace0"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc18c\uc561\uc73c\ub85c \ud55c \ubc88 \uac78\uc5c8"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub2e4\uc74c \ub0a0 \uc571\uc740 \uc9c0\uc6e0",
+                                "\ub2e4\uc74c \ub0a0 \uc571\uc744 \uc9c0\uc6e0"
+                        )
                 )
-
-                && containsAny(
-
-                        analysisText,
-
-                        "\uc18c\uc561\uc73c\ub85c \ud55c \ubc88 \uac78\uc5c8"
-
-                )
-
-                && containsAny(
-
-                        analysisText,
-
-                        "\ub2e4\uc74c \ub0a0 \uc571\uc740 \uc9c0\uc6e0",
-                        "\ub2e4\uc74c \ub0a0 \uc571\uc744 \uc9c0\uc6e0"
-
+                || (
+                        containsAny(
+                                analysisText,
+                                "\uacb0\uad6d \ubca0\ud305\uc744 \ud588\uc2b5\ub2c8\ub2e4",
+                                "\uacb0\uad6d \ubca0\ud305\uc744 \ud588",
+                                "\ubca0\ud305\uc744 \ud588\uc2b5\ub2c8\ub2e4"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uae08\uc561\uc744 \uc785\ub825\ud574\uc11c \uc2e4\uc81c\ub85c \ub123\uc5c8",
+                                "\uae08\uc561\uc744 \uc785\ub825\ud574\uc11c",
+                                "\uc2e4\uc81c\ub85c \ub123\uc5c8"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub2e4\uc74c \ub0a0\uc5d0\ub294 \uc571\uc744 \uc0ad\uc81c",
+                                "\ub2e4\uc74c \ub0a0 \uc571\uc744 \uc0ad\uc81c",
+                                "\ub2e4\uc74c \ub0a0\uc5d0\ub294 \uc571\uc744 \uc9c0\uc6e0"
+                        )
                 );
 
         boolean sportsBettingSearchAutocompleteThenSelfStopped =
