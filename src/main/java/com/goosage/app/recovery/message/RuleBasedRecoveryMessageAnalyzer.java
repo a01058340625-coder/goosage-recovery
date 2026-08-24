@@ -60,6 +60,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uae08\uc561\uc744 \ub123\uc9c0 \uc54a\uc558"
                 );
 
+        boolean thirdPartyLinkSelfSiteAccessPreLoginSelfStop =
+                thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        normalized,
+                        "\uce74\uc9c0\ub178 \ub9c1\ud06c\ub97c \ubcf4\ub0b4\uc92c",
+                        "\uce74\uc9c0\ub178 \ub9c1\ud06c\ub97c \ubcf4\ub0b4",
+                        "\ub9c1\ud06c\ub97c \ubcf4\ub0b4\uc92c\ub294\ub370"
+                )
+                && containsAny(
+                        normalized,
+                        "\uacb0\uad6d \ub20c\ub7ec\uc11c",
+                        "\ub20c\ub7ec\uc11c"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc0ac\uc774\ud2b8 \ud654\uba74\uae4c\uc9c0\ub294 \ubd24",
+                        "\uc0ac\uc774\ud2b8 \ud654\uba74\uae4c\uc9c0 \ubd24"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub85c\uadf8\uc778\ud558\uae30 \uc804\uc5d0 \ub2eb",
+                        "\ub85c\uadf8\uc778 \uc804\uc5d0 \ub2eb"
+                );
         if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
@@ -233,6 +256,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
                         || thirdPartyLinkSelfCasinoAccess
+                        || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput;
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
@@ -256,6 +280,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub20c\ub800\ub294\ub370"
                 );
 
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyLinkSelfSiteAccessPreLoginSelfStop
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uacb0\uad6d \ub20c\ub7ec\uc11c",
+                            "\ub20c\ub7ec\uc11c"
+                    );
+                }
                 if (
                         selfSubjectIndex < 0
                         && thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
@@ -1217,6 +1251,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyHistoryExplicitSelfSiteSearch
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
+                        || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                 )
                         ? 1
                         : 0;
@@ -1240,6 +1275,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
+                        || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                 )
                         ? 1
                         : 0;
