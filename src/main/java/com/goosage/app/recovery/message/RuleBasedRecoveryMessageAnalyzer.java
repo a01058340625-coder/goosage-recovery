@@ -563,6 +563,27 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8"
                 );
 
+        boolean thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00",
+                        "\uc0ac\uc774\ud2b8\ub85c \ub4e4\uc5b4\uac14"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc544\uc774\ub514\ub9cc \uc801\uc5b4\ubd24",
+                        "\uc544\uc774\ub514\ub9cc \uc801\uc5b4",
+                        "\uc544\uc774\ub514\ub97c \uc801\uc5b4\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8 \uc774\uc0c1\uc740 \ud558\uc9c0 \uc54a\uc558",
+                        "\uadf8 \uc774\uc0c1 \ud558\uc9c0 \uc54a\uc558"
+                );
+
         boolean thirdPartyLinkCasinoAccessThenSelfStopped =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -1153,6 +1174,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
+                        || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
                         || siteNameInputCompleteThenOtherTaskSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
@@ -1333,7 +1355,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "나는",
                 "내가",
                 "나도",
-                "저는"
+                "저는",
+                "저도"
         }) {
             int searchIndex = Math.max(0, startIndex);
 
