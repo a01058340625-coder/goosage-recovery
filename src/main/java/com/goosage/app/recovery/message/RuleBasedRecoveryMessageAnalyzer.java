@@ -114,6 +114,31 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 selfSubjectIndex = implicitSelfSearchThoughtIndex;
             }
 
+            int implicitSelfSportsSiteSearchIndex = firstIndexOfAny(
+                    normalized,
+                    "\uc5b4\ub5a4 \uc0ac\uc774\ud2b8\uc778\uc9c0 \ucc3e\uc544\ubd24",
+                    "\uc0ac\uc774\ud2b8\uc778\uc9c0 \ucc3e\uc544\ubd24"
+            );
+
+            if (
+                    implicitSelfSportsSiteSearchIndex >= 0
+                    && thirdPartyGamblingContextForSelfUrge
+                    && containsAny(
+                            normalized,
+                            "\uc2a4\ud3ec\uce20\ubca0\ud305"
+                    )
+                    && containsAny(
+                            normalized,
+                            "\uac80\uc0c9 \uacb0\uacfc\uc5d0 \ub098\uc628 \uc774\ub984",
+                            "\ubc30\ub2f9 \ud654\uba74"
+                    )
+                    && (
+                            selfSubjectIndex < 0
+                            || implicitSelfSportsSiteSearchIndex < selfSubjectIndex
+                    )
+            ) {
+                selfSubjectIndex = implicitSelfSportsSiteSearchIndex;
+            }
             if (selfSubjectIndex < 0) {
                 boolean implicitSelfAfterThirdPartyTrigger =
                         (
@@ -1221,6 +1246,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "오늘은 제가 가지고 있지 않",
                         "지금은 제가 가지고 있지 않"
                 );
+        boolean thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uc5b4\ub5a4 \uc0ac\uc774\ud2b8\uc778\uc9c0 \ucc3e\uc544\ubd24",
+                        "\uc0ac\uc774\ud2b8\uc778\uc9c0 \ucc3e\uc544\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9 \uacb0\uacfc\uc5d0 \ub098\uc628 \uc774\ub984",
+                        "\uac80\uc0c9 \uacb0\uacfc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\ub2f9 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud55c \uac74 \uc5c6",
+                        "\ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud55c \uac83\uc740 \uc5c6"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -1252,6 +1299,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
+                        || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                 )
                         ? 1
                         : 0;
