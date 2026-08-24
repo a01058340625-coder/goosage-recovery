@@ -36,6 +36,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc2ac\ub86f"
                 );
 
+        boolean thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput =
+                thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uac00 \uc54c\ub824\uc900",
+                        "\uce5c\uad6c\uac00 \uc54c\ub824\uc918\uc11c",
+                        "\uce5c\uad6c\uac00 \uc54c\ub824"
+                )
+                && containsAny(
+                        normalized,
+                        "\ubca0\ud305 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                        "\ub3c4\ubc15 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        normalized,
+                        "\uae08\uc561\uc740 \ub123\uc9c0 \uc54a\uc558",
+                        "\uae08\uc561\uc744 \ub123\uc9c0 \uc54a\uc558"
+                );
+
         if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
@@ -208,7 +232,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
-                        || thirdPartyLinkSelfCasinoAccess;
+                        || thirdPartyLinkSelfCasinoAccess
+                        || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput;
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
                     return hold(message, "THIRD_PARTY_CONTEXT");
@@ -230,6 +255,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
                         "\ub20c\ub800\ub294\ub370"
                 );
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\ubca0\ud305 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                            "\ub3c4\ubc15 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                            "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d"
+                    );
+                }
 
                 if (selfSubjectIndex < 0) {
                     return hold(message, "THIRD_PARTY_CONTEXT");
@@ -1039,6 +1076,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appReinstalledAndExecutedWithUrgeNegation
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
+                        || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
                 )
                         ? 1
                         : 0;
