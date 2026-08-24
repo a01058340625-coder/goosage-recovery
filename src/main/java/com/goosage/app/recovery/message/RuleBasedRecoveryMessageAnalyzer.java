@@ -1052,6 +1052,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 )
                         ? 1
                         : 0;
+        boolean wagerAmountInputThenWagerCompleted =
+                containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\uace0",
+                        "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825\ud558\uace0",
+                        "\uae08\uc561 \uc785\ub825\ud558\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubca0\ud305\uae4c\uc9c0 \ud588",
+                        "\ubca0\ud305\uae4c\uc9c0 \ud558\uace0"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -1077,6 +1090,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
+                        || wagerAmountInputThenWagerCompleted
                 )
                         ? 1
                         : 0;
