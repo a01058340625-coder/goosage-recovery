@@ -3292,4 +3292,26 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
 
+
+    @Test
+    void detectsPartialSportsBettingSearchAutocompleteSelfExitForValidation251() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc694\uc998\uc740 \ubcc4\uc0dd\uac01 \uc5c6\ub294\ub370 "
+                        + "\uc9c0\ub09c\ubc88\uc5d0 \uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 "
+                        + "\uac11\uc790\uae30 \ub5a0\uc62c\ub77c\uc11c "
+                        + "\uac80\uc0c9\ucc3d\uc5d0 \uba87 \uae00\uc790 \uccd0\ubd24\uc5b4\uc694. "
+                        + "\uc790\ub3d9\uc644\uc131\ub9cc \ubcf4\uace0 "
+                        + "\uadf8\ub0e5 \ub2eb\uc558\uc2b5\ub2c8\ub2e4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(0);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
+    }
 }

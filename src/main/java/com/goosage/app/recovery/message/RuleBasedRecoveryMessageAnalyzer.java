@@ -863,33 +863,44 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 );
 
         boolean sportsBettingSearchAutocompleteThenSelfStopped =
-
-                containsAny(
-
-                        analysisText,
-
-                        "\uac80\uc0c9\ucc3d\uc5d0 \uc2a4\ud3ec\uce20\ubca0\ud305\uc774\ub77c\uace0 \uce58\uae34 \ud588",
-                        "\uc2a4\ud3ec\uce20\ubca0\ud305\uc774\ub77c\uace0 \uce58\uae34 \ud588"
-
+                (
+                        containsAny(
+                                analysisText,
+                                "\uac80\uc0c9\ucc3d\uc5d0 \uc2a4\ud3ec\uce20\ubca0\ud305\uc774\ub77c\uace0 \uce58\uae34 \ud588",
+                                "\uc2a4\ud3ec\uce20\ubca0\ud305\uc774\ub77c\uace0 \uce58\uae34 \ud588"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc790\ub3d9\uc644\uc131\uc73c\ub85c \uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub728",
+                                "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub728"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub354 \uc548 \ub20c\ub800"
+                        )
                 )
-
-                && containsAny(
-
-                        analysisText,
-
-                        "\uc790\ub3d9\uc644\uc131\uc73c\ub85c \uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub728",
-                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub728"
-
-                )
-
-                && containsAny(
-
-                        analysisText,
-
-                        "\ub354 \uc548 \ub20c\ub800"
-
+                || (
+                        containsAny(
+                                analysisText,
+                                "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \uac11\uc790\uae30 \ub5a0\uc62c\ub77c",
+                                "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub77c"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uac80\uc0c9\ucc3d\uc5d0 \uba87 \uae00\uc790 \uccd0\ubd24",
+                                "\uac80\uc0c9\ucc3d\uc5d0 \uba87 \uae00\uc790 \uccd0 \ubd24"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc790\ub3d9\uc644\uc131\ub9cc \ubcf4\uace0",
+                                "\uc790\ub3d9\uc644\uc131\uc744 \ubcf4\uace0"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uadf8\ub0e5 \ub2eb\uc558",
+                                "\uac80\uc0c9\ucc3d\uc744 \uadf8\ub0e5 \ub2eb\uc558"
+                        )
                 );
-
         boolean bettingAmountViewedThenSelfStopped =
 
                 containsAny(
