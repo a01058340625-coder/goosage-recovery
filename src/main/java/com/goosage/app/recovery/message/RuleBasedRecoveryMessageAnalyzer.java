@@ -780,6 +780,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uadf8\ub0e5 \uaed0"
                 );
 
+        boolean loginCompletedFundingScreenThenSelfExited =
+                containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0\ub294 \ud574\ubc84\ub838",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud574\ubc84\ub838",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0\ub294 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc744 \ubcf4\ub2e4\uac00",
+                        "\uc785\uae08 \ud654\uba74\uc744 \ubcf4\uace0",
+                        "\uc785\uae08 \ud654\uba74\uc5d0\uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub098\uc654",
+                        "\uadf8\ub0e5 \ub098\uc628",
+                        "\ud654\uba74\uc5d0\uc11c \ub098\uc654"
+                );
+
         boolean gamblingSiteResultViewThenSelfExited =
 
                 containsAny(
@@ -1356,6 +1376,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputDeletedThenSelfExited
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
+                        || loginCompletedFundingScreenThenSelfExited
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery

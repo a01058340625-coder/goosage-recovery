@@ -3334,4 +3334,24 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
     }
+
+    @Test
+    void detectsLoginCompletedFundingScreenSelfExitForValidation257() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ubc30\ub2f9\ub9cc \ubcf4\ub824\uace0 \uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14\ub294\ub370 "
+                        + "\ub85c\uadf8\uc778\uae4c\uc9c0\ub294 \ud574\ubc84\ub838\uc5b4\uc694. "
+                        + "\uadf8 \ub4a4\uc5d0\ub294 \uc785\uae08 \ud654\uba74\uc744 \ubcf4\ub2e4\uac00 "
+                        + "\uadf8\ub0e5 \ub098\uc654\uc2b5\ub2c8\ub2e4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(0);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
+    }
 }
