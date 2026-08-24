@@ -1103,6 +1103,31 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2e4\uc2dc \ub20c\ub800"
                 );
 
+        boolean appStoreSearchExistenceConfirmedInstallNegatedSelfStop =
+                containsAny(
+                        analysisText,
+                        "슬롯 앱 생각이 나서",
+                        "슬롯 앱 생각이 났",
+                        "슬롯 앱이 생각나서"
+                )
+                && containsAny(
+                        analysisText,
+                        "스토어에서 이름을 검색했습니다",
+                        "스토어에서 이름을 검색했",
+                        "스토어에서 앱 이름을 검색했"
+                )
+                && containsAny(
+                        analysisText,
+                        "앱이 아직 있는 건 확인",
+                        "앱이 아직 있는 것을 확인",
+                        "앱이 있는 건 확인"
+                )
+                && containsAny(
+                        analysisText,
+                        "설치 버튼은 누르지 않았",
+                        "설치 버튼을 누르지 않았",
+                        "설치는 하지 않았"
+                );
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -1121,6 +1146,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingScreenReachedThenSelfStopped
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || fundingAmountInputErrorRetryExternalFailure
+                        || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                 )
                         ? 1
                         : 0;
@@ -1190,6 +1216,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingAmountInputErrorRetryExternalFailure
                         || thirdPartyHistoryExplicitSelfSiteSearch
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
+                        || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                 )
                         ? 1
                         : 0;
@@ -1212,6 +1239,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputDeletedThenSelfExited
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
+                        || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                 )
                         ? 1
                         : 0;
