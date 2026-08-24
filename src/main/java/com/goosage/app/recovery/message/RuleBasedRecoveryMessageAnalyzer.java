@@ -1137,6 +1137,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ubca0\ud305\uae4c\uc9c0 \ud558\uace0"
                 );
 
+        boolean wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery =
+                containsAny(
+                        analysisText,
+                        "실제로 베팅을 하고",
+                        "실제로 베팅하고",
+                        "베팅을 하고 나서"
+                )
+                && containsAny(
+                        analysisText,
+                        "아내한테 얘기했습니다",
+                        "아내한테 얘기했",
+                        "아내에게 얘기했"
+                )
+                && containsAny(
+                        analysisText,
+                        "휴대폰을 잠깐 맡아달라고",
+                        "휴대폰을 맡아달라고"
+                )
+                && containsAny(
+                        analysisText,
+                        "오늘은 제가 가지고 있지 않아요",
+                        "오늘은 제가 가지고 있지 않",
+                        "지금은 제가 가지고 있지 않"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -1165,6 +1189,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputThenWagerCompleted
                         || fundingAmountInputErrorRetryExternalFailure
                         || thirdPartyHistoryExplicitSelfSiteSearch
+                        || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                 )
                         ? 1
                         : 0;
@@ -1195,6 +1220,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsRecoveryAction(analysisText)
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
+                        || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                 )
                         ? 1
                         : 0;
@@ -1203,6 +1229,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsRelapseSignal(analysisText)
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || wagerCompletedRelapseThenNextDayNoAction
+                        || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                 )
                         ? 1
                         : 0;
