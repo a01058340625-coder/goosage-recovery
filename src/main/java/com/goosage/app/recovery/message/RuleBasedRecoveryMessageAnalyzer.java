@@ -1268,6 +1268,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud55c \uac74 \uc5c6",
                         "\ub3c8\uc744 \ub123\uac70\ub098 \ubca0\ud305\ud55c \uac83\uc740 \uc5c6"
                 );
+        boolean loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery =
+                containsAny(
+                        analysisText,
+                        "\uc9c0\ub09c\ubc24\uc5d0",
+                        "\uc5b4\uc82f\ubc24\uc5d0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804 \uacc4\uc815\uc73c\ub85c \ub85c\uadf8\uc778\uc744 \ud588",
+                        "\ub85c\uadf8\uc778\uc740 \ub410\ub294\ub370",
+                        "\ub85c\uadf8\uc778\uc740 \ub410"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubca0\ud305 \ud654\uba74\uc5d0\uc11c \uadf8\ub0e5 \ub098\uc654",
+                        "\ubca0\ud305 \ud654\uba74\uc5d0\uc11c \ub098\uc654"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc624\ub298 \uc544\uce68\uc5d0 \uc571\ub3c4 \uc9c0\uc6e0",
+                        "\uc624\ub298 \uc544\uce68\uc5d0 \uc571\uc744 \uc9c0\uc6e0"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -1300,6 +1322,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
+                        || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
                         ? 1
                         : 0;
@@ -1324,6 +1347,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingScreenReachedThenSelfStopped
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
+                        || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
                         ? 1
                         : 0;
@@ -1333,6 +1357,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
+                        || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
                         ? 1
                         : 0;
