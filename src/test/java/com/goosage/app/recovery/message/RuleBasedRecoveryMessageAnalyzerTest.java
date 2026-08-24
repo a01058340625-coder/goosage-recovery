@@ -3314,4 +3314,24 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
     }
+
+    @Test
+    void detectsCompletedSlotGamblingExternalInterruptionForValidation253() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\uc5b4\uc82f\ubc24\uc5d0 \uc2ac\ub86f\uc744 \uc880 \ud558\ub2e4\uac00 "
+                        + "\uc804\ud654\uac00 \uc640\uc11c \ub04a\uacbc\uc5b4\uc694. "
+                        + "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\ub824\uace0 \ud558\uc9c4 \uc54a\uc558\uace0, "
+                        + "\uadf8 \ub4a4\uc5d0\ub294 \uadf8\ub0e5 \uc794\uc2b5\ub2c8\ub2e4."
+                );
+
+        assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(0);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(0);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(1);
+    }
 }

@@ -1939,6 +1939,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
         )) {
             return false;
         }
+        if (containsCompletedSlotGambling(text)) {
+            return true;
+        }
+
 
 
         if (containsGamblingSiteReentryAttempt(text)) {
@@ -2900,6 +2904,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
         ) {
             return true;
         }
+        if (containsCompletedSlotGambling(text)) {
+            return true;
+        }
+
 
         if (containsCompletedRelapseAfterReentry(text)) {
             return true;
@@ -3212,6 +3220,16 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && repeatedLoss;
     }
 
+    private boolean containsCompletedSlotGambling(
+            String text
+    ) {
+        return containsAny(
+                text,
+                "\uc2ac\ub86f\uc744 \uc880 \ud558\ub2e4\uac00",
+                "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00",
+                "\uc2ac\ub86f \uc880 \ud558\ub2e4\uac00"
+        );
+    }
     private boolean containsGamblingRestartCompleted(
             String text
     ) {
