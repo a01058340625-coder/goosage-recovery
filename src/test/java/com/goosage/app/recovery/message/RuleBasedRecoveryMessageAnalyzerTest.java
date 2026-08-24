@@ -3354,4 +3354,24 @@ class RuleBasedRecoveryMessageAnalyzerTest {
         assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
         assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
     }
+
+    @Test
+    void detectsLateDomainThirdPartyLinkCasinoAccessSelfExitForValidation258() {
+        RecoveryMessageAnalysis result =
+                analyzer.analyze(
+                        "\ub3d9\uc0dd\uc774 \ub9c1\ud06c \ud558\ub098\ub97c \ubcf4\ub0b4\uc918\uc11c "
+                        + "\ub20c\ub7ec\ubd24\uc5b4\uc694. "
+                        + "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\uc778 \uac74 "
+                        + "\ub4e4\uc5b4\uac00\uace0 \ub098\uc11c \uc54c\uc558\uace0, "
+                        + "\ud654\uba74 \uc870\uae08 \ubcf4\uace0 \ubc14\ub85c \uaed0\uc5b4\uc694."
+                );
+assertThat(result.analyzable()).isTrue();
+        assertThat(result.holdReason()).isNull();
+        assertThat(result.signal()).isNotNull();
+        assertThat(result.signal().urgeLogDelta()).isEqualTo(0);
+        assertThat(result.signal().betAttemptDelta()).isEqualTo(1);
+        assertThat(result.signal().betBlockedDelta()).isEqualTo(1);
+        assertThat(result.signal().recoveryActionDelta()).isEqualTo(0);
+        assertThat(result.signal().relapseSignalDelta()).isEqualTo(0);
+    }
 }
