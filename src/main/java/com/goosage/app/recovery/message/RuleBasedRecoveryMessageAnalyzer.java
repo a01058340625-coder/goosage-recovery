@@ -377,6 +377,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac83\uc740 \uc544\ub2c8"
                 );
 
+        boolean thirdPartyHistoryExplicitSelfSiteSearch =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uac00 \ubb54\uc9c0\ub9cc \uac80\uc0c9\ud574\ubd24",
+                        "\uadf8 \uc0ac\uc774\ud2b8\uac00 \ubb54\uc9c0\ub9cc \uac80\uc0c9\ud574\ubd24",
+                        "\uc0ac\uc774\ud2b8\uac00 \ubb54\uc9c0 \uac80\uc0c9\ud574\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \uc774\uc6a9\ud55c \uc801\uc740 \uc5c6",
+                        "\uc2e4\uc81c \uc774\uc6a9\ud55c \uc801\uc740 \uc5c6"
+                );
         boolean selfSiteSearchAfterThirdPartyTrigger =
 
                 selfContextExtracted
@@ -1119,6 +1133,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
                         || wagerAmountInputThenWagerCompleted
                         || fundingAmountInputErrorRetryExternalFailure
+                        || thirdPartyHistoryExplicitSelfSiteSearch
                 )
                         ? 1
                         : 0;
@@ -1261,6 +1276,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "오빠가",
                 "남편이",
                 "아내가",
+                "배우자가",
                 "그 사람이"
         );
     }
@@ -1277,6 +1293,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "오빠가",
                 "남편이",
                 "아내가",
+                "배우자가",
                 "그 사람이"
         );
 
