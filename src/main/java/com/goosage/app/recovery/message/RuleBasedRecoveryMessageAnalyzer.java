@@ -1490,9 +1490,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "버튼은 누르지 않았",
                         "버튼을 누르지 않았"
                 );
+        boolean pastCasinoAppExecutedScreenViewedAttempt =
+                containsAny(
+                        analysisText,
+                        "예전에 쓰던 카지노 앱",
+                        "예전 카지노 앱"
+                )
+                && containsAny(
+                        analysisText,
+                        "실행해서",
+                        "실행했"
+                )
+                && containsAny(
+                        analysisText,
+                        "예전 화면을 봤",
+                        "화면을 봤"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || pastCasinoAppExecutedScreenViewedAttempt
                         || wagerScreenAmountDecisionSubmitNegatedAttempt
                         || casinoAddressSelfClickConnectionFailureAttempt
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
