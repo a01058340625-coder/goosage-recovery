@@ -1471,9 +1471,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "접속이 끊겼",
                         "화면을 제대로 못 봤"
                 );
+        boolean wagerScreenAmountDecisionSubmitNegatedAttempt =
+                containsAny(
+                        analysisText,
+                        "베팅 화면까지 갔",
+                        "베팅 화면까지 들어갔"
+                )
+                && containsAny(
+                        analysisText,
+                        "금액을 정하는 데 시간이",
+                        "금액을 정하는데 시간이",
+                        "금액을 정하"
+                )
+                && containsAny(
+                        analysisText,
+                        "버튼은 안 눌렀",
+                        "버튼을 안 눌렀",
+                        "버튼은 누르지 않았",
+                        "버튼을 누르지 않았"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || wagerScreenAmountDecisionSubmitNegatedAttempt
                         || casinoAddressSelfClickConnectionFailureAttempt
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || pastGamblingAccountLoginOnlyAttempt
