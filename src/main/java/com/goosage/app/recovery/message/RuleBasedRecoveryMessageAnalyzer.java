@@ -1210,6 +1210,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean wagerAmountInputPhoneInterruptedNextDaySelfExited =
+                containsAny(
+                        analysisText,
+                        "베팅 금액까지 적어놓고",
+                        "베팅 금액을 적어놓고",
+                        "베팅 금액까지 적었"
+                )
+                && containsAny(
+                        analysisText,
+                        "전화가 와서 끊겼",
+                        "전화가 와서"
+                )
+                && containsAny(
+                        analysisText,
+                        "다음날 보니까 그대로",
+                        "다음 날 보니까 그대로"
+                )
+                && containsAny(
+                        analysisText,
+                        "결국 아무것도 안 하고 나왔",
+                        "아무것도 안 하고 나왔"
+                );
+
         boolean wagerAmountInputDeletedThenSelfExited =
                 containsAny(
                         analysisText,
@@ -1664,6 +1687,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
+                        || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || wagerCompletedRelapseThenNextDayNoAction
                         || appReinstalledAndExecutedWithUrgeNegation
@@ -1703,6 +1727,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
+                        || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
