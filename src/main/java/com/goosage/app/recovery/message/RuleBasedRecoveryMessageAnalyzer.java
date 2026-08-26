@@ -1129,14 +1129,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
                         "베팅 화면까지 넘어가",
                         "베팅 화면까지 들어갔",
-                        "베팅 화면까지 들어가"
+                        "베팅 화면까지 들어가",
+                        "베팅 사이트까지 들어갔",
+                        "베팅 사이트까지 들어가"
                 )
                 && containsAny(
                         analysisText,
                         "금액 칸에 숫자를 조금 적었다가",
                         "금액 칸에 숫자를 적었다가",
                         "금액을 조금 적었다가",
-                        "금액을 적었다가"
+                        "금액을 적었다가",
+                        "금액을 입력했다가"
                 )
                 && containsAny(
                         analysisText,
@@ -1147,7 +1150,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
                         "그냥 화면을 닫았",
                         "화면을 닫았",
-                        "화면을 닫고"
+                        "화면을 닫고",
+                        "그 다음은 하지 않았"
                 );
 
         boolean wagerScreenReachedMotivationDropThenSelfExited =
