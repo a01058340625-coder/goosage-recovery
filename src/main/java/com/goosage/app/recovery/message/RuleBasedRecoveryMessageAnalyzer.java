@@ -1269,6 +1269,24 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean completedFundingSingleWagerPostNoActionRelapse =
+                containsAny(
+                        analysisText,
+                        "실제로 돈을 넣고",
+                        "실제 돈을 넣고"
+                )
+                && containsAny(
+                        analysisText,
+                        "한 번 걸었습니다",
+                        "한 번 걸었"
+                )
+                && containsAny(
+                        analysisText,
+                        "그 뒤에는 따로 뭘 하진 않았",
+                        "그 뒤에는 따로 뭘 하지 않았",
+                        "그 뒤로 따로 뭘 하진 않았"
+                );
+
         boolean wagerCompletedRelapseThenNextDayNoAction =
                 containsAny(
                         analysisText,
@@ -1713,6 +1731,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsRelapseSignal(analysisText)
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || wagerCompletedThenNextDayAppDeletedRecovery
+                        || completedFundingSingleWagerPostNoActionRelapse
                         || wagerCompletedRelapseThenNextDayNoAction
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                 )
