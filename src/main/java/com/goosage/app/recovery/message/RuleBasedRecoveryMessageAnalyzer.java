@@ -1399,9 +1399,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc624\ub298 \uc544\uce68\uc5d0 \uc571\ub3c4 \uc9c0\uc6e0",
                         "\uc624\ub298 \uc544\uce68\uc5d0 \uc571\uc744 \uc9c0\uc6e0"
                 );
+        boolean slotResultSearchThenNextDayAppDeletedRecovery =
+                containsAny(
+                        analysisText,
+                        "어제는 슬롯 결과를 좀 찾아봤",
+                        "어제 슬롯 결과를 좀 찾아봤",
+                        "슬롯 결과를 찾아봤",
+                        "슬롯 결과를 좀 찾아봤"
+                )
+                && containsAny(
+                        analysisText,
+                        "오늘 아침에는 앱을 삭제했",
+                        "오늘 아침에 앱을 삭제했",
+                        "오늘 아침에는 앱을 지웠",
+                        "오늘 아침에 앱을 지웠"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || slotResultSearchThenNextDayAppDeletedRecovery
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSiteSearchAfterThirdPartyTrigger
@@ -1467,6 +1483,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
+                        || slotResultSearchThenNextDayAppDeletedRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
