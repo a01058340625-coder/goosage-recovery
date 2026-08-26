@@ -982,6 +982,21 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean completedWagerNextMorningAppDeletedRelapseRecovery =
+                containsAny(
+                        analysisText,
+                        "어젯밤에 실제로 베팅을 했고",
+                        "어젯밤 실제로 베팅을 했",
+                        "어젯밤에 실제로 베팅했"
+                )
+                && containsAny(
+                        analysisText,
+                        "오늘 아침에 앱을 지웠",
+                        "오늘 아침 앱을 지웠",
+                        "오늘 아침에 앱을 삭제했",
+                        "오늘 아침 앱을 삭제했"
+                );
+
         boolean wagerCompletedThenNextDayAppDeletedRecovery =
                 (
                         containsAny(
@@ -1711,7 +1726,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         : 0;
         int betBlockedDelta =
                 (
-                        containsProtectiveBlock(analysisText)
+                        (
+                                containsProtectiveBlock(analysisText)
+                                && !completedWagerNextMorningAppDeletedRelapseRecovery
+                        )
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
@@ -1744,6 +1762,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsRecoveryAction(analysisText)
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || slotResultSearchThenNextDayAppDeletedRecovery
+                        || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
@@ -1755,6 +1774,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsRelapseSignal(analysisText)
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
+                        || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || completedFundingSingleWagerPostNoActionRelapse
                         || wagerCompletedRelapseThenNextDayNoAction
