@@ -1435,9 +1435,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "오늘 아침에는 앱을 지웠",
                         "오늘 아침에 앱을 지웠"
                 );
+        boolean pastGamblingAccountLoginOnlyAttempt =
+                containsGeneralReentryLoginCompleted(analysisText)
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24\uc5b4\uc694",
+                        "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || pastGamblingAccountLoginOnlyAttempt
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
@@ -3744,7 +3752,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
                 "\ubca0\ud305 \uc0ac\uc774\ud2b8",
                 "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8",
-                "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacf3"
+                "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacf3",
+                "\uadf8\ub54c \uc4f0\ub358 \uacc4\uc815"
         );
 
         boolean blockedAccountFundingContext =
@@ -3757,6 +3766,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub85c\uadf8\uc778\ud588\uace0",
                 "\ub85c\uadf8\uc778\ud574\uc11c",
                 "\ub85c\uadf8\uc778\ud588\uc5b4\uc694",
+                "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24\uc5b4\uc694",
+                "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24",
                 "\ub610 \ub85c\uadf8\uc778\ud588"
         );
 
