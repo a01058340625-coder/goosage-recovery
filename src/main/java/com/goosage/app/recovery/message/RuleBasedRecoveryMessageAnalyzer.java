@@ -96,15 +96,24 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         boolean thirdPartyHistorySelfSiteSearchAttempt =
                 thirdPartyGamblingContextForSelfUrge
-                && containsAny(
-                        normalized,
-                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \ubb3c\uc5b4\ubd24",
-                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \ubb3c\uc5b4"
+                && (
+                        containsAny(
+                                normalized,
+                                "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \ubb3c\uc5b4\ubd24",
+                                "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \ubb3c\uc5b4"
+                        )
+                        || containsAny(
+                                normalized,
+                                "지인이 보낸 사이트 이름",
+                                "지인이 보내준 사이트 이름"
+                        )
                 )
                 && containsAny(
                         normalized,
                         "\uc81c\uac00 \uac80\uc0c9\ud574\ubcf8",
-                        "\uc81c\uac00 \uac80\uc0c9\ud574\ubd24"
+                        "\uc81c\uac00 \uac80\uc0c9\ud574\ubd24",
+                        "사이트 이름을 한번 검색해본",
+                        "사이트 이름을 한 번 검색해본"
                 );
 
         boolean thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt =
@@ -435,6 +444,8 @@ if (
                         "슬롯 앱 이름을 검색했",
                         "\uc81c\uac00 \uac80\uc0c9\ud574\ubcf8",
                         "\uc81c\uac00 \uac80\uc0c9\ud574\ubd24",
+                        "사이트 이름을 한번 검색해본",
+                        "사이트 이름을 한 번 검색해본",
                         "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
