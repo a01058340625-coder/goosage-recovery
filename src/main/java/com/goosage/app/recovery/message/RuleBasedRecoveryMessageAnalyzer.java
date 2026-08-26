@@ -36,6 +36,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc2ac\ub86f"
                 );
 
+        boolean thirdPartyHistorySelfSiteSearchAttempt =
+                thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        normalized,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \ubb3c\uc5b4\ubd24",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \ubb3c\uc5b4"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc81c\uac00 \uac80\uc0c9\ud574\ubcf8",
+                        "\uc81c\uac00 \uac80\uc0c9\ud574\ubd24"
+                );
+
         boolean thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput =
                 thirdPartyGamblingContextForSelfUrge
                 && containsAny(
@@ -140,6 +153,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 selfSubjectIndex = implicitSelfSportsSiteSearchIndex;
             }
             if (selfSubjectIndex < 0) {
+
                 boolean implicitSelfAfterThirdPartyTrigger =
                         (
                                 thirdPartyGamblingContextForSelfUrge
@@ -299,6 +313,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
+                        || thirdPartyHistorySelfSiteSearchAttempt
                         || thirdPartyLinkSelfCasinoAccess
                         || lateDomainThirdPartyLinkSelfCasinoAccess
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
@@ -310,6 +325,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 selfSubjectIndex = firstIndexOfAny(
                         normalized,
+                        "\uc81c\uac00 \uac80\uc0c9\ud574\ubcf8",
+                        "\uc81c\uac00 \uac80\uc0c9\ud574\ubd24",
                         "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
@@ -1542,6 +1559,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputThenWagerCompleted
                         || fundingAmountInputErrorRetryExternalFailure
                         || thirdPartyHistoryExplicitSelfSiteSearch
+                        || thirdPartyHistorySelfSiteSearchAttempt
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
