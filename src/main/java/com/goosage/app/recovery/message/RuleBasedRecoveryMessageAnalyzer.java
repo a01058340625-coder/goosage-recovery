@@ -1339,6 +1339,28 @@ if (
                         "그 다음은 하지 않았"
                 );
 
+        boolean wagerScreenReachedBeforeAmountInputThenSelfExited =
+                containsAny(
+                        analysisText,
+                        "사이트에 접속해서 베팅 화면까지 갔",
+                        "베팅 화면까지 갔"
+                )
+                && containsAny(
+                        analysisText,
+                        "금액을 넣기 전에",
+                        "금액 입력 전에"
+                )
+                && containsAny(
+                        analysisText,
+                        "그냥 껐",
+                        "화면을 껐"
+                )
+                && containsAny(
+                        analysisText,
+                        "그 뒤로는 다시 안 열어봤",
+                        "다시 안 열어봤"
+                );
+
         boolean wagerScreenReachedMotivationDropThenSelfExited =
 
                 containsAny(
@@ -1761,6 +1783,7 @@ if (
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
+                        || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
@@ -1804,6 +1827,7 @@ if (
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
+                        || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
