@@ -1011,6 +1011,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\uac80\uc0c9\ucc3d\uc744 \uadf8\ub0e5 \ub2eb\uc558"
                         )
                 );
+        boolean pastSportsBettingSiteSearchResultViewedThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \ud558\ub358 \uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                        "\uc608\uc804\uc5d0 \ud558\ub358 \uc2a4\ud3ec\uce20\ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ub418\ub294\uc9c0 \uadf8\ub0e5 \ucc3e\uc544\ubd24",
+                        "\uadf8\ub0e5 \ucc3e\uc544\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uacfc \uba87 \uac1c \ubcf4\uace0",
+                        "\uacb0\uacfc\ub97c \ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub354 \ub4e4\uc5b4\uac00\uc9c4 \uc54a\uc558",
+                        "\ub354 \ub4e4\uc5b4\uac00\uc9c0 \uc54a\uc558"
+                );
+
         boolean bettingAmountViewedThenSelfStopped =
 
                 containsAny(
@@ -1546,6 +1568,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || gamblingSiteResultViewThenSelfExited
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || sportsBettingSearchAutocompleteThenSelfStopped
+                        || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedMotivationDropThenSelfExited
@@ -1582,6 +1605,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
                         || sportsBettingSearchAutocompleteThenSelfStopped
+                        || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedMotivationDropThenSelfExited
