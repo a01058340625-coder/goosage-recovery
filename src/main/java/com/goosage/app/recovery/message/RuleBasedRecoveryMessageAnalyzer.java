@@ -140,7 +140,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub85c\uadf8\uc778\ud558\uae30 \uc804\uc5d0 \ub2eb",
                         "\ub85c\uadf8\uc778 \uc804\uc5d0 \ub2eb"
                 );
-        if (
+                boolean genericThirdPartyAppInstallWithoutGamblingDomain =
+                containsAny(
+                        normalized,
+                        "친구가 재미로 해보라고 앱을 보여줬",
+                        "친구가 앱을 보여줬"
+                )
+                && containsAny(
+                        normalized,
+                        "설치 버튼까지 갔다가",
+                        "설치 버튼까지 갔"
+                )
+                && !containsAny(
+                        normalized,
+                        "도박",
+                        "베팅",
+                        "카지노",
+                        "슬롯",
+                        "배당"
+                );
+
+        if (genericThirdPartyAppInstallWithoutGamblingDomain) {
+            return hold(message, "NO_SUPPORTED_SIGNAL");
+        }
+if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
         ) {
