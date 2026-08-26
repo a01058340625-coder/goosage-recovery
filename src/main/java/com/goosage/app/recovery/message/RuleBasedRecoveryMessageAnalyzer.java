@@ -623,6 +623,27 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2eb\uc558"
                 );
 
+        boolean bettingIntentPartialSearchInputExternalDistraction =
+                containsAny(
+                        analysisText,
+                        "\ubca0\ud305\ud560\uae4c \uc2f6\uc5b4\uc11c",
+                        "\ubca0\ud305\ud560\uae4c \uc2f6\uc5c8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ucc3d\uc744 \uc5f4\uc5c8",
+                        "\uac80\uc0c9\ucc3d\uc744 \uc5f4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\uc5b4\ub3c4 \ub05d\uae4c\uc9c0 \uc548 \ucce4",
+                        "\uac80\uc0c9\uc5b4\ub97c \ub05d\uae4c\uc9c0 \uc548 \ucce4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\ub978 \uc77c \ub54c\ubb38\uc5d0 \uc78a\uc5b4\ubc84\ub838",
+                        "\ub2e4\ub978 \uc77c \ub54c\ubb38\uc5d0 \uc78a\uc5b4"
+                );
         boolean siteNameInputCompleteThenOtherTaskSelfStopped =
                 containsAny(
                         analysisText,
@@ -1282,6 +1303,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfAppSearchAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
+                        || bettingIntentPartialSearchInputExternalDistraction
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
@@ -1380,6 +1402,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSiteSearchAfterThirdPartyTrigger
                         || selfAppSearchAfterThirdPartyTrigger
+                        || bettingIntentPartialSearchInputExternalDistraction
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
