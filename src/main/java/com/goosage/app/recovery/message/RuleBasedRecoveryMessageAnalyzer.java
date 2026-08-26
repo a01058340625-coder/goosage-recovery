@@ -1453,9 +1453,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "다음 날 휴대폰을 가족한테 맡겼",
                         "다음 날 휴대폰을 가족에게 맡겼"
                 );
+        boolean casinoAddressSelfClickConnectionFailureAttempt =
+                containsAny(
+                        analysisText,
+                        "카지노 사이트 주소를 받아서",
+                        "카지노 사이트 주소를 받"
+                )
+                && containsAny(
+                        analysisText,
+                        "눌러보긴 했",
+                        "눌러봤",
+                        "눌렀"
+                )
+                && containsAny(
+                        analysisText,
+                        "접속이 끊겨",
+                        "접속이 끊겼",
+                        "화면을 제대로 못 봤"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || casinoAddressSelfClickConnectionFailureAttempt
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || pastGamblingAccountLoginOnlyAttempt
                         || slotResultSearchThenNextDayAppDeletedRecovery
