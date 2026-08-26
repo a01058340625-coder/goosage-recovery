@@ -49,6 +49,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc81c\uac00 \uac80\uc0c9\ud574\ubd24"
                 );
 
+        boolean thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt =
+                thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        normalized,
+                        "친구가 예전에 카지노에서 크게 땄던 얘기를 해서",
+                        "카지노에서 크게 땄던 얘기를 해서",
+                        "카지노 얘기를 해서"
+                )
+                && containsAny(
+                        normalized,
+                        "슬롯 앱 이름을 검색해봤",
+                        "슬롯 앱 이름을 검색했"
+                )
+                && containsAny(
+                        normalized,
+                        "자동완성에 뜨는 것만 좀 봤",
+                        "자동완성에 뜨는 것만 봤",
+                        "자동완성만 좀 봤"
+                )
+                && containsAny(
+                        normalized,
+                        "설치할 생각까지는 없었",
+                        "설치할 생각은 없었"
+                );
         boolean thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput =
                 thirdPartyGamblingContextForSelfUrge
                 && containsAny(
@@ -313,6 +337,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
+                        || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || thirdPartyLinkSelfCasinoAccess
                         || lateDomainThirdPartyLinkSelfCasinoAccess
@@ -325,6 +350,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 selfSubjectIndex = firstIndexOfAny(
                         normalized,
+                        "슬롯 앱 이름을 검색해봤",
+                        "슬롯 앱 이름을 검색했",
                         "\uc81c\uac00 \uac80\uc0c9\ud574\ubcf8",
                         "\uc81c\uac00 \uac80\uc0c9\ud574\ubd24",
                         "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
@@ -1334,6 +1361,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "설치 버튼을 누르지 않았",
                         "설치는 하지 않았"
                 );
+
         boolean thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated =
                 containsAny(
                         analysisText,
@@ -1586,6 +1614,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
+                        || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
