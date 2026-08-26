@@ -1442,9 +1442,21 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24\uc5b4\uc694",
                         "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24"
                 );
+        boolean wagerCompletedThenNextDayFamilyDeviceHandoff =
+                containsAny(
+                        analysisText,
+                        "실제로 베팅을 한 뒤",
+                        "실제로 베팅한 뒤"
+                )
+                && containsAny(
+                        analysisText,
+                        "다음 날 휴대폰을 가족한테 맡겼",
+                        "다음 날 휴대폰을 가족에게 맡겼"
+                );
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || pastGamblingAccountLoginOnlyAttempt
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || selfLossThoughtAfterThirdPartyTrigger
@@ -1514,6 +1526,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
+                        || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
@@ -1525,6 +1538,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int relapseSignalDelta =
                 (
                         containsRelapseSignal(analysisText)
+                        || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || wagerCompletedRelapseThenNextDayNoAction
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
