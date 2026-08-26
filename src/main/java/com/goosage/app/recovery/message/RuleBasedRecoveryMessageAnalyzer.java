@@ -1295,6 +1295,27 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "설치 버튼을 누르지 않았",
                         "설치는 하지 않았"
                 );
+        boolean thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated =
+                containsAny(
+                        analysisText,
+                        "카지노 얘기를 해서",
+                        "카지노 이야기를 해서"
+                )
+                && containsAny(
+                        analysisText,
+                        "그 이름을 검색해봤",
+                        "그 이름을 검색했"
+                )
+                && containsAny(
+                        analysisText,
+                        "앱 정보 화면까지 봤",
+                        "앱 정보 화면을 봤"
+                )
+                && containsAny(
+                        analysisText,
+                        "설치는 안 했",
+                        "설치하지 않았"
+                );
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -1447,6 +1468,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyHistoryExplicitSelfSiteSearch
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
+                        || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
@@ -1475,6 +1497,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingScreenReachedThenSelfStopped
                         || loginCompletedFundingScreenThenSelfExited
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
+                        || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
