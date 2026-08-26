@@ -24,6 +24,44 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         String analysisText = normalized;
 
+        boolean genericDesireSearchResultWithoutGamblingDomain =
+                containsAny(
+                        normalized,
+                        "다시 하고 싶은 마음이 좀 생겨서",
+                        "다시 하고 싶은 마음이 생겨서",
+                        "하고 싶은 마음이 좀 생겨서"
+                )
+                && containsAny(
+                        normalized,
+                        "검색은 했습니다",
+                        "검색은 했",
+                        "검색했습니다"
+                )
+                && containsAny(
+                        normalized,
+                        "검색어를 끝까지 넣고",
+                        "검색어를 끝까지 입력"
+                )
+                && containsAny(
+                        normalized,
+                        "결과를 본 뒤",
+                        "검색 결과를 본"
+                )
+                && !containsAny(
+                        normalized,
+                        "도박",
+                        "베팅",
+                        "카지노",
+                        "슬롯",
+                        "배당",
+                        "예전에 하던 사이트",
+                        "예전에 쓰던 사이트"
+                );
+
+        if (genericDesireSearchResultWithoutGamblingDomain) {
+            return hold(message, "NO_SUPPORTED_SIGNAL");
+        }
+
         boolean genericPartialSearchDeleteWithoutGamblingDomain =
                 containsAny(
                         normalized,
