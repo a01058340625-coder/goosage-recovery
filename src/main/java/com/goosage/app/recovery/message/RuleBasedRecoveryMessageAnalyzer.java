@@ -1463,6 +1463,31 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "오늘은 제가 가지고 있지 않",
                         "지금은 제가 가지고 있지 않"
                 );
+        boolean thirdPartyLinkSelfOddsViewAttempt =
+                containsAny(
+                        analysisText,
+                        "동료가 보내준 링크",
+                        "동료가 보낸 링크",
+                        "친구가 보내준 링크",
+                        "친구가 보낸 링크"
+                )
+                && containsAny(
+                        analysisText,
+                        "눌러봤",
+                        "눌렀"
+                )
+                && containsAny(
+                        analysisText,
+                        "배당만 잠깐 확인",
+                        "배당을 잠깐 확인",
+                        "배당만 확인"
+                )
+                && containsAny(
+                        analysisText,
+                        "베팅은 안 했",
+                        "베팅하지 않았"
+                );
+
         boolean thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -1636,6 +1661,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
+                        || thirdPartyLinkSelfOddsViewAttempt
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
