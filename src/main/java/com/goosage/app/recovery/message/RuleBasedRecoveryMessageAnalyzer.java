@@ -23,6 +23,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
         }
 
         String analysisText = normalized;
+
+        boolean genericPartialSearchDeleteWithoutGamblingDomain =
+                containsAny(
+                        normalized,
+                        "검색창에 사이트 이름을 몇 글자 쳤다가 지웠",
+                        "검색창에 사이트 이름을 몇 글자 쳤다가 삭제했"
+                )
+                && !containsAny(
+                        normalized,
+                        "도박",
+                        "베팅",
+                        "카지노",
+                        "슬롯",
+                        "예전에 하던 사이트",
+                        "예전에 쓰던 사이트"
+                );
+
+        if (genericPartialSearchDeleteWithoutGamblingDomain) {
+            return hold(message, "NO_SUPPORTED_SIGNAL");
+        }
         boolean selfContextExtracted = false;
         boolean currentContextExtracted = false;
 
