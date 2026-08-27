@@ -1536,6 +1536,31 @@ if (
                         "설치는 하지 않았"
                 );
 
+        boolean slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop =
+                containsAny(
+                        analysisText,
+                        "슬롯게임을 안 했",
+                        "슬롯게임을"
+                )
+                && containsAny(
+                        analysisText,
+                        "다시 해볼까"
+                )
+                && containsAny(
+                        analysisText,
+                        "관련 앱을 찾아봤",
+                        "관련 앱을 찾"
+                )
+                && containsAny(
+                        analysisText,
+                        "설치까지는 하지 않았",
+                        "설치하지 않았"
+                )
+                && containsAny(
+                        analysisText,
+                        "오래 붙잡고 있을 것 같",
+                        "괜히 시작하면"
+                );
         boolean thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated =
                 containsAny(
                         analysisText,
@@ -1829,6 +1854,7 @@ if (
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
+                        || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
@@ -1867,6 +1893,7 @@ if (
                         || fundingScreenReachedThenSelfStopped
                         || loginCompletedFundingScreenThenSelfExited
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
+                        || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
