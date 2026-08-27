@@ -1149,22 +1149,26 @@ if (
                 containsAny(
                         analysisText,
                         "\uc608\uc804\uc5d0 \ud558\ub358 \uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                        "스포츠베팅 사이트",
                         "\uc608\uc804\uc5d0 \ud558\ub358 \uc2a4\ud3ec\uce20\ubca0\ud305"
                 )
                 && containsAny(
                         analysisText,
                         "\uac80\uc0c9\ub418\ub294\uc9c0 \uadf8\ub0e5 \ucc3e\uc544\ubd24",
+                        "스포츠베팅 사이트를 잠깐 찾아봤",
                         "\uadf8\ub0e5 \ucc3e\uc544\ubd24"
                 )
                 && containsAny(
                         analysisText,
                         "\uacb0\uacfc \uba87 \uac1c \ubcf4\uace0",
-                        "\uacb0\uacfc\ub97c \ubd24"
+                        "\uacb0\uacfc\ub97c \ubd24",
+                        "검색 결과만 조금 확인"
                 )
                 && containsAny(
                         analysisText,
                         "\ub354 \ub4e4\uc5b4\uac00\uc9c4 \uc54a\uc558",
-                        "\ub354 \ub4e4\uc5b4\uac00\uc9c0 \uc54a\uc558"
+                        "\ub354 \ub4e4\uc5b4\uac00\uc9c0 \uc54a\uc558",
+                        "휴대폰을 내려놨"
                 );
 
         boolean bettingAmountViewedThenSelfStopped =
