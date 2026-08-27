@@ -3155,6 +3155,47 @@ if (
             return false;
         }
 
+        boolean explicitGenericGameAppContext =
+                containsAny(
+                        text,
+                        "예전에 꽤 자주 하던 게임",
+                        "예전에 자주 하던 게임"
+                )
+                && containsAny(
+                        text,
+                        "앱을 다시 설치",
+                        "다시 설치했습니다",
+                        "재설치"
+                )
+                && containsAny(
+                        text,
+                        "실행까지는 했",
+                        "실행까지 했",
+                        "실행했"
+                )
+                && containsAny(
+                        text,
+                        "로그인은 하지 않고",
+                        "로그인하지 않고"
+                )
+                && containsAny(
+                        text,
+                        "앱을 지웠",
+                        "앱을 삭제"
+                )
+                && !containsAny(
+                        text,
+                        "도박",
+                        "베팅",
+                        "카지노",
+                        "슬롯",
+                        "스포츠토토"
+                );
+
+        if (explicitGenericGameAppContext) {
+            return false;
+        }
+
         return containsAny(
                 text,
                 "사이트를 닫",
