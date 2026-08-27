@@ -1613,6 +1613,21 @@ if (
                         "오늘은 제가 가지고 있지 않",
                         "지금은 제가 가지고 있지 않"
                 );
+        boolean sportsResultOddsSelfClickAttempt =
+                containsAny(
+                        analysisText,
+                        "경기 결과"
+                )
+                && containsAny(
+                        analysisText,
+                        "배당"
+                )
+                && containsAny(
+                        analysisText,
+                        "눌러봤",
+                        "눌렀"
+                );
+
         boolean thirdPartyLinkSelfOddsViewAttempt =
                 containsAny(
                         analysisText,
@@ -1814,6 +1829,7 @@ if (
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartyLinkSelfOddsViewAttempt
+                        || sportsResultOddsSelfClickAttempt
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
