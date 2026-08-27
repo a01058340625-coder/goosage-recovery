@@ -2979,6 +2979,25 @@ if (
             return true;
         }
 
+        boolean explicitGenericWorkSiteContext =
+                containsAny(
+                        text,
+                        "회사에서 쓰는 업무 사이트",
+                        "업무 사이트"
+                )
+                && !containsAny(
+                        text,
+                        "도박",
+                        "베팅",
+                        "카지노",
+                        "슬롯",
+                        "스포츠토토"
+                );
+
+        if (explicitGenericWorkSiteContext) {
+            return false;
+        }
+
         return containsAny(
                 text,
                 "사이트를 닫",
