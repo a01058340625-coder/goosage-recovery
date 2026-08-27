@@ -4128,6 +4128,7 @@ if (
         boolean loginCompleted = containsAny(
                 text,
                 "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588",
+                "로그인까지는 했",
                 "\ub85c\uadf8\uc778\ud588\uace0",
                 "\ub85c\uadf8\uc778\ud574\uc11c",
                 "\ub85c\uadf8\uc778\ud588\uc5b4\uc694",
