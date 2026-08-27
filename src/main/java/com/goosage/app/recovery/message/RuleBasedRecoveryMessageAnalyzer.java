@@ -1642,6 +1642,28 @@ if (
                         "오늘은 제가 가지고 있지 않",
                         "지금은 제가 가지고 있지 않"
                 );
+        boolean sportsResultOddsViewLateBettingContextThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "스포츠 경기 결과",
+                        "경기 결과"
+                )
+                && containsAny(
+                        analysisText,
+                        "배당도 같이 확인",
+                        "배당을 같이 확인",
+                        "배당도 확인"
+                )
+                && containsAny(
+                        analysisText,
+                        "예전 같으면 바로 베팅했",
+                        "예전 같았으면 바로 베팅했"
+                )
+                && containsAny(
+                        analysisText,
+                        "경기 정보만 보고 껐",
+                        "그냥 경기 정보만 보고 껐"
+                );
         boolean sportsResultOddsSelfClickAttempt =
                 containsAny(
                         analysisText,
@@ -1860,6 +1882,7 @@ if (
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartyLinkSelfOddsViewAttempt
                         || sportsResultOddsSelfClickAttempt
+                        || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
@@ -1882,6 +1905,7 @@ if (
                         || gamblingSiteResultViewThenSelfExited
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
+                        || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
