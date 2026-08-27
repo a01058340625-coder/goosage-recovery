@@ -2408,6 +2408,7 @@ if (
         boolean currentUrge = containsAny(
                 text,
                 "도박 생각이 나",
+                "도박 생각이 조금 나",
                 "\ub2e4\uc2dc \ud558\uace0 \uc2f6",
                 "\ub610 \ud558\uace0 \uc2f6",
                 "\ub354 \ud558\uace0 \uc2f6\uc5b4\uc9c0",
