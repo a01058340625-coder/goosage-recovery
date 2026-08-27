@@ -2916,6 +2916,29 @@ if (
     }
 
     private boolean containsProtectiveBlock(String text) {
+
+        boolean recoveryPhoneLookupWithoutCall =
+                containsAny(
+                        text,
+                        "상담을 받아볼까",
+                        "상담 받아볼까"
+                )
+                && containsAny(
+                        text,
+                        "번호를 검색해서",
+                        "전화번호를 검색해서",
+                        "번호를 검색했"
+                )
+                && containsAny(
+                        text,
+                        "전화를 걸지는 못했",
+                        "전화를 걸지 못했",
+                        "전화는 걸지 않았"
+                );
+
+        if (recoveryPhoneLookupWithoutCall) {
+            return false;
+        }
         if (
                 containsAny(
                         text,
