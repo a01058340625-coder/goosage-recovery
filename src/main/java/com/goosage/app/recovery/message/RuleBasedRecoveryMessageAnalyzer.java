@@ -1721,6 +1721,32 @@ if (
                         "경기 정보만 보고 껐",
                         "그냥 경기 정보만 보고 껐"
                 );
+        boolean oddsSearchAccessNaturalNoFurtherActionAttempt =
+                containsAny(
+                        analysisText,
+                        "베팅을 하지는 않는데",
+                        "베팅은 하지 않는데"
+                )
+                && containsAny(
+                        analysisText,
+                        "배당을 확인",
+                        "배당을 확인하게"
+                )
+                && containsAny(
+                        analysisText,
+                        "검색해서 들어가 봤",
+                        "검색해서 들어갔"
+                )
+                && containsAny(
+                        analysisText,
+                        "몇 경기만 확인",
+                        "몇 경기 확인"
+                )
+                && containsAny(
+                        analysisText,
+                        "다른 일을 했",
+                        "다른 일을 하"
+                );
         boolean sportsResultOddsSelfClickAttempt =
                 containsAny(
                         analysisText,
@@ -1941,6 +1967,7 @@ if (
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartyLinkSelfOddsViewAttempt
                         || sportsResultOddsSelfClickAttempt
+                        || oddsSearchAccessNaturalNoFurtherActionAttempt
                         || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
