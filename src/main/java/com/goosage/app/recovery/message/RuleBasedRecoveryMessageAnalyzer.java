@@ -385,6 +385,21 @@ if (
                                         "\uadf8\ub0e5 \ub2eb\uc558",
                                         "\ub2eb\uc558"
                                 )
+                        || (
+                                thirdPartyGamblingContextForSelfUrge
+                                && containsAny(
+                                        normalized,
+                                        "관련 사이트를 한 번 찾아봤",
+                                        "관련 사이트를 찾아봤",
+                                        "관련 사이트를 검색했"
+                                )
+                                && containsAny(
+                                        normalized,
+                                        "로그인 화면까지는 들어갔",
+                                        "로그인 화면까지 들어갔",
+                                        "로그인 화면까지 들어가"
+                                )
+                        )
                         );
 
 
@@ -458,7 +473,10 @@ if (
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
-                        "\ub20c\ub800\ub294\ub370"
+                        "\ub20c\ub800\ub294\ub370",
+                        "관련 사이트를 한 번 찾아봤",
+                        "관련 사이트를 찾아봤",
+                        "관련 사이트를 검색했"
                 );
 
                 if (
@@ -831,6 +849,27 @@ if (
                         "\uadf8 \uc774\uc0c1 \ud558\uc9c0 \uc54a\uc558"
                 );
 
+        boolean thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "관련 사이트를 한 번 찾아봤",
+                        "관련 사이트를 찾아봤",
+                        "관련 사이트를 검색했"
+                )
+                && containsAny(
+                        analysisText,
+                        "로그인 화면까지는 들어갔",
+                        "로그인 화면까지 들어갔",
+                        "로그인 화면까지 들어가"
+                )
+                && containsAny(
+                        analysisText,
+                        "그냥 닫았",
+                        "그냥 닫았습니다",
+                        "화면을 닫았"
+                );
         boolean lateDomainCasinoAccessThenSelfStopped =
                 selfContextExtracted
                 && containsAny(
@@ -1878,6 +1917,7 @@ if (
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
+                        || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartyLinkSelfOddsViewAttempt
@@ -1899,6 +1939,7 @@ if (
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
                         || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
+                        || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || siteNameInputCompleteThenOtherTaskSelfStopped
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
@@ -2043,6 +2084,7 @@ if (
         return containsAny(
                 text,
                 "친구가",
+                "친구들이랑",
                 "지인이",
                 "동생이",
                 "형이",
