@@ -1340,6 +1340,24 @@ if (
 
                 );
 
+        boolean bettingAppAmountInputPhoneInterruptedAttempt =
+                containsAny(
+                        analysisText,
+                        "베팅 앱을 오늘 다시 실행",
+                        "베팅 앱을 다시 실행"
+                )
+                && containsAny(
+                        analysisText,
+                        "금액을 입력하는 데까지 갔",
+                        "금액 입력하는 데까지 갔",
+                        "금액을 입력하는 데까지"
+                )
+                && containsAny(
+                        analysisText,
+                        "전화가 와서 중단",
+                        "전화가 와서"
+                );
+
         boolean wagerAmountInputPhoneInterruptedNextDaySelfExited =
                 containsAny(
                         analysisText,
@@ -1902,6 +1920,7 @@ if (
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
+                        || bettingAppAmountInputPhoneInterruptedAttempt
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || wagerCompletedRelapseThenNextDayNoAction
@@ -2958,6 +2977,27 @@ if (
     }
 
     private boolean containsProtectiveBlock(String text) {
+
+        boolean bettingAmountPhoneInterruption =
+                containsAny(
+                        text,
+                        "베팅 앱",
+                        "베팅앱"
+                )
+                && containsAny(
+                        text,
+                        "금액을 입력하는 데까지 갔",
+                        "금액 입력하는 데까지 갔"
+                )
+                && containsAny(
+                        text,
+                        "전화가 와서 중단",
+                        "전화가 와서"
+                );
+
+        if (bettingAmountPhoneInterruption) {
+            return false;
+        }
 
         boolean recoveryPhoneLookupWithoutCall =
                 containsAny(
