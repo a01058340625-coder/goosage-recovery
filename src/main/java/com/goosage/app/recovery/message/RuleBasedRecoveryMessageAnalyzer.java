@@ -3563,32 +3563,43 @@ if (
         }
 
         boolean gamblingCounselingAppointmentBooked =
-
-                containsAny(
-
-                        text,
-
-                        "\uc2e4\uc81c\ub85c \uc5f0\ub77d\ud55c \uac74 \uc774\ubc88\uc774 \ucc98\uc74c",
-                        "\uc2e4\uc81c\ub85c \uc5f0\ub77d\ud55c \uac83\uc740 \uc774\ubc88\uc774 \ucc98\uc74c"
-
+                (
+                        containsAny(
+                                text,
+                                "\uc2e4\uc81c\ub85c \uc5f0\ub77d\ud55c \uac74 \uc774\ubc88\uc774 \ucc98\uc74c",
+                                "\uc2e4\uc81c\ub85c \uc5f0\ub77d\ud55c \uac83\uc740 \uc774\ubc88\uc774 \ucc98\uc74c"
+                        )
+                        && containsAny(
+                                text,
+                                "\ub3c4\ubc15 \ub54c\ubb38\uc5d0 \ubb38\uc81c\uac00 \uc0dd\uacbc\ub2e4\uace0 \ub9d0",
+                                "\ub3c4\ubc15 \ubb38\uc81c\uac00 \uc0dd\uacbc\ub2e4\uace0 \ub9d0"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc608\uc57d\uc744 \uc7a1\uc558",
+                                "\uc0c1\ub2f4 \uc608\uc57d\uc744 \uc7a1\uc558"
+                        )
                 )
-
-                && containsAny(
-
-                        text,
-
-                        "\ub3c4\ubc15 \ub54c\ubb38\uc5d0 \ubb38\uc81c\uac00 \uc0dd\uacbc\ub2e4\uace0 \ub9d0",
-                        "\ub3c4\ubc15 \ubb38\uc81c\uac00 \uc0dd\uacbc\ub2e4\uace0 \ub9d0"
-
-                )
-
-                && containsAny(
-
-                        text,
-
-                        "\uc608\uc57d\uc744 \uc7a1\uc558",
-                        "\uc0c1\ub2f4 \uc608\uc57d\uc744 \uc7a1\uc558"
-
+                || (
+                        containsAny(
+                                text,
+                                "\ub3c4\ubc15",
+                                "\ubca0\ud305",
+                                "\uce74\uc9c0\ub178",
+                                "\uc2ac\ub86f"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc2e4\uc81c\ub85c \uc804\ud654\ud574\uc11c",
+                                "\uc2e4\uc81c\ub85c \uc804\ud654\ud588",
+                                "\uc804\ud654\ud574\uc11c"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc0c1\ub2f4 \uc77c\uc815\uc744 \uc7a1",
+                                "\uc0c1\ub2f4 \uc608\uc57d\uc744 \uc7a1",
+                                "\uc608\uc57d\uc744 \uc7a1"
+                        )
                 );
 
         boolean gamblingFamilyDisclosureSupportSeeking =
