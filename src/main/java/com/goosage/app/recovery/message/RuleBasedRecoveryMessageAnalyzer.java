@@ -2849,6 +2849,23 @@ if (
             return true;
         }
 
+        boolean gamblingCheckoutContext =
+                containsAny(
+                        text,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                )
+                && containsAny(
+                        text,
+                        "\uacb0\uc81c \uc9c1\uc804"
+                );
+
+        if (gamblingCheckoutContext) {
+            return true;
+        }
+
         return containsAny(
                 text,
                 "베팅을 시도",
@@ -2862,7 +2879,6 @@ if (
                 "사이트에 들어갔",
                 "베팅 사이트까지 들어갔",
                 "베팅 화면을 열었",
-                "결제 직전",
                 "구매를 시도"
         );
     }
