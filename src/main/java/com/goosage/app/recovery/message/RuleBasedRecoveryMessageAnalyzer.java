@@ -1761,6 +1761,24 @@ if (
                         "다른 일을 했",
                         "다른 일을 하"
                 );
+        boolean oddsSearchResultViewThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\ubc30\ub2f9\uc774 \uc5b4\ub5bb\uac8c \ubd99\ub294",
+                        "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubd24",
+                        "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubcf4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacbd\uae30 \uacb0\uacfc\ub9cc \ubcf4",
+                        "\uacbd\uae30 \uacb0\uacfc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub2eb",
+                        "\ud654\uba74\uc744 \ub2eb"
+                );
+
         boolean sportsResultOddsSelfClickAttempt =
                 containsAny(
                         analysisText,
@@ -2004,6 +2022,7 @@ if (
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartyLinkSelfOddsViewAttempt
                         || sportsResultOddsSelfClickAttempt
+                        || oddsSearchResultViewThenSelfStopped
                         || oddsSearchAccessNaturalNoFurtherActionAttempt
                         || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
@@ -2057,6 +2076,7 @@ if (
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || sportsResultOddsViewLateBettingContextThenSelfStopped
+                        || oddsSearchResultViewThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
