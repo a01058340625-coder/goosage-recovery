@@ -1777,7 +1777,8 @@ if (
                         analysisText,
                         "\ubc30\ub2f9\uc774 \uc5b4\ub5bb\uac8c \ubd99\ub294",
                         "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubd24",
-                        "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubcf4"
+                        "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubcf4",
+                        "\ubc30\ub2f9\ud45c"
                 )
                 && containsAny(
                         analysisText,
@@ -1787,7 +1788,8 @@ if (
                 && containsAny(
                         analysisText,
                         "\uadf8\ub0e5 \ub2eb",
-                        "\ud654\uba74\uc744 \ub2eb"
+                        "\ud654\uba74\uc744 \ub2eb",
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb"
                 );
 
         boolean sportsResultOddsSelfClickAttempt =
