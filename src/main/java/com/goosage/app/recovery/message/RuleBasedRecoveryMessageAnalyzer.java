@@ -1819,6 +1819,28 @@ if (
                         "베팅하지 않았"
                 );
 
+        boolean thirdPartySportsTriggerSelfRelatedSiteSearchViewAttempt =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305\uc73c\ub85c \ub3c8\uc744 \ub530",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ud558\ub098 \uac80\uc0c9",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud654\uba74\uc744 \uc870\uae08 \uc77d",
+                        "\ud654\uba74\uc744 \uc77d"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubcf5\uc7a1\ud574\uc11c \ub354 \uc54c\uc544\ubcf4\uc9c0",
+                        "\ub354 \uc54c\uc544\ubcf4\uc9c0 \uc54a"
+                );
+
         boolean thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -2026,6 +2048,7 @@ if (
                         || oddsSearchAccessNaturalNoFurtherActionAttempt
                         || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
+                        || thirdPartySportsTriggerSelfRelatedSiteSearchViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
                         ? 1
