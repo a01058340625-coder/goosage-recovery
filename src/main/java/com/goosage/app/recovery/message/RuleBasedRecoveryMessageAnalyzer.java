@@ -315,6 +315,18 @@ if (
                         || (
                                 containsAny(
                                         normalized,
+                                        "\uacc4\uc18d \uadf8 \ub9d0\uc774 \ub5a0\uc624\ub974",
+                                        "\uadf8 \ub9d0\uc774 \ub5a0\uc624\ub974"
+                                )
+                                && containsAny(
+                                        normalized,
+                                        "\uad00\ub828 \uc571\uc744 \ucc3e\uc544\ubcfc\uae4c",
+                                        "\uc571\uc744 \ucc3e\uc544\ubcfc\uae4c"
+                                )
+                        )
+                        || (
+                                containsAny(
+                                        normalized,
                                         "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4\ub824\ub2e4\uac00 \ub9d0\uc558"
                                 )
                                 && containsAny(
@@ -473,6 +485,8 @@ if (
                         "\uc7a0\uae50 \ud754\ub4e4\ub838",
                         "\ud754\ub4e4\ub838",
                         "\uc571\uc744 \ucc3e\uc544\ubcf4\uae30",
+                        "\uad00\ub828 \uc571\uc744 \ucc3e\uc544\ubcfc\uae4c",
+                        "\uc571\uc744 \ucc3e\uc544\ubcfc\uae4c",
                         "\ub20c\ub800\ub294\ub370",
                         "관련 사이트를 한 번 찾아봤",
                         "관련 사이트를 찾아봤",
