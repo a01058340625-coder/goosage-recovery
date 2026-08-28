@@ -1953,6 +1953,30 @@ if (
                         "\ucc3e\uc544\ubcf4"
                 );
 
+        boolean loginClickPasswordFailureAttempt =
+                containsAny(
+                        analysisText,
+                        "\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                        "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778 \ucc3d",
+                        "\ub85c\uadf8\uc778 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\uc744 \ub20c\ub800",
+                        "\ub85c\uadf8\uc778 \ubc84\ud2bc\uc744 \ub20c\ub800"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ube44\ubc00\ubc88\ud638\uac00 \ub9de\uc9c0 \uc54a",
+                        "\ube44\ubc00\ubc88\ud638\uac00 \ud2c0\ub838",
+                        "\ube44\ubc00\ubc88\ud638 \uc624\ub958"
+                );
+
         boolean pastGamblingAccountLoginOnlyAttempt =
                 containsGeneralReentryLoginCompleted(analysisText)
                 && containsAny(
@@ -2055,6 +2079,7 @@ if (
                         || casinoAddressSelfClickConnectionFailureAttempt
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || pastGamblingAccountLoginOnlyAttempt
+                        || loginClickPasswordFailureAttempt
                         || pastGamblingAdKnownGameExistenceSearchAttempt
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || selfLossThoughtAfterThirdPartyTrigger
