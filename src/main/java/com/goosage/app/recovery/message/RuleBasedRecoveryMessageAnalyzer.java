@@ -1931,9 +1931,32 @@ if (
                         "예전 화면을 봤",
                         "화면을 봤"
                 );
+        boolean bettingAppExecutedRecordViewedThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\ubca0\ud305 \uc571",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc571"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \uc5f4\uc5b4\ubd24",
+                        "\uc571\uc744 \uc5f4\uc5b4\ubcf4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804 \uae30\ub85d",
+                        "\uae30\ub85d \uac19\uc740 \uac8c \ub0a8\uc544"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud654\uba74\uc744 \ub044",
+                        "\ud734\ub300\ud3f0\uc744 \ucc45\uc0c1\uc5d0 \ub194"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || bettingAppExecutedRecordViewedThenSelfStopped
                         || pastCasinoAppExecutedScreenViewedAttempt
                         || wagerScreenAmountDecisionSubmitNegatedAttempt
                         || casinoAddressSelfClickConnectionFailureAttempt
@@ -1995,6 +2018,7 @@ if (
                                 && !completedWagerNextMorningAppDeletedRelapseRecovery
                         )
                         || loginScreenReachedThenPhonePutDown
+                        || bettingAppExecutedRecordViewedThenSelfStopped
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
