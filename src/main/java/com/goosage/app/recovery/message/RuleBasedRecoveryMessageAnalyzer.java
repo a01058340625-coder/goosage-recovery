@@ -2011,11 +2011,37 @@ if (
                 )
                         ? 1
                         : 0;
+        boolean searchBoxOpenedWithoutInputThenNaturalDrop =
+                containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \uac11\uc790\uae30 \uc0dd\uac01",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ucc3d\uae4c\uc9c0 \uc5f4\uc5b4",
+                        "\uac80\uc0c9\ucc3d\uc744 \uc5f4\uc5b4"
+                )
+                && !containsAny(
+                        analysisText,
+                        "\uba87 \uae00\uc790\ub97c \uc37c",
+                        "\uc774\ub984\uc744 \uc785\ub825",
+                        "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825",
+                        "\uac80\uc0c9\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadc0\ucc2e\uc544",
+                        "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
+                        "\uc53b\uc5c8"
+                );
+
         int betBlockedDelta =
                 (
                         (
                                 containsProtectiveBlock(analysisText)
                                 && !completedWagerNextMorningAppDeletedRelapseRecovery
+                                && !searchBoxOpenedWithoutInputThenNaturalDrop
                         )
                         || loginScreenReachedThenPhonePutDown
                         || bettingAppExecutedRecordViewedThenSelfStopped
