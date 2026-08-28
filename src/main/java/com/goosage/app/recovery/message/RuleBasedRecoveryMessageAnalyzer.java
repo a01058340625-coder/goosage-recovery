@@ -2072,9 +2072,63 @@ if (
                         "\ud734\ub300\ud3f0\uc744 \ucc45\uc0c1\uc5d0 \ub194"
                 );
 
+        boolean sportsBettingAppReinstallLoginAttempt =
+                containsAny(
+                        analysisText,
+                        "\ubc30\ub2f9 \uc22b\uc790",
+                        "\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uad00\ub828 \uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                        "\uc571\uc744 \ub2e4\uc2dc \uc124\uce58"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\ud589\uae4c\uc9c0 \ud588",
+                        "\uc2e4\ud589"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uad6d \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\ud588\uc2b5\ub2c8\ub2e4",
+                        "\ub85c\uadf8\uc778\ud588"
+                );
+
+        boolean sportsBettingAppLoginPhoneInterrupted =
+                sportsBettingAppReinstallLoginAttempt
+                && containsAny(
+                        analysisText,
+                        "\uce5c\uad6c\ud55c\ud14c \uc804\ud654\uac00 \uc654",
+                        "\uce5c\uad6c\uc5d0\uac8c \uc804\ud654\uac00 \uc654",
+                        "\uc804\ud654\uac00 \uc654"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud1b5\ud654\ud558\uba74\uc11c",
+                        "\ud1b5\ud654\ud558\ub2e4",
+                        "\ud1b5\ud654"
+                );
+
+        boolean sportsBettingAppLaterDeletedRecovery =
+                sportsBettingAppReinstallLoginAttempt
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \uc9c0\uc6b8\uc9c0 \ub9d0\uc9c0",
+                        "\uc571\uc744 \uc9c0\uc6b8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc8fc\ub9d0\uc5d0 \uadf8\ub0e5 \uc0ad\uc81c",
+                        "\uadf8\ub0e5 \uc0ad\uc81c\ud588",
+                        "\uc571\uc744 \uc0ad\uc81c\ud588"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || sportsBettingAppReinstallLoginAttempt
                         || bettingAppExecutedRecordViewedThenSelfStopped
                         || pastCasinoAppExecutedScreenViewedAttempt
                         || wagerScreenAmountDecisionSubmitNegatedAttempt
@@ -2198,11 +2252,13 @@ if (
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
+                && !sportsBettingAppLoginPhoneInterrupted
                         ? 1
                         : 0;
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
+                        || sportsBettingAppLaterDeletedRecovery
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || completedWagerNextMorningAppDeletedRelapseRecovery
