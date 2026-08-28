@@ -1930,6 +1930,29 @@ if (
                         "오늘 아침에는 앱을 지웠",
                         "오늘 아침에 앱을 지웠"
                 );
+        boolean pastGamblingAdKnownGameExistenceSearchAttempt =
+                priorGamblingContextForCurrentThought
+                && containsAny(
+                        analysisText,
+                        "\uad00\ub828 \uad11\uace0",
+                        "\uad11\uace0\uac00 \ub5a0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \uc54c\ub358 \uac8c\uc784",
+                        "\uc54c\ub358 \uac8c\uc784"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc544\uc9c1 \uc788\ub294\uc9c0",
+                        "\uc544\uc9c1 \uc788\ub294\uc9c0\ub3c4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucc3e\uc544\ubd24",
+                        "\ucc3e\uc544\ubcf4"
+                );
+
         boolean pastGamblingAccountLoginOnlyAttempt =
                 containsGeneralReentryLoginCompleted(analysisText)
                 && containsAny(
@@ -2032,6 +2055,7 @@ if (
                         || casinoAddressSelfClickConnectionFailureAttempt
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || pastGamblingAccountLoginOnlyAttempt
+                        || pastGamblingAdKnownGameExistenceSearchAttempt
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
