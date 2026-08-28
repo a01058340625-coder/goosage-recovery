@@ -2668,6 +2668,17 @@ if (
                 containsGamblingSiteReentryAttempt(text)
                 && containsAny(
                         text,
+                        "\uc0c8\ub85c \uac00\uc785\ud560\uae4c",
+                        "\ub2e4\uc2dc \uac00\uc785\ud560\uae4c"
+                )
+        ) {
+            return true;
+        }
+
+        if (
+                containsGamblingSiteReentryAttempt(text)
+                && containsAny(
+                        text,
                         "\uc790\uc8fc \ub5a0\uc624\ub985",
                         "\uc790\uc8fc \ub5a0\uc62c\ub77c",
                         "\uacc4\uc18d \ub5a0\uc624\ub985"
@@ -2989,7 +3000,8 @@ if (
                 "\ubca0\ud305 \uc0ac\uc774\ud2b8",
                 "스포츠토토 사이트",
                 "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8",
-                "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8"
+                "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8",
+                "\uc608\uc804\uc5d0 \uc0ac\uc6a9\ud558\ub358 \uc0ac\uc774\ud2b8"
         );
 
         boolean blockedAccountFundingContext =
@@ -3021,7 +3033,11 @@ if (
                 "들어가 본",
                 "\uc8fc\uc18c\ub97c \uac80\uc0c9\ud558\uace0 \ud654\uba74\uc744",
                 "\ub2e4\uc2dc \ub4e4\uc5b4\uac14",
-                "\uac80\uc0c9\ud558\ub2e4\uac00 \uacb0\uad6d \ub4e4\uc5b4\uac14"
+                "\uac80\uc0c9\ud558\ub2e4\uac00 \uacb0\uad6d \ub4e4\uc5b4\uac14",
+                "\uac80\uc0c9 \uacb0\uacfc\ub97c \uba87 \uac1c \ud655\uc778",
+                "\ud55c \uacf3\uc744 \ub20c\ub7ec\ubcf4\ub2c8 \uc2e4\uc81c \ud654\uba74\uae4c\uc9c0 \uc5f4\ub824",
+                "\ud55c \uacf3\uc744 \ub20c\ub7ec\ubd24",
+                "\uc2e4\uc81c \ud654\uba74\uae4c\uc9c0 \uc5f4\ub824"
         );
 
         return (
