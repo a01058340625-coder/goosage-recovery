@@ -281,6 +281,8 @@ if (
                                                 && containsAny(
                                                         normalized,
                                                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
+                        "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacbd\uae30 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                        "\uacbd\uae30 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
                                                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
                                                 )
                                         )
@@ -452,8 +454,17 @@ if (
                                 "\uce74\uc9c0\ub178 \ud654\uba74"
                         );
 
+                boolean thirdPartyBettingTriggerSelfGameSiteSearch =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacbd\uae30 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                                "\uacbd\uae30 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                        );
+
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
+                        || thirdPartyBettingTriggerSelfGameSiteSearch
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || thirdPartyLinkSelfCasinoAccess
@@ -1841,6 +1852,25 @@ if (
                         "\ub354 \uc54c\uc544\ubcf4\uc9c0 \uc54a"
                 );
 
+        boolean gameSiteSearchScheduleOddsViewAttempt =
+                containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacbd\uae30 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                        "\uacbd\uae30 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacbd\uae30 \uc77c\uc815",
+                        "\ud55c \uacbd\uae30 \uc815\ub3c4 \ub20c\ub7ec",
+                        "\ubc30\ub2f9 \uc22b\uc790"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\ub2f9 \uc22b\uc790",
+                        "\ubc30\ub2f9"
+                );
+
         boolean thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -2049,6 +2079,7 @@ if (
                         || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || thirdPartySportsTriggerSelfRelatedSiteSearchViewAttempt
+                        || gameSiteSearchScheduleOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
                         ? 1
