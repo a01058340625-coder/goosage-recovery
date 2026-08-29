@@ -2055,27 +2055,57 @@ if (
                 );
 
         boolean loginClickPasswordFailureAttempt =
-                containsAny(
-                        analysisText,
-                        "\ubca0\ud305 \uc0ac\uc774\ud2b8",
-                        "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
-                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                (
+                        containsAny(
+                                analysisText,
+                                "\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                                "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
+                                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub85c\uadf8\uc778 \ucc3d",
+                                "\ub85c\uadf8\uc778 \ud654\uba74"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub85c\uadf8\uc778\uc744 \ub20c\ub800",
+                                "\ub85c\uadf8\uc778 \ubc84\ud2bc\uc744 \ub20c\ub800"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ube44\ubc00\ubc88\ud638\uac00 \ub9de\uc9c0 \uc54a",
+                                "\ube44\ubc00\ubc88\ud638\uac00 \ud2c0\ub838",
+                                "\ube44\ubc00\ubc88\ud638 \uc624\ub958"
+                        )
                 )
-                && containsAny(
-                        analysisText,
-                        "\ub85c\uadf8\uc778 \ucc3d",
-                        "\ub85c\uadf8\uc778 \ud654\uba74"
-                )
-                && containsAny(
-                        analysisText,
-                        "\ub85c\uadf8\uc778\uc744 \ub20c\ub800",
-                        "\ub85c\uadf8\uc778 \ubc84\ud2bc\uc744 \ub20c\ub800"
-                )
-                && containsAny(
-                        analysisText,
-                        "\ube44\ubc00\ubc88\ud638\uac00 \ub9de\uc9c0 \uc54a",
-                        "\ube44\ubc00\ubc88\ud638\uac00 \ud2c0\ub838",
-                        "\ube44\ubc00\ubc88\ud638 \uc624\ub958"
+                || (
+                        containsAny(
+                                analysisText,
+                                "\uc2a4\ud3ec\uce20\ubca0\ud305 \uacc4\uc815",
+                                "\uc2a4\ud3ec\uce20 \ubca0\ud305 \uacc4\uc815"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                                "\uc0ac\uc774\ud2b8\ub97c \uc811\uc18d"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc544\uc774\ub514\ub97c \ub123\uace0",
+                                "\uc544\uc774\ub514\ub97c \uc785\ub825"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ube44\ubc00\ubc88\ud638\ub3c4 \uc785\ub825",
+                                "\ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub85c\uadf8\uc778\uc774 \ud55c \ubc88 \uc2e4\ud328",
+                                "\ub85c\uadf8\uc778\uc774 \uc2e4\ud328",
+                                "\ub85c\uadf8\uc778 \uc2e4\ud328"
+                        )
                 );
 
         boolean casinoSiteAccessLoginButtonClickAttempt =
