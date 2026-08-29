@@ -2717,6 +2717,31 @@ if (
             return true;
         }
 
+        boolean slotCurrentUrge =
+                containsAny(
+                        text,
+                        "\uc2ac\ub86f",
+                        "\uc2ac\ub86f \uc571"
+                )
+                && (
+                        containsAny(
+                                text,
+                                "\uacc4\uc18d \uc0dd\uac01\uc774 \ub098",
+                                "\uba70\uce60 \uc804\ubd80\ud130 \uacc4\uc18d \uc0dd\uac01",
+                                "\uba70\uce60 \uc804\ubd80\ud130 \uc0dd\uac01"
+                        )
+                        || containsAny(
+                                text,
+                                "\uadf8\ub0e5 \ud574\ubcf4\uc790\ub294 \uc0dd\uac01",
+                                "\uccab \ud310\uc740 \uadf8\ub0e5 \ud574\ubcf4\uc790",
+                                "\ud574\ubcf4\uc790\ub294 \uc0dd\uac01"
+                        )
+                );
+
+        if (slotCurrentUrge) {
+            return true;
+        }
+
         if (containsCurrentGamblingGameUrge(text)) {
             return true;
         }
@@ -4407,12 +4432,29 @@ if (
     private boolean containsCompletedSlotGambling(
             String text
     ) {
-        return containsAny(
+        boolean directSlotCompletion = containsAny(
                 text,
                 "\uc2ac\ub86f\uc744 \uc880 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f \uc880 \ud558\ub2e4\uac00"
         );
+
+        boolean slotAppMultipleWagersCompleted =
+                containsAny(
+                        text,
+                        "\uc2ac\ub86f \uc571",
+                        "\uc2ac\ub86f\uc571"
+                )
+                && containsAny(
+                        text,
+                        "\uc2e4\uc81c\ub85c \ubca0\ud305\uc744 \uba87 \ubc88 \ud588",
+                        "\uc2e4\uc81c\ub85c \ubca0\ud305\uc744 \uba87\ubc88 \ud588",
+                        "\ubca0\ud305\uc744 \uba87 \ubc88 \ud588",
+                        "\ubca0\ud305\uc744 \uba87\ubc88 \ud588"
+                );
+
+        return directSlotCompletion
+                || slotAppMultipleWagersCompleted;
     }
     private boolean containsGamblingRestartCompleted(
             String text
