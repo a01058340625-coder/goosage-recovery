@@ -809,20 +809,27 @@ if (
         boolean partialSearchInputThenSelfStopped =
                 containsAny(
                         analysisText,
-                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790"
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790",
+                        "\uce74\uc9c0\ub178 \uc0dd\uac01\uc774 \uc790\uafb8 \ub0a9\ub2c8\ub2e4",
+                        "\uce74\uc9c0\ub178 \uc0dd\uac01\uc774 \uc790\uafb8 \ub098"
                 )
                 && containsAny(
                         analysisText,
-                        "\uac80\uc0c9\ucc3d\uc5d0 \ub4e4\uc5b4\uac00\uc11c"
+                        "\uac80\uc0c9\ucc3d\uc5d0 \ub4e4\uc5b4\uac00\uc11c",
+                        "\uac80\uc0c9\ucc3d\uc744 \uc5f4\uc5c8",
+                        "\uac80\uc0c9\ucc3d\uc744 \uc5f4\uc5c8\ub2e4\uac00"
                 )
                 && containsAny(
                         analysisText,
                         "\uba87 \uae00\uc790\ub97c \uc37c\ub2e4\uac00",
-                        "\uba87 \uae00\uc790\ub97c \uc37c"
+                        "\uba87 \uae00\uc790\ub97c \uc37c",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uba87 \uae00\uc790\uae4c\uc9c0 \uc785\ub825",
+                        "\uba87 \uae00\uc790\uae4c\uc9c0 \uc785\ub825"
                 )
                 && containsAny(
                         analysisText,
-                        "\uc9c0\uc6e0"
+                        "\uc9c0\uc6e0",
+                        "\uc785\ub825\ud558\uace0 \uc9c0\uc6e0"
                 );
 
         boolean thirdPartyTriggerSelfPartialSearchInputThenSelfStopped =
@@ -2315,6 +2322,7 @@ if (
                         || selfSiteSearchAfterThirdPartyTrigger
                         || selfAppSearchAfterThirdPartyTrigger
                         || bettingIntentPartialSearchInputExternalDistraction
+                        || partialSearchInputThenSelfStopped
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
@@ -2398,6 +2406,7 @@ if (
                         || loginScreenReachedThenPhonePutDown
                         || loginScreenPasswordEntryConsideredThenSelfStopped
                         || bettingAppExecutedRecordViewedThenSelfStopped
+                        || partialSearchInputThenSelfStopped
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
