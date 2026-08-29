@@ -3523,7 +3523,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub418\ucc3e\uace0 \uc2f6",
                 "\ud55c \ubc88\uc5d0 \ub9cc\ud68c\ud558\ub824\ub294 \uc0dd\uac01",
                 "\ud55c \ubc88\uc5d0 \ub9cc\ud68c\ud558\uace0 \uc2f6",
-                "\ud55c\ubc88\uc5d0 \ub9cc\ud68c\ud558\uace0 \uc2f6"
+                "\ud55c\ubc88\uc5d0 \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                "\ub9cc\ud68c\ud574\uc57c\uaca0\ub2e4\ub294 \uc0dd\uac01",
+                "\ub9cc\ud68c\ud574\uc57c\uaca0\ub2e4",
+                "\ub9cc\ud68c\ud574\uc57c\uaca0"
         );
 
         return gamblingContext && lossRecoveryThought;
@@ -3544,7 +3547,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return true;
         }
 
-
+        if (containsCompletedWagerWithNormalOrder(text)) {
+            return true;
+        }
 
         if (containsGamblingSiteReentryAttempt(text)) {
             return true;
@@ -4821,7 +4826,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ubca0\ud305\ud588\uace0",
                 "\ud55c \ubc88 \ubca0\ud305\ud588\uace0",
                 "\uae08\uc561\uc744 \uac78\uc5c8\ub294\ub370",
-                "\uccab \ubc88\uc9f8 \uacbd\uae30\uc5d0 \uae08\uc561\uc744 \uac78"
+                "\uccab \ubc88\uc9f8 \uacbd\uae30\uc5d0 \uae08\uc561\uc744 \uac78",
+                "\uae08\uc561\uc744 \ub123\uc5b4 \ubca0\ud305\ud588",
+                "\ub2e4\ub978 \uacbd\uae30\uae4c\uc9c0 \uae08\uc561\uc744 \ub123\uc5b4 \ubca0\ud305"
         );
 
         boolean orderCompleted = containsAny(
@@ -4830,7 +4837,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc8fc\ubb38\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub410",
                 "\uc8fc\ubb38\ub3c4 \uc815\uc0c1 \ucc98\ub9ac\ub410",
                 "\ubca0\ud305\uc740 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub3fc \uc788",
-                "\ubca0\ud305\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub3fc \uc788"
+                "\ubca0\ud305\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub3fc \uc788",
+                "\ub450 \uac74 \ubaa8\ub450 \ub05d\ub09c \ub4a4",
+                "\ub450 \uac74 \ubaa8\ub450 \ub05d\ub09c",
+                "\ub450\uac74 \ubaa8\ub450 \ub05d\ub09c"
         );
 
         return wagerCompleted && orderCompleted;
