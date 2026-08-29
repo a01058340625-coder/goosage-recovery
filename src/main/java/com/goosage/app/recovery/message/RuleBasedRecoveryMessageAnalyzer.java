@@ -510,6 +510,34 @@ if (
                                 "\uc544\uc774\ub514\ub97c \uc785\ub825"
                         );
 
+                boolean thirdPartyBettingTriggerSelfSearchConsiderationUrge =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\uc608\uc804\uc5d0 \ub3c4\ubc15\uc744 \uc880 \ud588",
+                                "\uc608\uc804\uc5d0 \ub3c4\ubc15"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uacbd\uae30 \ubca0\ud305 \uc774\uc57c\uae30",
+                                "\ubca0\ud305 \uc774\uc57c\uae30"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uac11\uc790\uae30 \uadf8\ub54c\uac00 \uc0dd\uac01",
+                                "\uadf8\ub54c\uac00 \uc0dd\uac01"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uac80\uc0c9\uae4c\uc9c0 \ud560\uae4c \ub9d0\uae4c",
+                                "\uac80\uc0c9\ud560\uae4c \ub9d0\uae4c"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc2e4\uc81c\ub85c \uac80\uc0c9\ud558\uac70\ub098 \uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00\uc9c0\ub294 \uc54a",
+                                "\uc2e4\uc81c\ub85c \uac80\uc0c9\ud558\uc9c0\ub294 \uc54a"
+                        );
+
                 boolean thirdPartyBettingTriggerSelfGameSiteSearch =
                         thirdPartyGamblingContextForSelfUrge
                         && containsAny(
@@ -521,6 +549,7 @@ if (
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
                         || thirdPartyBettingTriggerSelfGameSiteSearch
+                        || thirdPartyBettingTriggerSelfSearchConsiderationUrge
                         || thirdPartyCasinoTriggerSelfAdLoginIdInput
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyHistorySelfSiteSearchAttempt
@@ -561,6 +590,17 @@ if (
                         "관련 사이트를 찾아봤",
                         "관련 사이트를 검색했"
                 );
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyBettingTriggerSelfSearchConsiderationUrge
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uac11\uc790\uae30 \uadf8\ub54c\uac00 \uc0dd\uac01",
+                            "\uadf8\ub54c\uac00 \uc0dd\uac01"
+                    );
+                }
 
                 if (
                         selfSubjectIndex < 0
@@ -710,7 +750,9 @@ if (
                         analysisText,
                         "\ub098\ub3c4 \ud574\ubcfc\uae4c",
                         "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01",
-                        "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01\uc740"
+                        "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01\uc740",
+                        "\uac80\uc0c9\uae4c\uc9c0 \ud560\uae4c \ub9d0\uae4c",
+                        "\uac80\uc0c9\ud560\uae4c \ub9d0\uae4c"
                 );
 
         boolean selfSearchInputAfterThirdPartyTrigger =
