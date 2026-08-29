@@ -1495,6 +1495,39 @@ if (
                         "그 다음은 하지 않았"
                 );
 
+        boolean bettingAppAmountInputUncertainSubmitSelfCancel =
+                containsAny(
+                        analysisText,
+                        "\uacbd\uae30 \ubca0\ud305 \uc571",
+                        "\ubca0\ud305 \uc571"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\ub3c4 \uc785\ub825\ud588",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc81c\ucd9c \uc9c1\uc804\uc5d0 \ub9c8\uc74c\uc774 \ubc14\ub00c\uc5b4\uc11c \ucde8\uc18c",
+                        "\ub9c8\uc74c\uc774 \ubc14\ub00c\uc5b4\uc11c \ucde8\uc18c\ud558\ub824"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub20c\ub978 \uac83 \uac19\uae30\ub3c4 \ud558\uace0 \uc544\ub2cc \uac83 \uac19\uae30\ub3c4",
+                        "\ubc84\ud2bc\uc744 \ub20c\ub978 \uac83 \uac19\uae30\ub3c4",
+                        "\uc190\uc774 \ubbf8\ub044\ub7ec\uc838"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc794\uc561\uc5d0\ub294 \ubcc0\ud654\uac00 \uc5c6\ub294 \uac83 \uac19",
+                        "\uc794\uc561\uc5d0 \ubcc0\ud654\uac00 \uc5c6\ub294 \uac83 \uac19"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \uaed0",
+                        "\uc571\uc744 \uaed0\uc2b5\ub2c8\ub2e4"
+                );
+
         boolean wagerScreenReachedBeforeAmountInputThenSelfExited =
                 containsAny(
                         analysisText,
@@ -2300,6 +2333,7 @@ if (
                         || bettingAppAmountInputPhoneInterruptedAttempt
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
+                        || bettingAppAmountInputUncertainSubmitSelfCancel
                         || wagerCompletedRelapseThenNextDayNoAction
                         || appReinstalledAndExecutedWithUrgeNegation
                         || relatedInterfaceReachedThenSelfStopped
@@ -2384,6 +2418,7 @@ if (
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
+                        || bettingAppAmountInputUncertainSubmitSelfCancel
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                         || loginCompletedFundingScreenThenSelfExited
