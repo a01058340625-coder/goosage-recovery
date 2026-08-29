@@ -486,6 +486,30 @@ if (
                                 "\uce74\uc9c0\ub178 \ud654\uba74"
                         );
 
+                boolean thirdPartyCasinoTriggerSelfAdLoginIdInput =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\uc9d1\uc5d0 \uc640\uc11c \uac80\uc0c9\ud574\ubd24",
+                                "\uc9d1\uc5d0 \uc640\uc11c \uac80\uc0c9"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc0ac\uc774\ud2b8 \uad11\uace0\uac00 \uac19\uc774 \ub5a0\uc11c \ub20c\ub800",
+                                "\uad11\uace0\uac00 \uac19\uc774 \ub5a0\uc11c \ub20c\ub800",
+                                "\uad11\uace0\ub97c \ub20c\ub800"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14",
+                                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc608\uc804 \uc544\uc774\ub514\ub97c \uc785\ub825",
+                                "\uc544\uc774\ub514\ub97c \uc785\ub825"
+                        );
+
                 boolean thirdPartyBettingTriggerSelfGameSiteSearch =
                         thirdPartyGamblingContextForSelfUrge
                         && containsAny(
@@ -497,6 +521,7 @@ if (
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
                         || thirdPartyBettingTriggerSelfGameSiteSearch
+                        || thirdPartyCasinoTriggerSelfAdLoginIdInput
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || thirdPartyLinkSelfCasinoAccess
@@ -536,6 +561,17 @@ if (
                         "관련 사이트를 찾아봤",
                         "관련 사이트를 검색했"
                 );
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyCasinoTriggerSelfAdLoginIdInput
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc9d1\uc5d0 \uc640\uc11c \uac80\uc0c9\ud574\ubd24",
+                            "\uc9d1\uc5d0 \uc640\uc11c \uac80\uc0c9"
+                    );
+                }
 
                 if (
                         selfSubjectIndex < 0
@@ -926,18 +962,23 @@ if (
                         analysisText,
                         "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14",
                         "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00",
-                        "\uc0ac\uc774\ud2b8\ub85c \ub4e4\uc5b4\uac14"
+                        "\uc0ac\uc774\ud2b8\ub85c \ub4e4\uc5b4\uac14",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14"
                 )
                 && containsAny(
                         analysisText,
                         "\uc544\uc774\ub514\ub9cc \uc801\uc5b4\ubd24",
                         "\uc544\uc774\ub514\ub9cc \uc801\uc5b4",
-                        "\uc544\uc774\ub514\ub97c \uc801\uc5b4\ubd24"
+                        "\uc544\uc774\ub514\ub97c \uc801\uc5b4\ubd24",
+                        "\uc608\uc804 \uc544\uc774\ub514\ub97c \uc785\ub825",
+                        "\uc544\uc774\ub514\ub97c \uc785\ub825"
                 )
                 && containsAny(
                         analysisText,
                         "\uadf8 \uc774\uc0c1\uc740 \ud558\uc9c0 \uc54a\uc558",
-                        "\uadf8 \uc774\uc0c1 \ud558\uc9c0 \uc54a\uc558"
+                        "\uadf8 \uc774\uc0c1 \ud558\uc9c0 \uc54a\uc558",
+                        "\ub354 \uc9c4\ud589\ud558\uc9c0 \uc54a\uace0 \ub2eb",
+                        "\ub354 \uc9c4\ud589\ud558\uc9c0 \uc54a"
                 );
 
         boolean thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped =
@@ -2385,6 +2426,7 @@ if (
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
+                        || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
