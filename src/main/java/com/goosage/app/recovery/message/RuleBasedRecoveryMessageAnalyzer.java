@@ -2473,22 +2473,52 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "다음 날 휴대폰을 가족에게 맡겼"
                 );
         boolean casinoAddressSelfClickConnectionFailureAttempt =
-                containsAny(
-                        analysisText,
-                        "카지노 사이트 주소를 받아서",
-                        "카지노 사이트 주소를 받"
+                (
+                        containsAny(
+                                analysisText,
+                                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ubc1b\uc544\uc11c",
+                                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ubc1b"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub20c\ub7ec\ubcf4\uae34 \ud588",
+                                "\ub20c\ub7ec\ubd24",
+                                "\ub20c\ub7ec"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc811\uc18d\uc774 \ub04a\uaca8",
+                                "\uc811\uc18d\uc774 \ub04a\uacbc",
+                                "\ud654\uba74\uc744 \uc81c\ub300\ub85c \ubabb \ubd24",
+                                "\uc811\uc18d\uc774 \uc548 \ub410",
+                                "\uc811\uc18d\uc774 \uc548\ub410",
+                                "\ud654\uba74\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ubabb \ub5b4"
+                        )
                 )
-                && containsAny(
-                        analysisText,
-                        "눌러보긴 했",
-                        "눌러봤",
-                        "눌렀"
-                )
-                && containsAny(
-                        analysisText,
-                        "접속이 끊겨",
-                        "접속이 끊겼",
-                        "화면을 제대로 못 봤"
+                || (
+                        containsAny(
+                                analysisText,
+                                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uc785\ub825",
+                                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc774\ub984"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uac80\uc0c9 \uacb0\uacfc\ub97c \ud655\uc778",
+                                "\uac80\uc0c9 \uacb0\uacfc",
+                                "\uac80\uc0c9\uacb0\uacfc"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub9c1\ud06c \ud558\ub098\ub97c \ub20c\ub800",
+                                "\ub9c1\ud06c\ub97c \ub20c\ub800",
+                                "\ub9c1\ud06c \ud558\ub098\ub97c \ub20c"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc811\uc18d \uc624\ub958",
+                                "\ud654\uba74\uc774 \uc5f4\ub9ac\uc9c0 \uc54a",
+                                "\ud654\uba74\uc774 \uc548 \uc5f4"
+                        )
                 );
         boolean wagerScreenAmountDecisionSubmitNegatedAttempt =
                 containsAny(
