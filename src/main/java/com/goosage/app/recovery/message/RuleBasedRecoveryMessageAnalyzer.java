@@ -94,6 +94,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc2ac\ub86f"
                 );
 
+        boolean thirdPartySportsOddsSelfPageAccessAttempt =
+                looksLikeThirdPartyContext(normalized)
+                && containsAny(
+                        normalized,
+                        "\ucd95\uad6c \uacbd\uae30",
+                        "\uc2a4\ud3ec\uce20 \uacbd\uae30",
+                        "\uacbd\uae30"
+                )
+                && containsAny(
+                        normalized,
+                        "\ubc30\ub2f9\uc774 \uad1c\ucc2e",
+                        "\ubc30\ub2f9",
+                        "\ubc30\ub2f9\ub960"
+                )
+                && containsAny(
+                        normalized,
+                        "\uad81\uae08\ud574\uc11c \ucc3e\uc544\ubd24",
+                        "\ucc3e\uc544\ubd24\uc5b4",
+                        "\ucc3e\uc544\ubd24"
+                )
+                && containsAny(
+                        normalized,
+                        "\uac80\uc0c9 \uacb0\uacfc",
+                        "\uac80\uc0c9\uacb0\uacfc"
+                )
+                && containsAny(
+                        normalized,
+                        "\uacbd\uae30 \ud398\uc774\uc9c0\ub3c4 \ub20c\ub7ec",
+                        "\uacbd\uae30 \ud398\uc774\uc9c0\ub97c \ub20c\ub7ec",
+                        "\uacbd\uae30 \ud398\uc774\uc9c0"
+                );
+
         boolean thirdPartyHistorySelfSiteSearchAttempt =
                 thirdPartyGamblingContextForSelfUrge
                 && (
@@ -470,7 +502,8 @@ if (
                         || thirdPartyLinkSelfCasinoAccess
                         || lateDomainThirdPartyLinkSelfCasinoAccess
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
-                        || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput;
+                        || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
+                        || thirdPartySportsOddsSelfPageAccessAttempt;
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
                     return hold(message, "THIRD_PARTY_CONTEXT");
@@ -525,6 +558,18 @@ if (
                             "\ub20c\ub7ec\uc11c"
                     );
                 }
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartySportsOddsSelfPageAccessAttempt
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uad81\uae08\ud574\uc11c \ucc3e\uc544\ubd24",
+                            "\ucc3e\uc544\ubd24\uc5b4",
+                            "\ucc3e\uc544\ubd24"
+                    );
+                }
+
                 if (
                         selfSubjectIndex < 0
                         && thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
@@ -2259,6 +2304,7 @@ if (
                         || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || thirdPartySportsTriggerSelfSiteSearchOddsViewAttempt
                         || thirdPartySportsTriggerSelfRelatedSiteSearchViewAttempt
+                        || thirdPartySportsOddsSelfPageAccessAttempt
                         || gameSiteSearchScheduleOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
