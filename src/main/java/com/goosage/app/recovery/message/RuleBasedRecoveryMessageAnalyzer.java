@@ -2601,6 +2601,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub85c\uadf8\uc778\ud588"
                 );
 
+        boolean sportsBettingLoginFundingAuthErrorPhoneInterrupted =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544 \ub85c\uadf8\uc778",
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\uc11c \ub85c\uadf8\uc778",
+                        "\uacb0\uad6d \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544 \ub85c\uadf8\uc778"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucd94\uac00 \uc785\uae08\uc744 \uc2dc\ub3c4",
+                        "\ucd94\uac00\uc785\uae08\uc744 \uc2dc\ub3c4",
+                        "\uc785\uae08\uc744 \uc2dc\ub3c4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubcf8\uc778\uc778\uc99d \ub2e8\uacc4\uc5d0\uc11c \uc624\ub958",
+                        "\ubcf8\uc778\uc778\uc99d \ub2e8\uacc4\uc5d0 \uc624\ub958",
+                        "\ubcf8\uc778\uc778\uc99d",
+                        "\uc778\uc99d \ub2e8\uacc4\uc5d0\uc11c \uc624\ub958"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc804\ud654\uac00 \uc640\uc11c \uc911\ub2e8",
+                        "\uc804\ud654\uac00 \uc640\uc11c",
+                        "\uc804\ud654\uac00 \uc654"
+                );
+
         boolean sportsBettingAppLoginPhoneInterrupted =
                 sportsBettingAppReinstallLoginAttempt
                 && containsAny(
@@ -2633,6 +2665,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || sportsBettingLoginFundingAuthErrorPhoneInterrupted
                         || sportsBettingAppReinstallLoginAttempt
                         || bettingAppExecutedRecordViewedThenSelfStopped
                         || pastCasinoAppExecutedScreenViewedAttempt
@@ -2773,6 +2806,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
                 && !sportsBettingAppLoginPhoneInterrupted
+                && !sportsBettingLoginFundingAuthErrorPhoneInterrupted
                         ? 1
                         : 0;
         boolean paymentMethodFamilyHandoffRecovery =
