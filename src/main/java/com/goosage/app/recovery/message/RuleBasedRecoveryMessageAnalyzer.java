@@ -2975,7 +2975,9 @@ if (
                 && containsAny(
                         text,
                         "\ub610 \ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
-                        "\ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c"
+                        "\ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
+                        "\uc544\uc26c\uc6b4 \ub9c8\uc74c\uc774 \uc0dd\uae30",
+                        "\uc870\uae08 \uc544\uc26c\uc6b4 \ub9c8\uc74c"
                 )
         ) {
             return true;
@@ -4522,14 +4524,18 @@ if (
         boolean wagerCompleted = containsAny(
                 text,
                 "\ubca0\ud305\ud588\uace0",
-                "\ud55c \ubc88 \ubca0\ud305\ud588\uace0"
+                "\ud55c \ubc88 \ubca0\ud305\ud588\uace0",
+                "\uae08\uc561\uc744 \uac78\uc5c8\ub294\ub370",
+                "\uccab \ubc88\uc9f8 \uacbd\uae30\uc5d0 \uae08\uc561\uc744 \uac78"
         );
 
         boolean orderCompleted = containsAny(
                 text,
                 "\uc8fc\ubb38\ub3c4 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub410",
                 "\uc8fc\ubb38\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub410",
-                "\uc8fc\ubb38\ub3c4 \uc815\uc0c1 \ucc98\ub9ac\ub410"
+                "\uc8fc\ubb38\ub3c4 \uc815\uc0c1 \ucc98\ub9ac\ub410",
+                "\ubca0\ud305\uc740 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub3fc \uc788",
+                "\ubca0\ud305\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac\ub3fc \uc788"
         );
 
         return wagerCompleted && orderCompleted;
