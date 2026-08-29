@@ -1225,6 +1225,43 @@ if (
 
                 );
 
+        boolean sportsMultiWagerNextDayUrgeMondayAppDeleted =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20 \uacbd\uae30",
+                        "\uc2a4\ud3ec\uce20\uacbd\uae30"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc18c\uc561\uc73c\ub85c \ubca0\ud305\uc744 \ud588",
+                        "\ubca0\ud305\uc744 \ud588\uc2b5\ub2c8\ub2e4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c \uacbd\uae30\uc5d0\ub3c4 \uae08\uc561\uc744 \uc870\uae08 \ub123",
+                        "\ub2e4\uc74c \uacbd\uae30\uc5d0\ub3c4 \uae08\uc561"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc5ec\ub7ec \uacbd\uae30\ub97c \ubb36\uc5b4\uc11c \uc81c\ucd9c",
+                        "\uc5ec\ub7ec \uacbd\uae30\ub97c \ubb36\uc5b4\uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c \ub0a0\uc5d0\ub294 \ub2e4\uc2dc \ud560\uae4c",
+                        "\ub2e4\uc2dc \ud560\uae4c \uc7a0\uae50 \uc0dd\uac01"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \uc571\uc744 \ucf1c\uc9c0\ub294 \uc54a",
+                        "\uc571\uc744 \ucf1c\uc9c0\ub294 \uc54a"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc6d4\uc694\uc77c\uc5d0\ub294 \uc571\uc744 \uc0ad\uc81c",
+                        "\uc6d4\uc694\uc77c\uc5d0 \uc571\uc744 \uc0ad\uc81c"
+                );
+
         boolean completedWagerNextMorningAppDeletedRelapseRecovery =
                 containsAny(
                         analysisText,
@@ -1816,6 +1853,7 @@ if (
                         || selfAppSearchAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
+                        || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || bettingIntentPartialSearchInputExternalDistraction
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
@@ -2402,6 +2440,7 @@ if (
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
                         || wagerCompletedThenNextDayAppDeletedRecovery
+                        || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
@@ -2515,6 +2554,7 @@ if (
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
+                        || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingAppLaterDeletedRecovery
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || slotResultSearchThenNextDayAppDeletedRecovery
@@ -2529,6 +2569,7 @@ if (
         int relapseSignalDelta =
                 (
                         containsRelapseSignal(analysisText)
+                        || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
