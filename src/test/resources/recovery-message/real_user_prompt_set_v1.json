@@ -17,15 +17,9 @@
     "id": "RUP-002",
     "category": "DIRECT_EXPRESSION",
     "message": "결제 직전까지 갔다가 마지막에 멈췄어",
-    "expectedAnalyzable": true,
-    "expectedHoldReason": null,
-    "expectedSignal": {
-      "urgeLogDelta": 0,
-      "betAttemptDelta": 1,
-      "betBlockedDelta": 1,
-      "recoveryActionDelta": 0,
-      "relapseSignalDelta": 0
-    }
+    "expectedAnalyzable": false,
+    "expectedHoldReason": "NO_SUPPORTED_SIGNAL",
+    "expectedSignal": null
   },
   {
     "id": "RUP-003",

@@ -853,6 +853,20 @@ if (
                         "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8"
                 );
 
+        boolean loginScreenPasswordEntryConsideredThenSelfStopped =
+                containsLoginScreenEntryAttempt(analysisText)
+                && containsAny(
+                        analysisText,
+                        "\ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\ub824\ub2c8",
+                        "\ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\ub824\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub2eb\uc558",
+                        "\uadf8\ub0e5 \ub2eb\uc558\uc2b5\ub2c8\ub2e4",
+                        "\ud654\uba74\uc744 \ub2eb\uc558"
+                );
+
         boolean thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -2222,6 +2236,7 @@ if (
                                 && !searchBoxOpenedWithoutInputThenNaturalDrop
                         )
                         || loginScreenReachedThenPhonePutDown
+                        || loginScreenPasswordEntryConsideredThenSelfStopped
                         || bettingAppExecutedRecordViewedThenSelfStopped
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
@@ -3265,6 +3280,19 @@ if (
                 "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \ud55c\ucc38 \uc788"
         );
 
+        boolean passwordEntryConsideredThenClosed =
+                containsAny(
+                        text,
+                        "\ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\ub824\ub2c8",
+                        "\ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\ub824\uace0"
+                )
+                && containsAny(
+                        text,
+                        "\uadf8\ub0e5 \ub2eb\uc558",
+                        "\uadf8\ub0e5 \ub2eb\uc558\uc2b5\ub2c8\ub2e4",
+                        "\ud654\uba74\uc744 \ub2eb\uc558"
+                );
+
         boolean loginNotCompleted = containsAny(
                 text,
                 "\uc544\uc774\ub514\ub791 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
@@ -3275,7 +3303,8 @@ if (
                 "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
                 "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8",
                 "\uc804\ud654\uac00 \uc640\uc11c \uadf8 \ub4a4\ub85c\ub294 \ubabb \ud588"
-        );
+        )
+                || passwordEntryConsideredThenClosed;
 
         return accountContext
                 && loginScreenEntered
@@ -3500,6 +3529,23 @@ if (
                 );
 
         if (explicitGenericGameAppContext) {
+            return false;
+        }
+
+        boolean genericCheckoutWithoutGamblingDomain =
+                containsAny(
+                        text,
+                        "\uacb0\uc81c \uc9c1\uc804"
+                )
+                && !containsAny(
+                        text,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                );
+
+        if (genericCheckoutWithoutGamblingDomain) {
             return false;
         }
 
