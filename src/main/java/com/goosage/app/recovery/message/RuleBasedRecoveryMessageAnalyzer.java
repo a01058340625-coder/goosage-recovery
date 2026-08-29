@@ -1433,6 +1433,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\ub2e4\uc74c \ub0a0 \uc571\uc744 \uc0ad\uc81c",
                                 "\ub2e4\uc74c \ub0a0\uc5d0\ub294 \uc571\uc744 \uc9c0\uc6e0"
                         )
+                )
+                || (
+                        containsAny(
+                                analysisText,
+                                "\ubca0\ud305 \uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                                "\ubca0\ud305\uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                                "\ubca0\ud305 \uc571",
+                                "\ubc30\ud305 \uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                                "\ubc30\ud305\uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                                "\ubc30\ud305 \uc571"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ubca0\ud305\uc744 \uc644\ub8cc",
+                                "\ubca0\ud305\uc744 \uc644\ub8cc\ud588"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub2e4\uc74c \uacbd\uae30\uae4c\uc9c0 \ucd94\uac00\ub85c \uac78",
+                                "\ucd94\uac00\ub85c \uac78"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub2e4\uc74c \ub0a0 \uc190\uc2e4\uc744 \ud655\uc778",
+                                "\ub2e4\uc74c \ub0a0"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uadf8\ub0a0 \ubc14\ub85c \uc571\uc744 \uc9c0\uc6e0",
+                                "\uadf8\ub0a0 \uc571\uc744 \uc9c0\uc6e0",
+                                "\uc571\uc744 \uc9c0\uc6e0"
+                        )
                 );
 
         boolean sportsBettingSearchAutocompleteThenSelfStopped =
@@ -2672,6 +2704,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         (
                                 containsProtectiveBlock(analysisText)
                                 && !completedWagerNextMorningAppDeletedRelapseRecovery
+                                && !wagerCompletedThenNextDayAppDeletedRecovery
                                 && !searchBoxOpenedWithoutInputThenNaturalDrop
                         )
                         || loginScreenReachedThenPhonePutDown
