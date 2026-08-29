@@ -242,9 +242,37 @@ public class RuleBasedRecoveryMessageAnalyzer {
         if (genericThirdPartyAppInstallWithoutGamblingDomain) {
             return hold(message, "NO_SUPPORTED_SIGNAL");
         }
-if (
+        boolean selfSportsBettingActionBeforeLaterThirdPartyInterruption =
+                containsAny(
+                        normalized,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305 \uc0ac\uc774\ud2b8"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc8fc\uc18c\ub97c \uc9c1\uc811 \uc785\ub825",
+                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uc9c1\uc811 \uc785\ub825"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub85c\uadf8\uc778\ub3c4 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc",
+                        "\ub85c\uadf8\uc778\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc"
+                )
+                && containsAny(
+                        normalized,
+                        "\uae08\uc561\uc744 \uc785\ub825",
+                        "\ubc30\ub2f9\uc744 \uc120\ud0dd\ud558\uace0 \uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub3d9\uc0dd\uc774 \ubc29\uc5d0 \ub4e4\uc5b4\uc640",
+                        "\ub3d9\uc0dd\uc774"
+                );
+
+        if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
+                && !selfSportsBettingActionBeforeLaterThirdPartyInterruption
         ) {
             int selfSubjectIndex =
                     findExplicitSelfSubjectAfterThirdParty(normalized);
@@ -1551,6 +1579,43 @@ if (
 
                 );
 
+        boolean sportsBettingAmountInputSiblingInterruptedAttempt =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305 \uc0ac\uc774\ud2b8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc8fc\uc18c\ub97c \uc9c1\uc811 \uc785\ub825",
+                        "\uc811\uc18d\uc740 \ub410"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\ub3c4 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc",
+                        "\ub85c\uadf8\uc778\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\ub2f9\uc744 \uc120\ud0dd\ud558\uace0 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc81c\ucd9c \ubc84\ud2bc\uc744 \ub204\ub974\uae30 \uc9c1\uc804",
+                        "\uc81c\ucd9c \uc9c1\uc804"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub3d9\uc0dd\uc774 \ubc29\uc5d0 \ub4e4\uc5b4\uc640",
+                        "\ub3d9\uc0dd\uc774"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucef4\ud4e8\ud130\ub97c \uae09\ud558\uac8c \ub2eb",
+                        "\uae09\ud558\uac8c \ub2eb"
+                );
+
         boolean bettingAppAmountInputPhoneInterruptedAttempt =
                 containsAny(
                         analysisText,
@@ -2491,6 +2556,7 @@ if (
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || bettingAppAmountInputPhoneInterruptedAttempt
+                        || sportsBettingAmountInputSiblingInterruptedAttempt
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || bettingAppAmountInputUncertainSubmitSelfCancel
