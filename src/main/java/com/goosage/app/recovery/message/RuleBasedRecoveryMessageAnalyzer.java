@@ -2038,6 +2038,24 @@ if (
                         "\ube44\ubc00\ubc88\ud638 \uc624\ub958"
                 );
 
+        boolean casinoSiteAccessLoginButtonClickAttempt =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ucc3e\uc544",
+                        "\uac80\uc0c9\ud574\uc11c \uc0ac\uc774\ud2b8",
+                        "\uc811\uc18d\ub3c4 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778 \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub800",
+                        "\ub85c\uadf8\uc778 \ubc84\ud2bc\uc744 \ub20c\ub800"
+                );
+
         boolean pastGamblingAccountLoginOnlyAttempt =
                 containsGeneralReentryLoginCompleted(analysisText)
                 && containsAny(
@@ -2253,6 +2271,7 @@ if (
                         || casinoAddressSelfClickConnectionFailureAttempt
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || pastGamblingAccountLoginOnlyAttempt
+                        || casinoSiteAccessLoginButtonClickAttempt
                         || bettingUrgeSiteLoginFundingPhoneInterrupted
                         || loginCompletedFundingScreenPhoneInterruptedAttempt
                         || loginClickPasswordFailureAttempt
@@ -3913,6 +3932,28 @@ if (
 
                 );
 
+        boolean gamblingSiteBlockCompleted =
+                containsAny(
+                        text,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8"
+                )
+                && containsAny(
+                        text,
+                        "\uc774\ud2c0 \ub4a4",
+                        "\uba70\uce60 \ub4a4",
+                        "\ub2e4\uc74c \ub0a0"
+                )
+                && containsAny(
+                        text,
+                        "\uc0ac\uc774\ud2b8\uac00 \ub2e4\uc2dc \ub098\uc624\uc9c0 \uc54a\ub3c4\ub85d \ucc28\ub2e8",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc28\ub2e8",
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc28\ub2e8"
+                );
+
         boolean recoveryPhoneCall =
                 containsAny(text, "전화했")
                 && !containsAny(text, "고객센터");
@@ -3933,6 +3974,7 @@ if (
 
         return gamblingCounselingAppointmentBooked
                 || gamblingFamilyDisclosureSupportSeeking
+                || gamblingSiteBlockCompleted
                 || recoveryPhoneCall
                 || triggerAvoidanceMessage
                 || containsAny(
