@@ -2000,6 +2000,65 @@ if (
                         "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24\uc5b4\uc694",
                         "\ub85c\uadf8\uc778\ub9cc \ud574\ubd24"
                 );
+
+        boolean bettingUrgeSiteLoginFundingPhoneInterrupted =
+                containsAny(
+                        analysisText,
+                        "\ubca0\ud305",
+                        "\ubc30\ud305",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20\ubc30\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub610 \ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
+                        "\ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud574\uc11c \uc811\uc18d",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud574\uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0\ub294 \ud588",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc744 \uc5f4\uc5b4",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc801\uc73c\ub824\ub358",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\ub824"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud68c\uc0ac\uc5d0\uc11c \uc804\ud654\uac00 \uc640",
+                        "\uc804\ud654\uac00 \uc640"
+                );
+
+        boolean loginCompletedFundingScreenPhoneInterruptedAttempt =
+                containsGeneralReentryLoginCompleted(analysisText)
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc744 \uc5f4\uc5b4",
+                        "\uc785\uae08 \ud654\uba74\uc744 \uc5f4",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc801\uc73c\ub824\ub358",
+                        "\uae08\uc561\uc744 \uc801\uc73c\ub824",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\ub824"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud68c\uc0ac\uc5d0\uc11c \uc804\ud654\uac00 \uc640",
+                        "\uc804\ud654\uac00 \uc640"
+                );
         boolean wagerCompletedThenNextDayFamilyDeviceHandoff =
                 containsAny(
                         analysisText,
@@ -2149,6 +2208,8 @@ if (
                         || casinoAddressSelfClickConnectionFailureAttempt
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || pastGamblingAccountLoginOnlyAttempt
+                        || bettingUrgeSiteLoginFundingPhoneInterrupted
+                        || loginCompletedFundingScreenPhoneInterruptedAttempt
                         || loginClickPasswordFailureAttempt
                         || pastGamblingAdKnownGameExistenceSearchAttempt
                         || slotResultSearchThenNextDayAppDeletedRecovery
@@ -2636,6 +2697,26 @@ if (
         }
 
 
+        if (
+                containsAny(
+                        text,
+                        "\ubca0\ud305",
+                        "\ubc30\ud305",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20\ubc30\ud305",
+                        "\ub3c4\ubc15",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                )
+                && containsAny(
+                        text,
+                        "\ub610 \ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
+                        "\ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c"
+                )
+        ) {
+            return true;
+        }
+
         if (containsCurrentGamblingGameUrge(text)) {
             return true;
         }
@@ -2707,6 +2788,8 @@ if (
                 && containsAny(
                         text,
                         "\ud558\uace0 \uc2f6\uc5b4\uc84c",
+                        "\ub610 \ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
+                        "\ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
                         "\ub610 \uc0dd\uac01\ub0ac",
                         "\uadf8\ub0a0 \ubc24 \ub610 \uc0dd\uac01\ub0ac",
                         "\uc608\uc804 \uc0dd\uac01\uc774 \uacc4\uc18d \ub0ac"
