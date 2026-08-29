@@ -148,6 +148,45 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "사이트 이름을 한 번 검색해본"
                 );
 
+        boolean thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete =
+                thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        normalized,
+                        "\uc2ac\ub86f\uc5d0\uc11c \ub3c8\uc744 \ub530",
+                        "\uc2ac\ub86f"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc9d1\uc5d0 \uc640\uc11c \uad00\ub828 \uc571\uc744 \ucc3e\uc544\ubcf4",
+                        "\uad00\ub828 \uc571\uc744 \ucc3e\uc544\ubcf4"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc124\uce58\ud588",
+                        "\uc124\uce58\ud588\uc5b4\uc694"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2e4\ud589\ud574\ubcf4\ub2c8",
+                        "\uc2e4\ud589\ud588"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uc774 \ub098\uc654",
+                        "\ub85c\uadf8\uc778 \ud654\uba74"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc7ac\ubbf8\uac00 \uc5c6\uc5b4\uc11c \uadf8\ub0e5 \uaed0",
+                        "\uadf8\ub0e5 \uaed0"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub2e4\uc74c \ub0a0 \uc571\ub3c4 \uc0ad\uc81c",
+                        "\ub2e4\uc74c \ub0a0 \uc571\uc744 \uc0ad\uc81c",
+                        "\ub2e4\uc74c \ub0a0 \uc571\ub3c4 \uc9c0\uc6e0"
+                );
+
         boolean thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt =
                 thirdPartyGamblingContextForSelfUrge
                 && containsAny(
@@ -579,6 +618,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyBettingTriggerSelfGameSiteSearch
                         || thirdPartyBettingTriggerSelfSearchConsiderationUrge
                         || thirdPartyCasinoTriggerSelfAdLoginIdInput
+                        || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || thirdPartyLinkSelfCasinoAccess
@@ -627,6 +667,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                             normalized,
                             "\uac11\uc790\uae30 \uadf8\ub54c\uac00 \uc0dd\uac01",
                             "\uadf8\ub54c\uac00 \uc0dd\uac01"
+                    );
+                }
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc9d1\uc5d0 \uc640\uc11c \uad00\ub828 \uc571\uc744 \ucc3e\uc544\ubcf4",
+                            "\uad00\ub828 \uc571\uc744 \ucc3e\uc544\ubcf4"
                     );
                 }
 
@@ -2573,6 +2624,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
+                        || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
@@ -2653,6 +2705,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
+                        || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
@@ -2664,6 +2717,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         containsRecoveryAction(analysisText)
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingAppLaterDeletedRecovery
+                        || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || completedWagerNextMorningAppDeletedRelapseRecovery
