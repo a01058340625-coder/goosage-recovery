@@ -2712,9 +2712,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !sportsBettingAppLoginPhoneInterrupted
                         ? 1
                         : 0;
+        boolean paymentMethodFamilyHandoffRecovery =
+                containsAny(
+                        analysisText,
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\ud55c\ud14c \ub9e1\uaca8",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\uc5d0\uac8c \ub9e1\uaca8",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\ud55c\ud14c \ub9e1\uaca8\ub450",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\uc5d0\uac8c \ub9e1\uaca8\ub450"
+                );
+
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
+                        || paymentMethodFamilyHandoffRecovery
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingAppLaterDeletedRecovery
                         || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
@@ -3097,7 +3107,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub610 \ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
                         "\ud574\ubcf4\uace0 \uc2f6\uc740 \ub9c8\uc74c",
                         "\uc544\uc26c\uc6b4 \ub9c8\uc74c\uc774 \uc0dd\uae30",
-                        "\uc870\uae08 \uc544\uc26c\uc6b4 \ub9c8\uc74c"
+                        "\uc870\uae08 \uc544\uc26c\uc6b4 \ub9c8\uc74c",
+                        "\ub354 \ub123\uc744\uae4c \uace0\ubbfc",
+                        "\ub354 \ub123\uc744\uae4c"
                 )
         ) {
             return true;
@@ -4849,7 +4861,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uc2ac\ub86f\uc744 \uc880 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00",
-                "\uc2ac\ub86f \uc880 \ud558\ub2e4\uac00"
+                "\uc2ac\ub86f \uc880 \ud558\ub2e4\uac00",
+                "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub838"
         );
 
         boolean slotAppMultipleWagersCompleted =
