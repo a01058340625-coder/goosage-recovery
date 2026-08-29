@@ -84,6 +84,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean selfContextExtracted = false;
         boolean currentContextExtracted = false;
 
+        boolean thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge = false;
+
         boolean thirdPartyGamblingContextForSelfUrge =
                 looksLikeThirdPartyContext(normalized)
                 && containsAny(
@@ -605,6 +607,53 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\uc2e4\uc81c\ub85c \uac80\uc0c9\ud558\uc9c0\ub294 \uc54a"
                         );
 
+                thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\uce5c\uad6c\uac00 \ub2e8\uccb4\ubc29\uc5d0 \uacbd\uae30 \uacb0\uacfc\ub97c \uc62c\ub9b0",
+                                "\uce5c\uad6c\uac00 \ub2e8\uccb4\ubc29",
+                                "\uacbd\uae30 \uacb0\uacfc\ub97c \uc62c\ub9b0"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud574\uc11c \uc811\uc18d",
+                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud574 \uc811\uc18d",
+                                "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub85c\uadf8\uc778\uae4c\uc9c0",
+                                "\ub85c\uadf8\uc778"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uace0",
+                                "\ub3c8\uc744 \ub123\uace0"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc2ac\ub86f\uc744 \uc2dc\uc791",
+                                "\uc2ac\ub86f\uc744 \uc2dc\uc791\ud588"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub354 \uc624\ub798 \ud558\uac8c",
+                                "\ucc98\uc74c \uba87 \ubc88\uc740 \ub530",
+                                "\ucc98\uc74c \uba87\ubc88\uc740 \ub530"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc2a4\uc2a4\ub85c \uc885\ub8cc",
+                                "\uc2a4\uc2a4\ub85c \uc885\ub8cc\ud588"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uacc4\uc18d \uc0dd\uac01\uc740 \ub0a9",
+                                "\uacc4\uc18d \uc0dd\uac01",
+                                "\uc624\ub298\uc740 \ub2e4\uc2dc \uc811\uc18d\ud558\uc9c0 \uc54a\uc558"
+                        );
+
                 boolean thirdPartyBettingTriggerSelfGameSiteSearch =
                         thirdPartyGamblingContextForSelfUrge
                         && containsAny(
@@ -615,6 +664,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
+                        || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || thirdPartyBettingTriggerSelfGameSiteSearch
                         || thirdPartyBettingTriggerSelfSearchConsiderationUrge
                         || thirdPartyCasinoTriggerSelfAdLoginIdInput
@@ -658,6 +708,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "관련 사이트를 찾아봤",
                         "관련 사이트를 검색했"
                 );
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud574\uc11c \uc811\uc18d",
+                            "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                    );
+                }
 
                 if (
                         selfSubjectIndex < 0
@@ -2034,6 +2095,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || currentOccasionalGamblingThought
                         || selfUrgeAfterThirdPartyTrigger
                         || selfLossThoughtAfterThirdPartyTrigger
@@ -2665,6 +2727,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsBettingLoginFundingAuthErrorPhoneInterrupted
                         || sportsBettingAppReinstallLoginAttempt
                         || bettingAppExecutedRecordViewedThenSelfStopped
@@ -2734,6 +2797,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartySportsOddsSelfPageAccessAttempt
                         || gameSiteSearchScheduleOddsViewAttempt
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
+                        || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                 )
                         ? 1
                         : 0;
@@ -2804,6 +2868,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
+                        || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                 )
                 && !sportsBettingAppLoginPhoneInterrupted
                 && !sportsBettingLoginFundingAuthErrorPhoneInterrupted
@@ -2838,6 +2903,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int relapseSignalDelta =
                 (
                         containsRelapseSignal(analysisText)
+                        || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || completedWagerNextMorningAppDeletedRelapseRecovery
