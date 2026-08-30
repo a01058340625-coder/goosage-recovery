@@ -2500,6 +2500,39 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud654\uba74\uc744 \ub2eb\uc558"
                 );
 
+        boolean loginSuccessFundingAmountBatteryInterruptedAttempt =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\ub3c4\ubc15"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \uc0ac\uc6a9\ud558\ub358 \uacc4\uc815",
+                        "\uc608\uc804 \uacc4\uc815"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\uc5d0 \uc131\uacf5",
+                        "\ub85c\uadf8\uc778\uc744 \uc131\uacf5"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uba54\ub274\uae4c\uc9c0 \ub4e4\uc5b4\uac00",
+                        "\uc785\uae08 \uba54\ub274"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc801\uc5b4",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud734\ub300\ud3f0 \ubc30\ud130\ub9ac\uac00 \uac70\uc758 \ub2e4 \ub5a8\uc5b4",
+                        "\ubc30\ud130\ub9ac\uac00 \uac70\uc758 \ub2e4 \ub5a8\uc5b4",
+                        "\ubc30\ud130\ub9ac \ubd80\uc871"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3189,6 +3222,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || casinoSiteAccessLoginButtonClickAttempt
                         || bettingUrgeSiteLoginFundingPhoneInterrupted
                         || loginCompletedFundingScreenPhoneInterruptedAttempt
+                        || loginSuccessFundingAmountBatteryInterruptedAttempt
                         || casinoAppInstallLoginFailurePhoneInterruptedAttempt
                         || loginClickPasswordFailureAttempt
                         || pastGamblingAdKnownGameExistenceSearchAttempt
