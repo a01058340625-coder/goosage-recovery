@@ -3240,6 +3240,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc53b\uc5c8"
                 );
 
+        boolean casinoLoginPageCompanyPhoneExternalInterruption =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778 \ud398\uc774\uc9c0",
+                        "\ub85c\uadf8\uc778 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud68c\uc0ac\uc5d0\uc11c \uc804\ud654\uac00 \uc640",
+                        "\ud68c\uc0ac \uc804\ud654\uac00 \uc640",
+                        "\uc804\ud654\uac00 \uc640\uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud1b5\ud654\ub97c \ud558\ub290\ub77c",
+                        "\ud1b5\ud654\ud558\ub290\ub77c",
+                        "\ud1b5\ud654"
+                );
+
         int betBlockedDelta =
                 (
                         (
@@ -3294,6 +3318,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 )
                 && !sportsBettingAppLoginPhoneInterrupted
                 && !sportsBettingLoginFundingAuthErrorPhoneInterrupted
+                && !casinoLoginPageCompanyPhoneExternalInterruption
                         ? 1
                         : 0;
         boolean paymentMethodFamilyHandoffRecovery =
