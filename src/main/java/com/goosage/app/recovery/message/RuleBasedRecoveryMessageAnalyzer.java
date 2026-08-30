@@ -3592,7 +3592,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc0ac\uc774\ud2b8 \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c",
                 "\ud55c\ubc88\ub9cc \ud574\ubcfc\uae4c",
                 "\ud55c \ubc88\ub9cc \ud574\ubcfc\uae4c",
-                "\ud574\ubcfc\uae4c \uc2f6\uc5b4\uc11c"
+                "\ud574\ubcfc\uae4c \uc2f6\uc5b4\uc11c",
+                "\ub2e4\uc2dc \ud574\ubcfc\uae4c \ud558\ub294 \ub9c8\uc74c",
+                "\ud574\ubcfc\uae4c \ud558\ub294 \ub9c8\uc74c"
         );
 
         return gamblingContext && currentUrge;
