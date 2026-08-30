@@ -1315,6 +1315,49 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean existingSlotAppLoggedInGameScreenThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\uc2ac\ub86f",
+                        "\uc2ac\ub86f \uc571",
+                        "\uc2ac\ub86f\uc571"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc774 \uc544\uc9c1 \ud734\ub300\ud3f0\uc5d0 \ub0a8\uc544",
+                        "\uc571\uc774 \uc544\uc9c1 \ub0a8\uc544",
+                        "\uadf8 \uc571\uc774 \uc544\uc9c1"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub20c\ub7ec\ubd24",
+                        "\ub20c\ub7ec\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\uc740 \uc774\ubbf8 \ub418\uc5b4",
+                        "\ub85c\uadf8\uc778\uc774 \uc774\ubbf8 \ub418\uc5b4",
+                        "\uc774\ubbf8 \ub85c\uadf8\uc778"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac8c\uc784 \ud654\uba74\uae4c\uc9c0 \ubc14\ub85c \ub4e4\uc5b4\uac14",
+                        "\uac8c\uc784 \ud654\uba74\uae4c\uc9c0",
+                        "\uac8c\uc784 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \uc885\ub8cc",
+                        "\uc571\uc744 \uaed0",
+                        "\uc885\ub8cc\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub3c8\uc744 \ub123\uac70\ub098 \uac8c\uc784\uc744 \ub3cc\ub9ac\uc9c0\ub294 \uc54a",
+                        "\ub3c8\uc744 \ub123\uc9c0 \uc54a",
+                        "\uac8c\uc784\uc744 \ub3cc\ub9ac\uc9c0\ub294 \uc54a"
+                );
+
         boolean relatedInterfaceReachedThenSelfStopped =
                 containsAny(
                         analysisText,
@@ -2796,6 +2839,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || bettingAppAmountInputUncertainSubmitSelfCancel
                         || wagerCompletedRelapseThenNextDayNoAction
                         || appReinstalledAndExecutedWithUrgeNegation
+                        || existingSlotAppLoggedInGameScreenThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
@@ -2886,6 +2930,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || bettingAppAmountInputUncertainSubmitSelfCancel
+                        || existingSlotAppLoggedInGameScreenThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
                         || fundingScreenReachedThenSelfStopped
                         || loginCompletedFundingScreenThenSelfExited
