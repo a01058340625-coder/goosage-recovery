@@ -1843,6 +1843,47 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
                 );
 
+        boolean slotAppReinstallLoginFundingAmountDeleteSelfStop =
+                containsAny(
+                        analysisText,
+                        "\uc2ac\ub86f",
+                        "\uc2ac\ub86f \uc571"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2a4\ud1a0\uc5b4\uc5d0\uc11c \ub2e4\uc2dc \uc124\uce58",
+                        "\ub2e4\uc2dc \uc124\uce58",
+                        "\uc7ac\uc124\uce58"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\ud589\ud574\uc11c \ub85c\uadf8\uc778",
+                        "\uc2e4\ud589\ud558\uace0 \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74",
+                        "\uc785\uae08\ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc6a9\ud560 \uae08\uc561\uae4c\uc9c0 \uc801\uc5c8",
+                        "\uae08\uc561\uae4c\uc9c0 \uc801\uc5c8",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub9c8\uc74c\uc774 \ubc14\ub010",
+                        "\ub9c8\uc74c\uc774 \ubc14\ub00c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\ub825\ud55c \uae08\uc561\uc744 \uc9c0\uc6b0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6b0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6e0"
+                );
+
         boolean appReinstallLoginFundingScreenThenSelfStopped =
 
                 containsAny(
@@ -3096,6 +3137,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
+                        || slotAppReinstallLoginFundingAmountDeleteSelfStop
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
@@ -3198,6 +3240,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || sportsResultOddsViewLateBettingContextThenSelfStopped
                         || oddsSearchResultViewThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
+                        || slotAppReinstallLoginFundingAmountDeleteSelfStop
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
