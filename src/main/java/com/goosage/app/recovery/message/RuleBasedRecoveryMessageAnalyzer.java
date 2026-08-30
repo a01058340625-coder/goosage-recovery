@@ -1123,6 +1123,14 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8"
                 );
 
+        boolean loginScreenReachedThenBrowserClosed =
+                containsLoginScreenEntryAttempt(analysisText)
+                && containsAny(
+                        analysisText,
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb\uc558",
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb"
+                );
+
         boolean loginScreenPasswordEntryConsideredThenSelfStopped =
                 containsLoginScreenEntryAttempt(analysisText)
                 && containsAny(
@@ -2835,6 +2843,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 && !searchBoxOpenedWithoutInputThenNaturalDrop
                         )
                         || loginScreenReachedThenPhonePutDown
+                        || loginScreenReachedThenBrowserClosed
                         || loginScreenPasswordEntryConsideredThenSelfStopped
                         || bettingAppExecutedRecordViewedThenSelfStopped
                         || partialSearchInputThenSelfStopped
@@ -3951,7 +3960,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0 \ub4e4\uc5b4\uac14",
                 "\uc0ac\uc774\ud2b8 \ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14",
                 "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14",
-                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \ud55c\ucc38 \uc788"
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \ud55c\ucc38 \uc788",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc774 \ub098\uc624\uc790",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc774 \ub098\uc640"
         );
 
         boolean passwordEntryConsideredThenClosed =
@@ -3976,7 +3987,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2e4\uc81c \ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558",
                 "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
                 "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8",
-                "\uc804\ud654\uac00 \uc640\uc11c \uadf8 \ub4a4\ub85c\ub294 \ubabb \ud588"
+                "\uc804\ud654\uac00 \uc640\uc11c \uadf8 \ub4a4\ub85c\ub294 \ubabb \ud588",
+                "\ub354 \uc9c4\ud589\ud558\uc9c0 \uc54a\uace0",
+                "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb\uc558"
         )
                 || passwordEntryConsideredThenClosed;
 
