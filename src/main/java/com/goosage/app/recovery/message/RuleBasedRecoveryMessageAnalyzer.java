@@ -2502,6 +2502,41 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ucc3e\uc544\ubcf4"
                 );
 
+        boolean casinoAppInstallLoginFailurePhoneInterruptedAttempt =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178 \uc571",
+                        "\ub3c4\ubc15 \uc571"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \uac80\uc0c9\ud574\uc11c \uc124\uce58",
+                        "\uc571\uc744 \uac80\uc0c9\ud574 \uc124\uce58",
+                        "\uc124\uce58\uae4c\uc9c0 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \ubc88\ud638\ub97c \ub123",
+                        "\ube44\ubc00\ubc88\ud638\ub97c \ub123",
+                        "\ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\uc5d0 \uc2e4\ud328",
+                        "\ub85c\uadf8\uc778\uc774 \uc2e4\ud328",
+                        "\ub85c\uadf8\uc778 \uc2e4\ud328"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ube44\ubc00\ubc88\ud638 \ucc3e\uae30",
+                        "\ube44\ubc00\ubc88\ud638\ucc3e\uae30"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc804\ud654\uac00 \uc640\uc11c",
+                        "\uc804\ud654\uac00 \uc654"
+                );
+
         boolean loginClickPasswordFailureAttempt =
                 (
                         containsAny(
@@ -2856,6 +2891,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || casinoSiteAccessLoginButtonClickAttempt
                         || bettingUrgeSiteLoginFundingPhoneInterrupted
                         || loginCompletedFundingScreenPhoneInterruptedAttempt
+                        || casinoAppInstallLoginFailurePhoneInterruptedAttempt
                         || loginClickPasswordFailureAttempt
                         || pastGamblingAdKnownGameExistenceSearchAttempt
                         || slotResultSearchThenNextDayAppDeletedRecovery
