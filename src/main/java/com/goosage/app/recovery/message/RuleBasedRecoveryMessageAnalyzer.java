@@ -1304,27 +1304,56 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub354 \uc9c4\ud589\ud558\uc9c0 \uc54a"
                 );
 
+        boolean casinoSiteNameSearchLoginScreenReachedAttempt =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uac80\uc0c9",
+                        "\uc0ac\uc774\ud2b8\uc774\ub984\uc744 \uac80\uc0c9"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9 \uacb0\uacfc",
+                        "\ube44\uc2b7\ud55c \uc8fc\uc18c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ud655\uc778",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0",
+                        "\ub85c\uadf8\uc778 \ud654\uba74"
+                );
+
         boolean thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
                 && containsAny(
                         analysisText,
-                        "관련 사이트를 한 번 찾아봤",
-                        "관련 사이트를 찾아봤",
-                        "관련 사이트를 검색했"
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ud55c \ubc88 \ucc3e\uc544\ubd24",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubd24",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uac80\uc0c9",
+                        "\uac80\uc0c9 \uacb0\uacfc\uc5d0\uc11c \ube44\uc2b7\ud55c \uc8fc\uc18c"
                 )
                 && containsAny(
                         analysisText,
-                        "로그인 화면까지는 들어갔",
-                        "로그인 화면까지 들어갔",
-                        "로그인 화면까지 들어가"
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac00",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac14",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ud655\uc778",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0",
+                        "\ub85c\uadf8\uc778 \ud654\uba74"
                 )
                 && containsAny(
                         analysisText,
-                        "그냥 닫았",
-                        "그냥 닫았습니다",
-                        "화면을 닫았"
+                        "\uadf8\ub0e5 \ub2eb",
+                        "\uadf8\ub0e5 \ucc3d\uc744 \ub2eb",
+                        "\ucc3d\uc744 \ub2eb",
+                        "\uacc4\uc815\uc774 \uc0b4\uc544 \uc788\ub294\uc9c0\ub294 \ud655\uc778\ud558\uc9c0 \uc54a"
                 );
+
         boolean lateDomainCasinoAccessThenSelfStopped =
                 selfContextExtracted
                 && containsAny(
@@ -3095,6 +3124,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || selfSiteAccessLoginIdInputPasswordNotEnteredThenSelfStopped
                         || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
+                        || casinoSiteNameSearchLoginScreenReachedAttempt
                         || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
