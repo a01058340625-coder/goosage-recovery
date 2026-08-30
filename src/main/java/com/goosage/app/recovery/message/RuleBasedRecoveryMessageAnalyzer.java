@@ -4326,6 +4326,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ud574\ubcfc\uae4c \uc2f6\uc5b4\uc11c",
                 "\ub2e4\uc2dc \ud574\ubcfc\uae4c \ud558\ub294 \ub9c8\uc74c",
                 "\ud574\ubcfc\uae4c \ud558\ub294 \ub9c8\uc74c",
+                "\ub2e4\uc2dc \ud574\ubcfc\uae4c \uc2f6\uc740 \uc0dd\uac01",
+                "\ud574\ubcfc\uae4c \uc2f6\uc740 \uc0dd\uac01",
                 "\uc18c\uc561\uc744 \uac78\uc5b4 \ubcfc\uae4c",
                 "\uac78\uc5b4 \ubcfc\uae4c \uace0\ubbfc",
                 "\uac78\uc5b4\ubcfc\uae4c \uace0\ubbfc"
