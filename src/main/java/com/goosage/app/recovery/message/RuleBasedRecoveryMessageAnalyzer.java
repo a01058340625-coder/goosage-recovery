@@ -2062,6 +2062,53 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0dd\uac01\uc774 \uac00\ub054 \ub098"
                 );
 
+        boolean casinoFundingAmountInputIdentityVerificationErrorAttempt =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\ub3c4\ubc15"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \uce74\uc9c0\ub178\uc5d0 \ub4e4\uc5b4\uac14",
+                        "\uce74\uc9c0\ub178\uc5d0 \ub4e4\uc5b4\uac14",
+                        "\uce74\uc9c0\ub178\uc5d0 \ub4e4\uc5b4\uac00"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\ud588",
+                        "\ub85c\uadf8\uc778\ud558\uace0",
+                        "\ub85c\uadf8\uc778\ud588\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uba54\ub274",
+                        "\uc785\uae08\uba54\ub274"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uae4c\uc9c0 \uc785\ub825\ud588",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud588",
+                        "\uae08\uc561 \uc785\ub825\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubcf8\uc778\uc778\uc99d",
+                        "\ubcf8\uc778 \uc778\uc99d"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc624\ub958\uac00 \ub098\uc11c",
+                        "\uacc4\uc18d \uc624\ub958",
+                        "\uc778\uc99d \uacfc\uc815\uc5d0\uc11c \uacc4\uc18d \uc624\ub958"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08\uc744 \ub05d\ub0b4\uc9c0 \ubabb",
+                        "\uc785\uae08\uc744 \uc644\ub8cc\ud558\uc9c0 \ubabb",
+                        "\uc785\uae08 \uc644\ub8cc\ub97c \ubabb"
+                );
+
         boolean fundingAmountInputErrorRetryExternalFailure =
                 containsAny(
                         analysisText,
@@ -2844,6 +2891,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingScreenReachedThenSelfStopped
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
                         || wagerAmountInputThenWagerCompleted
+                        || casinoFundingAmountInputIdentityVerificationErrorAttempt
                         || fundingAmountInputErrorRetryExternalFailure
                         || thirdPartyHistoryExplicitSelfSiteSearch
                         || thirdPartyHistorySelfSiteSearchAttempt
