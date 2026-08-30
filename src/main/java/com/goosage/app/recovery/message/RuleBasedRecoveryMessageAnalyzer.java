@@ -2810,6 +2810,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc124\uce58\ud558\uc9c0 \uc54a\uc558"
                 );
 
+        boolean completedGamblingScheduleBasedExit =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2ac\ub86f\uc744 \ub3cc\ub838",
+                        "\uc2ac\ub86f\uc744 \ub3cc\ub838\uc2b5\ub2c8\ub2e4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc774\ubbf8 \ub2a6\uc740 \uc2dc\uac04",
+                        "\ub2a6\uc740 \uc2dc\uac04"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c\ub0a0 \ucd9c\uadfc",
+                        "\ub2e4\uc74c \ub0a0 \ucd9c\uadfc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uc5d0\uc11c \ub098\uc654",
+                        "\uc0ac\uc774\ud2b8\uc5d0\uc11c \ub098\uc628"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3688,6 +3715,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !sportsBettingLoginFundingAuthErrorPhoneInterrupted
                 && !casinoLoginPageCompanyPhoneExternalInterruption
                 && !casinoFundingPaymentMethodBankErrorAttempt
+                && !completedGamblingScheduleBasedExit
                         ? 1
                         : 0;
         boolean paymentMethodFamilyHandoffRecovery =
@@ -3696,7 +3724,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\ud55c\ud14c \ub9e1\uaca8",
                         "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\uc5d0\uac8c \ub9e1\uaca8",
                         "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\ud55c\ud14c \ub9e1\uaca8\ub450",
-                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\uc5d0\uac8c \ub9e1\uaca8\ub450"
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uac00\uc871\uc5d0\uac8c \ub9e1\uaca8\ub450",
+                        "\uacb0\uc81c\uce74\ub4dc\ub97c \uac00\uc871\ud55c\ud14c \ub9e1\uae30",
+                        "\uacb0\uc81c\uce74\ub4dc\ub97c \uac00\uc871\uc5d0\uac8c \ub9e1\uae30",
+                        "\uacb0\uc81c\uce74\ub4dc\ub97c \uac00\uc871\ud55c\ud14c \ub9e1\uaca8",
+                        "\uacb0\uc81c\uce74\ub4dc\ub97c \uac00\uc871\uc5d0\uac8c \ub9e1\uaca8"
                 );
 
         int recoveryActionDelta =
@@ -4352,7 +4384,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ud55c\ubc88\uc5d0 \ub9cc\ud68c\ud558\uace0 \uc2f6",
                 "\ub9cc\ud68c\ud574\uc57c\uaca0\ub2e4\ub294 \uc0dd\uac01",
                 "\ub9cc\ud68c\ud574\uc57c\uaca0\ub2e4",
-                "\ub9cc\ud68c\ud574\uc57c\uaca0"
+                "\ub9cc\ud68c\ud574\uc57c\uaca0",
+                "\uc783\uc740 \ub3c8\uc744 \ub9cc\ud68c\ud558\ub824\uace0",
+                "\ub9cc\ud68c\ud558\ub824\uace0 \ud55c \ubc88 \ub354 \uc785\uae08",
+                "\ud55c \ubc88 \ub354 \uc785\uae08\ud560\uae4c"
         );
 
         return gamblingContext && lossRecoveryThought;
@@ -5903,7 +5938,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f \uc880 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub838",
-                "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub838"
+                "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \ub3cc\ub838\uc2b5\ub2c8\ub2e4",
+                "\uc2ac\ub86f\uc744 \ub3cc\ub838"
         );
 
         boolean slotAppMultipleWagersCompleted =
