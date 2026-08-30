@@ -2457,9 +2457,53 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2e4\uc2dc \ubc8c \uc218 \uc788\uc744 \uac83 \uac19"
                 );
 
+        boolean lossRecoveryLoginFundingTransferSelfStop =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\ub3c4\ubc15"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub9cc\ud68c\ud558\uace0 \uc2f6\uc5b4",
+                        "\ub9cc\ud68c\ud558\uace0 \uc2f6"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d\ud574\uc11c \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08\ud560 \uae08\uc561\ub3c4 \uc815\ud574",
+                        "\uc785\uae08\ud560 \uae08\uc561",
+                        "\uae08\uc561\ub3c4 \uc815\ud574"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc740\ud589 \uc571\uc744 \uc5f4\uc5b4",
+                        "\uc740\ud589\uc571\uc744 \uc5f4\uc5b4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc774\uccb4\ud558\ub824\ub294 \uc21c\uac04",
+                        "\uc774\uccb4\ud558\ub824\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc794\uc561\uc744 \ubcf4\ub2c8",
+                        "\uc794\uc561\uc744 \ubcf4\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud654\uba74\uc744 \ub2eb",
+                        "\ud654\uba74\uc744 \ub2eb\uc558"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || currentOccasionalGamblingThought
                         || selfUrgeAfterThirdPartyTrigger
@@ -3132,6 +3176,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsBettingLoginFundingAuthErrorPhoneInterrupted
                         || sportsBettingAppReinstallLoginAttempt
@@ -3274,6 +3319,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 && !selfCompletedMultiWagerLateSpouseContext
                                 && !multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         )
+                        || lossRecoveryLoginFundingTransferSelfStop
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartySportsOddsSelfPageAccessThenSelfStopped
                         || loginScreenReachedThenBrowserClosed
