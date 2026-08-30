@@ -289,30 +289,53 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return hold(message, "NO_SUPPORTED_SIGNAL");
         }
         boolean selfSportsBettingActionBeforeLaterThirdPartyInterruption =
-                containsAny(
-                        normalized,
-                        "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8",
-                        "\uc2a4\ud3ec\uce20 \ubca0\ud305 \uc0ac\uc774\ud2b8"
+                (
+                        containsAny(
+                                normalized,
+                                "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                                "\uc2a4\ud3ec\uce20 \ubca0\ud305 \uc0ac\uc774\ud2b8"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc8fc\uc18c\ub97c \uc9c1\uc811 \uc785\ub825",
+                                "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uc9c1\uc811 \uc785\ub825"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub85c\uadf8\uc778\ub3c4 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc",
+                                "\ub85c\uadf8\uc778\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uae08\uc561\uc744 \uc785\ub825",
+                                "\ubc30\ub2f9\uc744 \uc120\ud0dd\ud558\uace0 \uae08\uc561\uc744 \uc785\ub825"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub3d9\uc0dd\uc774 \ubc29\uc5d0 \ub4e4\uc5b4\uc640",
+                                "\ub3d9\uc0dd\uc774"
+                        )
                 )
-                && containsAny(
-                        normalized,
-                        "\uc8fc\uc18c\ub97c \uc9c1\uc811 \uc785\ub825",
-                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uc9c1\uc811 \uc785\ub825"
-                )
-                && containsAny(
-                        normalized,
-                        "\ub85c\uadf8\uc778\ub3c4 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc",
-                        "\ub85c\uadf8\uc778\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc"
-                )
-                && containsAny(
-                        normalized,
-                        "\uae08\uc561\uc744 \uc785\ub825",
-                        "\ubc30\ub2f9\uc744 \uc120\ud0dd\ud558\uace0 \uae08\uc561\uc744 \uc785\ub825"
-                )
-                && containsAny(
-                        normalized,
-                        "\ub3d9\uc0dd\uc774 \ubc29\uc5d0 \ub4e4\uc5b4\uc640",
-                        "\ub3d9\uc0dd\uc774"
+                || (
+                        containsAny(
+                                normalized,
+                                "\uc2a4\ud3ec\uce20\ubca0\ud305\uc744 \ud588",
+                                "\uc2a4\ud3ec\uce20 \ubca0\ud305\uc744 \ud588",
+                                "\ubca0\ud305\uc744 \ud588"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub450 \ubc88\uc9f8 \ubca0\ud305\uae4c\uc9c0 \ub05d\ub0b4",
+                                "\ub450 \ubc88\uc9f8 \ubca0\ud305\uae4c\uc9c0 \ub05d",
+                                "\ub450\ubc88\uc9f8 \ubca0\ud305\uae4c\uc9c0 \ub05d"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ubc30\uc6b0\uc790\uac00 \uc606\uc5d0 \uc640",
+                                "\ubc30\uc6b0\uc790\uac00",
+                                "\uc544\ub0b4\uac00",
+                                "\ub0a8\ud3b8\uc774"
+                        )
                 );
 
         if (
@@ -2300,6 +2323,42 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "설치는 안 했",
                         "설치하지 않았"
                 );
+        boolean selfCompletedMultiWagerLateSpouseContext =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305\uc744 \ud588",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305\uc744 \ud588",
+                        "\ubca0\ud305\uc744 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc801\uc911\ud574\uc11c \uc870\uae08 \uc218\uc775",
+                        "\uc801\uc911\ud574\uc11c",
+                        "\uc218\uc775\uc774 \ub0ac"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c \uacbd\uae30\uc5d0\ub3c4",
+                        "\ub2e4\uc74c \uacbd\uae30\uc5d0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub450 \ubc88\uc9f8 \ubca0\ud305\uae4c\uc9c0 \ub05d\ub0b4",
+                        "\ub450 \ubc88\uc9f8 \ubca0\ud305\uae4c\uc9c0 \ub05d",
+                        "\ub450\ubc88\uc9f8 \ubca0\ud305\uae4c\uc9c0 \ub05d"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub354 \ud574\ub3c4 \ub420 \uac83 \uac19",
+                        "\ub354 \ud574\ub3c4 \ub420\uac83 \uac19"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\uc6b0\uc790\uac00 \uc606\uc5d0 \uc640",
+                        "\ubc30\uc6b0\uc790\uac00"
+                );
+
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -2313,6 +2372,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfAppSearchAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
+                        || selfCompletedMultiWagerLateSpouseContext
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || bettingIntentPartialSearchInputExternalDistraction
                         || relatedAppViewedThenDeleted
@@ -2969,6 +3029,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc571\uc744 \uc0ad\uc81c\ud588"
                 );
 
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -3015,6 +3076,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || bettingAppAmountInputUncertainSubmitSelfCancel
+                        || selfCompletedMultiWagerLateSpouseContext
                         || wagerCompletedRelapseThenNextDayNoAction
                         || appReinstalledAndExecutedWithUrgeNegation
                         || existingSlotAppLoggedInGameScreenThenSelfStopped
@@ -3083,6 +3145,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 && !completedWagerNextMorningAppDeletedRelapseRecovery
                                 && !wagerCompletedThenNextDayAppDeletedRecovery
                                 && !searchBoxOpenedWithoutInputThenNaturalDrop
+                                && !selfCompletedMultiWagerLateSpouseContext
                         )
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartySportsOddsSelfPageAccessThenSelfStopped
@@ -3164,6 +3227,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || completedFundingSingleWagerPostNoActionRelapse
+                        || selfCompletedMultiWagerLateSpouseContext
                         || wagerCompletedRelapseThenNextDayNoAction
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                 )
