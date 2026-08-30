@@ -5333,7 +5333,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uae08\uc561\uc744 \uc785\ub825\ud588\uace0",
                 "\ubca0\ud305\uc744 \uc81c\ucd9c",
                 "\ubca0\ud305\uae4c\uc9c0 \uc644\ub8cc",
-                "\ubca0\ud305\uc744 \uc644\ub8cc"
+                "\ubca0\ud305\uc744 \uc644\ub8cc",
+                "\ubca0\ud305\uc774 \uc644\ub8cc\ub41c \uc0c1\ud0dc",
+                "\uc774\ubbf8 \ubca0\ud305\uc774 \uc644\ub8cc\ub41c \uc0c1\ud0dc"
         );
 
         boolean orderCompleted = containsAny(
@@ -5349,7 +5351,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub3c8\uc744 \uc783\uc5c8",
                 "\ub3c8\uc744 \uc783\uc5c8\ub2e4",
                 "\ubca0\ud305\uae4c\uc9c0 \uc644\ub8cc",
-                "\ubca0\ud305\uc744 \uc644\ub8cc"
+                "\ubca0\ud305\uc744 \uc644\ub8cc",
+                "\ubca0\ud305\uc774 \uc644\ub8cc\ub41c \uc0c1\ud0dc",
+                "\uc774\ubbf8 \ubca0\ud305\uc774 \uc644\ub8cc\ub41c \uc0c1\ud0dc"
         );
 
         return wagerCompleted && orderCompleted;
