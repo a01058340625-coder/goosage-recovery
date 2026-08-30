@@ -2740,6 +2740,46 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ucc98\ub9ac\ub418\uc9c0 \uc54a"
                 );
 
+        boolean explicitUrgeNegationCasinoSearchAccessSelfStop =
+                containsAny(
+                        analysisText,
+                        "\ub3c4\ubc15\uc744 \ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uac70\uc758 \uc5c6",
+                        "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uac70\uc758 \uc5c6"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178 \uc774\ub984",
+                        "\uce74\uc9c0\ub178"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ud574 \ubd24",
+                        "\uac80\uc0c9\ud574\ubd24",
+                        "\uac80\uc0c9 \uacb0\uacfc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ud655\uc778",
+                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud654\uba74\ub3c4 \uc7a0\uae50 \uc5f4\uc5b4\ubd24",
+                        "\ud654\uba74\uc744 \uc7a0\uae50 \uc5f4\uc5b4\ubd24",
+                        "\ud654\uba74\ub3c4 \uc5f4\uc5b4\ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\ud558\uc9c0\ub294 \uc54a\uc558",
+                        "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub2eb\uac8c \ub410",
+                        "\uadf8\ub0e5 \ub2eb\uc558",
+                        "\uadf8\ub0e5 \ub2eb"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -2768,6 +2808,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingAmountInputErrorRetryExternalFailure
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                 )
+                && !explicitUrgeNegationCasinoSearchAccessSelfStop
                         ? 1
                         : 0;
         boolean wagerAmountInputThenWagerCompleted =
@@ -3418,6 +3459,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || explicitUrgeNegationCasinoSearchAccessSelfStop
                         || searchLoginFundingAmountSelfStopAttempt
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
@@ -3576,6 +3618,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
+                        || explicitUrgeNegationCasinoSearchAccessSelfStop
                         || selfSiteAccessLoginIdInputPasswordNotEnteredThenSelfStopped
                         || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
