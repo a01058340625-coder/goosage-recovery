@@ -338,10 +338,31 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         )
                 );
 
+        boolean selfCasinoSlotActionBeforeLateThirdPartyConversation =
+                containsAny(
+                        normalized,
+                        "\uce74\uc9c0\ub178\uc5d0\uc11c \uc2ac\ub86f\uc744",
+                        "\uc2ac\ub86f\uc744 \uba87 \ucc28\ub840 \ub3cc\ub838",
+                        "\uc2ac\ub86f\uc744 \ub3cc\ub838"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub2e4\uc2dc \uc785\uae08\uc744 \ud558\uace0",
+                        "\uc785\uae08\uc744 \ud558\uace0 \uacc4\uc18d",
+                        "\uacc4\uc18d \ub3cc\ub838"
+                )
+                && containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uac00 \uc65c \uc694\uc998 \uce74\uc9c0\ub178",
+                        "\uce5c\uad6c\uac00",
+                        "\uce74\uc9c0\ub178 \uc598\uae30\ub97c \uc548 \ud558"
+                );
+
         if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
                 && !selfSportsBettingActionBeforeLaterThirdPartyInterruption
+                && !selfCasinoSlotActionBeforeLateThirdPartyConversation
         ) {
             int selfSubjectIndex =
                     findExplicitSelfSubjectAfterThirdParty(normalized);
@@ -2533,6 +2554,45 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ubc30\ud130\ub9ac \ubd80\uc871"
                 );
 
+        boolean completedSlotAdditionalFundingLossNextDayAppDelete =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2ac\ub86f\uc744 \uba87 \ucc28\ub840 \ub3cc\ub838",
+                        "\uc2ac\ub86f\uc744 \ub3cc\ub838"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \uc785\uae08\uc744 \ud558\uace0",
+                        "\uc785\uae08\uc744 \ud558\uace0 \uacc4\uc18d"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacc4\uc18d \ub3cc\ub838",
+                        "\uacc4\uc18d \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud6e8\uc52c \ub9ce\uc774 \uc783\uc5c8",
+                        "\ub9ce\uc774 \uc783\uc5c8",
+                        "\uc190\uc2e4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c\ub0a0",
+                        "\ub2e4\uc74c \ub0a0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \uc0ad\uc81c",
+                        "\uc571\uc744 \uc9c0\uc6e0",
+                        "\uc571\uc744 \uc9c0\uc6e0\uc2b5\ub2c8\ub2e4"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3241,6 +3301,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || relatedAppPresenceSearchThenSelfStopped
                         || gamblingSiteResultViewThenSelfExited
                         || wagerCompletedThenNextDayAppDeletedRecovery
+                        || completedSlotAdditionalFundingLossNextDayAppDelete
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingSearchAutocompleteThenSelfStopped
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
@@ -3421,6 +3482,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || slotResultSearchThenNextDayAppDeletedRecovery
                         || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
+                        || completedSlotAdditionalFundingLossNextDayAppDelete
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
@@ -3435,6 +3497,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
+                        || completedSlotAdditionalFundingLossNextDayAppDelete
                         || completedFundingSingleWagerPostNoActionRelapse
                         || selfCompletedMultiWagerLateSpouseContext
                         || multiWagerCompletedLossAdditionalUrgePostCompletionStop
