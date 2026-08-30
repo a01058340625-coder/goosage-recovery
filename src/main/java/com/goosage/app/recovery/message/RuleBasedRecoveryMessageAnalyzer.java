@@ -338,6 +338,22 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         )
                 );
 
+        boolean thirdPartyCasinoTriggerSelfCompletedSlot =
+                thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uac00 \uce74\uc9c0\ub178\uc5d0\uc11c \ub3c8\uc744 \ub530",
+                        "\uce5c\uad6c\uac00 \uce74\uc9c0\ub178",
+                        "\uce74\uc9c0\ub178\uc5d0\uc11c \ub3c8\uc744 \ub530"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc9d1\uc5d0 \uc640\uc11c \uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
+                        "\uc2e4\uc81c\ub85c \uc811\uc18d"
+                )
+                && containsCompletedSlotGambling(normalized);
+
         boolean selfCasinoSlotActionBeforeLateThirdPartyConversation =
                 containsAny(
                         normalized,
@@ -389,6 +405,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
                 && !selfSportsBettingActionBeforeLaterThirdPartyInterruption
                 && !selfCasinoSlotActionBeforeLateThirdPartyConversation
+                && !thirdPartyCasinoTriggerSelfCompletedSlot
                 && !thirdPartyLinkFollowedBySelfFundingAndWager
         ) {
             int selfSubjectIndex =
@@ -783,6 +800,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
+                        || thirdPartyCasinoTriggerSelfCompletedSlot
                         || thirdPartyBettingTriggerSelfGameSiteSearch
                         || thirdPartyBettingTriggerSelfSearchConsiderationUrge
                         || thirdPartyCasinoTriggerSelfAdLoginIdInput
@@ -827,6 +845,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "관련 사이트를 찾아봤",
                         "관련 사이트를 검색했"
                 );
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyCasinoTriggerSelfCompletedSlot
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc9d1\uc5d0 \uc640\uc11c \uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
+                            "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
+                            "\uc2e4\uc81c\ub85c \uc811\uc18d"
+                    );
+                }
 
                 if (
                         selfSubjectIndex < 0
@@ -2837,6 +2867,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8\uc5d0\uc11c \ub098\uc628"
                 );
 
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -4101,7 +4132,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "충동 없",
                 "하고 싶은 생각은 들지 않",
                 "하고 싶은 생각은 전혀 들지 않",
-                "별로 하고 싶은 마음은 안 들어"
+                "별로 하고 싶은 마음은 안 들어",
+                "별로 하고 싶은 마음이 들지 않았다",
+                "별로 하고 싶은 마음이 들지 않",
+                "하고 싶은 마음이 들지 않았다",
+                "하고 싶은 마음이 들지 않"
         )) {
             return false;
         }
@@ -5942,7 +5977,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub838",
                 "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub838",
                 "\uc2ac\ub86f\uc744 \ub3cc\ub838\uc2b5\ub2c8\ub2e4",
-                "\uc2ac\ub86f\uc744 \ub3cc\ub838"
+                "\uc2ac\ub86f\uc744 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub9ac\uace0",
+                "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub9ac\uace0",
+                "\uc2ac\ub86f\uc744 \ub3cc\ub9ac\uace0"
         );
 
         boolean slotAppMultipleWagersCompleted =
