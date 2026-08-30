@@ -358,11 +358,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uce74\uc9c0\ub178 \uc598\uae30\ub97c \uc548 \ud558"
                 );
 
+        boolean thirdPartyLinkFollowedBySelfFundingAndWager =
+                containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc900 \uacbd\uae30 \ub9c1\ud06c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b8 \uacbd\uae30 \ub9c1\ud06c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc900 \ub9c1\ud06c"
+                )
+                && containsAny(
+                        normalized,
+                        "\ubca0\ud305 \uc0ac\uc774\ud2b8\uae4c\uc9c0 \ub4e4\uc5b4\uac14",
+                        "\ubca0\ud305 \uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14",
+                        "\uc0ac\uc774\ud2b8\uae4c\uc9c0 \ub4e4\uc5b4\uac14"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc18c\uc561\uc744 \uc785\uae08",
+                        "\uc785\uae08\uc740 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac",
+                        "\uc785\uae08\ud588"
+                )
+                && containsAny(
+                        normalized,
+                        "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825\ud574\uc11c \uc81c\ucd9c",
+                        "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uc81c\ucd9c\ud588"
+                );
+
         if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
                 && !selfSportsBettingActionBeforeLaterThirdPartyInterruption
                 && !selfCasinoSlotActionBeforeLateThirdPartyConversation
+                && !thirdPartyLinkFollowedBySelfFundingAndWager
         ) {
             int selfSubjectIndex =
                     findExplicitSelfSubjectAfterThirdParty(normalized);
@@ -2635,6 +2662,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || thirdPartyLinkFollowedBySelfFundingAndWager
                         || sportsBettingAppInstallLoginOddsAmountNoSubmitAttempt
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
@@ -3533,6 +3561,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int relapseSignalDelta =
                 (
                         containsRelapseSignal(analysisText)
+                        || thirdPartyLinkFollowedBySelfFundingAndWager
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
