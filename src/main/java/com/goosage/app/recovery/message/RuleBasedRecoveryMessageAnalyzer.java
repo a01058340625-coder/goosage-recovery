@@ -2242,7 +2242,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         analysisText,
                         "\ubca0\ud305\uae4c\uc9c0 \ud588",
-                        "\ubca0\ud305\uae4c\uc9c0 \ud558\uace0"
+                        "\ubca0\ud305\uae4c\uc9c0 \ud558\uace0",
+                        "\ubca0\ud305\uae4c\uc9c0 \uc644\ub8cc",
+                        "\ubca0\ud305\uc744 \uc644\ub8cc"
                 );
 
         boolean wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery =
@@ -4954,7 +4956,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uae08\uc561\uc744 \ub123\uc5b4 \ubca0\ud305\ud588",
                 "\ub2e4\ub978 \uacbd\uae30\uae4c\uc9c0 \uae08\uc561\uc744 \ub123\uc5b4 \ubca0\ud305",
                 "\uae08\uc561\uc744 \uc785\ub825\ud588\uace0",
-                "\ubca0\ud305\uc744 \uc81c\ucd9c"
+                "\ubca0\ud305\uc744 \uc81c\ucd9c",
+                "\ubca0\ud305\uae4c\uc9c0 \uc644\ub8cc",
+                "\ubca0\ud305\uc744 \uc644\ub8cc"
         );
 
         boolean orderCompleted = containsAny(
@@ -4968,7 +4972,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub450 \uac74 \ubaa8\ub450 \ub05d\ub09c",
                 "\ub450\uac74 \ubaa8\ub450 \ub05d\ub09c",
                 "\ub3c8\uc744 \uc783\uc5c8",
-                "\ub3c8\uc744 \uc783\uc5c8\ub2e4"
+                "\ub3c8\uc744 \uc783\uc5c8\ub2e4",
+                "\ubca0\ud305\uae4c\uc9c0 \uc644\ub8cc",
+                "\ubca0\ud305\uc744 \uc644\ub8cc"
         );
 
         return wagerCompleted && orderCompleted;
