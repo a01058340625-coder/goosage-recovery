@@ -125,7 +125,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         normalized,
                         "\uacbd\uae30 \ud398\uc774\uc9c0\ub3c4 \ub20c\ub7ec",
                         "\uacbd\uae30 \ud398\uc774\uc9c0\ub97c \ub20c\ub7ec",
-                        "\uacbd\uae30 \ud398\uc774\uc9c0"
+                        "\uacbd\uae30 \ud398\uc774\uc9c0",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305 \uc0ac\uc774\ud2b8\uac00 \uac80\uc0c9 \uacb0\uacfc",
+                        "\uc0ac\uc774\ud2b8\uac00 \uac80\uc0c9 \uacb0\uacfc\uc5d0 \uac19\uc774 \ub5a0",
+                        "\ub20c\ub7ec\ubd24\uace0",
+                        "\ubc30\ub2f9\ud45c\uae4c\uc9c0 \ud655\uc778"
                 );
 
         boolean thirdPartyHistorySelfSiteSearchAttempt =
@@ -1113,6 +1117,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         analysisText,
                         "\ub2e4\ub978 \uc77c\uc744 \ud588"
+                );
+
+        boolean thirdPartySportsOddsSelfPageAccessThenSelfStopped =
+                thirdPartySportsOddsSelfPageAccessAttempt
+                && containsAny(
+                        analysisText,
+                        "\uc544\uc774\ub514\ub098 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uc9c0 \uc54a\uace0",
+                        "\uc544\uc774\ub514\ub098 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uc9c0 \uc54a"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub098\uc654",
+                        "\uadf8\ub0e5 \ub098\uc628"
                 );
 
         boolean loginScreenReachedThenPhonePutDown =
@@ -2843,6 +2860,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 && !searchBoxOpenedWithoutInputThenNaturalDrop
                         )
                         || loginScreenReachedThenPhonePutDown
+                        || thirdPartySportsOddsSelfPageAccessThenSelfStopped
                         || loginScreenReachedThenBrowserClosed
                         || loginScreenPasswordEntryConsideredThenSelfStopped
                         || bettingAppExecutedRecordViewedThenSelfStopped
