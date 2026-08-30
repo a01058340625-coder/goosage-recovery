@@ -1294,7 +1294,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 containsAny(
                         analysisText,
                         "\uce74\uc9c0\ub178",
-                        "\ub3c4\ubc15"
+                        "\ub3c4\ubc15",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305"
                 )
                 && containsAny(
                         analysisText,
@@ -1311,19 +1313,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         analysisText,
                         "\uc608\uc804 \uc544\uc774\ub514\ub97c \uc785\ub825",
-                        "\uc544\uc774\ub514\ub97c \uc785\ub825"
+                        "\uc544\uc774\ub514\ub97c \uc785\ub825",
+                        "\uc544\uc774\ub514\ub97c \ub123\uc5c8",
+                        "\uc544\uc774\ub514\ub97c \ub123"
                 )
                 && containsAny(
                         analysisText,
                         "\ube44\ubc00\ubc88\ud638\ub294 \ub123\uc9c0 \uc54a",
                         "\ube44\ubc00\ubc88\ud638\ub97c \ub123\uc9c0 \uc54a",
-                        "\ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a"
+                        "\ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a",
+                        "\ube44\ubc00\ubc88\ud638\uac00 \ubc14\ub85c \ub5a0\uc624\ub974\uc9c0 \uc54a",
+                        "\ube44\ubc00\ubc88\ud638\uac00 \ub5a0\uc624\ub974\uc9c0 \uc54a"
                 )
                 && containsAny(
                         analysisText,
                         "\uadf8\ub0e5 \ud654\uba74\uc744 \uc7a0\uae50 \ubcf4\uace0 \ub098\uc654",
                         "\ud654\uba74\uc744 \uc7a0\uae50 \ubcf4\uace0 \ub098\uc654",
-                        "\ubcf4\uace0 \ub098\uc654"
+                        "\ubcf4\uace0 \ub098\uc654",
+                        "\uadf8\ub0e5 \ucc3d\uc744 \ub2eb\uc558",
+                        "\ucc3d\uc744 \ub2eb\uc558",
+                        "\ucc3d\uc744 \ub2eb"
                 );
 
         boolean thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped =
