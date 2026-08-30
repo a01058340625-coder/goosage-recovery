@@ -1219,6 +1219,42 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud654\uba74\uc744 \ub2eb\uc558"
                 );
 
+        boolean selfSiteAccessLoginIdInputPasswordNotEnteredThenSelfStopped =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\ub3c4\ubc15"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9 \uacb0\uacfc\ub97c \ud655\uc778",
+                        "\uac80\uc0c9\uacb0\uacfc\ub97c \ud655\uc778",
+                        "\uc0ac\uc774\ud2b8\uc5d0\ub3c4 \ub4e4\uc5b4\uac14",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac14"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778 \ud654\uba74",
+                        "\ub85c\uadf8\uc778\ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804 \uc544\uc774\ub514\ub97c \uc785\ub825",
+                        "\uc544\uc774\ub514\ub97c \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ube44\ubc00\ubc88\ud638\ub294 \ub123\uc9c0 \uc54a",
+                        "\ube44\ubc00\ubc88\ud638\ub97c \ub123\uc9c0 \uc54a",
+                        "\ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ud654\uba74\uc744 \uc7a0\uae50 \ubcf4\uace0 \ub098\uc654",
+                        "\ud654\uba74\uc744 \uc7a0\uae50 \ubcf4\uace0 \ub098\uc654",
+                        "\ubcf4\uace0 \ub098\uc654"
+                );
+
         boolean thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped =
                 selfContextExtracted
                 && thirdPartyGamblingContextForSelfUrge
@@ -2995,6 +3031,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
                         || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
+                        || selfSiteAccessLoginIdInputPasswordNotEnteredThenSelfStopped
                         || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
@@ -3056,6 +3093,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
+                        || selfSiteAccessLoginIdInputPasswordNotEnteredThenSelfStopped
                         || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || siteNameInputCompleteThenOtherTaskSelfStopped
