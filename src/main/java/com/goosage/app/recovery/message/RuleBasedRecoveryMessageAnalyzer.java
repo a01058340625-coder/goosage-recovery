@@ -2659,6 +2659,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc81c\ucd9c\ud558\uc9c0 \uc54a\uc558"
                 );
 
+        boolean searchLoginFundingAmountSelfStopAttempt =
+                containsAny(
+                        analysisText,
+                        "\ub3c4\ubc15",
+                        "\uce74\uc9c0\ub178",
+                        "\ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uae4c\uc9c0 \uc785\ub825",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub9c1\ud06c\ub97c \ub20c\ub7ec \ub4e4\uc5b4\uac14",
+                        "\ub9c1\ud06c\ub97c \ub20c\ub7ec",
+                        "\ub20c\ub7ec \ub4e4\uc5b4\uac14"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804 \uacc4\uc815\uc73c\ub85c \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\ub3c4 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc73c\ub85c \ub118\uc5b4\uac14",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uae4c\uc9c0 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3337,6 +3371,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || searchLoginFundingAmountSelfStopAttempt
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsBettingLoginFundingAuthErrorPhoneInterrupted
@@ -5139,6 +5174,28 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         text,
                         "\uba54\uc2dc\uc9c0\ub97c \ubcf4\ub0c8"
+                );
+
+        gamblingCounselingAppointmentBooked =
+                gamblingCounselingAppointmentBooked
+                || (
+                        containsAny(
+                                text,
+                                "\uc0c1\ub2f4\uc13c\ud130",
+                                "\uc0c1\ub2f4 \uc13c\ud130"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc2e4\uc81c\ub85c \uc804\ud654\ub97c \uac78\uc5b4",
+                                "\uc2e4\uc81c\ub85c \uc804\ud654\ud588",
+                                "\uc804\ud654\ub97c \uac78\uc5b4"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc0c1\ub2f4 \uc608\uc57d\uae4c\uc9c0 \uc7a1\uc558",
+                                "\uc0c1\ub2f4 \uc608\uc57d\uc744 \uc7a1\uc558",
+                                "\uc608\uc57d\uae4c\uc9c0 \uc7a1\uc558"
+                        )
                 );
 
         return gamblingCounselingAppointmentBooked
