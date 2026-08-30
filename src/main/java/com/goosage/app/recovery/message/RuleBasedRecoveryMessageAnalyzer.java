@@ -2780,9 +2780,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uadf8\ub0e5 \ub2eb"
                 );
 
+        boolean slotAppSearchResultUncertainNoInstallAttempt =
+                containsAny(
+                        analysisText,
+                        "\uc2ac\ub86f\uc744 \ub2e4\uc2dc \ud574\ubcfc\uae4c",
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2a4\ud1a0\uc5b4\uc5d0\uc11c \uc774\ub984\uc744 \uac80\uc0c9",
+                        "\uc2a4\ud1a0\uc5b4\uc5d0\uc11c \uac80\uc0c9",
+                        "\uc571 \uc774\ub984\uc744 \uac80\uc0c9"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ube44\uc2b7\ud55c \uc571\uc774 \uc5ec\ub7ec \uac1c",
+                        "\ube44\uc2b7\ud55c \uc571",
+                        "\uc5ec\ub7ec \uac1c \ub098\uc640"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac19\uc740 \uac74\uc9c0 \ud655\uc2e0\uc774 \uc548 \uc11c",
+                        "\uac19\uc740 \uac83\uc778\uc9c0 \ud655\uc2e0\uc774 \uc548 \uc11c",
+                        "\ud655\uc2e0\uc774 \uc548 \uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc124\uce58\ud558\uc9c0 \uc54a\uace0",
+                        "\uc124\uce58\ud558\uc9c0 \uc54a\uc558"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || slotAppSearchResultUncertainNoInstallAttempt
                         || thirdPartyLinkFollowedBySelfFundingAndWager
                         || sportsBettingAppInstallLoginOddsAmountNoSubmitAttempt
                         || lossRecoveryLoginFundingTransferSelfStop
@@ -3459,6 +3490,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || slotAppSearchResultUncertainNoInstallAttempt
                         || explicitUrgeNegationCasinoSearchAccessSelfStop
                         || searchLoginFundingAmountSelfStopAttempt
                         || lossRecoveryLoginFundingTransferSelfStop
