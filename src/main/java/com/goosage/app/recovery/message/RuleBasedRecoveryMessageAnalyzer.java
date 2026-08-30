@@ -2429,6 +2429,34 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 );
 
 
+        boolean multiWagerCompletedLossAdditionalUrgePostCompletionStop =
+                containsAny(
+                        analysisText,
+                        "\ubca0\ud305\uc744 \uc5ec\ub7ec \uac74 \ud588",
+                        "\uc2e4\uc81c\ub85c \ubca0\ud305\uc744 \uc5ec\ub7ec \uac74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac01\uac01 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud574\uc11c \ucc28\ub840\ub85c \uc81c\ucd9c",
+                        "\ucc28\ub840\ub85c \uc81c\ucd9c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub9c8\uc9c0\ub9c9 \uacbd\uae30\uae4c\uc9c0 \ubca0\ud305\uc774 \uc644\ub8cc",
+                        "\ub9c8\uc9c0\ub9c9 \uacbd\uae30\uae4c\uc9c0 \ubca0\ud305 \uc644\ub8cc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub9c8\uc9c0\ub9c9 \uacbd\uae30\uc5d0\uc11c \uc190\uc2e4",
+                        "\uc190\uc2e4\uc774 \ub0ac"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub354 \ub123\uc73c\uba74 \ub2e4\uc2dc \ubc8c \uc218 \uc788\uc744 \uac83 \uac19",
+                        "\ub2e4\uc2dc \ubc8c \uc218 \uc788\uc744 \uac83 \uac19"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -2443,6 +2471,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || searchThoughtWithoutAttempt
                         || partialSearchInputThenSelfStopped
                         || selfCompletedMultiWagerLateSpouseContext
+                        || multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || bettingIntentPartialSearchInputExternalDistraction
                         || relatedAppViewedThenDeleted
@@ -3148,6 +3177,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputDeletedThenSelfExited
                         || bettingAppAmountInputUncertainSubmitSelfCancel
                         || selfCompletedMultiWagerLateSpouseContext
+                        || multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         || wagerCompletedRelapseThenNextDayNoAction
                         || appReinstalledAndExecutedWithUrgeNegation
                         || existingSlotAppLoggedInGameScreenThenSelfStopped
@@ -3218,6 +3248,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 && !wagerCompletedThenNextDayAppDeletedRecovery
                                 && !searchBoxOpenedWithoutInputThenNaturalDrop
                                 && !selfCompletedMultiWagerLateSpouseContext
+                                && !multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         )
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartySportsOddsSelfPageAccessThenSelfStopped
@@ -3301,6 +3332,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || completedFundingSingleWagerPostNoActionRelapse
                         || selfCompletedMultiWagerLateSpouseContext
+                        || multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         || wagerCompletedRelapseThenNextDayNoAction
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                 )
