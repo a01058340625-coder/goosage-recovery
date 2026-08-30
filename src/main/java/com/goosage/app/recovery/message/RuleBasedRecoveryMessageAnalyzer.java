@@ -2702,6 +2702,44 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uae08\uc561\uc744 \uc785\ub825"
                 );
 
+        boolean casinoFundingPaymentMethodBankErrorAttempt =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178",
+                        "\uce74\uc9c0\ub178 \uc571"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                        "\ub2e4\uc2dc \uc124\uce58"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uacc4\uc815\uc73c\ub85c \ub85c\uadf8\uc778",
+                        "\uacc4\uc815\uc73c\ub85c \ub85c\uadf8\uc778"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc5d0\uc11c \uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uc81c\uc218\ub2e8\ub3c4 \uc120\ud0dd",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uc120\ud0dd"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc740\ud589 \ucabd\uc5d0\uc11c \uc624\ub958",
+                        "\uc740\ud589 \uc624\ub958",
+                        "\uc740\ud589 \ucabd \uc624\ub958"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucc98\ub9ac\uac00 \ub418\uc9c0 \uc54a",
+                        "\ucc98\ub9ac\ub418\uc9c0 \uc54a"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3440,6 +3478,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputThenWagerCompleted
                         || casinoFundingAmountInputIdentityVerificationErrorAttempt
                         || fundingAmountInputErrorRetryExternalFailure
+                        || casinoFundingPaymentMethodBankErrorAttempt
                         || thirdPartyHistoryExplicitSelfSiteSearch
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
@@ -3573,6 +3612,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !sportsBettingAppLoginPhoneInterrupted
                 && !sportsBettingLoginFundingAuthErrorPhoneInterrupted
                 && !casinoLoginPageCompanyPhoneExternalInterruption
+                && !casinoFundingPaymentMethodBankErrorAttempt
                         ? 1
                         : 0;
         boolean paymentMethodFamilyHandoffRecovery =
