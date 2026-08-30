@@ -2593,9 +2593,49 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc571\uc744 \uc9c0\uc6e0\uc2b5\ub2c8\ub2e4"
                 );
 
+        boolean sportsBettingAppInstallLoginOddsAmountNoSubmitAttempt =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c",
+                        "\ud574\ubcfc\uae4c \ud574\uc11c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac19\uc740 \uc571\uc744 \uc124\uce58",
+                        "\uc571\uc744 \uc124\uce58"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778 \uc815\ubcf4\ub97c \uc785\ub825",
+                        "\ub85c\uadf8\uc778 \uc815\ubcf4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacbd\uae30 \ubaa9\ub85d\uc744 \ud655\uc778",
+                        "\ubc30\ub2f9\uc744 \uc790\uc138\ud788 \ubd24",
+                        "\ubc30\ub2f9\uc744"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubca0\ud305 \uae08\uc561\uae4c\uc9c0 \uc801\uc5b4",
+                        "\ubca0\ud305 \uae08\uc561\uc744 \uc801\uc5b4",
+                        "\ubca0\ud305 \uae08\uc561"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc81c\ucd9c\uc740 \ud558\uc9c0 \uc54a\uc558",
+                        "\uc81c\ucd9c\ud558\uc9c0 \uc54a\uc558"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || sportsBettingAppInstallLoginOddsAmountNoSubmitAttempt
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || currentOccasionalGamblingThought
@@ -3273,6 +3313,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsBettingLoginFundingAuthErrorPhoneInterrupted
                         || sportsBettingAppReinstallLoginAttempt
+                        || sportsBettingAppInstallLoginOddsAmountNoSubmitAttempt
                         || bettingAppExecutedRecordViewedThenSelfStopped
                         || pastCasinoAppExecutedScreenViewedAttempt
                         || wagerScreenAmountDecisionSubmitNegatedAttempt
