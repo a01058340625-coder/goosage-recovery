@@ -3027,7 +3027,11 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub354 \ud558\uace0 \uc2f6\uc9c0 \uc54a",
                         "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \ub4e4\uc9c0 \uc54a",
                         "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc740 \uc5c6\uc5c8",
-                        "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \uc5c6\uc5c8"
+                        "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \uc5c6\uc5c8",
+                        "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc624\ud788\ub824 \uc0ac\ub77c\uc84c",
+                        "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc0ac\ub77c\uc84c",
+                        "\uacc4\uc18d \uc774\uc5b4\uac00\uace0 \uc2f6\uc740 \ub290\ub08c\uc774 \uc5c6",
+                        "\uacc4\uc18d \ud558\uace0 \uc2f6\uc740 \ub290\ub08c\uc774 \uc5c6"
                 );
 
         boolean selfLoginOddsAmountFamilyPhoneInterrupted =
@@ -4259,6 +4263,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uacb0\uc81c\uce74\ub4dc\ub97c \uac00\uc871\uc5d0\uac8c \ub9e1\uaca8"
                 );
 
+        boolean completedSlotUrgeNegatedNextDayAppDelete =
+                containsCompletedSlotGambling(analysisText)
+                && currentGamblingUrgeNegated
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c\ub0a0\uc5d0\ub294 \uadf8 \uc571 \uc790\uccb4\ub97c \ud734\ub300\ud3f0\uc5d0\uc11c \uc9c0\uc6e0",
+                        "\ub2e4\uc74c\ub0a0 \uadf8 \uc571 \uc790\uccb4\ub97c \ud734\ub300\ud3f0\uc5d0\uc11c \uc9c0\uc6e0",
+                        "\ub2e4\uc74c\ub0a0\uc5d0\ub294 \uadf8 \uc571\uc744 \ud734\ub300\ud3f0\uc5d0\uc11c \uc9c0\uc6e0",
+                        "\ub2e4\uc74c\ub0a0 \uc571\uc744 \uc9c0\uc6e0"
+                );
+
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
@@ -4271,6 +4286,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || completedSlotAdditionalFundingLossNextDayAppDelete
+                        || completedSlotUrgeNegatedNextDayAppDelete
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
@@ -4288,6 +4304,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || completedWagerNextMorningAppDeletedRelapseRecovery
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || completedSlotAdditionalFundingLossNextDayAppDelete
+                        || completedSlotUrgeNegatedNextDayAppDelete
                         || completedFundingSingleWagerPostNoActionRelapse
                         || fundingAuthFailureNextDayFundingWagerCompleted
                         || selfCompletedMultiWagerLateSpouseContext
@@ -6486,8 +6503,12 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2ac\ub86f \uc880 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub838",
                 "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \uba87 \ud310\uc744 \ub3cc\ub838",
+                "\uc2ac\ub86f \ud558\ub098\ub97c \uc5f4\uc5b4 \uba87 \ud310\uc744 \ub3cc\ub838",
                 "\uc2ac\ub86f\uc744 \ub3cc\ub838\uc2b5\ub2c8\ub2e4",
                 "\uc2ac\ub86f\uc744 \ub3cc\ub838",
+                "\ub450\uc138 \ubc88 \ub354 \ud558\uac8c \ub410",
+                "\ub450\uc138\ubc88 \ub354 \ud558\uac8c \ub410",
                 "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub9ac\uace0",
                 "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub9ac\uace0",
                 "\uc2ac\ub86f\uc744 \ub3cc\ub9ac\uace0",
