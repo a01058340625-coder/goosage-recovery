@@ -2157,6 +2157,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub354 \ub4e4\uc5b4\uac00\uc9c4 \uc54a\uc558",
                         "\ub354 \ub4e4\uc5b4\uac00\uc9c0 \uc54a\uc558",
                         "휴대폰을 내려놨"
+                )
+                || (
+                        containsAny(
+                                analysisText,
+                                "\uc608\uc804\uc5d0 \uc783\uc5c8\ub358 \ub3c8\uc774 \ub5a0\uc62c\ub77c",
+                                "\uc783\uc5c8\ub358 \ub3c8\uc774 \ub5a0\uc62c\ub77c",
+                                "\ubcf8\uc804 \uc0dd\uac01"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ub2e4\uc2dc \ud574\ubcfc\uae4c",
+                                "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc2e4\uc81c\ub85c \uc0ac\uc774\ud2b8\ub97c \uc5f4\uc9c0\ub294 \uc54a\uc558",
+                                "\uc0ac\uc774\ud2b8\ub97c \uc5f4\uc9c0\ub294 \uc54a\uc558",
+                                "\uc0ac\uc774\ud2b8\ub97c \uc5f4\uc9c0 \uc54a\uc558"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uac80\uc0c9\ucc3d\uc5d0 \uc608\uc804\uc5d0 \uc4f0\ub358 \uc774\ub984\uc744 \uc785\ub825\ud560\uae4c",
+                                "\uc774\ub984\uc744 \uc785\ub825\ud560\uae4c",
+                                "\uc785\ub825\ud560\uae4c \uba87 \ubc88 \ub9dd\uc124"
+                        )
+                        && !containsAny(
+                                analysisText,
+                                "\uc774\ub984\uc744 \uc785\ub825\ud588",
+                                "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud588",
+                                "\uba87 \uae00\uc790 \uce58",
+                                "\uac80\uc0c9\uc744 \uc2e4\ud589"
+                        )
                 );
 
         boolean bettingAmountViewedThenSelfStopped =
@@ -3156,6 +3188,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc54c\ub9bc\uc774 \uc6b8\ub824\uc11c"
                 );
 
+        boolean explicitUrgeSearchInputConsideredNotStarted472 =
+                containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \uc783\uc5c8\ub358 \ub3c8\uc774 \ub5a0\uc62c\ub77c",
+                        "\uc783\uc5c8\ub358 \ub3c8\uc774 \ub5a0\uc62c\ub77c",
+                        "\ubcf8\uc804 \uc0dd\uac01"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c",
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01",
+                        "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \uc0ac\uc774\ud2b8\ub97c \uc5f4\uc9c0\ub294 \uc54a\uc558",
+                        "\uc0ac\uc774\ud2b8\ub97c \uc5f4\uc9c0\ub294 \uc54a\uc558",
+                        "\uc0ac\uc774\ud2b8\ub97c \uc5f4\uc9c0 \uc54a\uc558"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc774\ub984\uc744 \uc785\ub825\ud560\uae4c",
+                        "\uc785\ub825\ud560\uae4c \uba87 \ubc88 \ub9dd\uc124",
+                        "\uba87 \ubc88 \ub9dd\uc124"
+                )
+                && !containsAny(
+                        analysisText,
+                        "\uc774\ub984\uc744 \uc785\ub825\ud588",
+                        "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud588",
+                        "\uba87 \uae00\uc790\ub97c \uc37c",
+                        "\uba87 \uae00\uc790 \uce58",
+                        "\uac80\uc0c9\uc744 \uc2e4\ud589"
+                );
+
         boolean currentGamblingUrgeNegated =
                 containsAny(
                         analysisText,
@@ -3175,7 +3241,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc5c6",
                         "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc740 \uc5c6\uc5c8",
                         "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc5c6\uc5c8"
-                );
+                )                && !explicitUrgeSearchInputConsideredNotStarted472;
+
 
         boolean selfLoginOddsAmountFamilyPhoneInterrupted =
                 containsAny(
@@ -3543,6 +3610,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfSiteSearchAfterThirdPartyTrigger
                         || selfAppSearchAfterThirdPartyTrigger
                         || searchThoughtWithoutAttempt
+                        || explicitUrgeSearchInputConsideredNotStarted472
                         || partialSearchInputThenSelfStopped
                         || selfCompletedMultiWagerLateSpouseContext
                         || multiWagerCompletedLossAdditionalUrgePostCompletionStop
@@ -4508,8 +4576,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                 )
+                && !explicitUrgeSearchInputConsideredNotStarted472
                         ? 1
                         : 0;
+
         boolean searchBoxOpenedWithoutInputThenNaturalDrop =
                 containsAny(
                         analysisText,
@@ -4672,8 +4742,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !genericSecondhandBankTransferCompleted
                 && !selfLoginCompletedSlotUrgeNegated471
                 && !passwordResetCompletedWagerFriendContact467
+                && !explicitUrgeSearchInputConsideredNotStarted472
                         ? 1
                         : 0;
+
         boolean paymentMethodFamilyHandoffRecovery =
                 containsAny(
                         analysisText,
