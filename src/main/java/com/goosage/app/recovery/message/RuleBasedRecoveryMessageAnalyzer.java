@@ -2787,7 +2787,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         analysisText,
                         "\uae08\uc561\uae4c\uc9c0 \uc785\ub825",
-                        "\uae08\uc561\uc744 \uc785\ub825"
+                        "\uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561\uc744 \ub123\uace0",
+                        "\uae08\uc561\uc744 \ub123\uc5c8"
                 );
 
         boolean casinoFundingPaymentMethodBankErrorAttempt =
@@ -2992,6 +2994,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud1b5\ud654\ub97c \ubc1b"
                 );
 
+        boolean fundingDeleteSelfExitLossRecoveryUrge =
+                containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc744 \uc5f4",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \ub123\uace0",
+                        "\uae08\uc561\uc744 \ub123\uc5c8",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc22b\uc790\ub97c \uc9c0\uc6b0",
+                        "\uc22b\uc790\ub97c \uc9c0\uc6e0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6b0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6e0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubcf8\uc804\uc744 \uc870\uae08 \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                        "\ubcf8\uc804\uc744 \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                        "\ubcf8\uc804\uc744 \ub9cc\ud68c\ud574\ubcf4\uace0 \uc2f6",
+                        "\ubcf8\uc804 \ub9cc\ud68c"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3014,6 +3043,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || bettingIntentPartialSearchInputExternalDistraction
                         || selfLoginOddsAmountFamilyPhoneInterrupted
+                        || fundingDeleteSelfExitLossRecoveryUrge
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
@@ -3698,6 +3728,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         analysisText,
                         "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb",
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \uc885\ub8cc",
                         "\ud654\uba74\uc744 \ub2eb"
                 )
                 && containsAny(
@@ -3790,6 +3821,42 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uacb0\uacfc\uac00 \ub098\uc628"
                 );
 
+        boolean fundingAmountDeleteBrowserExit459 =
+                containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc744 \uc5f4",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \ub123\uace0",
+                        "\uae08\uc561\uc744 \ub123\uc5c8",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uc81c\uc218\ub2e8\ub3c4 \uc120\ud0dd",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uc120\ud0dd",
+                        "\uacb0\uc81c \uc218\ub2e8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc81c\ucd9c\ud558\uae30 \uc804",
+                        "\uc81c\ucd9c \uc804"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc22b\uc790\ub97c \uc9c0\uc6b0",
+                        "\uc22b\uc790\ub97c \uc9c0\uc6e0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6b0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6e0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \uc885\ub8cc",
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -3797,6 +3864,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || explicitUrgeNegationCasinoSearchAccessSelfStop
                         || searchLoginFundingAmountSelfStopAttempt
                         || fundingAmountInputDeletedThenSelfExited
+                        || fundingAmountDeleteBrowserExit459
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfSportsAppInstallLogin
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
@@ -3980,6 +4048,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || fundingAmountInputDeletedThenSelfExited
+                        || fundingAmountDeleteBrowserExit459
                         || thirdPartyLinkSelfWagerInputDeleteSelfStop
                         || bettingAppAmountInputUncertainSubmitSelfCancel
                         || existingSlotAppLoggedInGameScreenThenSelfStopped
