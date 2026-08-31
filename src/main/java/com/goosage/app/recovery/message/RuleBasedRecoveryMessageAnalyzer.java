@@ -3086,7 +3086,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc624\ud788\ub824 \uc0ac\ub77c\uc84c",
                         "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc0ac\ub77c\uc84c",
                         "\uacc4\uc18d \uc774\uc5b4\uac00\uace0 \uc2f6\uc740 \ub290\ub08c\uc774 \uc5c6",
-                        "\uacc4\uc18d \ud558\uace0 \uc2f6\uc740 \ub290\ub08c\uc774 \uc5c6"
+                        "\uacc4\uc18d \ud558\uace0 \uc2f6\uc740 \ub290\ub08c\uc774 \uc5c6",
+                        "\uc9c0\uae08 \ub2f9\uc7a5 \ud558\uace0 \uc2f6\uc740 \uac74 \uc544\ub2c8",
+                        "\uc9c0\uae08 \ub2f9\uc7a5 \ud558\uace0 \uc2f6\uc740 \uac83\uc740 \uc544\ub2c8"
                 );
 
         boolean selfLoginOddsAmountFamilyPhoneInterrupted =
@@ -3458,14 +3460,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
                         "\uae08\uc561\uc744 \uc785\ub825\ud558\uace0",
                         "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825\ud558\uace0",
-                        "\uae08\uc561 \uc785\ub825\ud558\uace0"
+                        "\uae08\uc561 \uc785\ub825\ud558\uace0",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud574\uc11c",
+                        "\uae08\uc561 \uc785\ub825\ud574\uc11c"
                 )
                 && containsAny(
                         analysisText,
                         "\ubca0\ud305\uae4c\uc9c0 \ud588",
                         "\ubca0\ud305\uae4c\uc9c0 \ud558\uace0",
                         "\ubca0\ud305\uae4c\uc9c0 \uc644\ub8cc",
-                        "\ubca0\ud305\uc744 \uc644\ub8cc"
+                        "\ubca0\ud305\uc744 \uc644\ub8cc",
+                        "\uc2e4\uc81c\ub85c \ubca0\ud305\ud588",
+                        "\uc2e4\uc81c\ub85c \ubca0\ud305\uc744 \ud588"
                 );
 
         boolean wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery =
