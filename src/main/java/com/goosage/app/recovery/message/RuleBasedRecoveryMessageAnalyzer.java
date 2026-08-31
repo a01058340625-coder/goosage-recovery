@@ -381,13 +381,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         normalized,
                         "\uce5c\uad6c\uac00 \uce74\uc9c0\ub178\uc5d0\uc11c \ub3c8\uc744 \ub530",
                         "\uce5c\uad6c\uac00 \uce74\uc9c0\ub178",
-                        "\uce74\uc9c0\ub178\uc5d0\uc11c \ub3c8\uc744 \ub530"
+                        "\uce74\uc9c0\ub178\uc5d0\uc11c \ub3c8\uc744 \ub530",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc900 \ub9c1\ud06c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b8 \ub9c1\ud06c"
                 )
                 && containsAny(
                         normalized,
                         "\uc9d1\uc5d0 \uc640\uc11c \uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
                         "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
-                        "\uc2e4\uc81c\ub85c \uc811\uc18d"
+                        "\uc2e4\uc81c\ub85c \uc811\uc18d",
+                        "\uce74\uc9c0\ub178 \uc8fc\uc18c\uac00 \uac19\uc774 \uc800\uc7a5",
+                        "\uce74\uc9c0\ub178 \uc8fc\uc18c",
+                        "\uc8fc\uc18c\uac00 \ub208\uc5d0 \uc775\uc5b4\uc11c \ub20c\ub7ec",
+                        "\ub20c\ub7ec\ubd24",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d"
                 )
                 && containsCompletedSlotGambling(normalized);
 
@@ -2939,6 +2946,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc54c\ub9bc\uc774 \uc6b8\ub824\uc11c"
                 );
 
+        boolean currentGamblingUrgeNegated =
+                containsAny(
+                        analysisText,
+                        "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc0dd\uae30\uc9c0 \uc54a",
+                        "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc740 \uc0dd\uae30\uc9c0 \uc54a",
+                        "\ub354 \ud558\uace0 \uc2f6\uc9c0 \uc54a",
+                        "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \ub4e4\uc9c0 \uc54a"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -2970,6 +2986,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                 )
                 && !explicitUrgeNegationCasinoSearchAccessSelfStop
+                && !currentGamblingUrgeNegated
                         ? 1
                         : 0;
         boolean wagerAmountInputThenWagerCompleted =
@@ -6147,7 +6164,13 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2ac\ub86f\uc744 \ub3cc\ub838",
                 "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub9ac\uace0",
                 "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub9ac\uace0",
-                "\uc2ac\ub86f\uc744 \ub3cc\ub9ac\uace0"
+                "\uc2ac\ub86f\uc744 \ub3cc\ub9ac\uace0",
+                "\uc2ac\ub86f\uc744 \ud55c \ubc88 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \ud55c\ubc88 \ub3cc\ub838",
+                "\uacb0\uacfc\uac00 \ub098\uc628 \ub4a4\uc5d0 \ud55c \ubc88 \ub354 \ub20c\ub800",
+                "\uacb0\uacfc\uac00 \ub098\uc628 \ub4a4 \ud55c \ubc88 \ub354 \ub20c\ub800",
+                "\ub450 \ud310 \ubaa8\ub450 \ub05d\ub09c",
+                "\ub450\ud310 \ubaa8\ub450 \ub05d\ub09c"
         );
 
         boolean slotAppMultipleWagersCompleted =
