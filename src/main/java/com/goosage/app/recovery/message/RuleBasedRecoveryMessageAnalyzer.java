@@ -4319,6 +4319,48 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud1b5\ud654"
                 );
 
+        boolean genericSecondhandBankTransferCompleted =
+                containsAny(
+                        analysisText,
+                        "\uc911\uace0\uac70\ub798",
+                        "\uac70\ub798 \ucc44\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc740\ud589 \uc571",
+                        "\uacc4\uc88c\ubc88\ud638"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc1a1\uae08 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uc1a1\uae08 \uae08\uc561",
+                        "\ubc1b\ub294 \uc0ac\ub78c \uc774\ub984"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc778\uc99d\uc744 \uac70\uccd0 \ubcf4\ub0c8",
+                        "\uc778\uc99d\uc744 \uac70\uccd0",
+                        "\uc1a1\uae08"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucc98\ub9ac \uc911",
+                        "\ucc98\ub9ac\uc911"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc815\uc0c1\uc801\uc73c\ub85c \uc644\ub8cc",
+                        "\uc815\uc0c1 \uc644\ub8cc",
+                        "\uc1a1\uae08 \uc644\ub8cc"
+                )
+                && !containsAny(
+                        analysisText,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f"
+                );
+
         int betBlockedDelta =
                 (
                         (
@@ -4387,6 +4429,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !selfLoginOddsAmountFamilyPhoneInterrupted
                 && !spouseTriggerSelfFundingSocialInterrupted
                 && !partialSearchAutocompleteUrgeNegatedNaturalDrop
+                && !genericSecondhandBankTransferCompleted
                         ? 1
                         : 0;
         boolean paymentMethodFamilyHandoffRecovery =
