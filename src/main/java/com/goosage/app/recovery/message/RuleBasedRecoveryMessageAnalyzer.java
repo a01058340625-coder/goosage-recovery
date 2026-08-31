@@ -410,6 +410,34 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uacb0\uacfc\ub97c \ud655\uc778"
                 );
 
+        boolean thirdPartyConversationOldCasinoAppCompletedSlot475 =
+                containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uc640 \ud1b5\ud654",
+                        "\uce5c\uad6c\uc640 \uc804\ud654",
+                        "\uc608\uc804\uc5d0 \uac19\uc774 \uac14\ub358 \uacf3 \uc774\uc57c\uae30"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc624\ub798\ub41c \ud734\ub300\ud3f0",
+                        "\ub2f9\uc2dc \uc0ac\uc6a9\ud558\ub358 \uce74\uc9c0\ub178 \uc571",
+                        "\uce74\uc9c0\ub178 \uc571\uc774 \ub0a8\uc544"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc571\uc744 \uc2e4\ud589",
+                        "\uc544\uc774\ub514\ub97c \uc785\ub825",
+                        "\ube44\ubc00\ubc88\ud638\ub97c \ub2e4\uc2dc \uc124\uc815",
+                        "\ub85c\uadf8\uc778\ud55c \ub4a4"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2ac\ub86f\uc744 \uc5f4\uc5b4",
+                        "\ucc98\uc74c \ud55c \ud310\uc744 \ub3cc\ub838",
+                        "\ud55c \ubc88 \ub354 \ud588",
+                        "\ub450 \ubc88\uc9f8 \uacb0\uacfc"
+                );
+
         boolean thirdPartyCasinoTriggerSelfCompletedSlot =
                 thirdPartyGamblingContextForSelfUrge
                 && containsAny(
@@ -582,6 +610,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !selfSportsBettingActionBeforeLaterThirdPartyInterruption
                 && !selfCasinoSlotActionBeforeLateThirdPartyConversation
                 && !thirdPartyCasinoTriggerSelfCompletedSlot
+                && !thirdPartyConversationOldCasinoAppCompletedSlot475
                 && !thirdPartyLinkSelfLoginCompletedSlot471
                 && !thirdPartyLinkFollowedBySelfFundingAndWager
                 && !thirdPartyBettingTalkThenSelfCompletedWager467
@@ -981,6 +1010,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         implicitSelfAfterThirdPartyTrigger
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || thirdPartyCasinoTriggerSelfCompletedSlot
+                        || thirdPartyConversationOldCasinoAppCompletedSlot475
                         || thirdPartyLinkSelfLoginCompletedSlot471
                         || thirdPartyBettingTriggerSelfGameSiteSearch
                         || thirdPartyBettingTriggerSelfSearchConsiderationUrge
@@ -1037,6 +1067,20 @@ public class RuleBasedRecoveryMessageAnalyzer {
                             "\uc9d1\uc5d0 \uc640\uc11c \uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
                             "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubcf4",
                             "\uc2e4\uc81c\ub85c \uc811\uc18d"
+                    );
+                }
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyConversationOldCasinoAppCompletedSlot475
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc624\ub798\ub41c \ud734\ub300\ud3f0\uc744 \ucf1c",
+                            "\uce74\uc9c0\ub178 \uc571\uc774 \ub0a8\uc544",
+                            "\uc571\uc744 \uc2e4\ud589",
+                            "\uc544\uc774\ub514\ub97c \uc785\ub825",
+                            "\uc2ac\ub86f\uc744 \uc5f4\uc5b4"
                     );
                 }
 
@@ -3627,6 +3671,57 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uad00\ub828 \uc571\uc744 \uc0ad\uc81c"
                 );
 
+        boolean multiSlotFundingSelfStopCardHandoffCurrentUrge475 =
+                containsAny(
+                        analysisText,
+                        "\uc2ac\ub86f\uc744 \uc5f4\uc5b4",
+                        "\ucc98\uc74c \ud55c \ud310\uc744 \ub3cc\ub838",
+                        "\ud55c \ubc88 \ub354 \ud588",
+                        "\ub450 \ubc88\uc9f8 \uacb0\uacfc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucd94\uac00\ub85c \ub3c8\uc744 \ub123\uc744\uae4c",
+                        "\uc785\uae08 \ud654\uba74\uc5d0\uc11c \uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uace8\ub790",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uc120\ud0dd"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uce5c\uad6c\uc5d0\uac8c \uc804\ud654\uac00 \uc640",
+                        "\uce5c\uad6c\uc5d0\uac8c\uc11c \uc804\ud654\uac00 \uc640",
+                        "\ud55c\ucc38 \ud1b5\ud654"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud1b5\ud654\uac00 \ub05d\ub09c \ub4a4",
+                        "\ud654\uba74\uc744 \ub2e4\uc2dc \ubcf4\uae30\uac00 \uc2eb",
+                        "\uc571\uc744 \ub2eb\uc558"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac00\uc871\uc5d0\uac8c \uc608\uc804\uc5d0 \ub2e4\uc2dc \uc811\uc18d\ud588\ub2e4\ub294 \uc0ac\uc2e4",
+                        "\uac00\uc871\uc5d0\uac8c",
+                        "\uc0ac\uc2e4\uc744 \uc774\uc57c\uae30"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \uce74\ub4dc\ub294 \uac74\ub124\uc8fc\uc5c8",
+                        "\uce74\ub4dc\ub294 \uac74\ub124\uc8fc\uc5c8",
+                        "\uacb0\uc81c\uce74\ub4dc\ub97c \uc7a0\uc2dc \ub9e1\uc544",
+                        "\uce74\ub4dc\ub97c \uc7a0\uc2dc \ub9e1\uc544"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc9c0\uae08\ub3c4 \uac00\ub054 \ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \uc0dd\uac01",
+                        "\uac00\ub054 \ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \uc0dd\uac01",
+                        "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \uc62c\ub77c"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3655,6 +3750,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingDeleteSelfExitLossRecoveryUrge
                         || spouseTriggerSelfFundingSocialInterrupted
                         || casinoAppReinstallSlotRelapseFundingCancel
+                        || multiSlotFundingSelfStopCardHandoffCurrentUrge475
                         || passwordResetCompletedWagerFriendContact467
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
@@ -4620,6 +4716,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || bettingAmountViewedThenSelfStopped
                         || slotAppReinstallLoginFundingAmountDeleteSelfStop
                         || casinoAppReinstallSlotRelapseFundingCancel
+                        || multiSlotFundingSelfStopCardHandoffCurrentUrge475
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
@@ -4803,6 +4900,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || bettingAmountViewedThenSelfStopped
                         || slotAppReinstallLoginFundingAmountDeleteSelfStop
                         || casinoAppReinstallSlotRelapseFundingCancel
+                        || multiSlotFundingSelfStopCardHandoffCurrentUrge475
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
@@ -4872,6 +4970,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsRecoveryAction(analysisText)
                         || paymentMethodFamilyHandoffRecovery
+                        || multiSlotFundingSelfStopCardHandoffCurrentUrge475
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingAppLaterDeletedRecovery
                         || nextDaySiteBlockAndRelatedAppDelete473
@@ -4903,6 +5002,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || completedSlotAdditionalFundingLossNextDayAppDelete
                         || completedSlotUrgeNegatedNextDayAppDelete
                         || casinoAppReinstallSlotRelapseFundingCancel
+                        || multiSlotFundingSelfStopCardHandoffCurrentUrge475
                         || passwordResetCompletedWagerFriendContact467
                         || completedFundingSingleWagerPostNoActionRelapse
                         || fundingAuthFailureNextDayFundingWagerCompleted
