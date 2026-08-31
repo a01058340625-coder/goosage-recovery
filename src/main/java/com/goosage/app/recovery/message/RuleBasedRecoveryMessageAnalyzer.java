@@ -3622,12 +3622,42 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 );
 
 
+        boolean fundingAmountInputDeletedThenSelfExited =
+                containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc744 \uc5f4",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uae4c\uc9c0 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc22b\uc790\ub97c \uc9c0\uc6b0",
+                        "\uc22b\uc790\ub97c \uc9c0\uc6e0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6b0",
+                        "\uae08\uc561\uc744 \uc9c0\uc6e0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb",
+                        "\ud654\uba74\uc744 \ub2eb"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc81c\ucd9c \ubc84\ud2bc\uc744 \ub204\ub974\uc9c0\ub294 \uc54a",
+                        "\uc81c\ucd9c\ud558\uc9c0 \uc54a"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
                         || slotAppSearchResultUncertainNoInstallAttempt
                         || explicitUrgeNegationCasinoSearchAccessSelfStop
                         || searchLoginFundingAmountSelfStopAttempt
+                        || fundingAmountInputDeletedThenSelfExited
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfSportsAppInstallLogin
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
@@ -3806,6 +3836,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
+                        || fundingAmountInputDeletedThenSelfExited
                         || thirdPartyLinkSelfWagerInputDeleteSelfStop
                         || bettingAppAmountInputUncertainSubmitSelfCancel
                         || existingSlotAppLoggedInGameScreenThenSelfStopped
