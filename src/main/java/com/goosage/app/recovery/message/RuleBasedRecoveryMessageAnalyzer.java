@@ -444,6 +444,50 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc81c\ucd9c\ud588"
                 );
 
+        boolean thirdPartyLinkFundingRejectEveningReentryHoldBypass =
+                containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uac00 \uc5b4\uc82f\ubc24\uc5d0 \ubcf4\ub0b4\uc900 \uacbd\uae30 \ub9c1\ud06c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc900 \uacbd\uae30 \ub9c1\ud06c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b8 \uacbd\uae30 \ub9c1\ud06c"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub85c\uadf8\uc778\ud588",
+                        "\ub85c\uadf8\uc778\ud558\uace0"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc81c\ucd9c\uae4c\uc9c0 \ud588",
+                        "\uc81c\ucd9c\ud588"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc740\ud589 \ucabd\uc5d0\uc11c \uc2b9\uc778\uc774 \uac70\uc808",
+                        "\uc2b9\uc778\uc774 \uac70\uc808"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub2e4\ub978 \uacb0\uc81c\uc218\ub2e8",
+                        "\ub2e4\ub978 \uacb0\uc81c \uc218\ub2e8"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc785\uae08\uc774 \ucc98\ub9ac\ub410",
+                        "\uc785\uae08\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub450 \uacbd\uae30\uc5d0 \uc5f0\ub2ec\uc544 \ubca0\ud305",
+                        "\ub450 \uacbd\uae30\uc5d0 \ubca0\ud305",
+                        "\uc5f0\ub2ec\uc544 \ubca0\ud305"
+                );
+
         if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
@@ -451,6 +495,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !selfCasinoSlotActionBeforeLateThirdPartyConversation
                 && !thirdPartyCasinoTriggerSelfCompletedSlot
                 && !thirdPartyLinkFollowedBySelfFundingAndWager
+                && !thirdPartyLinkFundingRejectEveningReentryHoldBypass
         ) {
             int selfSubjectIndex =
                     findExplicitSelfSubjectAfterThirdParty(normalized);
@@ -1058,7 +1103,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
             currentContextExtracted = true;
         }
 
-        if (looksHypothetical(analysisText)) {
+        boolean completedActionOverridesHypothetical461 =
+                containsAny(
+                        analysisText,
+                        "\uc2b9\uc778\uc774 \uac70\uc808",
+                        "\uc740\ud589 \ucabd\uc5d0\uc11c \uc2b9\uc778\uc774 \uac70\uc808"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\ub978 \uacb0\uc81c\uc218\ub2e8",
+                        "\ub2e4\ub978 \uacb0\uc81c \uc218\ub2e8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08\uc774 \ucc98\ub9ac\ub410",
+                        "\uc785\uae08\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub450 \uacbd\uae30\uc5d0 \uc5f0\ub2ec\uc544 \ubca0\ud305",
+                        "\ub450 \uacbd\uae30\uc5d0 \ubca0\ud305",
+                        "\uc5f0\ub2ec\uc544 \ubca0\ud305"
+                );
+
+        if (
+                looksHypothetical(analysisText)
+                && !completedActionOverridesHypothetical461
+        ) {
             return hold(message, "HYPOTHETICAL_CONTEXT");
         }
 
@@ -3021,11 +3092,71 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ubcf8\uc804 \ub9cc\ud68c"
                 );
 
+        boolean thirdPartyLinkFundingRejectEveningReentryMultiWager =
+                containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uac00 \uc5b4\uc82f\ubc24\uc5d0 \ubcf4\ub0b4\uc900 \uacbd\uae30 \ub9c1\ud06c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc900 \uacbd\uae30 \ub9c1\ud06c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b8 \uacbd\uae30 \ub9c1\ud06c"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub85c\uadf8\uc778\ud588",
+                        "\ub85c\uadf8\uc778\ud558\uace0"
+                )
+                && containsAny(
+                        normalized,
+                        "\uae08\uc561\uc744 \ub123\uace0",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        normalized,
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uc120\ud0dd",
+                        "\uacb0\uc81c\uc218\ub2e8 \uc120\ud0dd"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc81c\ucd9c\uae4c\uc9c0 \ud588",
+                        "\uc81c\ucd9c\ud588"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc740\ud589 \ucabd\uc5d0\uc11c \uc2b9\uc778\uc774 \uac70\uc808",
+                        "\uc2b9\uc778\uc774 \uac70\uc808"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc800\ub141\uc774 \ub418\ub2c8",
+                        "\uc800\ub141\uc5d0"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub2e4\ub978 \uacb0\uc81c\uc218\ub2e8",
+                        "\ub2e4\ub978 \uacb0\uc81c \uc218\ub2e8"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc785\uae08\uc774 \ucc98\ub9ac\ub410",
+                        "\uc785\uae08\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub450 \uacbd\uae30\uc5d0 \uc5f0\ub2ec\uc544 \ubca0\ud305",
+                        "\ub450 \uacbd\uae30\uc5d0 \ubca0\ud305",
+                        "\uc5f0\ub2ec\uc544 \ubca0\ud305"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
                         || slotAppSearchResultUncertainNoInstallAttempt
                         || thirdPartyLinkFollowedBySelfFundingAndWager
+                        || thirdPartyLinkFundingRejectEveningReentryMultiWager
                         || sportsBettingAppInstallLoginOddsAmountNoSubmitAttempt
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
@@ -3867,6 +3998,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || fundingAmountDeleteBrowserExit459
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfSportsAppInstallLogin
+                        || thirdPartyLinkFundingRejectEveningReentryMultiWager
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsBettingLoginFundingAuthErrorPhoneInterrupted
                         || sportsBettingAppReinstallLoginAttempt
@@ -4068,6 +4200,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !casinoLoginPageCompanyPhoneExternalInterruption
                 && !casinoFundingPaymentMethodBankErrorAttempt
                 && !fundingSubmitBankAuthenticationErrorAttempt
+                && !thirdPartyLinkFundingRejectEveningReentryMultiWager
                 && !completedGamblingScheduleBasedExit
                 && !workAlarmExternalInterruption
                 && !selfLoginOddsAmountFamilyPhoneInterrupted
@@ -4108,6 +4241,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 (
                         containsRelapseSignal(analysisText)
                         || thirdPartyLinkFollowedBySelfFundingAndWager
+                        || thirdPartyLinkFundingRejectEveningReentryMultiWager
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
