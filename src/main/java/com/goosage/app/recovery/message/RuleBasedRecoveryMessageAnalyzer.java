@@ -3593,6 +3593,40 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub354 \ud558\uc9c0 \uc54a\uc558"
                 );
 
+        boolean currentUrgeNextDaySiteBlockAppDelete473 =
+                containsAny(
+                        analysisText,
+                        "\uc9c0\uae08\ub3c4 \uac00\ub054 \ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc740 \ub4e4",
+                        "\uac00\ub054 \ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc740 \ub4e4",
+                        "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc740 \ub4e4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\ub294 \ud589\ub3d9\uc740 \ud558\uc9c0 \uc54a",
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uc9c0\ub294 \uc54a"
+                );
+
+        boolean nextDaySiteBlockAndRelatedAppDelete473 =
+                containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c\ub0a0\uc5d0\ub294",
+                        "\ub2e4\uc74c\ub0a0",
+                        "\ub2e4\uc74c \ub0a0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ucc28\ub2e8",
+                        "\ud574\ub2f9 \uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ucc28\ub2e8",
+                        "\uc8fc\uc18c\ub97c \ucc28\ub2e8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uad00\ub828 \uc571\ub3c4 \ucc3e\uc544\uc11c \uc0ad\uc81c",
+                        "\uad00\ub828 \uc571\uc744 \ucc3e\uc544\uc11c \uc0ad\uc81c",
+                        "\uad00\ub828 \uc571\ub3c4 \uc0ad\uc81c",
+                        "\uad00\ub828 \uc571\uc744 \uc0ad\uc81c"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3603,6 +3637,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                         || currentOccasionalGamblingThought
+                        || currentUrgeNextDaySiteBlockAppDelete473
                         || selfUrgeAfterThirdPartyTrigger
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
@@ -4776,6 +4811,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || paymentMethodFamilyHandoffRecovery
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingAppLaterDeletedRecovery
+                        || nextDaySiteBlockAndRelatedAppDelete473
                         || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || wagerCompletedThenNextDayFamilyDeviceHandoff
                         || slotResultSearchThenNextDayAppDeletedRecovery
