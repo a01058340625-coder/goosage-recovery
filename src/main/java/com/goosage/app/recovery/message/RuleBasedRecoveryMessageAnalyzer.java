@@ -2988,7 +2988,12 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "다른 일을 하"
                 );
         boolean oddsSearchResultViewThenSelfStopped =
-                containsAny(
+                !containsAny(
+                        analysisText,
+                        "\ud55c \uacbd\uae30 \uc815\ub3c4 \uac78\uc5b4\ubcfc\uae4c",
+                        "\ud55c \uacbd\uae30 \uc815\ub3c4 \uac78\uc5b4 \ubcfc\uae4c"
+                )
+                && containsAny(
                         analysisText,
                         "\ubc30\ub2f9\uc774 \uc5b4\ub5bb\uac8c \ubd99\ub294",
                         "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubd24",
@@ -4365,7 +4370,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ud574\ubcfc\uae4c \uc2f6\uc740 \uc0dd\uac01",
                 "\uc18c\uc561\uc744 \uac78\uc5b4 \ubcfc\uae4c",
                 "\uac78\uc5b4 \ubcfc\uae4c \uace0\ubbfc",
-                "\uac78\uc5b4\ubcfc\uae4c \uace0\ubbfc"
+                "\uac78\uc5b4\ubcfc\uae4c \uace0\ubbfc",
+                "\ud55c \uacbd\uae30 \uc815\ub3c4 \uac78\uc5b4\ubcfc\uae4c",
+                "\ud55c \uacbd\uae30 \uc815\ub3c4 \uac78\uc5b4 \ubcfc\uae4c"
         );
 
         return gamblingContext && currentUrge;
