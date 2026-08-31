@@ -488,6 +488,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc5f0\ub2ec\uc544 \ubca0\ud305"
                 );
 
+        boolean socialGatheringThenSelfCasinoAppRelapse =
+                containsAny(
+                        normalized,
+                        "\uce5c\uad6c\ub4e4\uc774\ub791 \uc220\uc790\ub9ac",
+                        "\uce5c\uad6c\ub4e4\uacfc \uc220\uc790\ub9ac",
+                        "\uc220\uc790\ub9ac\ub97c \ub9c8\uce58\uace0 \uc9d1\uc5d0 \ub3cc\uc544\uc628"
+                )
+                && containsAny(
+                        normalized,
+                        "\uce74\uc9c0\ub178 \uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                        "\uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                        "\uc7ac\uc124\uce58"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc571\uc744 \uc2e4\ud589\ud558\uace0 \ub85c\uadf8\uc778",
+                        "\uc2e4\ud589\ud558\uace0 \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2ac\ub86f\uc744 \uba87 \ud310 \ub3cc\ub838",
+                        "\uc2ac\ub86f\uc744 \uba87 \ud310",
+                        "\ud55c \ubc88 \ub354 \ud588",
+                        "\ub2e4\uc2dc \ud50c\ub808\uc774"
+                );
+
         if (
                 looksLikeThirdPartyContext(normalized)
                 && !containsSelfGamblingAfterFriendIntroduction(normalized)
@@ -495,6 +522,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !selfCasinoSlotActionBeforeLateThirdPartyConversation
                 && !thirdPartyCasinoTriggerSelfCompletedSlot
                 && !thirdPartyLinkFollowedBySelfFundingAndWager
+                && !socialGatheringThenSelfCasinoAppRelapse
                 && !thirdPartyLinkFundingRejectEveningReentryHoldBypass
         ) {
             int selfSubjectIndex =
@@ -3247,6 +3275,57 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ud654\uba74\uc744 \ub2eb"
                 );
 
+        boolean casinoAppReinstallSlotRelapseFundingCancel =
+                containsAny(
+                        analysisText,
+                        "\uce74\uc9c0\ub178 \uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                        "\uc571\uc744 \ub2e4\uc2dc \uc124\uce58",
+                        "\uc7ac\uc124\uce58"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc571\uc744 \uc2e4\ud589\ud558\uace0 \ub85c\uadf8\uc778",
+                        "\uc2e4\ud589\ud558\uace0 \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2ac\ub86f\uc744 \uba87 \ud310 \ub3cc\ub838",
+                        "\uc2ac\ub86f\uc744 \uba87 \ud310",
+                        "\uccab \ubc88\uc9f8 \uacb0\uacfc\uac00 \ub098\uc628 \ub4a4 \ud55c \ubc88 \ub354",
+                        "\uae08\uc561\uc744 \uc870\uae08 \uc62c\ub824\uc11c \ub2e4\uc2dc \ud50c\ub808\uc774"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucd94\uac00 \uc785\uae08\uc744 \ud560\uae4c",
+                        "\ucd94\uac00\ub85c \uc785\uae08",
+                        "\uc785\uae08\uc744 \ud560\uae4c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uba54\ub274\uc5d0\uc11c \uae08\uc561\uc744 \uc785\ub825",
+                        "\uc785\uae08 \uba54\ub274",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uc81c\uc218\ub2e8\uae4c\uc9c0 \uace0\ub978",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \uace0\ub978",
+                        "\uacb0\uc81c\uc218\ub2e8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub9c8\uc9c0\ub9c9\uc5d0 \uadf8\ub0e5 \ucde8\uc18c",
+                        "\uadf8\ub0e5 \ucde8\uc18c",
+                        "\ucde8\uc18c\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub354 \ud560 \uc774\uc720\uac00 \uc5c6",
+                        "\uc571\uc744 \ub2eb\uc558",
+                        "\uc571\uc744 \ub2eb"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3272,6 +3351,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfLoginOddsAmountFamilyPhoneInterrupted
                         || fundingDeleteSelfExitLossRecoveryUrge
                         || spouseTriggerSelfFundingSocialInterrupted
+                        || casinoAppReinstallSlotRelapseFundingCancel
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
@@ -4136,6 +4216,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || slotAppReinstallLoginFundingAmountDeleteSelfStop
+                        || casinoAppReinstallSlotRelapseFundingCancel
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
@@ -4272,6 +4353,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || oddsSearchResultViewThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || slotAppReinstallLoginFundingAmountDeleteSelfStop
+                        || casinoAppReinstallSlotRelapseFundingCancel
                         || appReinstallLoginFundingScreenThenSelfStopped
                         || wagerScreenReachedBeforeAmountInputThenSelfExited
                         || wagerScreenReachedMotivationDropThenSelfExited
@@ -4362,6 +4444,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || completedSlotAdditionalFundingLossNextDayAppDelete
                         || completedSlotUrgeNegatedNextDayAppDelete
+                        || casinoAppReinstallSlotRelapseFundingCancel
                         || completedFundingSingleWagerPostNoActionRelapse
                         || fundingAuthFailureNextDayFundingWagerCompleted
                         || selfCompletedMultiWagerLateSpouseContext
