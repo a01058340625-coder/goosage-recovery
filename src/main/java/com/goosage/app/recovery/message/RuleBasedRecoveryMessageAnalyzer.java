@@ -3651,6 +3651,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc81c\ucd9c\ud558\uc9c0 \uc54a"
                 );
 
+        boolean fundingSubmitBankAuthenticationErrorAttempt =
+                containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uba54\ub274",
+                        "\uc785\uae08 \ud654\uba74",
+                        "\uacb0\uc81c\uc218\ub2e8 \uc120\ud0dd \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561\uae4c\uc9c0 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uc694\uccad\uae4c\uc9c0 \ud588",
+                        "\uc785\uae08 \uc694\uccad\uc744 \ud588",
+                        "\uc785\uae08 \uc694\uccad"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc740\ud589 \uc778\uc99d \ub2e8\uacc4\uc5d0\uc11c \uc624\ub958",
+                        "\uc740\ud589 \uc778\uc99d \ub2e8\uacc4\uc5d0 \uc624\ub958",
+                        "\uc740\ud589 \uc778\uc99d",
+                        "\uc778\uc99d \ub2e8\uacc4\uc5d0\uc11c \uc624\ub958"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucc98\ub9ac\uac00 \ub418\uc9c0 \uc54a",
+                        "\ucc98\ub9ac\ub418\uc9c0 \uc54a",
+                        "\uc785\uae08\uc774 \ub418\uc9c0 \uc54a"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -3719,6 +3751,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || casinoFundingAmountInputIdentityVerificationErrorAttempt
                         || fundingAmountInputErrorRetryExternalFailure
                         || casinoFundingPaymentMethodBankErrorAttempt
+                        || fundingSubmitBankAuthenticationErrorAttempt
                         || thirdPartyHistoryExplicitSelfSiteSearch
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
@@ -3855,6 +3888,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !sportsBettingLoginFundingAuthErrorPhoneInterrupted
                 && !casinoLoginPageCompanyPhoneExternalInterruption
                 && !casinoFundingPaymentMethodBankErrorAttempt
+                && !fundingSubmitBankAuthenticationErrorAttempt
                 && !completedGamblingScheduleBasedExit
                 && !workAlarmExternalInterruption
                         ? 1
