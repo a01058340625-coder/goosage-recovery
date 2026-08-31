@@ -4505,6 +4505,67 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb"
                 );
 
+        boolean passwordResetInternetRetryFundingWagerCompleted474 =
+                containsAny(
+                        analysisText,
+                        "\ube44\ubc00\ubc88\ud638 \uc624\ub958",
+                        "\ube44\ubc00\ubc88\ud638\uac00 \uc624\ub958",
+                        "\uc7ac\uc124\uc815 \uba54\uc77c",
+                        "\uc0c8 \ube44\ubc00\ubc88\ud638\ub97c \ub9cc\ub4e4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\ud55c \ub4a4",
+                        "\ub85c\uadf8\uc778\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uba54\ub274\ub97c \uc5f4",
+                        "\uc785\uae08\uba54\ub274\ub97c \uc5f4",
+                        "\uae08\uc561\uae4c\uc9c0 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc778\ud130\ub137\uc774 \ub04a\uacbc",
+                        "\uc778\ud130\ub137 \uc5f0\uacb0\uc774 \ub04a\uacbc",
+                        "\uc5f0\uacb0\uc774 \ub04a\uacbc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \uc5f0\uacb0",
+                        "\uc7ac\uc5f0\uacb0",
+                        "\uac19\uc740 \ud654\uba74\uc73c\ub85c \ub3cc\uc544\uac14",
+                        "\uac19\uc740 \ud654\uba74\uc73c\ub85c \ub3cc\uc544"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac",
+                        "\uc785\uae08\uc774 \ucc98\ub9ac\ub410",
+                        "\ub3c8\uc774 \ub4e4\uc5b4\uc628 \uac78 \ud655\uc778",
+                        "\ub3c8\uc774 \ub4e4\uc5b4\uc628"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacbd\uae30 \ud558\ub098\ub97c \uace8\ub77c",
+                        "\uacbd\uae30 \ud558\ub098\ub97c \uace8\ub790",
+                        "\ubca0\ud305 \uae08\uc561\uc744 \ub123",
+                        "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc81c\ucd9c\uae4c\uc9c0 \uc644\ub8cc",
+                        "\uc81c\ucd9c\uc744 \uc644\ub8cc",
+                        "\ubca0\ud305\uc744 \uc81c\ucd9c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uacfc\uac00 \ub098\uc628",
+                        "\uacb0\uacfc\uac00 \ub098\uc640",
+                        "\uacb0\uacfc\ub97c \ud655\uc778"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -4581,6 +4642,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || casinoFundingAmountInputIdentityVerificationErrorAttempt
                         || fundingAmountInputErrorRetryExternalFailure
                         || fundingAuthFailureNextDayFundingWagerCompleted
+                        || passwordResetInternetRetryFundingWagerCompleted474
                         || casinoFundingPaymentMethodBankErrorAttempt
                         || fundingSubmitBankAuthenticationErrorAttempt
                         || thirdPartyHistoryExplicitSelfSiteSearch
@@ -4778,6 +4840,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !selfLoginCompletedSlotUrgeNegated471
                 && !passwordResetCompletedWagerFriendContact467
                 && !explicitUrgeSearchInputConsideredNotStarted472
+                && !passwordResetInternetRetryFundingWagerCompleted474
                         ? 1
                         : 0;
 
@@ -4843,6 +4906,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || passwordResetCompletedWagerFriendContact467
                         || completedFundingSingleWagerPostNoActionRelapse
                         || fundingAuthFailureNextDayFundingWagerCompleted
+                        || passwordResetInternetRetryFundingWagerCompleted474
                         || selfCompletedMultiWagerLateSpouseContext
                         || multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         || wagerCompletedRelapseThenNextDayNoAction
