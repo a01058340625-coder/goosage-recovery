@@ -2955,6 +2955,43 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \ub4e4\uc9c0 \uc54a"
                 );
 
+        boolean selfLoginOddsAmountFamilyPhoneInterrupted =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305",
+                        "\ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                        "\ub85c\uadf8\uc778\ub3c4 \ud588",
+                        "\ub85c\uadf8\uc778\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\ub2f9\uc744 \ud655\uc778",
+                        "\ubc30\ub2f9\uc744 \ubcf4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc7a0\uae50 \uac78\uc5b4\ubcfc\uae4c",
+                        "\uc7a0\uae50 \uac78\uc5b4 \ubcfc\uae4c",
+                        "\uac78\uc5b4\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\ub294 \uc21c\uac04",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac00\uc871 \uc804\ud654\uac00 \uc640",
+                        "\ud734\ub300\ud3f0\uc73c\ub85c \uac00\uc871 \uc804\ud654",
+                        "\ud1b5\ud654\ub97c \ubc1b\uc558",
+                        "\ud1b5\ud654\ub97c \ubc1b"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -2976,6 +3013,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || bettingIntentPartialSearchInputExternalDistraction
+                        || selfLoginOddsAmountFamilyPhoneInterrupted
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
@@ -3763,6 +3801,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerScreenReachedMotivationDropThenSelfExited
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || bettingAppAmountInputPhoneInterruptedAttempt
+                        || selfLoginOddsAmountFamilyPhoneInterrupted
                         || sportsBettingAmountInputSiblingInterruptedAttempt
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
@@ -3920,6 +3959,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !fundingSubmitBankAuthenticationErrorAttempt
                 && !completedGamblingScheduleBasedExit
                 && !workAlarmExternalInterruption
+                && !selfLoginOddsAmountFamilyPhoneInterrupted
                         ? 1
                         : 0;
         boolean paymentMethodFamilyHandoffRecovery =
