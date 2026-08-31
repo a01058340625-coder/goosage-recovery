@@ -3749,6 +3749,47 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 )
                 && containsLoginScreenEntryAttempt(analysisText);
 
+        boolean fundingAuthFailureNextDayFundingWagerCompleted =
+                containsAny(
+                        analysisText,
+                        "\uc778\uc99d\ubc88\ud638\uac00 \uc624\uc9c0 \uc54a",
+                        "\uc778\uc99d\ubc88\ud638\uac00 \uc548 \uc640",
+                        "\uc778\uc99d\ubc88\ud638"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \uc694\uccad",
+                        "\ud55c \ubc88 \ub354 \uc694\uccad"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c\ub0a0",
+                        "\ub2e4\uc74c \ub0a0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\ub978 \uacb0\uc81c\uc218\ub2e8",
+                        "\ub2e4\ub978 \uacb0\uc81c \uc218\ub2e8"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac",
+                        "\uc785\uae08\uc740 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac",
+                        "\uc785\uae08\uc774 \uc815\uc0c1 \ucc98\ub9ac"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubca0\ud305\uae4c\uc9c0 \ub123\uc5c8",
+                        "\ubca0\ud305\uc744 \ub123\uc5c8",
+                        "\ubca0\ud305\uae4c\uc9c0 \ud588",
+                        "\ubca0\ud305\uc744 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uacfc\uac00 \ub098\uc628 \ub4a4",
+                        "\uacb0\uacfc\uac00 \ub098\uc628"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -3817,6 +3858,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputThenWagerCompleted
                         || casinoFundingAmountInputIdentityVerificationErrorAttempt
                         || fundingAmountInputErrorRetryExternalFailure
+                        || fundingAuthFailureNextDayFundingWagerCompleted
                         || casinoFundingPaymentMethodBankErrorAttempt
                         || fundingSubmitBankAuthenticationErrorAttempt
                         || thirdPartyHistoryExplicitSelfSiteSearch
@@ -4004,6 +4046,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenNextDayAppDeletedRecovery
                         || completedSlotAdditionalFundingLossNextDayAppDelete
                         || completedFundingSingleWagerPostNoActionRelapse
+                        || fundingAuthFailureNextDayFundingWagerCompleted
                         || selfCompletedMultiWagerLateSpouseContext
                         || multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         || wagerCompletedRelapseThenNextDayNoAction
