@@ -3505,6 +3505,38 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc2e4\uc81c\ub85c \ubca0\ud305\uc744 \ud588"
                 );
 
+        boolean completedWagerNextDaySpouseDisclosureCardHandoff470 =
+                containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uacb0\uc81c\uae4c\uc9c0 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac",
+                        "\uacb0\uc81c\uac00 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud55c \uacbd\uae30\uc5d0 \ubca0\ud305\ud588",
+                        "\ud55c \uacbd\uae30\uc5d0 \ubca0\ud305\ud558\uace0",
+                        "\uadf8 \ub3c8\uc73c\ub85c \ud55c \uacbd\uae30\uc5d0 \ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc74c\ub0a0",
+                        "\ub2e4\uc74c \ub0a0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\uc6b0\uc790\uc5d0\uac8c \uc0ac\uc2e4\ub300\ub85c \ub9d0\ud588",
+                        "\ubc30\uc6b0\uc790\uc5d0\uac8c \ub9d0\ud588",
+                        "\uac00\uc871\uc5d0\uac8c \uc774\uc57c\uae30"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uc81c\uce74\ub4dc\ub3c4 \ub2f9\ubd84\uac04 \ub9e1\uaca8\ub450\uae30\ub85c",
+                        "\uacb0\uc81c\uce74\ub4dc\ub97c \ub2f9\ubd84\uac04 \ub9e1\uaca8",
+                        "\uce74\ub4dc\ub3c4 \ub2f9\ubd84\uac04 \ub9e1\uaca8",
+                        "\uce74\ub4dc\ub97c \ub9e1\uaca8\ub450\uae30\ub85c"
+                );
+
         boolean wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery =
                 containsAny(
                         analysisText,
@@ -4370,6 +4402,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyHistoryExplicitSelfSiteSearch
                         || thirdPartyHistorySelfSiteSearchAttempt
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
+                        || completedWagerNextDaySpouseDisclosureCardHandoff470
                         || appStoreSearchExistenceConfirmedInstallNegatedSelfStop
                         || slotGamblingUrgeRelatedAppSearchInstallNegatedSelfStop
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
@@ -4598,6 +4631,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || completedSlotUrgeNegatedNextDayAppDelete
                         || wagerAmountInputDeletedThenDeviceHandoffRecovery
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
+                        || completedWagerNextDaySpouseDisclosureCardHandoff470
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                 )
                         ? 1
@@ -4622,6 +4656,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         || wagerCompletedRelapseThenNextDayNoAction
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
+                        || completedWagerNextDaySpouseDisclosureCardHandoff470
                 )
                         ? 1
                         : 0;
