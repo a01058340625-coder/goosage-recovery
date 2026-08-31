@@ -3683,6 +3683,17 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc785\uae08\uc774 \ub418\uc9c0 \uc54a"
                 );
 
+        boolean thirdPartyCasinoTriggerSelfSearchLoginScreenAttempt =
+                thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8",
+                        "\uc0ac\uc774\ud2b8\uac00 \uc544\uc9c1 \uac80\uc0c9\ub418\ub294\uc9c0",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                        "\uac80\uc0c9 \uacb0\uacfc"
+                )
+                && containsLoginScreenEntryAttempt(analysisText);
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
@@ -3762,6 +3773,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfSiteAccessLoginIdInputPasswordNotEnteredThenSelfStopped
                         || thirdPartyTriggerSelfSiteAccessLoginIdInputThenSelfStopped
                         || casinoSiteNameSearchLoginScreenReachedAttempt
+                        || thirdPartyCasinoTriggerSelfSearchLoginScreenAttempt
                         || thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped
                         || thirdPartyCasinoTriggerSelfSlotAppSearchAutocompleteAttempt
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
@@ -4997,7 +5009,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uac14",
                 "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \ud55c\ucc38 \uc788",
                 "\ub85c\uadf8\uc778 \ud654\uba74\uc774 \ub098\uc624\uc790",
-                "\ub85c\uadf8\uc778 \ud654\uba74\uc774 \ub098\uc640"
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc774 \ub098\uc640",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uc5f4\uc5c8",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uc744 \uc5f4\uc5c8",
+                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \uc5f4"
         );
 
         boolean passwordEntryConsideredThenClosed =
@@ -5019,6 +5034,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc544\uc774\ub514\uc640 \ube44\ubc00\ubc88\ud638\ub294 \uc785\ub825\ud558\uc9c0 \uc54a\uc558",
                 "\uc544\uc774\ub514\ub098 \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud558\uac70\ub098 \ub3c8\uc744 \ub123\uc9c0\ub294 \uc54a",
                 "\ub85c\uadf8\uc778\ud558\uc9c0 \uc54a\uc558",
+                "\ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uace0",
+                "\ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558",
                 "\uc2e4\uc81c \ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558",
                 "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193",
                 "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub1a8",
