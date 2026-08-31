@@ -1127,6 +1127,37 @@ public class RuleBasedRecoveryMessageAnalyzer {
             selfContextExtracted = true;
         }
 
+        boolean thirdPartyRecoveryTriggerSelfCounselingLookup469 =
+                containsAny(
+                        normalized,
+                        "\uc0c1\ub2f4 \ubc29\ubc95\uc744 \ucc3e\uc544\ubd24",
+                        "\uad00\ub828 \uc0c1\ub2f4 \ubc29\ubc95\uc744 \ucc3e\uc544\ubd24",
+                        "\uc0c1\ub2f4 \ubc29\ubc95\uc744 \ucc3e\uc544"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc0c1\ub2f4\uae30\uad00 \ubc88\ud638\ub97c \ud655\uc778",
+                        "\uc0c1\ub2f4 \uae30\uad00 \ubc88\ud638\ub97c \ud655\uc778",
+                        "\ubc88\ud638\ub97c \ud655\uc778"
+                )
+                && containsAny(
+                        normalized,
+                        "\uba54\ubaa8\uc7a5\uc5d0 \uc800\uc7a5",
+                        "\uc800\uc7a5\uae4c\uc9c0 \ud588",
+                        "\ubc88\ud638\ub9cc \uac00\uc9c0\uace0"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc804\ud654 \ubc84\ud2bc\uc744 \ub204\ub974\uc9c0\ub294 \uc54a\uc558",
+                        "\uc804\ud654 \ubc84\ud2bc\uc744 \ub204\ub974\uc9c0 \uc54a\uc558",
+                        "\uc2e4\uc81c \uc5f0\ub77d\uc740 \ud558\uc9c0 \uc54a\uc558",
+                        "\uc804\ud654\ud560 \uc0dd\uac01\uae4c\uc9c0\ub294 \ub4e4\uc9c0 \uc54a\uc558"
+                );
+
+        if (thirdPartyRecoveryTriggerSelfCounselingLookup469) {
+            selfContextExtracted = true;
+        }
+
         boolean priorGamblingContextForCurrentThought =
                 containsAny(
                         analysisText,
@@ -5717,20 +5748,31 @@ public class RuleBasedRecoveryMessageAnalyzer {
         boolean recoveryPhoneLookupWithoutCall =
                 containsAny(
                         text,
-                        "상담을 받아볼까",
-                        "상담 받아볼까"
+                        "\uc0c1\ub2f4\uc744 \ubc1b\uc544\ubcfc\uae4c",
+                        "\uc0c1\ub2f4 \ubc1b\uc544\ubcfc\uae4c",
+                        "\uc0c1\ub2f4 \ubc29\ubc95\uc744 \ucc3e\uc544",
+                        "\uad00\ub828 \uc0c1\ub2f4 \ubc29\ubc95\uc744 \ucc3e\uc544"
                 )
                 && containsAny(
                         text,
-                        "번호를 검색해서",
-                        "전화번호를 검색해서",
-                        "번호를 검색했"
+                        "\ubc88\ud638\ub97c \uac80\uc0c9\ud574\uc11c",
+                        "\uc804\ud654\ubc88\ud638\ub97c \uac80\uc0c9\ud574\uc11c",
+                        "\ubc88\ud638\ub97c \uac80\uc0c9\ud588",
+                        "\uc0c1\ub2f4\uae30\uad00 \ubc88\ud638\ub97c \ud655\uc778",
+                        "\uc0c1\ub2f4 \uae30\uad00 \ubc88\ud638\ub97c \ud655\uc778",
+                        "\uc804\ud654\ubc88\ud638\ub97c \ud655\uc778",
+                        "\ubc88\ud638\ub97c \ud655\uc778"
                 )
                 && containsAny(
                         text,
-                        "전화를 걸지는 못했",
-                        "전화를 걸지 못했",
-                        "전화는 걸지 않았"
+                        "\uc804\ud654\ub97c \uac78\uc9c0\ub294 \ubabb\ud588",
+                        "\uc804\ud654\ub97c \uac78\uc9c0 \ubabb\ud588",
+                        "\uc804\ud654\ub294 \uac78\uc9c0 \uc54a\uc558",
+                        "\uc804\ud654 \ubc84\ud2bc\uc744 \ub204\ub974\uc9c0\ub294 \uc54a\uc558",
+                        "\uc804\ud654 \ubc84\ud2bc\uc744 \ub204\ub974\uc9c0 \uc54a\uc558",
+                        "\uc2e4\uc81c \uc5f0\ub77d\uc740 \ud558\uc9c0 \uc54a\uc558",
+                        "\uc2e4\uc81c\ub85c \uc5f0\ub77d\ud558\uc9c0 \uc54a\uc558",
+                        "\uc804\ud654\ud560 \uc0dd\uac01\uae4c\uc9c0\ub294 \ub4e4\uc9c0 \uc54a\uc558"
                 );
 
         if (recoveryPhoneLookupWithoutCall) {
