@@ -3025,7 +3025,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \uc0dd\uae30\uc9c0 \uc54a",
                         "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc740 \uc0dd\uae30\uc9c0 \uc54a",
                         "\ub354 \ud558\uace0 \uc2f6\uc9c0 \uc54a",
-                        "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \ub4e4\uc9c0 \uc54a"
+                        "\ub354 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \ub4e4\uc9c0 \uc54a",
+                        "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc740 \uc5c6\uc5c8",
+                        "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \uc5c6\uc5c8"
                 );
 
         boolean selfLoginOddsAmountFamilyPhoneInterrupted =
@@ -3149,6 +3151,42 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub450 \uacbd\uae30\uc5d0 \uc5f0\ub2ec\uc544 \ubca0\ud305",
                         "\ub450 \uacbd\uae30\uc5d0 \ubca0\ud305",
                         "\uc5f0\ub2ec\uc544 \ubca0\ud305"
+                );
+
+        boolean partialSearchAutocompleteUrgeNegatedNaturalDrop =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubcf4\uace0 \uc2f6",
+                        "\ubc30\ub2f9\uc744 \ucc3e\uc544\ubcf4\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac80\uc0c9\ucc3d\uc5d0 \uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uba87 \uae00\uc790\ub9cc \uc785\ub825",
+                        "\uc0ac\uc774\ud2b8 \uc774\ub984\uc744 \uba87 \uae00\uc790\ub9cc \uc785\ub825",
+                        "\uba87 \uae00\uc790\ub9cc \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc790\ub3d9\uc644\uc131\ub9cc \ud655\uc778",
+                        "\uc790\ub3d9\uc644\uc131\uc744 \ud655\uc778",
+                        "\uc790\ub3d9\uc644\uc131\ub9cc \ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc740 \uc5c6\uc5c8",
+                        "\ud558\uace0 \uc2f6\uc740 \uc0dd\uac01\uc774 \uc5c6\uc5c8",
+                        "\ud558\uace0 \uc2f6\uc9c0\ub294 \uc54a\uc558"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \uacbd\uae30 \uc790\uccb4\ub97c \ubcf4\uac8c \ub410",
+                        "\uacbd\uae30 \uc790\uccb4\ub97c \ubcf4\uac8c \ub410",
+                        "\ub2e4\uc74c\ub0a0\uc5d0\ub3c4 \ubcc4\ub2e4\ub978 \uad00\uc2ec\uc740 \uc0dd\uae30\uc9c0 \uc54a"
                 );
 
         int urgeLogDelta =
@@ -4034,6 +4072,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || completedSlotAdditionalFundingLossNextDayAppDelete
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
                         || sportsBettingSearchAutocompleteThenSelfStopped
+                        || partialSearchAutocompleteUrgeNegatedNaturalDrop
                         || pastSportsBettingSiteSearchResultViewedThenSelfStopped
                         || bettingAmountViewedThenSelfStopped
                         || slotAppReinstallLoginFundingAmountDeleteSelfStop
@@ -4204,6 +4243,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !completedGamblingScheduleBasedExit
                 && !workAlarmExternalInterruption
                 && !selfLoginOddsAmountFamilyPhoneInterrupted
+                && !partialSearchAutocompleteUrgeNegatedNaturalDrop
                         ? 1
                         : 0;
         boolean paymentMethodFamilyHandoffRecovery =
