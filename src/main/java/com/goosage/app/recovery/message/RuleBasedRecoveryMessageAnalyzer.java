@@ -3193,6 +3193,60 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2e4\uc74c\ub0a0\uc5d0\ub3c4 \ubcc4\ub2e4\ub978 \uad00\uc2ec\uc740 \uc0dd\uae30\uc9c0 \uc54a"
                 );
 
+        boolean spouseTriggerSelfFundingSocialInterrupted =
+                containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub2e4\uc2dc \ub4e4\uc5b4\uac00",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub2e4\uc2dc \ub4e4\uc5b4\uac00 \ubd24",
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac00 \ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\ud55c \ub2e4\uc74c",
+                        "\ub85c\uadf8\uc778\ud558\uace0",
+                        "\ub85c\uadf8\uc778\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc783\uc5c8\ub358 \uae08\uc561\uc744 \uacc4\uc0b0",
+                        "\uc783\uc740 \uae08\uc561\uc744 \uacc4\uc0b0",
+                        "\uae08\uc561\uc744 \uacc4\uc0b0\ud574 \ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub3c8\uc744 \ub123\uc5b4 \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                        "\ucd94\uac00\ub85c \ub3c8\uc744 \ub123\uc5b4 \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                        "\ub9cc\ud68c\ud558\uace0 \uc2f6"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uc2e4\uc81c\ub85c \uc785\uae08 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uc785\uae08 \uae08\uc561"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uc81c \ud654\uba74\uae4c\uc9c0 \uac14",
+                        "\uacb0\uc81c \ud654\uba74\uae4c\uc9c0",
+                        "\uacb0\uc81c \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc81c\ucd9c\ud558\uc9c0\ub294 \uc54a",
+                        "\uc81c\ucd9c\ud558\uc9c0 \uc54a"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ubc30\uc6b0\uc790\uac00 \uc544\uae4c \uc774\uc57c\uae30\ub97c \ub2e4\uc2dc \uaebc\ub0b4",
+                        "\ubc30\uc6b0\uc790\uac00",
+                        "\uc606\uc5d0 \uc549\uc558"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud654\uba74\uc744 \ub2eb\uc558",
+                        "\ud654\uba74\uc744 \ub2eb"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -3217,6 +3271,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || bettingIntentPartialSearchInputExternalDistraction
                         || selfLoginOddsAmountFamilyPhoneInterrupted
                         || fundingDeleteSelfExitLossRecoveryUrge
+                        || spouseTriggerSelfFundingSocialInterrupted
                         || relatedAppViewedThenDeleted
                         || relatedAppPresenceSearchThenSelfStopped
                         || relatedInterfaceReachedThenSelfStopped
@@ -4054,6 +4109,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || casinoSiteAccessLoginButtonClickAttempt
                         || bettingUrgeSiteLoginFundingPhoneInterrupted
                         || loginCompletedFundingScreenPhoneInterruptedAttempt
+                        || spouseTriggerSelfFundingSocialInterrupted
                         || loginSuccessFundingAmountBatteryInterruptedAttempt
                         || casinoAppInstallLoginFailurePhoneInterruptedAttempt
                         || loginClickPasswordFailureAttempt
@@ -4247,6 +4303,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && !completedGamblingScheduleBasedExit
                 && !workAlarmExternalInterruption
                 && !selfLoginOddsAmountFamilyPhoneInterrupted
+                && !spouseTriggerSelfFundingSocialInterrupted
                 && !partialSearchAutocompleteUrgeNegatedNaturalDrop
                         ? 1
                         : 0;
