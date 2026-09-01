@@ -261,13 +261,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         normalized,
                         "\uce5c\uad6c\uac00 \uc54c\ub824\uc900",
                         "\uce5c\uad6c\uac00 \uc54c\ub824\uc918\uc11c",
-                        "\uce5c\uad6c\uac00 \uc54c\ub824"
+                        "\uce5c\uad6c\uac00 \uc54c\ub824",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc900",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc918\uc11c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4"
                 )
                 && containsAny(
                         normalized,
                         "\ubca0\ud305 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
                         "\ub3c4\ubc15 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
-                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d"
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uc7a0\uae50 \ub20c\ub7ec\ubd24",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ub20c\ub7ec\ubd24",
+                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uc7a0\uae50 \ub20c\ub7ec\ubd24"
                 )
                 && containsAny(
                         normalized,
@@ -276,7 +282,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         normalized,
                         "\uae08\uc561\uc740 \ub123\uc9c0 \uc54a\uc558",
-                        "\uae08\uc561\uc744 \ub123\uc9c0 \uc54a\uc558"
+                        "\uae08\uc561\uc744 \ub123\uc9c0 \uc54a\uc558",
+                        "\uae08\uc561\uc744 \uc801\uae30 \uc804",
+                        "\uae08\uc561\uc744 \uc4f0\uae30 \uc804",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\uae30 \uc804"
                 );
 
         boolean thirdPartyLinkSelfSiteAccessPreLoginSelfStop =
@@ -1196,7 +1205,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                             normalized,
                             "\ubca0\ud305 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
                             "\ub3c4\ubc15 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
-                            "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d"
+                            "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                            "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uc7a0\uae50 \ub20c\ub7ec\ubd24",
+                            "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \ub20c\ub7ec\ubd24",
+                            "\uc0ac\uc774\ud2b8 \uc8fc\uc18c\ub97c \uc7a0\uae50 \ub20c\ub7ec\ubd24"
                     );
                 }
 
@@ -1957,19 +1969,26 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
                         "\ub85c\uadf8\uc778\uae4c\uc9c0\ub294 \ud574\ubc84\ub838",
                         "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud574\ubc84\ub838",
-                        "\ub85c\uadf8\uc778\uae4c\uc9c0\ub294 \ud588"
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0\ub294 \ud588",
+                        "\uacb0\uad6d \ub85c\uadf8\uc778\ud588",
+                        "\ub85c\uadf8\uc778\ud588\uace0",
+                        "\ub85c\uadf8\uc778\uc744 \ud588\uace0"
                 )
                 && containsAny(
                         analysisText,
                         "\uc785\uae08 \ud654\uba74\uc744 \ubcf4\ub2e4\uac00",
                         "\uc785\uae08 \ud654\uba74\uc744 \ubcf4\uace0",
-                        "\uc785\uae08 \ud654\uba74\uc5d0\uc11c"
+                        "\uc785\uae08 \ud654\uba74\uc5d0\uc11c",
+                        "\uc785\uae08 \ud654\uba74\uae4c\uc9c0 \ub4e4\uc5b4\uac14",
+                        "\uc785\uae08 \ud654\uba74\uc73c\ub85c \ub4e4\uc5b4\uac14"
                 )
                 && containsAny(
                         analysisText,
                         "\uadf8\ub0e5 \ub098\uc654",
                         "\uadf8\ub0e5 \ub098\uc628",
-                        "\ud654\uba74\uc5d0\uc11c \ub098\uc654"
+                        "\ud654\uba74\uc5d0\uc11c \ub098\uc654",
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb\uc558",
+                        "\ube0c\ub77c\uc6b0\uc800\ub97c \ub2eb"
                 );
 
         boolean gamblingSiteResultViewThenSelfExited =
@@ -7618,12 +7637,66 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 text,
                 "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8",
                 "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8",
-                "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
-                "\ubca0\ud305 \uc0ac\uc774\ud2b8",
-                "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8",
                 "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacf3",
                 "\uadf8\ub54c \uc4f0\ub358 \uacc4\uc815"
         );
+
+        boolean explicitReentryContext =
+                containsAny(
+                        text,
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac14",
+                        "\ub2e4\uc2dc \uc811\uc18d",
+                        "\uc7ac\uc811\uc18d",
+                        "\ub610 \ub85c\uadf8\uc778"
+                )
+                && containsAny(
+                        text,
+                        "\ub3c4\ubc15 \uc0ac\uc774\ud2b8",
+                        "\ubca0\ud305 \uc0ac\uc774\ud2b8",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8"
+                );
+
+        boolean currentThirdPartyProvidedLinkFirstEntry =
+                containsAny(
+                        text,
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc900",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4\uc918\uc11c",
+                        "\uce5c\uad6c\uac00 \ubcf4\ub0b4",
+                        "\uce5c\uad6c\uac00 \uc54c\ub824\uc900",
+                        "\uce5c\uad6c\uac00 \uc54c\ub824\uc918\uc11c"
+                )
+                && containsAny(
+                        text,
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8 \uc8fc\uc18c",
+                        "\uce74\uc9c0\ub178 \ub9c1\ud06c",
+                        "\uc0ac\uc774\ud2b8 \uc8fc\uc18c",
+                        "\ub9c1\ud06c"
+                )
+                && !containsAny(
+                        text,
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8",
+                        "\uc608\uc804\uc5d0 \ud558\ub358 \uc0ac\uc774\ud2b8",
+                        "\uc608\uc804\uc5d0 \ubcf4\ub358 \uacf3",
+                        "\uadf8\ub54c \uc4f0\ub358 \uacc4\uc815",
+                        "\ub2e4\uc2dc \ub4e4\uc5b4\uac14",
+                        "\ub610 \ub85c\uadf8\uc778"
+                );
+
+        boolean resumedAfterAbstinenceContext =
+                containsAny(
+                        text,
+                        "\ud55c\ub3d9\uc548 \uc548 \ud558\ub2e4\uac00",
+                        "\ud55c\ub3d9\uc548 \ud558\uc9c0 \uc54a\ub2e4\uac00"
+                )
+                && containsAny(
+                        text,
+                        "\ub2e4\uc2dc \ubca0\ud305 \uc0ac\uc774\ud2b8",
+                        "\ub2e4\uc2dc \ub3c4\ubc15 \uc0ac\uc774\ud2b8",
+                        "\ub2e4\uc2dc \uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8",
+                        "\ubca0\ud305 \uc0ac\uc774\ud2b8\ub97c \ubcf4\uac8c",
+                        "\ub3c4\ubc15 \uc0ac\uc774\ud2b8\ub97c \ubcf4\uac8c",
+                        "\uce74\uc9c0\ub178 \uc0ac\uc774\ud2b8\ub97c \ubcf4\uac8c"
+                );
 
         boolean blockedAccountFundingContext =
                 containsAny(text, "\uacc4\uc815 \ub9c9\uc544\ub193", "\uacc4\uc815\uc744 \ub9c9\uc544\ub193")
@@ -7649,9 +7722,15 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ubca0\ud305\ud588"
         );
 
-        return (priorSiteContext || blockedAccountFundingContext)
+        return (
+                        priorSiteContext
+                        || explicitReentryContext
+                        || resumedAfterAbstinenceContext
+                        || blockedAccountFundingContext
+                )
                 && loginCompleted
-                && !fundingOrWagerCompleted;
+                && !fundingOrWagerCompleted
+                && !currentThirdPartyProvidedLinkFirstEntry;
     }
 
     private boolean containsPostBlockWagerAttemptFailed(
