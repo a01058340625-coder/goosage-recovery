@@ -4523,6 +4523,34 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc81c\ucd9c\ud558\uc9c0 \uc54a"
                 );
 
+        boolean fundingPaymentMethodSelectedPreSubmitSelfStop479 =
+                containsAny(
+                        analysisText,
+                        "\uc785\uae08 \uba54\ub274",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uacfc \uacb0\uc81c \ubc29\ubc95\uae4c\uc9c0 \uace8\ub790",
+                        "\uae08\uc561\uacfc \uacb0\uc81c \ubc29\ubc95\uc744 \uace8\ub790",
+                        "\uacb0\uc81c \ubc29\ubc95\uae4c\uc9c0 \uace8\ub790",
+                        "\uacb0\uc81c\uc218\ub2e8\uae4c\uc9c0 \uc120\ud0dd"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub9c8\uc9c0\ub9c9 \uc81c\ucd9c \ubc84\ud2bc\uc744 \ub204\ub974\uae30 \uc9c1\uc804\uc5d0 \uba48\ucdb0",
+                        "\uc81c\ucd9c \ubc84\ud2bc\uc744 \ub204\ub974\uae30 \uc9c1\uc804\uc5d0 \uba48\ucdb0",
+                        "\ub204\ub974\uae30 \uc9c1\uc804\uc5d0 \uba48\ucdb0",
+                        "\ub9c8\uc9c0\ub9c9 \uc81c\ucd9c \ubc84\ud2bc\uc744 \ub204\ub974\uae30 \uc9c1\uc804\uc5d0 \uba48\ucdc4",
+                        "\uc81c\ucd9c \ubc84\ud2bc\uc744 \ub204\ub974\uae30 \uc9c1\uc804\uc5d0 \uba48\ucdc4",
+                        "\ub204\ub974\uae30 \uc9c1\uc804\uc5d0 \uba48\ucdc4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub3c8\uc774 \uc2e4\uc81c\ub85c \ube60\uc838\ub098\uac04 \uac74 \uc544\ub2c8",
+                        "\uc2e4\uc81c\ub85c \ube60\uc838\ub098\uac04 \uac74 \uc544\ub2c8"
+                );
+
         boolean fundingSubmitBankAuthenticationErrorAttempt =
                 containsAny(
                         analysisText,
@@ -4712,6 +4740,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || explicitUrgeNegationCasinoSearchAccessSelfStop
                         || searchLoginFundingAmountSelfStopAttempt
                         || fundingAmountInputDeletedThenSelfExited
+                        || fundingPaymentMethodSelectedPreSubmitSelfStop479
                         || fundingAmountDeleteBrowserExit459
                         || lossRecoveryLoginFundingTransferSelfStop
                         || thirdPartyTriggerSelfSportsAppInstallLogin
@@ -4950,6 +4979,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerAmountInputPhoneInterruptedNextDaySelfExited
                         || wagerAmountInputDeletedThenSelfExited
                         || fundingAmountInputDeletedThenSelfExited
+                        || fundingPaymentMethodSelectedPreSubmitSelfStop479
                         || fundingAmountDeleteBrowserExit459
                         || thirdPartyLinkSelfWagerInputDeleteSelfStop
                         || bettingAppAmountInputUncertainSubmitSelfCancel
@@ -5664,12 +5694,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
     private boolean containsLossRecoveryGamblingUrge(
             String text
     ) {
-        boolean gamblingContext = containsAny(
-                text,
-                "\ub3c4\ubc15",
-                "\ubca0\ud305",
-                "\uce74\uc9c0\ub178"
-        );
+        boolean gamblingContext =
+                containsAny(
+                        text,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\uce74\uc9c0\ub178"
+                )
+                || (
+                        containsAny(
+                                text,
+                                "\uc608\uc804\uc5d0 \uc4f0\ub358 \uc0ac\uc774\ud2b8",
+                                "\uc608\uc804\uc5d0 \uc774\uc6a9\ud558\ub358 \uc0ac\uc774\ud2b8"
+                        )
+                        && containsAny(
+                                text,
+                                "\ub2e4\uc2dc \ub4e4\uc5b4\uac00",
+                                "\ub2e4\uc2dc \ub4e4\uc5b4\uac14"
+                        )
+                        && containsAny(
+                                text,
+                                "\uc785\uae08 \uba54\ub274",
+                                "\uc785\uae08 \ud654\uba74"
+                        )
+                );
 
         boolean lossRecoveryThought = containsAny(
                 text,
@@ -5685,7 +5733,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub9cc\ud68c\ud574\uc57c\uaca0",
                 "\uc783\uc740 \ub3c8\uc744 \ub9cc\ud68c\ud558\ub824\uace0",
                 "\ub9cc\ud68c\ud558\ub824\uace0 \ud55c \ubc88 \ub354 \uc785\uae08",
-                "\ud55c \ubc88 \ub354 \uc785\uae08\ud560\uae4c"
+                "\ud55c \ubc88 \ub354 \uc785\uae08\ud560\uae4c",
+                "\ubcf8\uc804 \uc0dd\uac01",
+                "\ubcf8\uc804 \uc0dd\uac01\uc774 \ub0ac",
+                "\ubcf8\uc804\uc744 \ucc3e\uace0 \uc2f6"
         );
 
         return gamblingContext && lossRecoveryThought;
