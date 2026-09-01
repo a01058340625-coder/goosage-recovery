@@ -1007,6 +1007,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\uc624\ub298\uc740 \ub2e4\uc2dc \uc811\uc18d\ud558\uc9c0 \uc54a\uc558"
                         );
 
+                boolean thirdPartySlotTriggerSelfPersistentUrgeLoginScreenStop480 =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\uc9d1\uc5d0 \ub3cc\uc544\uc640\uc11c",
+                                "\uc9d1\uc5d0 \uc640\uc11c"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uacc4\uc18d \uc0dd\uac01\uc774 \ub098",
+                                "\uacc4\uc18d \uc0dd\uac01\uc774 \ub098\ub354",
+                                "\uad1c\ud788 \uacc4\uc18d \uc0dd\uac01"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc0ac\uc774\ud2b8\ub97c \uc9c1\uc811 \ucc3e\uc544",
+                                "\uc0ac\uc774\ud2b8\ub97c \uc9c1\uc811 \ucc3e",
+                                "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544 \ub4e4\uc5b4\uac00",
+                                "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544 \ub4e4\uc5b4\uac14"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \uba48\ucdc4",
+                                "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \uba48\ucd94",
+                                "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0"
+                        );
+
                 boolean thirdPartyBettingTriggerSelfGameSiteSearch =
                         thirdPartyGamblingContextForSelfUrge
                         && containsAny(
@@ -1022,6 +1049,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyConversationOldCasinoAppCompletedSlot475
                         || thirdPartyLinkSelfLoginCompletedSlot471
                         || thirdPartyBettingTriggerSelfGameSiteSearch
+                        || thirdPartySlotTriggerSelfPersistentUrgeLoginScreenStop480
                         || thirdPartyBettingTriggerSelfSearchConsiderationUrge
                         || thirdPartyCasinoTriggerSelfAdLoginIdInput
                         || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
@@ -1115,6 +1143,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                             normalized,
                             "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud574\uc11c \uc811\uc18d",
                             "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                    );
+                }
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartySlotTriggerSelfPersistentUrgeLoginScreenStop480
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc9d1\uc5d0 \ub3cc\uc544\uc640\uc11c",
+                            "\uc9d1\uc5d0 \uc640\uc11c",
+                            "\uacc4\uc18d \uc0dd\uac01\uc774 \ub098",
+                            "\uc0ac\uc774\ud2b8\ub97c \uc9c1\uc811 \ucc3e"
                     );
                 }
 
@@ -1729,6 +1770,29 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ud655\uc778",
                         "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0",
                         "\ub85c\uadf8\uc778 \ud654\uba74"
+                );
+
+        boolean thirdPartySlotPersistentUrgeSiteAccessLoginScreenStop480 =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        analysisText,
+                        "\uacc4\uc18d \uc0dd\uac01\uc774 \ub098",
+                        "\uacc4\uc18d \uc0dd\uac01\uc774 \ub098\ub354",
+                        "\uad1c\ud788 \uacc4\uc18d \uc0dd\uac01"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\ub97c \uc9c1\uc811 \ucc3e\uc544 \ub4e4\uc5b4\uac00",
+                        "\uc0ac\uc774\ud2b8\ub97c \uc9c1\uc811 \ucc3e\uc544 \ub4e4\uc5b4\uac14",
+                        "\uc0ac\uc774\ud2b8\ub97c \uc9c1\uc811 \ucc3e\uc544",
+                        "\uc0ac\uc774\ud2b8\ub97c \uc9c1\uc811 \ucc3e"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \uba48\ucdc4",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uc5d0\uc11c \uba48\ucd94",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0"
                 );
 
         boolean thirdPartyCasinoTriggerSelfSearchLoginScreenThenSelfStopped =
@@ -3777,6 +3841,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || currentUrgeNextDaySiteBlockAppDelete473
                         || selfUrgeAfterThirdPartyTrigger
                         || selfLossThoughtAfterThirdPartyTrigger
+                        || thirdPartySlotPersistentUrgeSiteAccessLoginScreenStop480
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSearchInputAfterThirdPartyTrigger
                         || selfSiteSearchAfterThirdPartyTrigger
@@ -4772,6 +4837,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || bettingIntentPartialSearchInputExternalDistraction
                         || partialSearchInputThenSelfStopped
                         || thirdPartyTriggerSelfPartialSearchInputThenSelfStopped
+                        || thirdPartySlotPersistentUrgeSiteAccessLoginScreenStop480
                         || thirdPartyLinkCasinoAccessThenSelfStopped
                         || lateDomainCasinoAccessThenSelfStopped
                         || siteNameInputCompleteThenOtherTaskSelfStopped
@@ -4992,6 +5058,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyCasinoTriggerSelfSearchAppInfoInstallNegated
                         || thirdPartySlotTriggerSelfAppInstallExecuteSelfStopNextDayDelete
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
+                        || thirdPartySlotPersistentUrgeSiteAccessLoginScreenStop480
                         || loginCompletedWagerScreenSelfExitNextDayAppDeleteRecovery
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
                 )
