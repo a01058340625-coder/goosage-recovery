@@ -5766,7 +5766,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         text,
                         "\ub3c4\ubc15",
                         "\ubca0\ud305",
-                        "\uce74\uc9c0\ub178"
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f",
+                        "\uc2ac\ub86f \uac8c\uc784"
                 )
                 || (
                         containsAny(
@@ -5794,6 +5796,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\ub418\ucc3e\uace0 \uc2f6",
                 "\ud55c \ubc88\uc5d0 \ub9cc\ud68c\ud558\ub824\ub294 \uc0dd\uac01",
                 "\ud55c \ubc88\uc5d0 \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                "\uc783\uc740 \uae08\uc561\uc744 \ub2e4\uc2dc \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                "\uc783\uc740 \uae08\uc561\uc744 \ub9cc\ud68c\ud558\uace0 \uc2f6",
+                "\ub2e4\uc2dc \ub9cc\ud68c\ud558\uace0 \uc2f6\ub2e4\ub294 \uc0dd\uac01",
+                "\ub9cc\ud68c\ud558\uace0 \uc2f6\ub2e4\ub294 \uc0dd\uac01",
                 "\ud55c\ubc88\uc5d0 \ub9cc\ud68c\ud558\uace0 \uc2f6",
                 "\ub9cc\ud68c\ud574\uc57c\uaca0\ub2e4\ub294 \uc0dd\uac01",
                 "\ub9cc\ud68c\ud574\uc57c\uaca0\ub2e4",
@@ -7384,6 +7390,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub9ac\uace0",
                 "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub9ac\uace0",
                 "\uc2ac\ub86f\uc744 \ub3cc\ub9ac\uace0",
+                "\uc2ac\ub86f\uc744 \uc5ec\ub7ec \ubc88 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \uc5ec\ub7ec\ubc88 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \uc5ec\ub7ec \ubc88 \ub3cc\ub9ac",
+                "\uc2ac\ub86f\uc744 \uc5ec\ub7ec\ubc88 \ub3cc\ub9ac",
                 "\uc2ac\ub86f\uc744 \ud55c \ubc88 \ub3cc\ub838",
                 "\uc2ac\ub86f\uc744 \ud55c\ubc88 \ub3cc\ub838",
                 "\uacb0\uacfc\uac00 \ub098\uc628 \ub4a4\uc5d0 \ud55c \ubc88 \ub354 \ub20c\ub800",
