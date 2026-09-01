@@ -4768,6 +4768,9 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 containsAny(
                         analysisText,
                         "\ube44\ubc00\ubc88\ud638 \uc624\ub958",
+                        "\ube44\ubc00\ubc88\ud638\uac00 \uacc4\uc18d \ud2c0\ub838",
+                        "\ube44\ubc00\ubc88\ud638\uac00 \ud2c0\ub838",
+                        "\ube44\ubc00\ubc88\ud638 \uc7ac\uc124\uc815",
                         "\ube44\ubc00\ubc88\ud638\uac00 \uc624\ub958",
                         "\uc7ac\uc124\uc815 \uba54\uc77c",
                         "\uc0c8 \ube44\ubc00\ubc88\ud638\ub97c \ub9cc\ub4e4"
@@ -4785,44 +4788,69 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uae08\uc561\uae4c\uc9c0 \uc785\ub825",
                         "\uae08\uc561\uc744 \uc785\ub825"
                 )
-                && containsAny(
-                        analysisText,
-                        "\uc778\ud130\ub137\uc774 \ub04a\uacbc",
-                        "\uc778\ud130\ub137 \uc5f0\uacb0\uc774 \ub04a\uacbc",
-                        "\uc5f0\uacb0\uc774 \ub04a\uacbc"
+                && (
+                        containsAny(
+                                analysisText,
+                                "\uc778\ud130\ub137\uc774 \ub04a\uacbc",
+                                "\uc778\ud130\ub137 \uc5f0\uacb0\uc774 \ub04a\uacbc",
+                                "\uc5f0\uacb0\uc774 \ub04a\uacbc"
+                        )
+                        || containsAny(
+                                analysisText,
+                                "\uc740\ud589 \uc778\uc99d \uacfc\uc815\uc5d0\uc11c \uc624\ub958",
+                                "\uc740\ud589 \uc778\uc99d \uacfc\uc815\uc5d0 \uc624\ub958",
+                                "\uc740\ud589 \uc778\uc99d \uc624\ub958",
+                                "\uacb0\uc81c\uac00 \uc2e4\ud328"
+                        )
                 )
                 && containsAny(
                         analysisText,
                         "\ub2e4\uc2dc \uc5f0\uacb0",
                         "\uc7ac\uc5f0\uacb0",
                         "\uac19\uc740 \ud654\uba74\uc73c\ub85c \ub3cc\uc544\uac14",
-                        "\uac19\uc740 \ud654\uba74\uc73c\ub85c \ub3cc\uc544"
+                        "\uac19\uc740 \ud654\uba74\uc73c\ub85c \ub3cc\uc544",
+                        "\ub2e4\uc2dc \uc2dc\ub3c4",
+                        "\ub2e4\uc2dc \uc2dc\ub3c4\ud574\uc11c",
+                        "\uc7a0\uae50 \uae30\ub2e4\ub838\ub2e4\uac00 \ub2e4\uc2dc \uc2dc\ub3c4"
                 )
                 && containsAny(
                         analysisText,
                         "\uc785\uae08\uc774 \uc815\uc0c1\uc801\uc73c\ub85c \ucc98\ub9ac",
                         "\uc785\uae08\uc774 \ucc98\ub9ac\ub410",
+                        "\uacb0\uad6d \uc785\uae08\uc740 \uc644\ub8cc",
+                        "\uc785\uae08\uc740 \uc644\ub8cc",
+                        "\uc785\uae08\uc774 \uc644\ub8cc",
                         "\ub3c8\uc774 \ub4e4\uc5b4\uc628 \uac78 \ud655\uc778",
                         "\ub3c8\uc774 \ub4e4\uc5b4\uc628"
                 )
-                && containsAny(
-                        analysisText,
-                        "\uacbd\uae30 \ud558\ub098\ub97c \uace8\ub77c",
-                        "\uacbd\uae30 \ud558\ub098\ub97c \uace8\ub790",
-                        "\ubca0\ud305 \uae08\uc561\uc744 \ub123",
-                        "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825"
-                )
-                && containsAny(
-                        analysisText,
-                        "\uc81c\ucd9c\uae4c\uc9c0 \uc644\ub8cc",
-                        "\uc81c\ucd9c\uc744 \uc644\ub8cc",
-                        "\ubca0\ud305\uc744 \uc81c\ucd9c"
-                )
-                && containsAny(
-                        analysisText,
-                        "\uacb0\uacfc\uac00 \ub098\uc628",
-                        "\uacb0\uacfc\uac00 \ub098\uc640",
-                        "\uacb0\uacfc\ub97c \ud655\uc778"
+                && (
+                        (
+                                containsAny(
+                                        analysisText,
+                                        "\uacbd\uae30 \ud558\ub098\ub97c \uace8\ub77c",
+                                        "\uacbd\uae30 \ud558\ub098\ub97c \uace8\ub790",
+                                        "\ubca0\ud305 \uae08\uc561\uc744 \ub123",
+                                        "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825"
+                                )
+                                && containsAny(
+                                        analysisText,
+                                        "\uc81c\ucd9c\uae4c\uc9c0 \uc644\ub8cc",
+                                        "\uc81c\ucd9c\uc744 \uc644\ub8cc",
+                                        "\ubca0\ud305\uc744 \uc81c\ucd9c"
+                                )
+                                && containsAny(
+                                        analysisText,
+                                        "\uacb0\uacfc\uac00 \ub098\uc628",
+                                        "\uacb0\uacfc\uac00 \ub098\uc640",
+                                        "\uacb0\uacfc\ub97c \ud655\uc778"
+                                )
+                        )
+                        || containsAny(
+                                analysisText,
+                                "\uc2e4\uc81c \ubca0\ud305\uc744 \ud55c \ubc88 \ud588",
+                                "\uc2e4\uc81c\ub85c \ubca0\ud305\uc744 \ud55c \ubc88 \ud588",
+                                "\uc2e4\uc81c \ubca0\ud305\uc744 \ud588"
+                        )
                 );
 
         int betAttemptDelta =
