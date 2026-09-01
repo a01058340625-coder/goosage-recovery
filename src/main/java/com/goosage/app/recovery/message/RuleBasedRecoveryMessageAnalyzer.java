@@ -1726,11 +1726,6 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 )
                 && containsAny(
                         analysisText,
-                        "\uac80\uc0c9 \uacb0\uacfc",
-                        "\ube44\uc2b7\ud55c \uc8fc\uc18c"
-                )
-                && containsAny(
-                        analysisText,
                         "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ud655\uc778",
                         "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0",
                         "\ub85c\uadf8\uc778 \ud654\uba74"
