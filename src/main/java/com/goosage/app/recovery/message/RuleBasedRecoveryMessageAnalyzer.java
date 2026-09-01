@@ -2150,6 +2150,34 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\uadf8\ub0a0 \uc571\uc744 \uc9c0\uc6e0",
                                 "\uc571\uc744 \uc9c0\uc6e0"
                         )
+                )
+                || (
+                        containsAny(
+                                normalized,
+                                "\uc2a4\ud3ec\uce20 \ubca0\ud305",
+                                "\ubca0\ud305 \uc571",
+                                "\ubc30\ud305 \uc571"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc18c\uc561\uc744 \ucda9\uc804",
+                                "\uc18c\uc561 \ucda9\uc804",
+                                "\ucda9\uc804\ud574\uc11c",
+                                "\ucda9\uc804\ud558\uace0"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\ud55c \uacbd\uae30\uc5d0 \uc2e4\uc81c\ub85c \ubca0\ud305",
+                                "\uc2e4\uc81c\ub85c \ubca0\ud305\ud588",
+                                "\uc2e4\uc81c\ub85c \ubca0\ud305\uc744 \ud588"
+                        )
+                        && containsAny(
+                                analysisText,
+                                "\uc571\uc744 \ubc14\ub85c \uc0ad\uc81c",
+                                "\ubc14\ub85c \uc571\uc744 \uc0ad\uc81c",
+                                "\uc571\uc744 \ubc14\ub85c \uc9c0\uc6e0",
+                                "\ubc14\ub85c \uc571\uc744 \uc9c0\uc6e0"
+                        )
                 );
 
         boolean sportsBettingSearchAutocompleteThenSelfStopped =
