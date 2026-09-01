@@ -1034,6 +1034,22 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0"
                         );
 
+                boolean thirdPartyTriggerSelfPastGamblingHistoryCurrentUrgeNegated484 =
+                        thirdPartyGamblingContextForSelfUrge
+                        && containsAny(
+                                normalized,
+                                "\uc608\uc804\uc5d0\ub294 \uc783\uc740 \ub3c8\uc744 \ub9cc\ud68c\ud558\uaca0\ub2e4\uace0",
+                                "\uc783\uc740 \ub3c8\uc744 \ub9cc\ud68c\ud558\uaca0\ub2e4\uace0",
+                                "\ubc24\uc0c8 \uc2ac\ub86f\uc744 \ub3cc\ub9b0 \uc801",
+                                "\uc2ac\ub86f\uc744 \ub3cc\ub9b0 \uc801"
+                        )
+                        && containsAny(
+                                normalized,
+                                "\uc9c0\uae08\uc740 \ub2e4\uc2dc \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc740 \uc5c6",
+                                "\ub2e4\uc2dc \ub4e4\uc5b4\uac00\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc740 \uc5c6",
+                                "\ub2e4\uc2dc \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc740 \uc5c6"
+                        );
+
                 boolean thirdPartyBettingTriggerSelfGameSiteSearch =
                         thirdPartyGamblingContextForSelfUrge
                         && containsAny(
@@ -1049,6 +1065,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyConversationOldCasinoAppCompletedSlot475
                         || thirdPartyLinkSelfLoginCompletedSlot471
                         || thirdPartyBettingTriggerSelfGameSiteSearch
+                        || thirdPartyTriggerSelfPastGamblingHistoryCurrentUrgeNegated484
                         || thirdPartySlotTriggerSelfPersistentUrgeLoginScreenStop480
                         || thirdPartyBettingTriggerSelfSearchConsiderationUrge
                         || thirdPartyCasinoTriggerSelfAdLoginIdInput
@@ -1094,6 +1111,19 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "관련 사이트를 찾아봤",
                         "관련 사이트를 검색했"
                 );
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyTriggerSelfPastGamblingHistoryCurrentUrgeNegated484
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc608\uc804\uc5d0\ub294 \uc783\uc740 \ub3c8\uc744 \ub9cc\ud68c\ud558\uaca0\ub2e4\uace0",
+                            "\uc783\uc740 \ub3c8\uc744 \ub9cc\ud68c\ud558\uaca0\ub2e4\uace0",
+                            "\ubc24\uc0c8 \uc2ac\ub86f\uc744 \ub3cc\ub9b0 \uc801",
+                            "\uc2ac\ub86f\uc744 \ub3cc\ub9b0 \uc801"
+                    );
+                }
 
                 if (
                         selfSubjectIndex < 0
