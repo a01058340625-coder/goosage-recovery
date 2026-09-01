@@ -1414,6 +1414,10 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 && containsAny(
                         analysisText,
                         "\ub098\ub3c4 \ud574\ubcfc\uae4c",
+                        "\uc800\ub3c4 \ub2e4\uc2dc \ud574\ubcfc\uae4c",
+                        "\uc800\ub3c4 \ud574\ubcfc\uae4c",
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c \uc2f6\uc5c8",
+                        "\ud574\ubcfc\uae4c \uc2f6\uc5c8",
                         "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01",
                         "\ud574\ubcfc\uae4c \ud558\ub294 \uc0dd\uac01\uc740",
                         "\uac80\uc0c9\uae4c\uc9c0 \ud560\uae4c \ub9d0\uae4c",
@@ -1432,6 +1436,30 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         analysisText,
                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac74 \uc544\ub2c8",
                         "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uc740 \uac83\uc740 \uc544\ub2c8"
+                );
+
+        boolean casinoNameSearchResultViewAttempt482 =
+                selfContextExtracted
+                && thirdPartyGamblingContextForSelfUrge
+                && containsAny(
+                        normalized,
+                        "\uce74\uc9c0\ub178 \uc774\ub984\ub9cc \uac80\uc0c9",
+                        "\uce74\uc9c0\ub178 \uc774\ub984\uc744 \uac80\uc0c9",
+                        "\uce74\uc9c0\ub178 \uc774\ub984 \uac80\uc0c9"
+                )
+                && containsAny(
+                        normalized,
+                        "\uac80\uc0c9 \uacb0\uacfc \uba87 \uac1c\ub97c \uc77d",
+                        "\uac80\uc0c9 \uacb0\uacfc \uba87 \uac1c\ub97c \ubcf4",
+                        "\uac80\uc0c9 \uacb0\uacfc\ub97c \uc77d",
+                        "\uac80\uc0c9 \uacb0\uacfc\ub97c \ubcf4"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc9c1\uc811 \uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00\uac70\ub098",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00\uac70\ub098",
+                        "\uc9c1\uc811 \uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00",
+                        "\uacc4\uc815\uc744 \ub9cc\ub4e0 \uac74 \uc544\ub2c8"
                 );
 
         boolean thirdPartyHistoryExplicitSelfSiteSearch =
@@ -4833,6 +4861,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || selfLossThoughtAfterThirdPartyTrigger
                         || selfUrgeSearchAfterThirdPartyTrigger
                         || selfSiteSearchAfterThirdPartyTrigger
+                        || casinoNameSearchResultViewAttempt482
                         || selfAppSearchAfterThirdPartyTrigger
                         || bettingIntentPartialSearchInputExternalDistraction
                         || partialSearchInputThenSelfStopped
