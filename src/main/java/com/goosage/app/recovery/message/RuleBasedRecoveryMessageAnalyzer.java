@@ -62,6 +62,55 @@ public class RuleBasedRecoveryMessageAnalyzer {
             return hold(message, "NO_SUPPORTED_SIGNAL");
         }
 
+        boolean genericGameMoneyPurchaseFlowWithoutGamblingDomain =
+                containsAny(
+                        normalized,
+                        "\uc628\ub77c\uc778 \uac8c\uc784\uba38\ub2c8 \uac70\ub798",
+                        "\uac8c\uc784\uba38\ub2c8 \uac70\ub798",
+                        "\uac8c\uc784 \uba38\ub2c8 \uac70\ub798"
+                )
+                && containsAny(
+                        normalized,
+                        "\uad00\ub828 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                )
+                && containsAny(
+                        normalized,
+                        "\uad6c\ub9e4 \ud398\uc774\uc9c0\uae4c\uc9c0 \ub4e4\uc5b4\uac00",
+                        "\uc2e4\uc81c \uad6c\ub9e4 \ud398\uc774\uc9c0",
+                        "\uad6c\ub9e4 \ud398\uc774\uc9c0"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub85c\uadf8\uc778\ud558\uace0",
+                        "\ub85c\uadf8\uc778"
+                )
+                && containsAny(
+                        normalized,
+                        "\uacb0\uc81c \uc218\ub2e8\uc744 \ub4f1\ub85d",
+                        "\uacb0\uc81c\uc218\ub2e8\uc744 \ub4f1\ub85d",
+                        "\uacb0\uc81c \uc218\ub2e8 \ub4f1\ub85d"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub9c8\uc9c0\ub9c9 \uacb0\uc81c \ubc84\ud2bc\uc744 \ub204\ub974\uae30 \uc804",
+                        "\uacb0\uc81c \ubc84\ud2bc\uc744 \ub204\ub974\uae30 \uc804",
+                        "\uacb0\uc81c \ubc84\ud2bc\uc744 \ub204\ub974\uc9c0 \uc54a"
+                )
+                && !containsAny(
+                        normalized,
+                        "\ub3c4\ubc15",
+                        "\ubca0\ud305",
+                        "\ubc30\ud305",
+                        "\uce74\uc9c0\ub178",
+                        "\uc2ac\ub86f",
+                        "\ubc30\ub2f9"
+                );
+
+        if (genericGameMoneyPurchaseFlowWithoutGamblingDomain) {
+            return hold(message, "NO_SUPPORTED_SIGNAL");
+        }
+
         boolean genericPartialSearchDeleteWithoutGamblingDomain =
                 containsAny(
                         normalized,
