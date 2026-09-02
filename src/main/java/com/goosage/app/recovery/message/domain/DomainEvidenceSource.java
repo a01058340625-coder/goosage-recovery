@@ -1,0 +1,11 @@
+package com.goosage.app.recovery.message.domain;
+
+public enum DomainEvidenceSource {
+    EXPLICIT_GAMBLING_NOUN,
+    EXPLICIT_GAMBLING_ACTION,
+    COMPOSITE_GAMBLING_EVIDENCE,
+    HISTORICAL_DOMAIN_REFERENCE,
+    RECOVERY_CONTEXT_REFERENCE,
+    GENERIC_ACTION_CONTEXT,
+    UNKNOWN_CONTEXT
+}

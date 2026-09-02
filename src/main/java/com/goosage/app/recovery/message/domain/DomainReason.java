@@ -1,0 +1,9 @@
+package com.goosage.app.recovery.message.domain;
+
+public enum DomainReason {
+    EXPLICIT_GAMBLING_DOMAIN,
+    LATE_DOMAIN_CONFIRMATION,
+    EXPLICIT_NON_GAMBLING_DOMAIN,
+    INSUFFICIENT_DOMAIN_EVIDENCE,
+    CONFLICTING_DOMAIN_EVIDENCE
+}
