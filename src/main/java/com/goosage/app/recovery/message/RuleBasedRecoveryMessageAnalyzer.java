@@ -4191,6 +4191,61 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc785\uae08\uc218\ub2e8\uc744 \uc0ad\uc81c"
                 );
 
+        boolean fundingSubmitBankErrorRetrySelfStop498 =
+                containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \ub3c8\uc744 \uc783\uc5c8\ub358 \uc0ac\uc774\ud2b8",
+                        "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8",
+                        "\uc783\uc740 \ub3c8\uc774 \uc0dd\uac01"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub85c\uadf8\uc778\uc5d0 \uc131\uacf5",
+                        "\ub85c\uadf8\uc778\ud588",
+                        "\ub85c\uadf8\uc778"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc794\uc561\ub3c4 \ud655\uc778",
+                        "\uc794\uc561\uc744 \ud655\uc778",
+                        "\uc794\uc561"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \ud574\ubcfc\uae4c",
+                        "\ub2e4\uc2dc \ud574\ubcf4\ub824\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uc5d0\uc11c \uae08\uc561\uae4c\uc9c0 \uc785\ub825",
+                        "\uc785\uae08 \ud654\uba74\uc5d0\uc11c",
+                        "\uae08\uc561\uae4c\uc9c0 \uc785\ub825",
+                        "\uae08\uc561\uc744 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacb0\uc81c \ubc84\ud2bc\uc744 \ub20c\ub800",
+                        "\uacb0\uc81c \ubc84\ud2bc\uc744 \ub204\ub974",
+                        "\uacb0\uc81c \ubc84\ud2bc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc740\ud589 \ucabd \uc624\ub958",
+                        "\uc740\ud589 \uc624\ub958",
+                        "\uc624\ub958\ub85c \uc2e4\ud328"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \uc2dc\ub3c4\ud560 \uc218 \uc788\ub2e4\ub294 \uc548\ub0b4",
+                        "\ub2e4\uc2dc \uc2dc\ub3c4\ud560 \uc218",
+                        "\uc7ac\uc2dc\ub3c4"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ucc3d\uc744 \ub2eb",
+                        "\ucc3d\uc744 \ub2eb"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
@@ -4237,6 +4292,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 )
                 && !explicitUrgeNegationCasinoSearchAccessSelfStop
                 && !currentGamblingUrgeNegated
+                || fundingSubmitBankErrorRetrySelfStop498
                         ? 1
                         : 0;
         boolean wagerAmountInputThenWagerCompleted =
@@ -5298,6 +5354,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || fundingSubmitBankErrorRetrySelfStop498
                         || fundingAmountSelfStopBeforeFamilyPhone496
                         || thirdPartyCasinoVideoSelfSearchReinstallStop495
                         || repeatedSlotAdditionalFundingPaymentMethodDelete493
