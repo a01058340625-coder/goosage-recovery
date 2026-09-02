@@ -5479,8 +5479,49 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 )
                         ? 1
                         : 0;
+        boolean pastSlotHistoryCurrentLoginScreenSelfStopRecovery492 =
+                containsAny(
+                        normalized,
+                        "\uc608\uc804\uc5d0 \uc2ac\ub86f\uc744 \ud558\ub2e4\uac00 \ud06c\uac8c \ud6c4\ud68c\ud55c \uc801",
+                        "\uc608\uc804\uc5d0 \uc2ac\ub86f\uc744 \ud558\ub2e4\uac00",
+                        "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00 \ud06c\uac8c \ud6c4\ud68c\ud55c \uc801"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc5b4\uc81c \uc2a4\ud2b8\ub808\uc2a4\ub97c \ub9ce\uc774 \ubc1b\uc544\uc11c",
+                        "\uac11\uc790\uae30 \ud558\uace0 \uc2f6\uc740 \ub9c8\uc74c\uc774 \ub4e4"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud558\uace0",
+                        "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
+                )
+                && containsAny(
+                        normalized,
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0 \ub744\uc6e0",
+                        "\ub85c\uadf8\uc778 \ud654\uba74\uae4c\uc9c0"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2e4\uc81c \ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558",
+                        "\ub85c\uadf8\uc778\uc740 \ud558\uc9c0 \uc54a\uc558"
+                )
+                && containsAny(
+                        normalized,
+                        "\uac00\uc871\uacfc \ud588\ub358 \uc57d\uc18d\uc774 \uc0dd\uac01\ub098",
+                        "\uac00\uc871\uacfc \ud588\ub358 \uc57d\uc18d"
+                )
+                && containsAny(
+                        normalized,
+                        "\ud734\ub300\ud3f0\uc744 \ub0b4\ub824\ub193\uace0 \uc0b0\ucc45",
+                        "\uc0b0\ucc45\uc744 \ub098\uac14",
+                        "\uc0b0\ucc45\uc744 \ub098\uac00"
+                );
+
         int relapseSignalDelta =
                 (
+                        !pastSlotHistoryCurrentLoginScreenSelfStopRecovery492
+                        && (
                         containsRelapseSignal(analysisText)
                         || thirdPartyTriggerSelfSignupFundingMultiWager491
                         || containsCompletedSlotGambling(analysisText)
@@ -5506,6 +5547,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || wagerCompletedThenFamilyDisclosureDeviceHandoffRecovery
                         || completedWagerNextDaySpouseDisclosureCardHandoff470
                 )
+                        )
                         ? 1
                         : 0;
 
