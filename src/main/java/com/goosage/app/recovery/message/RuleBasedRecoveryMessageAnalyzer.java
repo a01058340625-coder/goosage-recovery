@@ -4886,6 +4886,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || containsCompletedSlotGambling(analysisText)
                         || selfLoginCompletedSlotUrgeNegated471
                         || slotAppSearchResultUncertainNoInstallAttempt
                         || explicitUrgeNegationCasinoSearchAccessSelfStop
@@ -5089,6 +5090,27 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc2ac\ub86f"
                 );
 
+
+        boolean familyDinnerInterruptionControlReturnSelfExit485 =
+                containsCompletedSlotGambling(analysisText)
+                && containsAny(
+                        analysisText,
+                        "\uac00\uc871\uc774 \uc800\ub141 \uba39\uc73c\ub77c\uace0 \ubd88\ub7ec",
+                        "\uc800\ub141 \uba39\uc73c\ub77c\uace0 \ubd88\ub7ec"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \ub3cc\uc544\uc654\uc744 \ub54c",
+                        "\ub2e4\uc2dc \ub3cc\uc544\uc640",
+                        "\ub3cc\uc544\uc654\uc744 \ub54c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucef4\ud4e8\ud130\ub97c \ub044\uace0",
+                        "\ucef4\ud4e8\ud130\ub97c \uaed0",
+                        "\ucef4\ud4e8\ud130\ub97c \ub044"
+                );
+
         int betBlockedDelta =
                 (
                         (
@@ -5099,6 +5121,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 && !selfCompletedMultiWagerLateSpouseContext
                                 && !multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         )
+                        || familyDinnerInterruptionControlReturnSelfExit485
                         || lossRecoveryLoginFundingTransferSelfStop
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartySportsOddsSelfPageAccessThenSelfStopped
@@ -5217,6 +5240,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int relapseSignalDelta =
                 (
                         containsRelapseSignal(analysisText)
+                        || containsCompletedSlotGambling(analysisText)
                         || selfLoginCompletedSlotUrgeNegated471
                         || thirdPartyLinkFollowedBySelfFundingAndWager
                         || thirdPartyLinkFundingRejectEveningReentryMultiWager
@@ -7467,6 +7491,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                 "\uc2ac\ub86f\uc744 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f \uc880 \ud558\ub2e4\uac00",
                 "\uc2ac\ub86f\uc744 \uba87 \ubc88 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \uba87 \ucc28\ub840 \ub3cc\ub838",
+                "\uc2ac\ub86f\uc744 \uba87 \ucc28\ub840 \ub3cc\ub9ac\uace0",
                 "\uc2ac\ub86f\uc744 \uba87\ubc88 \ub3cc\ub838",
                 "\uc2ac\ub86f\uc744 \uba87 \ud310\uc744 \ub3cc\ub838",
                 "\uc2ac\ub86f \ud558\ub098\ub97c \uc5f4\uc5b4 \uba87 \ud310\uc744 \ub3cc\ub838",
