@@ -86,6 +86,35 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         boolean thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge = false;
         boolean thirdPartyLinkSelfWagerInputDeleteSelfStop = false;
+        boolean thirdPartyTriggerSelfSiteSignupSelfStop486 =
+                looksLikeThirdPartyContext(normalized)
+                && containsAny(
+                        normalized,
+                        "\ub3c8\uc744 \ub123\uac70\ub098 \uac8c\uc784\uc744 \ud55c \uac74 \uc5c6",
+                        "\ub3c8\uc744 \ub123\uac70\ub098 \uac8c\uc784\uc744 \ud55c \uac83\uc740 \uc5c6",
+                        "\uc2e4\uc81c\ub85c \ub3c8\uc744 \ub123\uac70\ub098 \uac8c\uc784\uc744 \ud55c \uac74 \uc5c6"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubd24",
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubd24\uc2b5\ub2c8\ub2e4"
+                )
+                && containsAny(
+                        normalized,
+                        "\ud68c\uc6d0\uac00\uc785 \ubc84\ud2bc\uae4c\uc9c0 \ub20c\ub7ec\ubd24",
+                        "\ud68c\uc6d0\uac00\uc785 \ubc84\ud2bc\uc744 \ub20c\ub7ec\ubd24",
+                        "\ud68c\uc6d0\uac00\uc785 \ubc84\ud2bc"
+                )
+                && containsAny(
+                        normalized,
+                        "\uac1c\uc778\uc815\ubcf4\ub97c \uc785\ub825\ud560 \uc0dd\uac01\uc740 \uc5c6",
+                        "\uac1c\uc778\uc815\ubcf4\ub97c \uc785\ub825\ud558\uc9c0 \uc54a"
+                )
+                && containsAny(
+                        normalized,
+                        "\uadf8\ub300\ub85c \ub098\uc654",
+                        "\ub098\uc654\uc2b5\ub2c8\ub2e4"
+                );
 
         boolean thirdPartyGamblingContextForSelfUrge =
                 looksLikeThirdPartyContext(normalized)
@@ -681,7 +710,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
             if (selfSubjectIndex < 0) {
 
                 boolean implicitSelfAfterThirdPartyTrigger =
-                        (
+                        thirdPartyTriggerSelfSiteSignupSelfStop486
+                        || (
                                 thirdPartyGamblingContextForSelfUrge
                                 && (
                                         (
@@ -1058,6 +1088,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 "\uacbd\uae30 \uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9"
                         );
 
+
+
                 implicitSelfAfterThirdPartyTrigger =
                         implicitSelfAfterThirdPartyTrigger
                         || thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge
@@ -1078,7 +1110,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyLinkSelfSiteAccessPreLoginSelfStop
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
                         || thirdPartySportsOddsSelfPageAccessAttempt
-                        || thirdPartyTriggerSelfSportsAppInstallLogin;
+                        || thirdPartyTriggerSelfSportsAppInstallLogin
+                        || thirdPartyTriggerSelfSiteSignupSelfStop486;
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
                     return hold(message, "THIRD_PARTY_CONTEXT");
@@ -1094,6 +1127,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "사이트 이름을 한 번 검색해본",
                         "\uc608\uc804\uc5d0 \uc783\uc740 \ub3c8 \uc0dd\uac01",
                         "\uc783\uc740 \ub3c8 \uc0dd\uac01",
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubd24\uc2b5\ub2c8\ub2e4",
+                        "\uc0ac\uc774\ud2b8\ub97c \ucc3e\uc544\ubd24",
                         "\uc0ac\uc774\ud2b8\ub97c \uac80\uc0c9\ud588",
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uae4c\uc9c0 \ub5a0\uc62c\ub790",
                         "\uc0ac\uc774\ud2b8 \uc774\ub984\uc774 \ub5a0\uc62c\ub790",
@@ -4886,6 +4921,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || thirdPartyTriggerSelfSiteSignupSelfStop486
                         || containsCompletedSlotGambling(analysisText)
                         || selfLoginCompletedSlotUrgeNegated471
                         || slotAppSearchResultUncertainNoInstallAttempt
@@ -5122,6 +5158,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                                 && !multiWagerCompletedLossAdditionalUrgePostCompletionStop
                         )
                         || familyDinnerInterruptionControlReturnSelfExit485
+                        || thirdPartyTriggerSelfSiteSignupSelfStop486
                         || lossRecoveryLoginFundingTransferSelfStop
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartySportsOddsSelfPageAccessThenSelfStopped
