@@ -4246,9 +4246,59 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ucc3d\uc744 \ub2eb"
                 );
 
+        boolean completedSportsMultiWagerNextDayBalanceUrge499 =
+                containsAny(
+                        analysisText,
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305\uc744 \ud558\ub824\uace0",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305\uc744 \ud558\ub824\uace0",
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d\ud574\uc11c \ub85c\uadf8\uc778",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \uc811\uc18d",
+                        "\ub85c\uadf8\uc778\ud558\uace0"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc18c\uc561\uc744 \uc785\uae08",
+                        "\uc18c\uc561 \uc785\uae08",
+                        "\uc785\uae08\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uccab \ubca0\ud305\uc774 \ub05d\ub09c",
+                        "\uccab \ubc88\uc9f8 \ubca0\ud305\uc774 \ub05d\ub09c",
+                        "\uccab \ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ud55c \ubc88 \ub354 \ud588",
+                        "\ub450 \ubc88\uc9f8\uae4c\uc9c0 \ub05d",
+                        "\ub450 \ubc88\uc9f8 \ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc624\ub298 \uc544\uce68\uc5d0",
+                        "\uc624\ub298 \uc544\uce68"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc794\uc561\uc744 \ubcf8 \ub4a4",
+                        "\uc794\uc561\uc744 \ubcf4\uace0",
+                        "\uc794\uc561\uc744 \ubd24"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \ubca0\ud305\ud560\uae4c",
+                        "\ubca0\ud305\ud560\uae4c \uc0dd\uac01",
+                        "\ub2e4\uc2dc \ud560\uae4c"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || completedSportsMultiWagerNextDayBalanceUrge499
                         || repeatedSlotAdditionalFundingPaymentMethodDelete493
                         || postCompletionReentryThought491
                         || nextDayReinstallThought490
@@ -5764,6 +5814,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         !pastSlotHistoryCurrentLoginScreenSelfStopRecovery492
                         && (
                         containsRelapseSignal(analysisText)
+                        || completedSportsMultiWagerNextDayBalanceUrge499
                         || repeatedSlotAdditionalFundingPaymentMethodDelete493
                         || thirdPartyTriggerSelfSignupFundingMultiWager491
                         || containsCompletedSlotGambling(analysisText)
