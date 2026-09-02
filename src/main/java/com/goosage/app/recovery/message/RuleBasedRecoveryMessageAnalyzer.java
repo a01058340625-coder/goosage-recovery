@@ -3960,9 +3960,46 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\ub2f9\uc7a5 \ud589\ub3d9\ud560 \uc0dd\uac01\uc740 \uc5c6\uc2b5\ub2c8\ub2e4"
                 );
 
+
+        boolean repeatedWagerAppDeleteReinstallThought490 =
+                containsAny(
+                        analysisText,
+                        "\uc18c\uc561\uc744 \uc785\uae08\ud574\uc11c \uba87 \ubc88 \ubca0\ud305",
+                        "\uba87 \ubc88 \ubca0\ud305",
+                        "\uba87\ubc88 \ubca0\ud305"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ucd94\uac00\ub85c \uc785\uae08\ud574 \ub2e4\uc2dc \uba87 \ud310",
+                        "\ucd94\uac00\ub85c \uc785\uae08",
+                        "\ub2e4\uc2dc \uba87 \ud310 \ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2a4\uc2a4\ub85c \uc571\uc744 \uc0ad\uc81c",
+                        "\uc571\uc744 \uc0ad\uc81c\ud588",
+                        "\uc571\uc744 \uc9c0\uc6e0"
+                );
+
+        boolean nextDayReinstallThought490 =
+                repeatedWagerAppDeleteReinstallThought490
+                && containsAny(
+                        analysisText,
+                        "\ub2e4\uc2dc \uc124\uce58\ud560\uae4c \uc7a0\uae50 \uc0dd\uac01",
+                        "\ub2e4\uc2dc \uc124\uce58\ud560\uae4c",
+                        "\uc7ac\uc124\uce58\ud560\uae4c"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \uc124\uce58\ud558\uc9c0\ub294 \uc54a",
+                        "\uc2e4\uc81c\ub85c \uc124\uce58\ud558\uc9c0 \uc54a",
+                        "\uc124\uce58\ud558\uc9c0\ub294 \uc54a"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || nextDayReinstallThought490
                         || currentOccasionalReentryUrgeWithoutContextExtraction487
                         || slotAppSearchResultUncertainNoInstallAttempt
                         || thirdPartyLinkFollowedBySelfFundingAndWager
@@ -5026,6 +5063,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || repeatedWagerAppDeleteReinstallThought490
                         || priorSiteLoginBalanceFundingConsideredSelfExit489
                         || loginFundingAmountDecidedCanceledAppExit487
                         || thirdPartyTriggerSelfSiteSignupSelfStop486
@@ -5364,6 +5402,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
+                        || repeatedWagerAppDeleteReinstallThought490
                         || paymentMethodFamilyHandoffRecovery
                         || multiSlotFundingSelfStopCardHandoffCurrentUrge475
                         || sportsMultiWagerNextDayUrgeMondayAppDeleted
