@@ -5257,9 +5257,48 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc0ac\uc774\ud2b8\uc5d0\uc11c \ub098\uc654"
                 );
 
+        boolean fundingAmountSelfStopBeforeFamilyPhone496 =
+                containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00",
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uacc4\uc815\uc5d0 \ub85c\uadf8\uc778",
+                        "\ub85c\uadf8\uc778\ud558\uace0",
+                        "\ub85c\uadf8\uc778"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc785\uae08 \ud654\uba74\uae4c\uc9c0 \uac14",
+                        "\uc785\uae08 \ud654\uba74\uae4c\uc9c0",
+                        "\uc785\uae08 \ud654\uba74"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\ub294 \uc21c\uac04",
+                        "\uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561 \uc785\ub825"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc21c\uac04 \uba48\ucdc4",
+                        "\uc785\ub825\ud558\ub294 \uc21c\uac04 \uba48\ucdc4",
+                        "\uba48\ucdc4",
+                        "\uba48\ucd94"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uac00\uc871\uc5d0\uac8c\uc11c \uc804\ud654\uac00 \uc640",
+                        "\uac00\uc871\uc5d0\uac8c\uc11c \uc804\ud654",
+                        "\uc804\ud654\uac00 \uc640\uc11c"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || fundingAmountSelfStopBeforeFamilyPhone496
                         || thirdPartyCasinoVideoSelfSearchReinstallStop495
                         || repeatedSlotAdditionalFundingPaymentMethodDelete493
                         || thirdPartyTriggerSelfSignupFundingMultiWager491
