@@ -4985,9 +4985,48 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc571\uc744 \ub2eb"
                 );
 
+
+        boolean priorSiteLoginBalanceFundingConsideredSelfExit489 =
+                containsAny(
+                        analysisText,
+                        "\uc608\uc804\uc5d0 \ubca0\ud305\ud558\ub358 \uc0ac\uc774\ud2b8",
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uacc4\uc815",
+                        "\uc608\uc804\uc5d0 \uc4f0\ub358 \uacc4\uc815\uc774"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc0ac\uc774\ud2b8\uc5d0 \ub4e4\uc5b4\uac00 \ub85c\uadf8\uc778\uae4c\uc9c0",
+                        "\ub85c\uadf8\uc778\uae4c\uc9c0 \ud558\uace0",
+                        "\ub85c\uadf8\uc778\ud588"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc794\uc561\uc744 \ud655\uc778",
+                        "\uc794\uc561 \ud655\uc778"
+                )
+                && containsAny(
+                        analysisText,
+                        "\ub3c8\uc744 \ub123\uc744\uae4c \uace0\ubbfc",
+                        "\ub3c8\uc744 \ub123\uc744\uae4c",
+                        "\uc785\uae08\ud560\uae4c \uace0\ubbfc"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uc2e4\uc81c\ub85c \uae08\uc561\uc744 \uc785\ub825\ud558\uc9c0\ub294 \uc54a",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\uc9c0\ub294 \uc54a",
+                        "\uae08\uc561\uc744 \uc785\ub825\ud558\uc9c0 \uc54a"
+                )
+                && containsAny(
+                        analysisText,
+                        "\uadf8\ub0e5 \ub098\uc654",
+                        "\uadf8\ub0e5 \ub098\uc654\uc2b5\ub2c8\ub2e4",
+                        "\uc0ac\uc774\ud2b8\uc5d0\uc11c \ub098\uc654"
+                );
+
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || priorSiteLoginBalanceFundingConsideredSelfExit489
                         || loginFundingAmountDecidedCanceledAppExit487
                         || thirdPartyTriggerSelfSiteSignupSelfStop486
                         || containsCompletedSlotGambling(analysisText)
@@ -5228,6 +5267,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || familyDinnerInterruptionControlReturnSelfExit485
                         || thirdPartyTriggerSelfSiteSignupSelfStop486
                         || loginFundingAmountDecidedCanceledAppExit487
+                        || priorSiteLoginBalanceFundingConsideredSelfExit489
                         || lossRecoveryLoginFundingTransferSelfStop
                         || loginScreenReachedThenPhonePutDown
                         || thirdPartySportsOddsSelfPageAccessThenSelfStopped
