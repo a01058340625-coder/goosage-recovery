@@ -86,6 +86,33 @@ public class RuleBasedRecoveryMessageAnalyzer {
 
         boolean thirdPartyTriggerSelfCasinoFundingSlotSelfStopCurrentUrge = false;
         boolean thirdPartyLinkSelfWagerInputDeleteSelfStop = false;
+        boolean thirdPartyTriggerSelfSignupFundingMultiWager491 =
+                looksLikeThirdPartyContext(normalized)
+                && containsAny(
+                        normalized,
+                        "\uce5c\uad6c\uac00 \uc54c\ub824\uc900 \uc0ac\uc774\ud2b8",
+                        "\uce5c\uad6c\uac00 \uc54c\ub824\uc900",
+                        "\uce5c\uad6c\uac00 \uc54c\ub824\uc918\uc11c"
+                )
+                && containsAny(
+                        normalized,
+                        "\ud68c\uc6d0\uac00\uc785 \ud6c4 \ub85c\uadf8\uc778",
+                        "\ud68c\uc6d0\uac00\uc785\ud558\uace0 \ub85c\uadf8\uc778",
+                        "\ud68c\uc6d0\uac00\uc785"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc785\uae08 \uae08\uc561\uc744 \uc801\uc740 \ub2e4\uc74c \uacb0\uc81c\ub97c \uc644\ub8cc",
+                        "\uacb0\uc81c\ub97c \uc644\ub8cc",
+                        "\uc785\uae08\uc744 \uc644\ub8cc"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2a4\ud3ec\uce20 \ubca0\ud305\uc744 \ub450 \ubc88 \ud588",
+                        "\uc2a4\ud3ec\uce20\ubca0\ud305\uc744 \ub450 \ubc88 \ud588",
+                        "\ubca0\ud305\uc744 \ub450 \ubc88 \ud588"
+                );
+
         boolean thirdPartyTriggerSelfSiteSignupSelfStop486 =
                 looksLikeThirdPartyContext(normalized)
                 && containsAny(
@@ -1111,7 +1138,8 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         || thirdPartyTriggerSelfBettingSiteAccessFundingScreenNoAmountInput
                         || thirdPartySportsOddsSelfPageAccessAttempt
                         || thirdPartyTriggerSelfSportsAppInstallLogin
-                        || thirdPartyTriggerSelfSiteSignupSelfStop486;
+                        || thirdPartyTriggerSelfSiteSignupSelfStop486
+                        || thirdPartyTriggerSelfSignupFundingMultiWager491;
 
                 if (!implicitSelfAfterThirdPartyTrigger) {
                     return hold(message, "THIRD_PARTY_CONTEXT");
@@ -1328,6 +1356,18 @@ public class RuleBasedRecoveryMessageAnalyzer {
                             "\uc571\uc744 \uac80\uc0c9",
                             "\uc124\uce58\uae4c\uc9c0 \ud55c",
                             "\uc124\uce58\ud55c \ub4a4"
+                    );
+                }
+
+                if (
+                        selfSubjectIndex < 0
+                        && thirdPartyTriggerSelfSignupFundingMultiWager491
+                ) {
+                    selfSubjectIndex = firstIndexOfAny(
+                            normalized,
+                            "\uc5b4\uc81c \ucc98\uc74c \ub4e4\uc5b4\uac00 \ubd24",
+                            "\ud68c\uc6d0\uac00\uc785 \ud6c4 \ub85c\uadf8\uc778",
+                            "\ud68c\uc6d0\uac00\uc785"
                     );
                 }
 
@@ -3996,9 +4036,25 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc124\uce58\ud558\uc9c0\ub294 \uc54a"
                 );
 
+
+        boolean postCompletionReentryThought491 =
+                thirdPartyTriggerSelfSignupFundingMultiWager491
+                && containsAny(
+                        normalized,
+                        "\ud55c \ubc88 \ub354 \ub4e4\uc5b4\uac08\uae4c \uace0\ubbfc",
+                        "\ub2e4\uc2dc \ud55c \ubc88 \ub4e4\uc5b4\uac08\uae4c",
+                        "\ud55c \ubc88 \ub354 \ub4e4\uc5b4\uac08\uae4c"
+                )
+                && containsAny(
+                        normalized,
+                        "\uacb0\uad6d \uc811\uc18d\ud558\uc9c0 \uc54a",
+                        "\uc811\uc18d\ud558\uc9c0 \uc54a\uace0"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || postCompletionReentryThought491
                         || nextDayReinstallThought490
                         || currentOccasionalReentryUrgeWithoutContextExtraction487
                         || slotAppSearchResultUncertainNoInstallAttempt
@@ -5063,6 +5119,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || thirdPartyTriggerSelfSignupFundingMultiWager491
                         || repeatedWagerAppDeleteReinstallThought490
                         || priorSiteLoginBalanceFundingConsideredSelfExit489
                         || loginFundingAmountDecidedCanceledAppExit487
@@ -5425,6 +5482,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int relapseSignalDelta =
                 (
                         containsRelapseSignal(analysisText)
+                        || thirdPartyTriggerSelfSignupFundingMultiWager491
                         || containsCompletedSlotGambling(analysisText)
                         || selfLoginCompletedSlotUrgeNegated471
                         || thirdPartyLinkFollowedBySelfFundingAndWager
