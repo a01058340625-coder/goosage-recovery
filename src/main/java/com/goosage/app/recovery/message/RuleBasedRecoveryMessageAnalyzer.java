@@ -4051,9 +4051,47 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         "\uc811\uc18d\ud558\uc9c0 \uc54a\uace0"
                 );
 
+        boolean repeatedSlotAdditionalFundingPaymentMethodDelete493 =
+                containsAny(
+                        normalized,
+                        "\uc5b4\uc81c \ucda9\uc804\ud55c \ub3c8\uc73c\ub85c",
+                        "\ucda9\uc804\ud55c \ub3c8\uc73c\ub85c"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc2ac\ub86f\uc744 \uacc4\uc18d \ub3cc\ub9ac\ub2e4\uac00",
+                        "\uc2ac\ub86f\uc744 \uacc4\uc18d \ub3cc\ub838",
+                        "\uc2ac\ub86f\uc744 \uacc4\uc18d"
+                )
+                && containsAny(
+                        normalized,
+                        "\ucd94\uac00 \uc785\uae08\uc744 \ud588",
+                        "\ucd94\uac00\ub85c \uc785\uae08",
+                        "\ucd94\uac00 \uc785\uae08"
+                )
+                && containsAny(
+                        normalized,
+                        "\uadf8 \ub4a4\uc5d0\ub3c4 \uba87 \ud310 \ub354 \ud588",
+                        "\uba87 \ud310 \ub354 \ud588",
+                        "\uba87\ud310 \ub354 \ud588"
+                )
+                && containsAny(
+                        normalized,
+                        "\uba48\ucd94\uae30 \uc2eb\uc5b4\uc11c",
+                        "\uba48\ucd94\uae30 \uc2eb\uc5b4",
+                        "\uadf8\ub0e5 \uba48\ucd94\uae30 \uc2eb"
+                )
+                && containsAny(
+                        normalized,
+                        "\uc785\uae08 \uc218\ub2e8\uc744 \uc0ad\uc81c",
+                        "\uc9c1\uc811 \uc785\uae08 \uc218\ub2e8\uc744 \uc0ad\uc81c",
+                        "\uc785\uae08\uc218\ub2e8\uc744 \uc0ad\uc81c"
+                );
+
         int urgeLogDelta =
                 (
                         containsAffirmedUrge(analysisText)
+                        || repeatedSlotAdditionalFundingPaymentMethodDelete493
                         || postCompletionReentryThought491
                         || nextDayReinstallThought490
                         || currentOccasionalReentryUrgeWithoutContextExtraction487
@@ -5119,6 +5157,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int betAttemptDelta =
                 (
                         containsAffirmedAttempt(analysisText)
+                        || repeatedSlotAdditionalFundingPaymentMethodDelete493
                         || thirdPartyTriggerSelfSignupFundingMultiWager491
                         || repeatedWagerAppDeleteReinstallThought490
                         || priorSiteLoginBalanceFundingConsideredSelfExit489
@@ -5459,6 +5498,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
         int recoveryActionDelta =
                 (
                         containsRecoveryAction(analysisText)
+                        || repeatedSlotAdditionalFundingPaymentMethodDelete493
                         || repeatedWagerAppDeleteReinstallThought490
                         || paymentMethodFamilyHandoffRecovery
                         || multiSlotFundingSelfStopCardHandoffCurrentUrge475
@@ -5523,6 +5563,7 @@ public class RuleBasedRecoveryMessageAnalyzer {
                         !pastSlotHistoryCurrentLoginScreenSelfStopRecovery492
                         && (
                         containsRelapseSignal(analysisText)
+                        || repeatedSlotAdditionalFundingPaymentMethodDelete493
                         || thirdPartyTriggerSelfSignupFundingMultiWager491
                         || containsCompletedSlotGambling(analysisText)
                         || selfLoginCompletedSlotUrgeNegated471
