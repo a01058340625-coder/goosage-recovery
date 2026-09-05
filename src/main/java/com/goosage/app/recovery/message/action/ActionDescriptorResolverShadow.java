@@ -49,7 +49,34 @@ public class ActionDescriptorResolverShadow {
 
     private ActionType resolveActionType(
             String text
-    ) {
+    ) {        
+        // Explicit completed wager evidence has highest priority.
+        if (
+                containsAny(
+                        text,
+                        "돈을 걸었어",
+                        "돈을 걸었다",
+                        "돈을 걸었습니다",
+                        "실제로 베팅을 했어",
+                        "실제로 베팅했다",
+                        "실제로 베팅했습니다",
+                        "실제 베팅까지 한 번 성립됐어",
+                        "실제 베팅이 성립됐어", "실제 베팅이 한 번 성립된 뒤", "다시 베팅이 성립된 뒤", "베팅은 정상적으로 처리돼 있었",
+                        "베팅을 완료했어",
+                        "베팅을 완료했다",
+                        "베팅을 완료했습니다",
+                        "결국 한 번 베팅했고",
+                        "베팅은 정상적으로 처리됐어",
+                        "제출까지 완료하고",
+                        "결과는 생각보다 빨리 나왔고",
+                        "베팅이 완료된 것을 확인",
+                        "정상적으로 접수됐다는 표시",
+                        "접수됐다는 표시가 떠서 결과를 기다렸"
+                )
+        ) {
+            return ActionType.WAGER;
+        }
+
         if (
                 (
                         text.contains("베팅한 적은 없")
@@ -138,6 +165,7 @@ public class ActionDescriptorResolverShadow {
                         "상담을 받",
                         "가족에게 말",
                         "카드를 맡",
+                        "결제수단을 가족에게 맡",
                         "앱을 삭제",
                         "앱을 지우"
                 )
@@ -158,6 +186,35 @@ public class ActionDescriptorResolverShadow {
             return ActionType.ACCOUNT_CONTROL;
         }
 
+        /*
+         * OOS_CASINO_LINK_ACCESS_PRECEDENCE_V1
+         *
+         * Concrete casino-link execution is ACCESS, not WAGER.
+         *
+         * Explicit completed/progressed wager evidence above retains
+         * higher priority. This branch only handles actual link execution.
+         */
+        if (
+                text.contains("\uCE74\uC9C0\uB178")
+                && containsAny(
+                        text,
+                        "\uB9C1\uD06C\uB97C \uB20C\uB800",
+                        "\uB9C1\uD06C\uB97C \uB20C\uB7EC",
+                        "\uB9C1\uD06C\uB97C \uD074\uB9AD",
+                        "\uB9C1\uD06C\uB97C \uC5F4\uC5B4"
+                )
+                && !containsAny(
+                        text,
+                        "\uB204\uB974\uC9C0 \uC54A",
+                        "\uB20C\uB7EC\uC9C0 \uC54A",
+                        "\uD074\uB9AD\uD558\uC9C0 \uC54A",
+                        "\uC5F4\uC9C0 \uC54A"
+                )
+        ) {
+            return ActionType.ACCESS;
+        }
+
+
         if (
                 containsAny(
                         text,
@@ -167,7 +224,7 @@ public class ActionDescriptorResolverShadow {
                         "\uC2AC\uB86F",
                         "\uB3C8\uC744 \uAC78",
                         "\uC8FC\uBB38\uC744 \uC81C\uCD9C",
-                        "\uBCA0\uD305 \uBC84\uD2BC"
+                        "\uBCA0\uD305 \uBC84\uD2BC", "걸었어요", "걸었다", "베팅했어요", "베팅했다", "베팅했습니다"
                 )
         ) {
             return ActionType.WAGER;
@@ -184,6 +241,12 @@ public class ActionDescriptorResolverShadow {
         ) {
             return ActionType.FUNDING;
         }
+          if (
+                  text.contains("사이트 주소를 다시 검색")
+                  || text.contains("사이트 주소를 검색")
+          ) {
+              return ActionType.SEARCH;
+          }
 
         if (
                 containsAny(
@@ -195,20 +258,18 @@ public class ActionDescriptorResolverShadow {
         ) {
             return ActionType.LOGIN;
         }
-
         // SEARCH must precede ACCESS.
         if (
                 containsAny(
                         text,
-                        "??",
-                        "???",
-                        "??? ??",
-                        "??? ??",
-                        "? ??",
-                        "?? ????",
-                        "?? ???",
-                        "?? ?? ???",
-                        "?? ???"
+                        "검색창",
+                        "검색어",
+                        "검색",
+                        "사이트 이름",
+                        "앱 이름",
+                        "자동완성",
+                        "찾아봤",
+                        "찾아보"
                 )
         ) {
             return ActionType.SEARCH;
@@ -233,7 +294,100 @@ public class ActionDescriptorResolverShadow {
     private ActionStage resolveActionStage(
             String text,
             ActionType type
-    ) {
+    ) {        
+        if (
+                type == ActionType.WAGER
+                && containsAny(
+                        text,
+                        "돈을 걸었어",
+                        "돈을 걸었다",
+                        "돈을 걸었습니다",
+                        "실제로 베팅을 했어",
+                        "실제로 베팅했다",
+                        "실제로 베팅했습니다",
+                        "실제 베팅까지 한 번 성립됐어",
+                        "실제 베팅이 성립됐어", "실제 베팅이 한 번 성립된 뒤", "다시 베팅이 성립된 뒤", "베팅은 정상적으로 처리돼 있었",
+                        "베팅을 완료했어",
+                        "베팅을 완료했다",
+                        "베팅을 완료했습니다",
+                        "결국 한 번 베팅했고",
+                        "베팅은 정상적으로 처리됐어",
+                        "제출까지 완료하고",
+                        "결과는 생각보다 빨리 나왔고",
+                        "베팅이 완료된 것을 확인",
+                        "정상적으로 접수됐다는 표시",
+                        "접수됐다는 표시가 떠서 결과를 기다렸"
+                )
+        ) {
+            return ActionStage.COMPLETED;
+        }
+
+        /*
+         * OOS_ACCESS_LINK_EXECUTION_STAGE_V1
+         *
+         * Concrete ACCESS link execution is STARTED.
+         */
+        if (
+                type == ActionType.ACCESS
+                && containsAny(
+                        text,
+                        "\uB9C1\uD06C\uB97C \uB20C\uB800",
+                        "\uB9C1\uD06C\uB97C \uB20C\uB7EC",
+                        "\uB9C1\uD06C\uB97C \uD074\uB9AD",
+                        "\uB9C1\uD06C\uB97C \uC5F4\uC5B4"
+                )
+                && !containsAny(
+                        text,
+                        "\uB204\uB974\uC9C0 \uC54A",
+                        "\uB20C\uB7EC\uC9C0 \uC54A",
+                        "\uD074\uB9AD\uD558\uC9C0 \uC54A",
+                        "\uC5F4\uC9C0 \uC54A"
+                )
+        ) {
+            return ActionStage.STARTED;
+        }
+
+
+        /*
+         * OOS_STAGE_WAGER_PRE_COMPLETION_V1
+         *
+         * Concrete wager progression before completion:
+         *
+         * - wager order/button executed -> SUBMITTED
+         * - wager amount entered         -> INPUT
+         *
+         * These must run before generic THOUGHT/fallback rules,
+         * while explicit completed-wager evidence above remains
+         * higher priority.
+         */
+        if (
+                type == ActionType.WAGER
+                && containsAny(
+                        text,
+                        "\ubca0\ud305 \uc8fc\ubb38\uc744 \ub20c\ub800",
+                        "\ubca0\ud305 \uc8fc\ubb38 \ubc84\ud2bc\uc744 \ub20c\ub800",
+                        "\ubca0\ud305 \ubc84\ud2bc\uc744 \ub20c\ub800",
+                        "\ubca0\ud305 \ubc84\ud2bc\uc744 \ub20c\ub7ec"
+                )
+        ) {
+            return ActionStage.SUBMITTED;
+        }
+
+        if (
+                type == ActionType.WAGER
+                && containsAny(
+                        text,
+                        "\ubca0\ud305 \uae08\uc561\uae4c\uc9c0 \uc785\ub825",
+                        "\ubca0\ud305 \uae08\uc561\uc744 \uc785\ub825",
+                        "\ubca0\ud305\ud560 \uae08\uc561\uc744 \uc785\ub825",
+                        "\uae08\uc561\uae4c\uc9c0 \uc785\ub825"
+                )
+        ) {
+            return ActionStage.INPUT;
+        }
+
+
+
         if (
                 type == ActionType.SEARCH
                 && (
@@ -279,6 +433,7 @@ public class ActionDescriptorResolverShadow {
                 type == ActionType.WAGER
                 && (
                         text.contains("슬롯을 하다가")
+                        || text.contains("슬롯을 좀 하다가")
                         || text.contains("슬롯을 했")
                 )
         ) {
@@ -384,7 +539,7 @@ public class ActionDescriptorResolverShadow {
                         "\uC131\uACF5\uD588",
                         "\uC644\uB8CC\uB410",
                         "\uC131\uB9BD\uB410",
-                        "\uBCA0\uD305\uD558\uACE0",
+                        
                         "\uC2E4\uC81C\uB85C \uD574\uC81C\uB410",
                         "\uC2E4\uC81C\uB85C \uC785\uAE08\uD588",
                         "\uC2E4\uC81C\uB85C \uBCA0\uD305\uD588",
@@ -392,8 +547,29 @@ public class ActionDescriptorResolverShadow {
                         "\uBCA0\uD305\uD588\uC5B4",
                         "\uBCA0\uD305\uD588\uB2E4",
                         "\uBA87 \uBC88 \uD574\uBD24",
-                        "\uBCA0\uD305\uC561\uC774 \uCEE4\uC84C",
-                        "\uC2A4\uD3EC\uCE20\uBCA0\uD305\uAE4C\uC9C0 \uC190\uB300\uACE0"
+                        "\uBCA0\uD305\uC561\uC774 \uCEE4\uC84C", "걸었어요", "걸었다", "베팅했어요", "베팅했다", "베팅했습니다",
+                        "\uC2A4\uD3EC\uCE20\uBCA0\uD305\uAE4C\uC9C0 \uC190\uB300\uACE0",
+                        "베팅을 해버렸어",
+                        "실제로 베팅을 하고",
+                        "실제로 베팅을 했고",
+                        "스포츠베팅을 했습니다",
+                        "두 번째 베팅까지 끝내고",
+                        "슬롯을 몇 차례 돌렸고",
+                        "베팅까지 했고",
+                        "실제로 베팅을 몇 번 했고",
+                        "베팅까지 완료했다",
+                        "베팅까지 넣었습니다",
+                        "실제 베팅을 한 번 했습니다",
+                        "이미 베팅이 완료된 상태였고",
+                        "어제 건은 적중하지 않았고",
+                        "슬롯을 몇 번 돌리고",
+                        "한 경기에 베팅했고",
+                        "한 번 돌려봤는데 결과가 뜨자마자",
+                        "다시 베팅한 뒤",
+                        "슬롯을 몇 번 돌렸는데 첫 결과",
+                        "스포츠 베팅을 두 번 했는데",
+                        "결제를 완료했어요",
+                        "결제수단을 가족에게 맡겨두었습니다"
                 )
         ) {
             return ActionStage.COMPLETED;
@@ -422,7 +598,7 @@ public class ActionDescriptorResolverShadow {
                         "아이디를 입력",
                         "신청서를 작성",
                         "검색어를 입력",
-                        "사이트 이름을 입력",
+                        "사이트 이름을 입력", "로그인했고", "로그인했다", "로그인했습니다",
                         "앱 이름을 입력",
                         "앱을 찾아보기",
                         "앱을 찾아봤"
@@ -460,6 +636,106 @@ public class ActionDescriptorResolverShadow {
             return ActionStage.THOUGHT;
         }
 
+        /*
+         * Stage fallback:
+         * ActionType이 이미 결정된 경우,
+         * 일반적인 실제 진행 표현을 Stage로 복원한다.
+         * 기존 세부 Guard보다 뒤에서 동작한다.
+         */
+
+        if (containsAny(
+                text,
+                "검색창까지",
+                "사이트 주소까지 검색",
+                "검색해서 이름만 확인",
+                "검색해봤어요",
+                "검색해봤어",
+                "검색했습니다",
+                "검색했어요",
+                "검색했어",
+                "사이트 이름을 검색",
+                "사이트를 검색"
+        )) {
+            return ActionStage.STARTED;
+        }
+
+        if (containsAny(
+                text,
+                "몇 글자 치",
+                "몇 글자를 썼",
+                "검색어를 하나 입력",
+                "검색어를 입력",
+                "검색창에 스포츠베팅이라고 치",
+                "검색창에 사이트 이름을 치"
+        )) {
+            return ActionStage.INPUT;
+        }
+
+        if (containsAny(
+                text,
+                "로그인 화면까지",
+                "로그인 화면에서",
+                "로그인만 해봤",
+                "로그인까지 했",
+                "로그인했다"
+        )) {
+            return ActionStage.STARTED;
+        }
+
+        if (containsAny(
+                text,
+                "입금 화면까지",
+                "입금 화면에서",
+                "입금하려고",
+                "입금까지 갔"
+        )) {
+            return ActionStage.STARTED;
+        }
+
+        if (containsAny(
+                text,
+                "베팅 화면까지",
+                "베팅 화면에서",
+                "베팅하려고",
+                "베팅까지 갔",
+                "베팅 금액까지",
+                "베팅 버튼까지"
+        )) {
+            return ActionStage.STARTED;
+        }
+
+        if (containsAny(
+                text,
+                "버튼을 눌렀",
+                "버튼까지 눌렀",
+                "실제로 눌렀",
+                "제출 버튼까지"
+        )) {
+            return ActionStage.SUBMITTED;
+        }
+
+        if (containsAny(
+                text,
+                "사이트에 들어가",
+                "사이트에 접속",
+                "링크를 눌러",
+                "화면까지 봤",
+                "화면만 봤",
+                "화면을 봤"
+        )) {
+            return ActionStage.STARTED;
+        }
+
+        if (containsAny(
+                text,
+                "실제로 성립",
+                "성립됐",
+                "성립되었",
+                "실제로 로그인",
+                "실제로 입금"
+        )) {
+            return ActionStage.COMPLETED;
+        }
         if (type == ActionType.UNKNOWN) {
             return ActionStage.UNKNOWN;
         }

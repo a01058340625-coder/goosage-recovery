@@ -20,14 +20,9 @@ public class EventSignalMapperShadow {
         int recovery = 0;
         int relapse = 0;
 
-        ActionType type =
-                event.actionType();
-
-        ActionStage stage =
-                event.actionStage();
-
-        StopCauseType stopCause =
-                event.stopCause();
+        ActionType type = event.actionType();
+        ActionStage stage = event.actionStage();
+        StopCauseType stopCause = event.stopCause();
 
         if (
                 type == ActionType.SEARCH
@@ -38,17 +33,15 @@ public class EventSignalMapperShadow {
                 || type == ActionType.ACCOUNT_CONTROL
         ) {
             if (
-                    stage != ActionStage.THOUGHT
-                    && stage != ActionStage.UNKNOWN
+                    stage == ActionStage.INPUT
+                    || stage == ActionStage.SUBMITTED
+                    || stage == ActionStage.COMPLETED
             ) {
                 attempt = 1;
             }
         }
 
-        if (
-                attempt == 1
-                && stopCause == StopCauseType.SELF_STOP
-        ) {
+        if (stopCause == StopCauseType.SELF_STOP) {
             blocked = 1;
         }
 
@@ -74,7 +67,6 @@ public class EventSignalMapperShadow {
                 relapse
         );
     }
-
     public ShadowSignalVector mapAll(
             java.util.List<com.goosage.app.recovery.message.event.EventDescriptor> events
     ) {
